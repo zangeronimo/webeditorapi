@@ -11,7 +11,8 @@ export class User {
     readonly id: string,
     readonly name: string,
     readonly email: string,
-    password: string = ""
+    password: string = "",
+    readonly companyId: string
   ) {
     this.password = password;
   }
@@ -20,17 +21,19 @@ export class User {
     id: string,
     name: string,
     email: string,
-    password: string
+    password: string,
+    companyId: string
   ): User {
-    return new User(id, name, email, password);
+    return new User(id, name, email, password, companyId);
   }
 
   public static async Create(
     name: string,
     email: string,
-    password: string
+    password: string,
+    companyId: string
   ): Promise<User> {
-    const user = new User(crypto.randomUUID(), name, email);
+    const user = new User(crypto.randomUUID(), name, email, "", companyId);
     await user.SetPassword(password);
 
     return user;

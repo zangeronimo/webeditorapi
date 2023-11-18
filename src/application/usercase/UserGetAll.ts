@@ -6,8 +6,8 @@ import { UserDto } from "@domain/entity/dto/UserDto";
 export class UserGetAll implements IUserGetAll {
   constructor(readonly _userRepository: IUserRepository) {}
 
-  async ExecuteAsync() {
-    const users = await this._userRepository.getAll();
+  async ExecuteAsync(company: string) {
+    const users = await this._userRepository.getAll(company);
 
     const usersDto = users.map((user: User) => new UserDto(user));
     return usersDto;

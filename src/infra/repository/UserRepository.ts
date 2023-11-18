@@ -7,27 +7,29 @@ export class UserRepository implements IUserRepository {
 
   async getByEmail(email: string): Promise<User> {
     const [userData] = await this.db.query(
-      "select id, name, email, password from webeditor_users where email = $1",
+      "select id, name, email, password, webeditor_companies_id from webeditor_users where email = $1",
       [email]
     );
     return User.Restore(
       userData.id,
       userData.name,
       userData.email,
-      userData.password
+      userData.password,
+      userData.webeditor_companies_id
     );
   }
-  async getAll(): Promise<User[]> {
+  async getAll(company: string): Promise<User[]> {
     const usersData = await this.db.query(
-      "select id, name, email, password from webeditor_users",
-      null
+      "select id, name, email, password, webeditor_companies_id from webeditor_users where webeditor_companies_id = $1",
+      [company]
     );
     const users = usersData.map((userData: any) =>
       User.Restore(
         userData.id,
         userData.name,
         userData.email,
-        userData.password
+        userData.password,
+        userData.webeditor_companies_id
       )
     );
     return users;

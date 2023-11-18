@@ -11,9 +11,8 @@ export class UserController {
 
   GetAll = async (req: Request, res: Response) => {
     try {
-      //  const { id: user, company } = req.user;
-      //  console.log(user, company);
-      const users = await this.userGetAll?.ExecuteAsync();
+      const { company } = req.user;
+      const users = await this.userGetAll?.ExecuteAsync(company);
       return res.json(users);
     } catch (e: any) {
       return res.status(400).json(e.message);

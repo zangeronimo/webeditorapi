@@ -13,11 +13,11 @@ export class UserController {
   GetAll = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const getAllUserFilterModel = new GetAllUserFilterModel(
-        req.query,
+      const getAllUserFilterModel = new GetAllUserFilterModel(req.query);
+      const users = await this.userGetAll?.ExecuteAsync(
+        getAllUserFilterModel,
         company
       );
-      const users = await this.userGetAll?.ExecuteAsync(getAllUserFilterModel);
       return res.json(users);
     } catch (e: any) {
       return res.status(400).json(e.message);

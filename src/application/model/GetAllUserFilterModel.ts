@@ -6,13 +6,15 @@ export class GetAllUserFilterModel implements IPagination, IOrdenation {
   public pageSize: number;
   public orderBy: string;
   public desc: boolean;
-  public company: string;
+  public name: string;
+  public email: string;
 
-  constructor(query: any, company: string) {
+  constructor(query: any) {
     this.page = query.page;
     this.pageSize = query.pageSize;
     this.orderBy = query.orderBy ?? "id";
     this.desc = query.desc === "true";
-    this.company = company;
+    this.name = query.name;
+    this.email = query.email;
   }
 }

@@ -21,23 +21,41 @@ export class UserRepository implements IUserRepository {
     );
   }
   async getAll(
-    model: GetAllUserFilterModel
+    model: GetAllUserFilterModel,
+    company: string
   ): Promise<{ itens: User[]; total: number }> {
-    const where = "webeditor_companies_id = $1";
-    const ordenation = !!model.desc ? "desc" : "asc";
+    let where = "webeditor_companies_id = $1";
+    if (!!model.name) {
+      where += ` and LOWER(UNACCENT(name)) like $2`;
+    }
+    if (!!model.email) {
+      where += ` and LOWER(email) = $3`;
+    }
+    const ordenation = `${model.orderBy} ${!!model.desc ? "desc" : "asc"}`;
+    const offset = model.pageSize * model.page;
     const [total] = await this.db.query(
       `select count(*) from webeditor_users where ${where}`,
-      [model.company]
+      [
+        company,
+        `%${model.name?.toLowerCase().noAccents()}%`,
+        model.email?.toLowerCase(),
+      ]
     );
     const usersData = await this.db.query(
       `select
         id, name, email, password, webeditor_companies_id
       from webeditor_users
       where ${where}
-      order by ${model.orderBy} ${ordenation}
-      limit ${model.pageSize}
-      offset ${model.pageSize * model.page}`,
-      [model.company]
+      order by ${ordenation}
+      limit $4
+      offset $5`,
+      [
+        company,
+        `%${model.name?.toLowerCase().noAccents()}%`,
+        model.email?.toLowerCase(),
+        model.pageSize,
+        offset,
+      ]
     );
     const users = usersData.map((userData: any) =>
       User.Restore(

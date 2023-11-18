@@ -5,6 +5,7 @@ import { PaginatorResultDto } from "@domain/entity/dto/PaginatorResultDto";
 export interface IUserRepository {
   getByEmail(email: string): Promise<User>;
   getAll(
-    model: GetAllUserFilterModel
+    model: GetAllUserFilterModel,
+    company: string
   ): Promise<{ itens: User[]; total: number }>;
 }

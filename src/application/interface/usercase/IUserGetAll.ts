@@ -1,5 +1,6 @@
-import { UserDto } from "@domain/entity/dto/UserDto";
+import { GetAllUserFilterModel } from "@application/model/GetAllUserFilterModel";
+import { PaginatorResultDto } from "@domain/entity/dto/PaginatorResultDto";
 
 export interface IUserGetAll {
-  ExecuteAsync(company: string): Promise<UserDto[]>;
+  ExecuteAsync(model: GetAllUserFilterModel): Promise<PaginatorResultDto>;
 }

@@ -1,5 +1,6 @@
 import { IMakeLogin } from "@application/interface/usercase/IMakeLogin";
 import { IUserGetAll } from "@application/interface/usercase/IUserGetAll";
+import { GetAllUserFilterModel } from "@application/model/GetAllUserFilterModel";
 import { inject } from "@infra/di/Inject";
 import { Request, Response } from "express";
 
@@ -12,7 +13,11 @@ export class UserController {
   GetAll = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const users = await this.userGetAll?.ExecuteAsync(company);
+      const getAllUserFilterModel = new GetAllUserFilterModel(
+        req.query,
+        company
+      );
+      const users = await this.userGetAll?.ExecuteAsync(getAllUserFilterModel);
       return res.json(users);
     } catch (e: any) {
       return res.status(400).json(e.message);

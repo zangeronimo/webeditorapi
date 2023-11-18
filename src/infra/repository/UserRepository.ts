@@ -12,7 +12,7 @@ export class UserRepository implements IUserRepository {
       `select
         id, name, email, password, webeditor_companies_id
        from webeditor_users
-       where id = $1 and webeditor_companies_id = $2`,
+       where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
     );
     return userData
@@ -28,7 +28,7 @@ export class UserRepository implements IUserRepository {
 
   async getByEmail(email: string): Promise<User | null> {
     const [userData] = await this.db.query(
-      "select id, name, email, password, webeditor_companies_id from webeditor_users where email = $1",
+      "select id, name, email, password, webeditor_companies_id from webeditor_users where email = $1 and deleted_at is null",
       [email]
     );
     return userData
@@ -46,7 +46,7 @@ export class UserRepository implements IUserRepository {
     model: GetAllUserFilterModel,
     company: string
   ): Promise<{ itens: User[]; total: number }> {
-    let where = "webeditor_companies_id = $1";
+    let where = "webeditor_companies_id = $1 and deleted_at is null";
     if (!!model.name) {
       where += ` and LOWER(UNACCENT(name)) like $2`;
     }
@@ -89,5 +89,13 @@ export class UserRepository implements IUserRepository {
       )
     );
     return { itens: users, total: total.count };
+  }
+
+  async delete(user: User, date: Date): Promise<User> {
+    const [userData] = await this.db.query(
+      "update webeditor_users set deleted_at=$3, updated_at=$3 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      [user.id, user.companyId, date]
+    );
+    return user;
   }
 }

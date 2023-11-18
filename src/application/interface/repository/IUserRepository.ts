@@ -9,4 +9,5 @@ export interface IUserRepository {
     model: GetAllUserFilterModel,
     company: string
   ): Promise<{ itens: User[]; total: number }>;
+  delete(user: User, date: Date): Promise<User>;
 }

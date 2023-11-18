@@ -12,6 +12,6 @@ export class UserGetAll implements IUserGetAll {
     const { itens: users, total } = await this._userRepository.getAll(model);
 
     const usersDto = users.map((user: User) => new UserDto(user));
-    return new PaginatorResultDto(users, total);
+    return new PaginatorResultDto(usersDto, total);
   }
 }

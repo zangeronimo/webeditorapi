@@ -1,10 +1,18 @@
-import { PaginatorModel } from "./PaginatorModel";
+import { IOrdenation } from "../interface/IOrdenation";
+import { IPagination } from "../interface/IPagination";
 
-export class GetAllUserFilterModel extends PaginatorModel {
+export class GetAllUserFilterModel implements IPagination, IOrdenation {
+  public page: number;
+  public pageSize: number;
+  public orderBy: string;
+  public desc: boolean;
   public company: string;
 
   constructor(query: any, company: string) {
-    super(query.page, query.pageSize);
+    this.page = query.page;
+    this.pageSize = query.pageSize;
+    this.orderBy = query.orderBy ?? "id";
+    this.desc = query.desc === "true";
     this.company = company;
   }
 }

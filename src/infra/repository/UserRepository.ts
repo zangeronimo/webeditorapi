@@ -24,6 +24,7 @@ export class UserRepository implements IUserRepository {
     model: GetAllUserFilterModel
   ): Promise<{ itens: User[]; total: number }> {
     const where = "webeditor_companies_id = $1";
+    const ordenation = !!model.desc ? "desc" : "asc";
     const [total] = await this.db.query(
       `select count(*) from webeditor_users where ${where}`,
       [model.company]
@@ -33,7 +34,7 @@ export class UserRepository implements IUserRepository {
         id, name, email, password, webeditor_companies_id
       from webeditor_users
       where ${where}
-      order by id desc
+      order by ${model.orderBy} ${ordenation}
       limit ${model.pageSize}
       offset ${model.pageSize * model.page}`,
       [model.company]

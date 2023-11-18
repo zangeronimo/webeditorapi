@@ -3,7 +3,8 @@ import { User } from "@domain/entity/User";
 import { PaginatorResultDto } from "@domain/entity/dto/PaginatorResultDto";
 
 export interface IUserRepository {
-  getByEmail(email: string): Promise<User>;
+  getById(id: string, company: string): Promise<User | null>;
+  getByEmail(email: string): Promise<User | null>;
   getAll(
     model: GetAllUserFilterModel,
     company: string

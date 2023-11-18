@@ -2,6 +2,7 @@ import { MainController } from "@api/controller/MainController";
 import { Extensions } from "@application/extension";
 import { MakeLogin } from "@application/usercase/MakeLogin";
 import { UserGetAll } from "@application/usercase/UserGetAll";
+import { UserGetById } from "@application/usercase/UserGetById";
 import { PgPromiseContext } from "@infra/context/PgPromiseContext";
 import { Registry } from "@infra/di/Registry";
 import { BCryptHashProvider } from "@infra/provider/BCryptHashProvider";
@@ -16,9 +17,11 @@ const dbContext = new PgPromiseContext();
 const userRepository = new UserRepository(dbContext);
 const makeLogin = new MakeLogin(userRepository);
 const userGetAll = new UserGetAll(userRepository);
+const userGetById = new UserGetById(userRepository);
 
 Registry.getInstance().provide("IMakeLogin", makeLogin);
 Registry.getInstance().provide("IUserGetAll", userGetAll);
+Registry.getInstance().provide("IUserGetById", userGetById);
 Registry.getInstance().provide("IHashProvider", new BCryptHashProvider());
 Registry.getInstance().provide("ITokenProvider", new JwtWebTokenProvider());
 

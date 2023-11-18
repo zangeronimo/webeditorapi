@@ -7,19 +7,41 @@ import { DbContext } from "@infra/context/DbContext";
 export class UserRepository implements IUserRepository {
   constructor(readonly db: DbContext) {}
 
-  async getByEmail(email: string): Promise<User> {
+  async getById(id: string, company: string): Promise<User | null> {
+    const [userData] = await this.db.query(
+      `select
+        id, name, email, password, webeditor_companies_id
+       from webeditor_users
+       where id = $1 and webeditor_companies_id = $2`,
+      [id, company]
+    );
+    return userData
+      ? User.Restore(
+          userData.id,
+          userData.name,
+          userData.email,
+          userData.password,
+          userData.webeditor_companies_id
+        )
+      : null;
+  }
+
+  async getByEmail(email: string): Promise<User | null> {
     const [userData] = await this.db.query(
       "select id, name, email, password, webeditor_companies_id from webeditor_users where email = $1",
       [email]
     );
-    return User.Restore(
-      userData.id,
-      userData.name,
-      userData.email,
-      userData.password,
-      userData.webeditor_companies_id
-    );
+    return userData
+      ? User.Restore(
+          userData.id,
+          userData.name,
+          userData.email,
+          userData.password,
+          userData.webeditor_companies_id
+        )
+      : null;
   }
+
   async getAll(
     model: GetAllUserFilterModel,
     company: string

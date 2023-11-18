@@ -17,5 +17,10 @@ export class MainController {
       this.ensureAuthenticated.Execute,
       this.userController.GetAll
     );
+    this.router.get(
+      "/user/:id",
+      this.ensureAuthenticated.Execute,
+      this.userController.GetById
+    );
   }
 }

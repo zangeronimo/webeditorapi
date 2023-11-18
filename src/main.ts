@@ -1,4 +1,5 @@
 import { MainController } from "@api/controller/MainController";
+import { Extensions } from "@application/extension";
 import { MakeLogin } from "@application/usercase/MakeLogin";
 import { UserGetAll } from "@application/usercase/UserGetAll";
 import { PgPromiseContext } from "@infra/context/PgPromiseContext";
@@ -8,6 +9,8 @@ import { JwtWebTokenProvider } from "@infra/provider/JwtWebTokenProvider";
 import { UserRepository } from "@infra/repository/UserRepository";
 import cors from "cors";
 import express from "express";
+
+Extensions.NoAccents;
 
 const dbContext = new PgPromiseContext();
 const userRepository = new UserRepository(dbContext);

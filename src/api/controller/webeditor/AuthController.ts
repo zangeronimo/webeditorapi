@@ -1,12 +1,16 @@
-import { IMakeLogin } from "@application/interface/usercase/IMakeLogin";
+import { IMakeLogin } from "@application/interface/usercase/webeditor/IMakeLogin";
 import { inject } from "@infra/di/Inject";
-import { Request, Response } from "express";
+import { Request, Response, Router } from "express";
 
 export class AuthController {
   @inject("IMakeLogin")
   makeLogin?: IMakeLogin;
 
-  constructor() {}
+  router = Router();
+
+  constructor() {
+    this.router.post("/", this.Login);
+  }
 
   Login = async (req: Request, res: Response) => {
     try {

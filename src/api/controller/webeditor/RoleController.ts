@@ -1,3 +1,5 @@
+import { EnsureAuthenticated } from "@api/midleware/EnsureAuthenticated";
+import { EnsureHasRole } from "@api/midleware/EnsureHasRole";
 import { IRoleCreate } from "@application/interface/usercase/webeditor/role/IRoleCreate";
 import { IRoleDelete } from "@application/interface/usercase/webeditor/role/IRoleDelete";
 import { IRoleGetAll } from "@application/interface/usercase/webeditor/role/IRoleGetAll";
@@ -7,7 +9,7 @@ import { GetAllRoleFilterModel } from "@application/model/webeditor/role/GetAllR
 import { RoleCreateDataModel } from "@application/model/webeditor/role/RoleCreateModel";
 import { RoleUpdateDataModel } from "@application/model/webeditor/role/RoleUpdateModel";
 import { inject } from "@infra/di/Inject";
-import { Request, Response } from "express";
+import { Request, Response, Router } from "express";
 
 export class RoleController {
   @inject("IRoleGetAll")
@@ -21,7 +23,43 @@ export class RoleController {
   @inject("IRoleDelete")
   roleDelete?: IRoleDelete;
 
-  constructor() {}
+  router = Router();
+
+  constructor(
+    ensureAuthenticated: EnsureAuthenticated,
+    ensureHasRole: EnsureHasRole
+  ) {
+    this.router.get(
+      "/",
+      ensureAuthenticated.Execute,
+      ensureHasRole.Execute("WEBEDITOR_ROLE_VIEW"),
+      this.GetAll
+    );
+    this.router.get(
+      "/:id",
+      ensureAuthenticated.Execute,
+      ensureHasRole.Execute("WEBEDITOR_ROLE_VIEW"),
+      this.GetById
+    );
+    this.router.post(
+      "",
+      ensureAuthenticated.Execute,
+      ensureHasRole.Execute("WEBEDITOR_ROLE_UPDATE"),
+      this.Create
+    );
+    this.router.put(
+      "/:id",
+      ensureAuthenticated.Execute,
+      ensureHasRole.Execute("WEBEDITOR_ROLE_UPDATE"),
+      this.Update
+    );
+    this.router.delete(
+      "/:id",
+      ensureAuthenticated.Execute,
+      ensureHasRole.Execute("WEBEDITOR_ROLE_DELETE"),
+      this.Delete
+    );
+  }
 
   GetAll = async (req: Request, res: Response) => {
     try {

@@ -1,3 +1,5 @@
+import { EnsureAuthenticated } from "@api/midleware/EnsureAuthenticated";
+import { EnsureHasRole } from "@api/midleware/EnsureHasRole";
 import { IUserCreate } from "@application/interface/usercase/webeditor/user/IUserCreate";
 import { IUserDelete } from "@application/interface/usercase/webeditor/user/IUserDelete";
 import { IUserGetAll } from "@application/interface/usercase/webeditor/user/IUserGetAll";
@@ -7,7 +9,7 @@ import { GetAllUserFilterModel } from "@application/model/webeditor/user/GetAllU
 import { UserCreateDataModel } from "@application/model/webeditor/user/UserCreateModel";
 import { UserUpdateDataModel } from "@application/model/webeditor/user/UserUpdateModel";
 import { inject } from "@infra/di/Inject";
-import { Request, Response } from "express";
+import { Request, Response, Router } from "express";
 
 export class UserController {
   @inject("IUserGetAll")
@@ -21,7 +23,43 @@ export class UserController {
   @inject("IUserDelete")
   userDelete?: IUserDelete;
 
-  constructor() {}
+  router = Router();
+
+  constructor(
+    ensureAuthenticated: EnsureAuthenticated,
+    ensureHasRole: EnsureHasRole
+  ) {
+    this.router.get(
+      "/",
+      ensureAuthenticated.Execute,
+      ensureHasRole.Execute("WEBEDITOR_USER_VIEW"),
+      this.GetAll
+    );
+    this.router.get(
+      "/:id",
+      ensureAuthenticated.Execute,
+      ensureHasRole.Execute("WEBEDITOR_USER_VIEW"),
+      this.GetById
+    );
+    this.router.post(
+      "",
+      ensureAuthenticated.Execute,
+      ensureHasRole.Execute("WEBEDITOR_USER_UPDATE"),
+      this.Create
+    );
+    this.router.put(
+      "/:id",
+      ensureAuthenticated.Execute,
+      ensureHasRole.Execute("WEBEDITOR_USER_UPDATE"),
+      this.Update
+    );
+    this.router.delete(
+      "/:id",
+      ensureAuthenticated.Execute,
+      ensureHasRole.Execute("WEBEDITOR_USER_DELETE"),
+      this.Delete
+    );
+  }
 
   GetAll = async (req: Request, res: Response) => {
     try {

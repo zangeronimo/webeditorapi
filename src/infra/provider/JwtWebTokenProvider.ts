@@ -1,6 +1,6 @@
 import { ITokenProvider } from "@application/interface/provider/ITokenProvider";
 import { Messages } from "@application/messages/Messages";
-import { TokenPayloadModel } from "@application/model/TokenPayloadModel";
+import { TokenPayloadModel } from "@application/model/webeditor/TokenPayloadModel";
 import { User } from "@domain/entity/User";
 import { sign, verify } from "jsonwebtoken";
 

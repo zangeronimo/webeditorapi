@@ -1,8 +1,8 @@
 import { IHashProvider } from "@application/interface/provider/IHashProvider";
-import { UserUpdateDataModel } from "@application/model/UserUpdateModel";
+import { UserCreateDataModel } from "@application/model/webeditor/user/UserCreateModel";
+import { UserUpdateDataModel } from "@application/model/webeditor/user/UserUpdateModel";
 import { inject } from "@infra/di/Inject";
 import { Role } from "./Role";
-import { UserCreateDataModel } from "@application/model/UserCreateModel";
 
 export class User {
   private _id: string;

@@ -1,3 +1,6 @@
+import { RoleCreateDataModel } from "@application/model/webeditor/role/RoleCreateModel";
+import { RoleUpdateDataModel } from "@application/model/webeditor/role/RoleUpdateModel";
+
 export class Role {
   private _id: string;
   private _name: string;
@@ -44,17 +47,25 @@ export class Role {
     return new Role(id, name, label, order, moduleId);
   }
 
-  public static Create(
-    name: string,
-    label: string,
-    order: number = 0,
-    moduleId: string
-  ): Role {
-    const role = new Role(crypto.randomUUID(), name, label, order, moduleId);
+  public static Create(model: RoleCreateDataModel): Role {
+    const role = new Role(
+      crypto.randomUUID(),
+      model.name,
+      model.label,
+      model.order,
+      model.moduleId
+    );
     return role;
   }
 
   public SetOrder(order: number) {
     this._order = order;
+  }
+
+  async Update(roleData: RoleUpdateDataModel) {
+    this._updatedAt = new Date();
+    this._name = roleData.name;
+    this._label = roleData.label;
+    this._order = roleData.order;
   }
 }

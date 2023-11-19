@@ -1,5 +1,5 @@
-import { IUserRepository } from "@application/interface/repository/IUserRepository";
-import { GetAllUserFilterModel } from "@application/model/GetAllUserFilterModel";
+import { IUserRepository } from "@application/interface/repository/webeditor/IUserRepository";
+import { GetAllUserFilterModel } from "@application/model/webeditor/user/GetAllUserFilterModel";
 import { Role } from "@domain/entity/Role";
 import { User } from "@domain/entity/User";
 import { DbContext } from "@infra/context/DbContext";
@@ -105,7 +105,7 @@ export class UserRepository implements IUserRepository {
         r.id,
         r.name,
         r.label,
-        r.order,
+        r.sort_order,
         r.webeditor_modules_id
       from
         webeditor_users_has_webeditor_roles ur
@@ -114,7 +114,7 @@ export class UserRepository implements IUserRepository {
       where
         ur.webeditor_users_id = $1
       group by r.id
-      order by r.order
+      order by r.sort_order
       `,
       [userId]
     );
@@ -123,7 +123,7 @@ export class UserRepository implements IUserRepository {
         role.id,
         role.name,
         role.label,
-        role.order,
+        role.sort_order,
         role.webeditor_modules_id
       )
     );
@@ -139,7 +139,7 @@ export class UserRepository implements IUserRepository {
   }
 
   async delete(user: User, date: Date): Promise<User> {
-    const [userData] = await this.db.query(
+    await this.db.query(
       "update webeditor_users set deleted_at=$3, updated_at=$3 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [user.id, user.companyId, date]
     );

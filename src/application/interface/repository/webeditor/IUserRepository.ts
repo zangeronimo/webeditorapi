@@ -1,4 +1,4 @@
-import { GetAllUserFilterModel } from "@application/model/GetAllUserFilterModel";
+import { GetAllUserFilterModel } from "@application/model/webeditor/user/GetAllUserFilterModel";
 import { User } from "@domain/entity/User";
 
 export interface IUserRepository {

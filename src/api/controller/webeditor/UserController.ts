@@ -1,11 +1,11 @@
-import { IUserCreate } from "@application/interface/usercase/IUserCreate";
-import { IUserDelete } from "@application/interface/usercase/IUserDelete";
-import { IUserGetAll } from "@application/interface/usercase/IUserGetAll";
-import { IUserGetById } from "@application/interface/usercase/IUserGetById";
-import { IUserUpdate } from "@application/interface/usercase/IUserUpdate";
-import { GetAllUserFilterModel } from "@application/model/GetAllUserFilterModel";
-import { UserCreateDataModel } from "@application/model/UserCreateModel";
-import { UserUpdateDataModel } from "@application/model/UserUpdateModel";
+import { IUserCreate } from "@application/interface/usercase/webeditor/user/IUserCreate";
+import { IUserDelete } from "@application/interface/usercase/webeditor/user/IUserDelete";
+import { IUserGetAll } from "@application/interface/usercase/webeditor/user/IUserGetAll";
+import { IUserGetById } from "@application/interface/usercase/webeditor/user/IUserGetById";
+import { IUserUpdate } from "@application/interface/usercase/webeditor/user/IUserUpdate";
+import { GetAllUserFilterModel } from "@application/model/webeditor/user/GetAllUserFilterModel";
+import { UserCreateDataModel } from "@application/model/webeditor/user/UserCreateModel";
+import { UserUpdateDataModel } from "@application/model/webeditor/user/UserUpdateModel";
 import { inject } from "@infra/di/Inject";
 import { Request, Response } from "express";
 

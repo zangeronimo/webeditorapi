@@ -1,5 +1,5 @@
-import { IOrdenation } from "../interface/IOrdenation";
-import { IPagination } from "../interface/IPagination";
+import { IOrdenation } from "../../../interface/IOrdenation";
+import { IPagination } from "../../../interface/IPagination";
 
 export class GetAllUserFilterModel implements IPagination, IOrdenation {
   public page: number;

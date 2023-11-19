@@ -1,8 +1,8 @@
 import { ITokenProvider } from "@application/interface/provider/ITokenProvider";
 import { IUserRepository } from "@application/interface/repository/IUserRepository";
-import { IMakeLogin } from "@application/interface/usercase/IMakeLogin";
+import { IMakeLogin } from "@application/interface/usercase/webeditor/IMakeLogin";
 import { Messages } from "@application/messages/Messages";
-import { AuthDto } from "@domain/dto/AuthDto";
+import { AuthDto } from "@domain/dto/webeditor/AuthDto";
 import { inject } from "@infra/di/Inject";
 
 export class MakeLogin implements IMakeLogin {

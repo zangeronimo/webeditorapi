@@ -1,9 +1,9 @@
 import { IUserRepository } from "@application/interface/repository/IUserRepository";
-import { IUserGetAll } from "@application/interface/usercase/IUserGetAll";
-import { GetAllUserFilterModel } from "@application/model/GetAllUserFilterModel";
 import { User } from "@domain/entity/User";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
-import { UserDto } from "@domain/dto/UserDto";
+import { IUserGetAll } from "@application/interface/usercase/webeditor/user/IUserGetAll";
+import { GetAllUserFilterModel } from "@application/model/webeditor/user/GetAllUserFilterModel";
+import { UserDto } from "@domain/dto/webeditor/UserDto";
 
 export class UserGetAll implements IUserGetAll {
   constructor(readonly _userRepository: IUserRepository) {}

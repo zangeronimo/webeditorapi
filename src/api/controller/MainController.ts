@@ -4,6 +4,7 @@ import { UserController } from "./webeditor/UserController";
 import { EnsureAuthenticated } from "@api/midleware/EnsureAuthenticated";
 import { RoleController } from "./webeditor/RoleController";
 import { EnsureHasRole } from "@api/midleware/EnsureHasRole";
+import { CompanyController } from "./webeditor/CompanyController";
 
 export class MainController {
   ensureAuthenticated = new EnsureAuthenticated();
@@ -17,10 +18,15 @@ export class MainController {
     this.ensureAuthenticated,
     this.ensureHasRole
   );
+  companyController = new CompanyController(
+    this.ensureAuthenticated,
+    this.ensureHasRole
+  );
   router = Router();
 
   constructor() {
     this.router.use("/auth", this.authController.router);
+    this.router.use("/company", this.companyController.router);
     this.router.use("/role", this.roleController.router);
     this.router.use("/user", this.userController.router);
   }

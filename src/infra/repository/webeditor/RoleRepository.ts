@@ -98,7 +98,6 @@ export class RoleRepository implements IRoleRepository {
   }
 
   async update(role: Role): Promise<Role> {
-    console.log(role);
     await this.db.query(
       "update webeditor_roles set name=$2, label=$3, sort_order=$4, webeditor_modules_id=$5, updated_at=$6 where id = $1 and deleted_at is null",
       [

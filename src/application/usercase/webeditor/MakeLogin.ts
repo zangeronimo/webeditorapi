@@ -1,5 +1,5 @@
 import { ITokenProvider } from "@application/interface/provider/ITokenProvider";
-import { IUserRepository } from "@application/interface/repository/IUserRepository";
+import { IUserRepository } from "@application/interface/repository/webeditor/IUserRepository";
 import { IMakeLogin } from "@application/interface/usercase/webeditor/IMakeLogin";
 import { Messages } from "@application/messages/Messages";
 import { AuthDto } from "@domain/dto/webeditor/AuthDto";

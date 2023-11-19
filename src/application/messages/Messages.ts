@@ -3,4 +3,5 @@ export class Messages {
   static InvalidJwtToken = "Invalid JWT token.";
   static NotFound = (field: string) => `${field} not found.`;
   static AlreadyInUse = (field: string) => `${field} already in use.`;
+  static AccessDenied = "Access denied.";
 }

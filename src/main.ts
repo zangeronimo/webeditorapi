@@ -1,5 +1,6 @@
 import { MainController } from "@api/controller/MainController";
 import { Extensions } from "@application/extension";
+import { HasRole } from "@application/usercase/webeditor/HasRole";
 import { MakeLogin } from "@application/usercase/webeditor/MakeLogin";
 import { RoleCreate } from "@application/usercase/webeditor/role/RoleCreate";
 import { RoleDelete } from "@application/usercase/webeditor/role/RoleDelete";
@@ -25,12 +26,16 @@ Extensions.NoAccents;
 const dbContext = new PgPromiseContext();
 const userRepository = new UserRepository(dbContext);
 const roleRepository = new RoleRepository(dbContext);
+
 const makeLogin = new MakeLogin(userRepository);
+const hasRole = new HasRole(userRepository);
+
 const roleGetAll = new RoleGetAll(roleRepository);
 const roleGetById = new RoleGetById(roleRepository);
 const roleCreate = new RoleCreate(roleRepository);
 const roleUpdate = new RoleUpdate(roleRepository);
 const roleDelete = new RoleDelete(roleRepository);
+
 const userGetAll = new UserGetAll(userRepository);
 const userGetById = new UserGetById(userRepository);
 const userCreate = new UserCreate(userRepository);
@@ -38,6 +43,7 @@ const userUpdate = new UserUpdate(userRepository);
 const userDelete = new UserDelete(userRepository);
 
 Registry.getInstance().provide("IMakeLogin", makeLogin);
+Registry.getInstance().provide("IHasRole", hasRole);
 Registry.getInstance().provide("IRoleGetAll", roleGetAll);
 Registry.getInstance().provide("IRoleGetById", roleGetById);
 Registry.getInstance().provide("IRoleCreate", roleCreate);

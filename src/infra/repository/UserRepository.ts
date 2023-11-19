@@ -1,5 +1,6 @@
 import { IUserRepository } from "@application/interface/repository/IUserRepository";
 import { GetAllUserFilterModel } from "@application/model/GetAllUserFilterModel";
+import { Role } from "@domain/entity/Role";
 import { User } from "@domain/entity/User";
 import { DbContext } from "@infra/context/DbContext";
 
@@ -14,13 +15,15 @@ export class UserRepository implements IUserRepository {
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
     );
+    const rolesData = await this.getRolesFromUser(userData?.id);
     return userData
       ? User.Restore(
           userData.id,
           userData.name,
           userData.email,
           userData.password,
-          userData.webeditor_companies_id
+          userData.webeditor_companies_id,
+          rolesData
         )
       : null;
   }
@@ -30,13 +33,15 @@ export class UserRepository implements IUserRepository {
       "select id, name, email, password, webeditor_companies_id from webeditor_users where email = $1 and deleted_at is null",
       [email]
     );
+    const rolesData = await this.getRolesFromUser(userData?.id);
     return userData
       ? User.Restore(
           userData.id,
           userData.name,
           userData.email,
           userData.password,
-          userData.webeditor_companies_id
+          userData.webeditor_companies_id,
+          rolesData
         )
       : null;
   }
@@ -62,7 +67,7 @@ export class UserRepository implements IUserRepository {
         model.email?.toLowerCase(),
       ]
     );
-    const usersData = await this.db.query(
+    const usersData: any[] = await this.db.query(
       `select
         id, name, email, password, webeditor_companies_id
       from webeditor_users
@@ -78,16 +83,59 @@ export class UserRepository implements IUserRepository {
         offset,
       ]
     );
-    const users = usersData.map((userData: any) =>
-      User.Restore(
-        userData.id,
-        userData.name,
-        userData.email,
-        userData.password,
-        userData.webeditor_companies_id
+    const users: User[] = [];
+    for (let i = 0; i < usersData.length; i++) {
+      const rolesData = await this.getRolesFromUser(usersData[i].id);
+      const user = User.Restore(
+        usersData[i].id,
+        usersData[i].name,
+        usersData[i].email,
+        usersData[i].password,
+        usersData[i].webeditor_companies_id,
+        rolesData
+      );
+      users.push(user);
+    }
+    return { itens: users, total: total.count };
+  }
+
+  private async getRolesFromUser(userId: string): Promise<Role[]> {
+    const rolesData = await this.db.query(
+      `select
+        r.id,
+        r.name,
+        r.label,
+        r.order,
+        r.webeditor_modules_id
+      from
+        webeditor_users_has_webeditor_roles ur
+      inner join webeditor_users u on u.id=ur.webeditor_users_id and u.deleted_at is null
+      inner join webeditor_roles r on r.id=ur.webeditor_roles_id and r.deleted_at is null
+      where
+        ur.webeditor_users_id = $1
+      group by r.id
+      order by r.order
+      `,
+      [userId]
+    );
+    return rolesData.map((role: any) =>
+      Role.Restore(
+        role.id,
+        role.name,
+        role.label,
+        role.order,
+        role.webeditor_modules_id
       )
     );
-    return { itens: users, total: total.count };
+  }
+
+  private async addRolesForUser(userId: string, roles: Role[]) {
+    for (let i = 0; i < roles.length; i++) {
+      await this.db.query(
+        `insert into webeditor_users_has_webeditor_roles (webeditor_users_id, webeditor_roles_id) values ($1, $2)`,
+        [userId, roles[i].id]
+      );
+    }
   }
 
   async delete(user: User, date: Date): Promise<User> {
@@ -99,7 +147,11 @@ export class UserRepository implements IUserRepository {
   }
 
   async update(user: User): Promise<User> {
-    const [userData] = await this.db.query(
+    await this.db.query(
+      `delete from webeditor_users_has_webeditor_roles where webeditor_users_id = $1`,
+      [user.id]
+    );
+    await this.db.query(
       "update webeditor_users set name=$3, email=$4, password=$5, updated_at=$6 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [
         user.id,
@@ -110,14 +162,16 @@ export class UserRepository implements IUserRepository {
         user.updatedAt,
       ]
     );
+    await this.addRolesForUser(user.id, user.roles);
     return user;
   }
 
   async save(user: User): Promise<User> {
-    const [userData] = await this.db.query(
-      "insert into webeditor_users (name, email, password, webeditor_companies_id) values ($1, $2, $3, $4)",
-      [user.name, user.email, user.password, user.companyId]
+    await this.db.query(
+      "insert into webeditor_users (id, name, email, password, webeditor_companies_id) values ($1, $2, $3, $4, $5)",
+      [user.id, user.name, user.email, user.password, user.companyId]
     );
+    await this.addRolesForUser(user.id, user.roles);
     return user;
   }
 }

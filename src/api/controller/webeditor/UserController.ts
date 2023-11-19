@@ -51,11 +51,12 @@ export class UserController {
   Create = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const { name, email, password } = req.body;
+      const { name, email, password, roles } = req.body;
       const userCreateDataModel = new UserCreateDataModel(
         name,
         email,
-        password
+        password,
+        roles
       );
       const user = await this.userCreate?.ExecuteAsync(
         userCreateDataModel,
@@ -70,12 +71,13 @@ export class UserController {
   Update = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const { id, name, email, password } = req.body;
+      const { id, name, email, password, roles } = req.body;
       const userUpdateDataModel = new UserUpdateDataModel(
         id,
         name,
         email,
-        password
+        password,
+        roles
       );
       const user = await this.userUpdate?.ExecuteAsync(
         userUpdateDataModel,

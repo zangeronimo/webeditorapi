@@ -13,12 +13,7 @@ export class UserCreate implements IUserCreate {
     if (emailExists !== null) {
       throw new Error(Messages.EmailAlreadyInUse);
     }
-    const user = await User.Create(
-      userData.name,
-      userData.email,
-      userData.password,
-      company
-    );
+    const user = await User.Create(userData, company);
     await this._userRepository.save(user);
     return new UserDto(user);
   }

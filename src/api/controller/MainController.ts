@@ -22,6 +22,11 @@ export class MainController {
       this.ensureAuthenticated.Execute,
       this.userController.GetById
     );
+    this.router.put(
+      "/user/:id",
+      this.ensureAuthenticated.Execute,
+      this.userController.Update
+    );
     this.router.delete(
       "/user/:id",
       this.ensureAuthenticated.Execute,

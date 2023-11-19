@@ -1,7 +1,6 @@
 import { IUserRepository } from "@application/interface/repository/IUserRepository";
 import { GetAllUserFilterModel } from "@application/model/GetAllUserFilterModel";
 import { User } from "@domain/entity/User";
-import { PaginatorResultDto } from "@domain/entity/dto/PaginatorResultDto";
 import { DbContext } from "@infra/context/DbContext";
 
 export class UserRepository implements IUserRepository {
@@ -95,6 +94,21 @@ export class UserRepository implements IUserRepository {
     const [userData] = await this.db.query(
       "update webeditor_users set deleted_at=$3, updated_at=$3 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [user.id, user.companyId, date]
+    );
+    return user;
+  }
+
+  async update(user: User): Promise<User> {
+    const [userData] = await this.db.query(
+      "update webeditor_users set name=$3, email=$4, password=$5, updated_at=$6 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      [
+        user.id,
+        user.companyId,
+        user.name,
+        user.email,
+        user.password,
+        user.updatedAt,
+      ]
     );
     return user;
   }

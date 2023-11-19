@@ -1,5 +1,5 @@
 import { GetAllUserFilterModel } from "@application/model/GetAllUserFilterModel";
-import { PaginatorResultDto } from "@domain/entity/dto/PaginatorResultDto";
+import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 
 export interface IUserGetAll {
   ExecuteAsync(

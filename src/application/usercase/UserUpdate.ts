@@ -2,7 +2,7 @@ import { IUserRepository } from "@application/interface/repository/IUserReposito
 import { IUserUpdate } from "@application/interface/usercase/IUserUpdate";
 import { Messages } from "@application/messages/Messages";
 import { UserUpdateDataModel } from "@application/model/UserUpdateModel";
-import { UserDto } from "@domain/entity/dto/UserDto";
+import { UserDto } from "@domain/dto/UserDto";
 
 export class UserUpdate implements IUserUpdate {
   constructor(readonly _userRepository: IUserRepository) {}
@@ -15,7 +15,7 @@ export class UserUpdate implements IUserUpdate {
     if (userData.email !== user.email) {
       const existEmail = await this._userRepository.getByEmail(userData.email);
       if (existEmail !== null) {
-        throw new Error(Messages.EmailAlreadyUsed);
+        throw new Error(Messages.EmailAlreadyInUse);
       }
     }
     await user.Update(userData);

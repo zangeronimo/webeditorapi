@@ -112,4 +112,12 @@ export class UserRepository implements IUserRepository {
     );
     return user;
   }
+
+  async save(user: User): Promise<User> {
+    const [userData] = await this.db.query(
+      "insert into webeditor_users (name, email, password, webeditor_companies_id) values ($1, $2, $3, $4)",
+      [user.name, user.email, user.password, user.companyId]
+    );
+    return user;
+  }
 }

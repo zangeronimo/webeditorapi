@@ -1,4 +1,4 @@
-import { AuthDto } from "@domain/entity/dto/AuthDto";
+import { AuthDto } from "@domain/dto/AuthDto";
 
 export interface IMakeLogin {
   ExecuteAsync(email: string, password: string): Promise<AuthDto>;

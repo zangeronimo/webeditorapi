@@ -1,5 +1,5 @@
 import { UserUpdateDataModel } from "@application/model/UserUpdateModel";
-import { UserDto } from "@domain/entity/dto/UserDto";
+import { UserDto } from "@domain/dto/UserDto";
 
 export interface IUserUpdate {
   ExecuteAsync(

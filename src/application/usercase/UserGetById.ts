@@ -1,7 +1,7 @@
 import { IUserRepository } from "@application/interface/repository/IUserRepository";
 import { IUserGetById } from "@application/interface/usercase/IUserGetById";
 import { Messages } from "@application/messages/Messages";
-import { UserDto } from "@domain/entity/dto/UserDto";
+import { UserDto } from "@domain/dto/UserDto";
 
 export class UserGetById implements IUserGetById {
   constructor(readonly _userRepository: IUserRepository) {}

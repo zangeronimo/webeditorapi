@@ -2,8 +2,8 @@ import { IUserRepository } from "@application/interface/repository/IUserReposito
 import { IUserGetAll } from "@application/interface/usercase/IUserGetAll";
 import { GetAllUserFilterModel } from "@application/model/GetAllUserFilterModel";
 import { User } from "@domain/entity/User";
-import { PaginatorResultDto } from "@domain/entity/dto/PaginatorResultDto";
-import { UserDto } from "@domain/entity/dto/UserDto";
+import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
+import { UserDto } from "@domain/dto/UserDto";
 
 export class UserGetAll implements IUserGetAll {
   constructor(readonly _userRepository: IUserRepository) {}

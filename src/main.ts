@@ -1,6 +1,7 @@
 import { MainController } from "@api/controller/MainController";
 import { Extensions } from "@application/extension";
 import { MakeLogin } from "@application/usercase/MakeLogin";
+import { UserCreate } from "@application/usercase/UserCreate";
 import { UserDelete } from "@application/usercase/UserDelete";
 import { UserGetAll } from "@application/usercase/UserGetAll";
 import { UserGetById } from "@application/usercase/UserGetById";
@@ -20,12 +21,14 @@ const userRepository = new UserRepository(dbContext);
 const makeLogin = new MakeLogin(userRepository);
 const userGetAll = new UserGetAll(userRepository);
 const userGetById = new UserGetById(userRepository);
+const userCreate = new UserCreate(userRepository);
 const userUpdate = new UserUpdate(userRepository);
 const userDelete = new UserDelete(userRepository);
 
 Registry.getInstance().provide("IMakeLogin", makeLogin);
 Registry.getInstance().provide("IUserGetAll", userGetAll);
 Registry.getInstance().provide("IUserGetById", userGetById);
+Registry.getInstance().provide("IUserCreate", userCreate);
 Registry.getInstance().provide("IUserUpdate", userUpdate);
 Registry.getInstance().provide("IUserDelete", userDelete);
 Registry.getInstance().provide("IHashProvider", new BCryptHashProvider());

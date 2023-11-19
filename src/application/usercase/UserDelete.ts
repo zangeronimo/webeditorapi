@@ -1,7 +1,7 @@
 import { IUserRepository } from "@application/interface/repository/IUserRepository";
 import { IUserDelete } from "@application/interface/usercase/IUserDelete";
 import { Messages } from "@application/messages/Messages";
-import { UserDto } from "@domain/entity/dto/UserDto";
+import { UserDto } from "@domain/dto/UserDto";
 
 export class UserDelete implements IUserDelete {
   constructor(readonly _userRepository: IUserRepository) {}

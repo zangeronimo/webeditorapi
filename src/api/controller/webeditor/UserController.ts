@@ -1,8 +1,10 @@
+import { IUserCreate } from "@application/interface/usercase/IUserCreate";
 import { IUserDelete } from "@application/interface/usercase/IUserDelete";
 import { IUserGetAll } from "@application/interface/usercase/IUserGetAll";
 import { IUserGetById } from "@application/interface/usercase/IUserGetById";
 import { IUserUpdate } from "@application/interface/usercase/IUserUpdate";
 import { GetAllUserFilterModel } from "@application/model/GetAllUserFilterModel";
+import { UserCreateDataModel } from "@application/model/UserCreateModel";
 import { UserUpdateDataModel } from "@application/model/UserUpdateModel";
 import { inject } from "@infra/di/Inject";
 import { Request, Response } from "express";
@@ -12,6 +14,8 @@ export class UserController {
   userGetAll?: IUserGetAll;
   @inject("IUserGetById")
   userGetById?: IUserGetById;
+  @inject("IUserCreate")
+  userCreate?: IUserCreate;
   @inject("IUserUpdate")
   userUpdate?: IUserUpdate;
   @inject("IUserDelete")
@@ -39,6 +43,25 @@ export class UserController {
       const { id } = req.params;
       const user = await this.userGetById?.ExecuteAsync(id, company);
       return res.json(user);
+    } catch (e: any) {
+      return res.status(400).json(e.message);
+    }
+  };
+
+  Create = async (req: Request, res: Response) => {
+    try {
+      const { company } = req.user;
+      const { name, email, password } = req.body;
+      const userCreateDataModel = new UserCreateDataModel(
+        name,
+        email,
+        password
+      );
+      const user = await this.userCreate?.ExecuteAsync(
+        userCreateDataModel,
+        company
+      );
+      return res.status(201).json(user);
     } catch (e: any) {
       return res.status(400).json(e.message);
     }

@@ -1,5 +1,5 @@
 import { IUserRepository } from "@application/interface/repository/webeditor/IUserRepository";
-import { IUserCreate } from "@application/interface/usercase/webeditor/user/IUserCreate";
+import { IUserCreate } from "@application/interface/usecase/webeditor/user/IUserCreate";
 import { Messages } from "@application/messages/Messages";
 import { UserCreateDataModel } from "@application/model/webeditor/user/UserCreateModel";
 import { UserDto } from "@domain/dto/webeditor/UserDto";

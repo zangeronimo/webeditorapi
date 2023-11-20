@@ -1,4 +1,4 @@
-import { IHasRole } from "@application/interface/usercase/webeditor/IHasRole";
+import { IHasRole } from "@application/interface/usecase/webeditor/IHasRole";
 import { Messages } from "@application/messages/Messages";
 import { inject } from "@infra/di/Inject";
 import { Request, Response, NextFunction } from "express";

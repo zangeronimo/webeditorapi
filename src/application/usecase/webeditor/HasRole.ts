@@ -1,5 +1,5 @@
 import { IUserRepository } from "@application/interface/repository/webeditor/IUserRepository";
-import { IHasRole } from "@application/interface/usercase/webeditor/IHasRole";
+import { IHasRole } from "@application/interface/usecase/webeditor/IHasRole";
 
 export class HasRole implements IHasRole {
   constructor(readonly _userRepository: IUserRepository) {}

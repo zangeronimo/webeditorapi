@@ -1,4 +1,4 @@
-import { IMakeLogin } from "@application/interface/usercase/webeditor/IMakeLogin";
+import { IMakeLogin } from "@application/interface/usecase/webeditor/IMakeLogin";
 import { inject } from "@infra/di/Inject";
 import { Request, Response, Router } from "express";
 

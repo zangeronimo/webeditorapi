@@ -1,7 +1,7 @@
 import { IUserRepository } from "@application/interface/repository/IUserRepository";
 import { User } from "@domain/entity/User";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
-import { IUserGetAll } from "@application/interface/usercase/webeditor/user/IUserGetAll";
+import { IUserGetAll } from "@application/interface/usecase/webeditor/user/IUserGetAll";
 import { GetAllUserFilterModel } from "@application/model/webeditor/user/GetAllUserFilterModel";
 import { UserDto } from "@domain/dto/webeditor/UserDto";
 

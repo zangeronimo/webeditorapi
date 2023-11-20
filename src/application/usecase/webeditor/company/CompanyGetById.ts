@@ -1,9 +1,9 @@
 import { ICompanyRepository } from "@application/interface/repository/webeditor/ICompanyRepository";
-import { ICompanyDelete } from "@application/interface/usercase/webeditor/company/ICompanyDelete";
+import { ICompanyGetById } from "@application/interface/usecase/webeditor/company/ICompanyGetById";
 import { Messages } from "@application/messages/Messages";
 import { CompanyDto } from "@domain/dto/webeditor/CompanyDto";
 
-export class CompanyDelete implements ICompanyDelete {
+export class CompanyGetById implements ICompanyGetById {
   constructor(readonly _companyRepository: ICompanyRepository) {}
 
   async ExecuteAsync(id: string) {
@@ -11,7 +11,6 @@ export class CompanyDelete implements ICompanyDelete {
     if (company === null) {
       throw new Error(Messages.NotFound("Company"));
     }
-    await this._companyRepository.delete(company, new Date());
     return new CompanyDto(company);
   }
 }

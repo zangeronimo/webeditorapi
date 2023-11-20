@@ -1,9 +1,9 @@
 import { IRoleRepository } from "@application/interface/repository/webeditor/IRoleRepository";
-import { IRoleGetById } from "@application/interface/usercase/webeditor/role/IRoleGetById";
+import { IRoleDelete } from "@application/interface/usecase/webeditor/role/IRoleDelete";
 import { Messages } from "@application/messages/Messages";
 import { RoleDto } from "@domain/dto/webeditor/RoleDto";
 
-export class RoleGetById implements IRoleGetById {
+export class RoleDelete implements IRoleDelete {
   constructor(readonly _roleRepository: IRoleRepository) {}
 
   async ExecuteAsync(id: string) {
@@ -11,6 +11,7 @@ export class RoleGetById implements IRoleGetById {
     if (role === null) {
       throw new Error(Messages.NotFound("Role"));
     }
+    await this._roleRepository.delete(role, new Date());
     return new RoleDto(role);
   }
 }

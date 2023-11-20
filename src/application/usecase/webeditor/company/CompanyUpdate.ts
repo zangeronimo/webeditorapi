@@ -1,5 +1,5 @@
 import { ICompanyRepository } from "@application/interface/repository/webeditor/ICompanyRepository";
-import { ICompanyUpdate } from "@application/interface/usercase/webeditor/company/ICompanyUpdate";
+import { ICompanyUpdate } from "@application/interface/usecase/webeditor/company/ICompanyUpdate";
 import { Messages } from "@application/messages/Messages";
 import { CompanyUpdateDataModel } from "@application/model/webeditor/company/CompanyUpdateModel";
 import { CompanyDto } from "@domain/dto/webeditor/CompanyDto";

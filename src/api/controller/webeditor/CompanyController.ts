@@ -1,9 +1,9 @@
 import { EnsureAuthenticated } from "@api/midleware/EnsureAuthenticated";
-import { ICompanyCreate } from "@application/interface/usercase/webeditor/company/ICompanyCreate";
-import { ICompanyDelete } from "@application/interface/usercase/webeditor/company/ICompanyDelete";
-import { ICompanyGetAll } from "@application/interface/usercase/webeditor/company/ICompanyGetAll";
-import { ICompanyGetById } from "@application/interface/usercase/webeditor/company/ICompanyGetById";
-import { ICompanyUpdate } from "@application/interface/usercase/webeditor/company/ICompanyUpdate";
+import { ICompanyCreate } from "@application/interface/usecase/webeditor/company/ICompanyCreate";
+import { ICompanyDelete } from "@application/interface/usecase/webeditor/company/ICompanyDelete";
+import { ICompanyGetAll } from "@application/interface/usecase/webeditor/company/ICompanyGetAll";
+import { ICompanyGetById } from "@application/interface/usecase/webeditor/company/ICompanyGetById";
+import { ICompanyUpdate } from "@application/interface/usecase/webeditor/company/ICompanyUpdate";
 import { GetAllCompanyFilterModel } from "@application/model/webeditor/company/GetAllCompanyFilterModel";
 import { CompanyCreateDataModel } from "@application/model/webeditor/company/CompanyCreateModel";
 import { CompanyUpdateDataModel } from "@application/model/webeditor/company/CompanyUpdateModel";

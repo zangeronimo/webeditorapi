@@ -1,5 +1,5 @@
 import { IRoleRepository } from "@application/interface/repository/webeditor/IRoleRepository";
-import { IRoleUpdate } from "@application/interface/usercase/webeditor/role/IRoleUpdate";
+import { IRoleUpdate } from "@application/interface/usecase/webeditor/role/IRoleUpdate";
 import { Messages } from "@application/messages/Messages";
 import { RoleUpdateDataModel } from "@application/model/webeditor/role/RoleUpdateModel";
 import { RoleDto } from "@domain/dto/webeditor/RoleDto";

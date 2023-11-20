@@ -1,10 +1,10 @@
 import { EnsureAuthenticated } from "@api/midleware/EnsureAuthenticated";
 import { EnsureHasRole } from "@api/midleware/EnsureHasRole";
-import { IUserCreate } from "@application/interface/usercase/webeditor/user/IUserCreate";
-import { IUserDelete } from "@application/interface/usercase/webeditor/user/IUserDelete";
-import { IUserGetAll } from "@application/interface/usercase/webeditor/user/IUserGetAll";
-import { IUserGetById } from "@application/interface/usercase/webeditor/user/IUserGetById";
-import { IUserUpdate } from "@application/interface/usercase/webeditor/user/IUserUpdate";
+import { IUserCreate } from "@application/interface/usecase/webeditor/user/IUserCreate";
+import { IUserDelete } from "@application/interface/usecase/webeditor/user/IUserDelete";
+import { IUserGetAll } from "@application/interface/usecase/webeditor/user/IUserGetAll";
+import { IUserGetById } from "@application/interface/usecase/webeditor/user/IUserGetById";
+import { IUserUpdate } from "@application/interface/usecase/webeditor/user/IUserUpdate";
 import { GetAllUserFilterModel } from "@application/model/webeditor/user/GetAllUserFilterModel";
 import { UserCreateDataModel } from "@application/model/webeditor/user/UserCreateModel";
 import { UserUpdateDataModel } from "@application/model/webeditor/user/UserUpdateModel";

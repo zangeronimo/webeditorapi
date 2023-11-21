@@ -2,7 +2,7 @@ import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 import { IModuleGetAll } from "@application/interface/usecase/webeditor/module/IModuleGetAll";
 import { IModuleRepository } from "@application/interface/repository/webeditor/IModuleRepository";
 import { GetAllModuleFilterModel } from "@application/model/webeditor/module/GetAllModuleFilterModel";
-import { Module } from "@domain/entity/Module";
+import { Module } from "@domain/entity/webeditor/Module";
 import { ModuleDto } from "@domain/dto/webeditor/ModuleDto";
 
 export class ModuleGetAll implements IModuleGetAll {

@@ -1,5 +1,5 @@
-import { IOrdenation } from "../../../interface/IOrdenation";
-import { IPagination } from "../../../interface/IPagination";
+import { IOrdenation } from "@application/interface/IOrdenation";
+import { IPagination } from "@application/interface/IPagination";
 
 export class GetAllRoleFilterModel implements IPagination, IOrdenation {
   public page: number;

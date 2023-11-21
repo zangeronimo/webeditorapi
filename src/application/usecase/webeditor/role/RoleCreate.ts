@@ -3,7 +3,7 @@ import { IRoleCreate } from "@application/interface/usecase/webeditor/role/IRole
 import { Messages } from "@application/messages/Messages";
 import { RoleCreateDataModel } from "@application/model/webeditor/role/RoleCreateModel";
 import { RoleDto } from "@domain/dto/webeditor/RoleDto";
-import { Role } from "@domain/entity/Role";
+import { Role } from "@domain/entity/webeditor/Role";
 
 export class RoleCreate implements IRoleCreate {
   constructor(readonly _roleRepository: IRoleRepository) {}

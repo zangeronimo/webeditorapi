@@ -1,5 +1,5 @@
 import { GetAllModuleFilterModel } from "@application/model/webeditor/module/GetAllModuleFilterModel";
-import { Module } from "@domain/entity/Module";
+import { Module } from "@domain/entity/webeditor/Module";
 
 export interface IModuleRepository {
   getById(id: string): Promise<Module | null>;

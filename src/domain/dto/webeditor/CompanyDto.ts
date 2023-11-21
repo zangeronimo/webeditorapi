@@ -1,4 +1,4 @@
-import { Company } from "@domain/entity/Company";
+import { Company } from "@domain/entity/webeditor/Company";
 
 export class CompanyDto {
   public Id: string;

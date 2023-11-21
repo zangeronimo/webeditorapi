@@ -1,7 +1,7 @@
 import { ITokenProvider } from "@application/interface/provider/ITokenProvider";
 import { Messages } from "@application/messages/Messages";
 import { TokenPayloadModel } from "@application/model/webeditor/TokenPayloadModel";
-import { User } from "@domain/entity/User";
+import { User } from "@domain/entity/webeditor/User";
 import { sign, verify } from "jsonwebtoken";
 
 export class JwtWebTokenProvider implements ITokenProvider {

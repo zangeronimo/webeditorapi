@@ -1,5 +1,5 @@
 import { GetAllRoleFilterModel } from "@application/model/webeditor/role/GetAllRoleFilterModel";
-import { Role } from "@domain/entity/Role";
+import { Role } from "@domain/entity/webeditor/Role";
 
 export interface IRoleRepository {
   getById(id: string): Promise<Role | null>;

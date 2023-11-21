@@ -3,7 +3,7 @@ import { ICompanyCreate } from "@application/interface/usecase/webeditor/company
 import { Messages } from "@application/messages/Messages";
 import { CompanyCreateDataModel } from "@application/model/webeditor/company/CompanyCreateModel";
 import { CompanyDto } from "@domain/dto/webeditor/CompanyDto";
-import { Company } from "@domain/entity/Company";
+import { Company } from "@domain/entity/webeditor/Company";
 
 export class CompanyCreate implements ICompanyCreate {
   constructor(readonly _companyRepository: ICompanyRepository) {}

@@ -3,7 +3,7 @@ import { IUserCreate } from "@application/interface/usecase/webeditor/user/IUser
 import { Messages } from "@application/messages/Messages";
 import { UserCreateDataModel } from "@application/model/webeditor/user/UserCreateModel";
 import { UserDto } from "@domain/dto/webeditor/UserDto";
-import { User } from "@domain/entity/User";
+import { User } from "@domain/entity/webeditor/User";
 
 export class UserCreate implements IUserCreate {
   constructor(readonly _userRepository: IUserRepository) {}

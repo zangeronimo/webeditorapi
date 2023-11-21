@@ -1,6 +1,6 @@
 import { IRoleRepository } from "@application/interface/repository/webeditor/IRoleRepository";
 import { GetAllRoleFilterModel } from "@application/model/webeditor/role/GetAllRoleFilterModel";
-import { Role } from "@domain/entity/Role";
+import { Role } from "@domain/entity/webeditor/Role";
 import { DbContext } from "@infra/context/DbContext";
 
 export class RoleRepository implements IRoleRepository {

@@ -2,7 +2,7 @@ import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 import { ICompanyGetAll } from "@application/interface/usecase/webeditor/company/ICompanyGetAll";
 import { ICompanyRepository } from "@application/interface/repository/webeditor/ICompanyRepository";
 import { GetAllCompanyFilterModel } from "@application/model/webeditor/company/GetAllCompanyFilterModel";
-import { Company } from "@domain/entity/Company";
+import { Company } from "@domain/entity/webeditor/Company";
 import { CompanyDto } from "@domain/dto/webeditor/CompanyDto";
 
 export class CompanyGetAll implements ICompanyGetAll {

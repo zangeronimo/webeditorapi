@@ -1,4 +1,4 @@
-import { Role } from "@domain/entity/Role";
+import { Role } from "@domain/entity/webeditor/Role";
 
 export class UserCreateDataModel {
   constructor(

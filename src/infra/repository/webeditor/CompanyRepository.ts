@@ -1,6 +1,7 @@
 import { ICompanyRepository } from "@application/interface/repository/webeditor/ICompanyRepository";
 import { GetAllCompanyFilterModel } from "@application/model/webeditor/company/GetAllCompanyFilterModel";
 import { Company } from "@domain/entity/webeditor/Company";
+import { Module } from "@domain/entity/webeditor/Module";
 import { DbContext } from "@infra/context/DbContext";
 
 export class CompanyRepository implements ICompanyRepository {
@@ -14,8 +15,9 @@ export class CompanyRepository implements ICompanyRepository {
        where id = $1 and deleted_at is null`,
       [id]
     );
+    const modulesData = await this.getModulesFromCompany(companyData?.id);
     return companyData
-      ? Company.Restore(companyData.id, companyData.name)
+      ? Company.Restore(companyData.id, companyData.name, modulesData)
       : null;
   }
 
@@ -27,8 +29,9 @@ export class CompanyRepository implements ICompanyRepository {
        where name = $1 and deleted_at is null`,
       [name]
     );
+    const modulesData = await this.getModulesFromCompany(companyData?.id);
     return companyData
-      ? Company.Restore(companyData.id, companyData.name)
+      ? Company.Restore(companyData.id, companyData.name, modulesData)
       : null;
   }
 
@@ -57,9 +60,11 @@ export class CompanyRepository implements ICompanyRepository {
     );
     const companies: Company[] = [];
     for (let i = 0; i < companiesData.length; i++) {
+      const modulesData = await this.getModulesFromCompany(companiesData[i].id);
       const company = Company.Restore(
         companiesData[i].id,
-        companiesData[i].name
+        companiesData[i].name,
+        modulesData
       );
       companies.push(company);
     }
@@ -76,9 +81,14 @@ export class CompanyRepository implements ICompanyRepository {
 
   async update(company: Company): Promise<Company> {
     await this.db.query(
+      `delete from webeditor_companies_has_webeditor_modules where webeditor_companies_id = $1`,
+      [company.id]
+    );
+    await this.db.query(
       "update webeditor_companies set name=$2, updated_at=$3 where id = $1 and deleted_at is null",
       [company.id, company.name, company.updatedAt]
     );
+    await this.addModulesForCompany(company.id, company.modules);
     return company;
   }
 
@@ -87,6 +97,37 @@ export class CompanyRepository implements ICompanyRepository {
       "insert into webeditor_companies (id, name) values ($1, $2)",
       [company.id, company.name]
     );
+    await this.addModulesForCompany(company.id, company.modules);
     return company;
+  }
+
+  private async getModulesFromCompany(companyId: string): Promise<Module[]> {
+    const modulesData = await this.db.query(
+      `select
+        m.id,
+        m.name
+      from
+        webeditor_companies_has_webeditor_modules cm
+      inner join webeditor_companies c on c.id=cm.webeditor_companies_id and c.deleted_at is null
+      inner join webeditor_modules m on m.id=cm.webeditor_modules_id and m.deleted_at is null
+      where
+        cm.webeditor_companies_id = $1
+      group by m.id
+      order by m.name
+      `,
+      [companyId]
+    );
+    return modulesData.map((module: any) =>
+      Module.Restore(module.id, module.name)
+    );
+  }
+
+  private async addModulesForCompany(companyId: string, modules: Module[]) {
+    for (let i = 0; i < modules.length; i++) {
+      await this.db.query(
+        `insert into webeditor_companies_has_webeditor_modules (webeditor_companies_id, webeditor_modules_id) values ($1, $2)`,
+        [companyId, modules[i].id]
+      );
+    }
   }
 }

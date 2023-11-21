@@ -85,8 +85,8 @@ export class CompanyController {
 
   Create = async (req: Request, res: Response) => {
     try {
-      const { name, label, order, moduleId } = req.body;
-      const companyCreateDataModel = new CompanyCreateDataModel(name);
+      const { name, modules } = req.body;
+      const companyCreateDataModel = new CompanyCreateDataModel(name, modules);
       const company = await this.companyCreate?.ExecuteAsync(
         companyCreateDataModel
       );
@@ -98,8 +98,12 @@ export class CompanyController {
 
   Update = async (req: Request, res: Response) => {
     try {
-      const { id, name, label, order, moduleId } = req.body;
-      const companyUpdateDataModel = new CompanyUpdateDataModel(id, name);
+      const { id, name, modules } = req.body;
+      const companyUpdateDataModel = new CompanyUpdateDataModel(
+        id,
+        name,
+        modules
+      );
       const company = await this.companyUpdate?.ExecuteAsync(
         companyUpdateDataModel
       );

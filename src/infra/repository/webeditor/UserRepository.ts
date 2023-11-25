@@ -58,7 +58,7 @@ export class UserRepository implements IUserRepository {
       where += ` and LOWER(email) = $3`;
     }
     const ordenation = `${model.orderBy} ${!!model.desc ? "desc" : "asc"}`;
-    const offset = model.pageSize * model.page;
+    const offset = model.pageSize * (model.page - 1);
     const [total] = await this.db.query(
       `select count(*) from webeditor_users where ${where}`,
       [

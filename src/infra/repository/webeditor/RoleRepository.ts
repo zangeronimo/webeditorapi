@@ -55,7 +55,7 @@ export class RoleRepository implements IRoleRepository {
       where += ` and LOWER(UNACCENT(label)) like $2`;
     }
     const ordenation = `${model.orderBy} ${!!model.desc ? "desc" : "asc"}`;
-    const offset = model.pageSize * model.page;
+    const offset = model.pageSize * (model.page - 1);
     const [total] = await this.db.query(
       `select count(*) from webeditor_roles where ${where}`,
       [model.name?.toLowerCase(), `%${model.label?.toLowerCase().noAccents()}%`]

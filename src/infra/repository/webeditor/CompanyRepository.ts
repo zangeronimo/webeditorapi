@@ -43,7 +43,7 @@ export class CompanyRepository implements ICompanyRepository {
       where += ` and LOWER(UNACCENT(name)) like $1`;
     }
     const ordenation = `${model.orderBy} ${!!model.desc ? "desc" : "asc"}`;
-    const offset = model.pageSize * model.page;
+    const offset = model.pageSize * (model.page - 1);
     const [total] = await this.db.query(
       `select count(*) from webeditor_companies where ${where}`,
       [`%${model.name?.toLowerCase().noAccents()}%`]

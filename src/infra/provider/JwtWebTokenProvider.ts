@@ -10,7 +10,7 @@ export class JwtWebTokenProvider implements ITokenProvider {
       {
         sub: user.id,
         iat: date.getTime(),
-        exp: date.getTime() + 14400,
+        exp: date.getTime() + 144000000,
         company: user.companyId,
       },
       "secret"

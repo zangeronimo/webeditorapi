@@ -12,7 +12,7 @@ export class GetAllRoleFilterModel implements IPagination, IOrdenation {
   constructor(query: any) {
     this.page = query.page;
     this.pageSize = query.pageSize;
-    this.orderBy = query.orderBy ?? "sort_order";
+    this.orderBy = query.orderBy ?? "name desc, sort_order";
     this.desc = query.desc === "true";
     this.name = query.name;
     this.label = query.label;

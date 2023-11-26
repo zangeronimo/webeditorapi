@@ -8,11 +8,11 @@ import { inject } from "@infra/di/Inject";
 export class MakeLogin implements IMakeLogin {
   @inject("ITokenProvider")
   _tokenProvider?: ITokenProvider;
-
-  constructor(readonly _userRepository: IUserRepository) {}
+  @inject("IUserRepository")
+  _userRepository?: IUserRepository;
 
   async ExecuteAsync(email: string, password: string) {
-    const user = await this._userRepository.getByEmail(email);
+    const user = await this._userRepository?.getByEmail(email)!;
     if (user === null) {
       throw new Error(Messages.InvalidUsernameOrPassword);
     }

@@ -4,14 +4,16 @@ import { IModuleRepository } from "@application/interface/repository/webeditor/I
 import { GetAllModuleFilterModel } from "@application/model/webeditor/module/GetAllModuleFilterModel";
 import { Module } from "@domain/entity/webeditor/Module";
 import { ModuleDto } from "@domain/dto/webeditor/ModuleDto";
+import { inject } from "@infra/di/Inject";
 
 export class ModuleGetAll implements IModuleGetAll {
-  constructor(readonly _moduleRepository: IModuleRepository) {}
+  @inject("IModuleRepository")
+  _moduleRepository?: IModuleRepository;
 
   async ExecuteAsync(model: GetAllModuleFilterModel) {
-    const { itens: companies, total } = await this._moduleRepository.getAll(
+    const { itens: companies, total } = await this._moduleRepository?.getAll(
       model
-    );
+    )!;
 
     const companiesDto = companies.map(
       (module: Module) => new ModuleDto(module)

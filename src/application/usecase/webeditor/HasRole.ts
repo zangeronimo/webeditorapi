@@ -1,11 +1,13 @@
 import { IUserRepository } from "@application/interface/repository/webeditor/IUserRepository";
 import { IHasRole } from "@application/interface/usecase/webeditor/IHasRole";
+import { inject } from "@infra/di/Inject";
 
 export class HasRole implements IHasRole {
-  constructor(readonly _userRepository: IUserRepository) {}
+  @inject("IUserRepository")
+  _userRepository?: IUserRepository;
 
   async ExecuteAsync(userId: string, companyId: string, role: string) {
-    const user = await this._userRepository.getById(userId, companyId);
+    const user = await this._userRepository?.getById(userId, companyId)!;
     if (user === null) {
       return false;
     }

@@ -36,66 +36,52 @@ import express from "express";
 Extensions.NoAccents;
 
 const dbContext = new PgPromiseContext();
-const userRepository = new UserRepository(dbContext);
-const roleRepository = new RoleRepository(dbContext);
-const companyRepository = new CompanyRepository(dbContext);
-const moduleRepository = new ModuleRepository(dbContext);
-
-const makeLogin = new MakeLogin(userRepository);
-const hasRole = new HasRole(userRepository);
-
-const companyGetAll = new CompanyGetAll(companyRepository);
-const companyGetById = new CompanyGetById(companyRepository);
-const companyCreate = new CompanyCreate(companyRepository);
-const companyUpdate = new CompanyUpdate(companyRepository);
-const companyDelete = new CompanyDelete(companyRepository);
-
-const moduleGetAll = new ModuleGetAll(moduleRepository);
-const moduleGetById = new ModuleGetById(moduleRepository);
-const moduleCreate = new ModuleCreate(moduleRepository);
-const moduleUpdate = new ModuleUpdate(moduleRepository);
-const moduleDelete = new ModuleDelete(moduleRepository);
-
-const roleGetAll = new RoleGetAll(roleRepository);
-const roleGetById = new RoleGetById(roleRepository);
-const roleCreate = new RoleCreate(roleRepository);
-const roleUpdate = new RoleUpdate(roleRepository);
-const roleDelete = new RoleDelete(roleRepository);
-
-const userGetAll = new UserGetAll(userRepository);
-const userGetById = new UserGetById(userRepository);
-const userCreate = new UserCreate(userRepository);
-const userUpdate = new UserUpdate(userRepository);
-const userDelete = new UserDelete(userRepository);
-
-Registry.getInstance().provide("IMakeLogin", makeLogin);
-Registry.getInstance().provide("IHasRole", hasRole);
+// Registry Repositories
+Registry.getInstance().provide(
+  "IUserRepository",
+  new UserRepository(dbContext)
+);
+Registry.getInstance().provide(
+  "IRoleRepository",
+  new RoleRepository(dbContext)
+);
+Registry.getInstance().provide(
+  "ICompanyRepository",
+  new CompanyRepository(dbContext)
+);
+Registry.getInstance().provide(
+  "IModuleRepository",
+  new ModuleRepository(dbContext)
+);
+// Registry Providers
+Registry.getInstance().provide("IMakeLogin", new MakeLogin());
+Registry.getInstance().provide("IHasRole", new HasRole());
 Registry.getInstance().provide("IHashProvider", new BCryptHashProvider());
 Registry.getInstance().provide("ITokenProvider", new JwtWebTokenProvider());
-
-Registry.getInstance().provide("ICompanyGetAll", companyGetAll);
-Registry.getInstance().provide("ICompanyGetById", companyGetById);
-Registry.getInstance().provide("ICompanyCreate", companyCreate);
-Registry.getInstance().provide("ICompanyUpdate", companyUpdate);
-Registry.getInstance().provide("ICompanyDelete", companyDelete);
-
-Registry.getInstance().provide("IModuleGetAll", moduleGetAll);
-Registry.getInstance().provide("IModuleGetById", moduleGetById);
-Registry.getInstance().provide("IModuleCreate", moduleCreate);
-Registry.getInstance().provide("IModuleUpdate", moduleUpdate);
-Registry.getInstance().provide("IModuleDelete", moduleDelete);
-
-Registry.getInstance().provide("IRoleGetAll", roleGetAll);
-Registry.getInstance().provide("IRoleGetById", roleGetById);
-Registry.getInstance().provide("IRoleCreate", roleCreate);
-Registry.getInstance().provide("IRoleUpdate", roleUpdate);
-Registry.getInstance().provide("IRoleDelete", roleDelete);
-
-Registry.getInstance().provide("IUserGetAll", userGetAll);
-Registry.getInstance().provide("IUserGetById", userGetById);
-Registry.getInstance().provide("IUserCreate", userCreate);
-Registry.getInstance().provide("IUserUpdate", userUpdate);
-Registry.getInstance().provide("IUserDelete", userDelete);
+// Registry Company UseCases
+Registry.getInstance().provide("ICompanyGetAll", new CompanyGetAll());
+Registry.getInstance().provide("ICompanyGetById", new CompanyGetById());
+Registry.getInstance().provide("ICompanyCreate", new CompanyCreate());
+Registry.getInstance().provide("ICompanyUpdate", new CompanyUpdate());
+Registry.getInstance().provide("ICompanyDelete", new CompanyDelete());
+// Registry Module useCases
+Registry.getInstance().provide("IModuleGetAll", new ModuleGetAll());
+Registry.getInstance().provide("IModuleGetById", new ModuleGetById());
+Registry.getInstance().provide("IModuleCreate", new ModuleCreate());
+Registry.getInstance().provide("IModuleUpdate", new ModuleUpdate());
+Registry.getInstance().provide("IModuleDelete", new ModuleDelete());
+// Registry Role useCases
+Registry.getInstance().provide("IRoleGetAll", new RoleGetAll());
+Registry.getInstance().provide("IRoleGetById", new RoleGetById());
+Registry.getInstance().provide("IRoleCreate", new RoleCreate());
+Registry.getInstance().provide("IRoleUpdate", new RoleUpdate());
+Registry.getInstance().provide("IRoleDelete", new RoleDelete());
+// Registry User useCases
+Registry.getInstance().provide("IUserGetAll", new UserGetAll());
+Registry.getInstance().provide("IUserGetById", new UserGetById());
+Registry.getInstance().provide("IUserCreate", new UserCreate());
+Registry.getInstance().provide("IUserUpdate", new UserUpdate());
+Registry.getInstance().provide("IUserDelete", new UserDelete());
 
 const app = express();
 app.use(cors());

@@ -2,12 +2,14 @@ import { IUserRepository } from "@application/interface/repository/webeditor/IUs
 import { IUserGetById } from "@application/interface/usecase/webeditor/user/IUserGetById";
 import { Messages } from "@application/messages/Messages";
 import { UserDto } from "@domain/dto/webeditor/UserDto";
+import { inject } from "@infra/di/Inject";
 
 export class UserGetById implements IUserGetById {
-  constructor(readonly _userRepository: IUserRepository) {}
+  @inject("IUserRepository")
+  _userRepository?: IUserRepository;
 
   async ExecuteAsync(id: string, company: string) {
-    const user = await this._userRepository.getById(id, company);
+    const user = await this._userRepository?.getById(id, company)!;
     if (user === null) {
       throw new Error(Messages.NotFound("User"));
     }

@@ -54,11 +54,18 @@ export class RoleRepository implements IRoleRepository {
     if (!!model.label) {
       where += ` and LOWER(UNACCENT(label)) like $2`;
     }
+    if (!!model.moduleId) {
+      where += ` and webeditor_modules_id = $3`;
+    }
     const ordenation = `${model.orderBy} ${!!model.desc ? "desc" : "asc"}`;
     const offset = model.pageSize * (model.page - 1);
     const [total] = await this.db.query(
       `select count(*) from webeditor_roles where ${where}`,
-      [model.name?.toLowerCase(), `%${model.label?.toLowerCase().noAccents()}%`]
+      [
+        model.name?.toLowerCase(),
+        `%${model.label?.toLowerCase().noAccents()}%`,
+        model.moduleId,
+      ]
     );
     const rolesData: any[] = await this.db.query(
       `select
@@ -66,11 +73,12 @@ export class RoleRepository implements IRoleRepository {
       from webeditor_roles
       where ${where}
       order by ${ordenation}
-      limit $3
-      offset $4`,
+      limit $4
+      offset $5`,
       [
         model.name?.toLowerCase(),
         `%${model.label?.toLowerCase().noAccents()}%`,
+        model.moduleId,
         model.pageSize,
         offset,
       ]

@@ -8,6 +8,7 @@ export class GetAllRoleFilterModel implements IPagination, IOrdenation {
   public desc: boolean;
   public name: string;
   public label: string;
+  public moduleId: string;
 
   constructor(query: any) {
     this.page = query.page;
@@ -16,5 +17,6 @@ export class GetAllRoleFilterModel implements IPagination, IOrdenation {
     this.desc = query.desc === "true";
     this.name = query.name;
     this.label = query.label;
+    this.moduleId = query.moduleId;
   }
 }

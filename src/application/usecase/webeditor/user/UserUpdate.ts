@@ -6,7 +6,7 @@ import { UserDto } from "@domain/dto/webeditor/UserDto";
 import { inject } from "@infra/di/Inject";
 
 export class UserUpdate implements IUserUpdate {
-  @inject("IUserReposiroty")
+  @inject("IUserRepository")
   _userRepository?: IUserRepository;
 
   async ExecuteAsync(userData: UserUpdateDataModel, company: string) {

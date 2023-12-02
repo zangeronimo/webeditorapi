@@ -26,7 +26,7 @@ export class AuthController {
       )!;
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        sameSite: "strict",
+        sameSite: "lax",
       });
       return res.json(token);
     } catch (e: any) {
@@ -48,7 +48,7 @@ export class AuthController {
       )!;
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        sameSite: "strict",
+        sameSite: "lax",
       });
       return res.json(token);
     } catch (e: any) {

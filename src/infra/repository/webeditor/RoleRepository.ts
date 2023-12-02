@@ -6,6 +6,29 @@ import { DbContext } from "@infra/context/DbContext";
 export class RoleRepository implements IRoleRepository {
   constructor(readonly db: DbContext) {}
 
+  async getAllByModule(moduleId: string): Promise<Role[]> {
+    const rolesData = await this.db.query(
+      `select
+        id, name, label, sort_order, webeditor_modules_id
+      from webeditor_roles
+      where webeditor_modules_id = $1 and deleted_at is null
+      order by name desc, sort_order`,
+      [moduleId]
+    );
+    const roles: Role[] = [];
+    for (let i = 0; i < rolesData.length; i++) {
+      const role = Role.Restore(
+        rolesData[i].id,
+        rolesData[i].name,
+        rolesData[i].label,
+        +rolesData[i].sort_order,
+        rolesData[i].webeditor_modules_id
+      );
+      roles.push(role);
+    }
+    return roles;
+  }
+
   async getById(id: string): Promise<Role | null> {
     const [roleData] = await this.db.query(
       `select

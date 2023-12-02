@@ -6,9 +6,9 @@ export class RoleDto {
   public Name: string;
   public Label: string;
   public Order: number;
-  public Module: ModuleDto;
+  public Module?: ModuleDto;
 
-  constructor(role: Role, module: ModuleDto) {
+  constructor(role: Role, module?: ModuleDto) {
     this.Id = role.id;
     this.Name = role.name;
     this.Label = role.label;

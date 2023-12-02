@@ -6,6 +6,24 @@ import { DbContext } from "@infra/context/DbContext";
 export class ModuleRepository implements IModuleRepository {
   constructor(readonly db: DbContext) {}
 
+  async getAllByCompany(companyId: string): Promise<Module[]> {
+    const modulesData = await this.db.query(
+      `select
+        m.id, m.name
+      from webeditor_modules m
+      inner join webeditor_companies_has_webeditor_modules cm ON cm.webeditor_modules_id = m.id and cm.webeditor_companies_id = $1
+      where m.deleted_at is null
+      order by m.name`,
+      [companyId]
+    );
+    const modules: Module[] = [];
+    for (let i = 0; i < modulesData.length; i++) {
+      const module = Module.Restore(modulesData[i].id, modulesData[i].name);
+      modules.push(module);
+    }
+    return modules;
+  }
+
   async getById(id: string): Promise<Module | null> {
     const [moduleData] = await this.db.query(
       `select

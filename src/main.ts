@@ -10,6 +10,7 @@ import { CompanyUpdate } from "@application/usecase/webeditor/company/CompanyUpd
 import { ModuleCreate } from "@application/usecase/webeditor/module/ModuleCreate";
 import { ModuleDelete } from "@application/usecase/webeditor/module/ModuleDelete";
 import { ModuleGetAll } from "@application/usecase/webeditor/module/ModuleGetAll";
+import { ModuleGetAllByCompany } from "@application/usecase/webeditor/module/ModuleGetAllByCompany";
 import { ModuleGetById } from "@application/usecase/webeditor/module/ModuleGetById";
 import { ModuleUpdate } from "@application/usecase/webeditor/module/ModuleUpdate";
 import { RoleCreate } from "@application/usecase/webeditor/role/RoleCreate";
@@ -65,6 +66,10 @@ Registry.getInstance().provide("ICompanyCreate", new CompanyCreate());
 Registry.getInstance().provide("ICompanyUpdate", new CompanyUpdate());
 Registry.getInstance().provide("ICompanyDelete", new CompanyDelete());
 // Registry Module useCases
+Registry.getInstance().provide(
+  "IModuleGetAllByCompany",
+  new ModuleGetAllByCompany()
+);
 Registry.getInstance().provide("IModuleGetAll", new ModuleGetAll());
 Registry.getInstance().provide("IModuleGetById", new ModuleGetById());
 Registry.getInstance().provide("IModuleCreate", new ModuleCreate());

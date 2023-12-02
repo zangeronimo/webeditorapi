@@ -11,13 +11,11 @@ export class ModuleGetAll implements IModuleGetAll {
   _moduleRepository?: IModuleRepository;
 
   async ExecuteAsync(model: GetAllModuleFilterModel) {
-    const { itens: companies, total } = await this._moduleRepository?.getAll(
+    const { itens: modules, total } = await this._moduleRepository?.getAll(
       model
     )!;
 
-    const companiesDto = companies.map(
-      (module: Module) => new ModuleDto(module)
-    );
-    return new PaginatorResultDto(companiesDto, total);
+    const modulesDto = modules.map((module: Module) => new ModuleDto(module));
+    return new PaginatorResultDto(modulesDto, total);
   }
 }

@@ -10,8 +10,11 @@ import { ModuleUpdateDataModel } from "@application/model/webeditor/module/Modul
 import { inject } from "@infra/di/Inject";
 import { Request, Response, Router } from "express";
 import { EnsureHasRole } from "@api/midleware/EnsureHasRole";
+import { IModuleGetAllByCompany } from "@application/interface/usecase/webeditor/module/IModuleGetAllByCompany";
 
 export class ModuleController {
+  @inject("IModuleGetAllByCompany")
+  moduleGetAllByCompany?: IModuleGetAllByCompany;
   @inject("IModuleGetAll")
   moduleGetAll?: IModuleGetAll;
   @inject("IModuleGetById")
@@ -29,6 +32,12 @@ export class ModuleController {
     ensureAuthenticated: EnsureAuthenticated,
     ensureHasRole: EnsureHasRole
   ) {
+    this.router.get(
+      "/get-all-by-company",
+      ensureAuthenticated.Execute,
+      ensureHasRole.Execute("WEBEDITOR_MODULE_VIEW"),
+      this.GetAllByCompany
+    );
     this.router.get(
       "/",
       ensureAuthenticated.Execute,
@@ -61,13 +70,23 @@ export class ModuleController {
     );
   }
 
+  GetAllByCompany = async (req: Request, res: Response) => {
+    try {
+      const { company } = req.user;
+      const modules = await this.moduleGetAllByCompany?.ExecuteAsync(company);
+      return res.json(modules);
+    } catch (e: any) {
+      return res.status(400).json(e.message);
+    }
+  };
+
   GetAll = async (req: Request, res: Response) => {
     try {
       const getAllModuleFilterModel = new GetAllModuleFilterModel(req.query);
-      const companies = await this.moduleGetAll?.ExecuteAsync(
+      const modules = await this.moduleGetAll?.ExecuteAsync(
         getAllModuleFilterModel
       );
-      return res.json(companies);
+      return res.json(modules);
     } catch (e: any) {
       return res.status(400).json(e.message);
     }

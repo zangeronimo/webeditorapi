@@ -2,6 +2,7 @@ import { GetAllModuleFilterModel } from "@application/model/webeditor/module/Get
 import { Module } from "@domain/entity/webeditor/Module";
 
 export interface IModuleRepository {
+  getAllByCompany(companyId: string): Promise<Module[]>;
   getById(id: string): Promise<Module | null>;
   getByName(name: string): Promise<Module | null>;
   getAll(

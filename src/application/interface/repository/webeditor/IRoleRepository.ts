@@ -2,6 +2,7 @@ import { GetAllRoleFilterModel } from "@application/model/webeditor/role/GetAllR
 import { Role } from "@domain/entity/webeditor/Role";
 
 export interface IRoleRepository {
+  getAllByModule(moduleId: string): Promise<Role[]>;
   getById(id: string): Promise<Role | null>;
   getByName(name: string): Promise<Role | null>;
   getAll(

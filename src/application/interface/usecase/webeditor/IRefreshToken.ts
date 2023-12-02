@@ -1,8 +1,7 @@
 import { AuthDto } from "@domain/dto/webeditor/AuthDto";
 
-export interface IMakeLogin {
+export interface IRefreshToken {
   ExecuteAsync(
-    email: string,
-    password: string
+    refresh: string
   ): Promise<{ token: AuthDto; refreshToken: string }>;
 }

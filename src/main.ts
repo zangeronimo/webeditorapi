@@ -2,6 +2,7 @@ import { MainController } from "@api/controller/MainController";
 import { Extensions } from "@application/extension";
 import { HasRole } from "@application/usecase/webeditor/HasRole";
 import { MakeLogin } from "@application/usecase/webeditor/MakeLogin";
+import { RefreshToken } from "@application/usecase/webeditor/RefreshToken";
 import { CompanyCreate } from "@application/usecase/webeditor/company/CompanyCreate";
 import { CompanyDelete } from "@application/usecase/webeditor/company/CompanyDelete";
 import { CompanyGetAll } from "@application/usecase/webeditor/company/CompanyGetAll";
@@ -56,6 +57,7 @@ Registry.getInstance().provide(
 );
 // Registry Providers
 Registry.getInstance().provide("IMakeLogin", new MakeLogin());
+Registry.getInstance().provide("IRefreshToken", new RefreshToken());
 Registry.getInstance().provide("IHasRole", new HasRole());
 Registry.getInstance().provide("IHashProvider", new BCryptHashProvider());
 Registry.getInstance().provide("ITokenProvider", new JwtWebTokenProvider());

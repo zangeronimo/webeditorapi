@@ -5,12 +5,12 @@ import { User } from "@domain/entity/webeditor/User";
 import { sign, verify } from "jsonwebtoken";
 
 export class JwtWebTokenProvider implements ITokenProvider {
-  Generate(user: User, date: Date): string {
+  Generate(user: User, date: Date, exp: number): string {
     const token = sign(
       {
         sub: user.id,
         iat: date.getTime(),
-        exp: date.getTime() + 144000000,
+        exp,
         company: user.companyId,
       },
       "secret"

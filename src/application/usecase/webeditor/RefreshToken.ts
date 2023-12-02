@@ -1,22 +1,26 @@
 import { ITokenProvider } from "@application/interface/provider/ITokenProvider";
 import { IUserRepository } from "@application/interface/repository/webeditor/IUserRepository";
-import { IMakeLogin } from "@application/interface/usecase/webeditor/IMakeLogin";
+import { IRefreshToken } from "@application/interface/usecase/webeditor/IRefreshToken";
 import { Messages } from "@application/messages/Messages";
 import { AuthDto } from "@domain/dto/webeditor/AuthDto";
 import { inject } from "@infra/di/Inject";
 
-export class MakeLogin implements IMakeLogin {
+export class RefreshToken implements IRefreshToken {
   @inject("ITokenProvider")
   _tokenProvider?: ITokenProvider;
   @inject("IUserRepository")
   _userRepository?: IUserRepository;
 
-  async ExecuteAsync(email: string, password: string) {
-    const user = await this._userRepository?.getByEmail(email)!;
-    if (user === null) {
+  async ExecuteAsync(refresh: string) {
+    const payload = this._tokenProvider?.Verify(refresh);
+    if (!payload) {
       throw new Error(Messages.InvalidUsernameOrPassword);
     }
-    if ((await user.CheckPassword(password)) === false) {
+    const user = await this._userRepository?.getById(
+      payload.sub,
+      payload.company
+    )!;
+    if (user === null) {
       throw new Error(Messages.InvalidUsernameOrPassword);
     }
     const dateNow = new Date();

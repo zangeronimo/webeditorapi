@@ -91,7 +91,13 @@ Registry.getInstance().provide("IUserUpdate", new UserUpdate());
 Registry.getInstance().provide("IUserDelete", new UserDelete());
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:8080",
+    credentials: true, //access-control-allow-credentials:true
+    optionsSuccessStatus: 200,
+  })
+);
 app.use(express.json());
 
 const mainController = new MainController();

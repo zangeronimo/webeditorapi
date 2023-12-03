@@ -93,8 +93,8 @@ Registry.getInstance().provide("IUserDelete", new UserDelete());
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:8080",
-    credentials: true, //access-control-allow-credentials:true
+    origin: ["http://localhost:8080", "http://localhost:3000"],
+    credentials: true,
     optionsSuccessStatus: 200,
   })
 );

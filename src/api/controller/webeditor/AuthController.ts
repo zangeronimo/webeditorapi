@@ -17,10 +17,14 @@ export class AuthController {
   }
 
   Auth = async (req: Request, res: Response) => {
-    const { grant_type } = req.body;
-    if (grant_type === "password") return this.Login(req, res);
-    if (grant_type === "refresh_token") return this.Refresh(req, res);
-    throw new Error(Messages.InvalidGrantType);
+    try {
+      const { grant_type } = req.body;
+      if (grant_type === "password") return this.Login(req, res);
+      if (grant_type === "refresh_token") return this.Refresh(req, res);
+      throw new Error(Messages.InvalidGrantType);
+    } catch (e: any) {
+      return res.status(400).json(e.message);
+    }
   };
 
   private Login = async (req: Request, res: Response) => {

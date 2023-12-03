@@ -25,7 +25,6 @@ export class AuthController {
 
   private Login = async (req: Request, res: Response) => {
     try {
-      console.log("making login");
       const { username, password } = req.body;
       const { token, refreshToken } = await this.makeLogin?.ExecuteAsync(
         username,
@@ -45,7 +44,6 @@ export class AuthController {
 
   private Refresh = async (req: Request, res: Response) => {
     try {
-      console.log(req);
       const refresh = req.headers.cookie
         ?.split("; ")
         .find((item) => item.includes("refreshToken"))

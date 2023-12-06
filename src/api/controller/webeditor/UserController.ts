@@ -1,5 +1,4 @@
-import { EnsureAuthenticated } from "@api/midleware/EnsureAuthenticated";
-import { EnsureHasRole } from "@api/midleware/EnsureHasRole";
+import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
 import { IUserCreate } from "@application/interface/usecase/webeditor/user/IUserCreate";
 import { IUserDelete } from "@application/interface/usecase/webeditor/user/IUserDelete";
 import { IUserGetAll } from "@application/interface/usecase/webeditor/user/IUserGetAll";

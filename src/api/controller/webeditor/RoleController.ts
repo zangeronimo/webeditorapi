@@ -1,5 +1,4 @@
-import { EnsureAuthenticated } from "@api/midleware/EnsureAuthenticated";
-import { EnsureHasRole } from "@api/midleware/EnsureHasRole";
+import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
 import { IRoleCreate } from "@application/interface/usecase/webeditor/role/IRoleCreate";
 import { IRoleDelete } from "@application/interface/usecase/webeditor/role/IRoleDelete";
 import { IRoleGetAll } from "@application/interface/usecase/webeditor/role/IRoleGetAll";

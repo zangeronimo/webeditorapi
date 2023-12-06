@@ -1,5 +1,4 @@
-import { EnsureAuthenticated } from "@api/midleware/EnsureAuthenticated";
-import { EnsureHasRole } from "@api/midleware/EnsureHasRole";
+import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
 import { IModuleCreate } from "@application/interface/usecase/webeditor/module/IModuleCreate";
 import { IModuleDelete } from "@application/interface/usecase/webeditor/module/IModuleDelete";
 import { IModuleGetAll } from "@application/interface/usecase/webeditor/module/IModuleGetAll";

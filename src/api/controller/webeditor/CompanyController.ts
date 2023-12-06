@@ -1,5 +1,4 @@
-import { EnsureAuthenticated } from "@api/midleware/EnsureAuthenticated";
-import { EnsureHasRole } from "@api/midleware/EnsureHasRole";
+import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
 import { ICompanyCreate } from "@application/interface/usecase/webeditor/company/ICompanyCreate";
 import { ICompanyDelete } from "@application/interface/usecase/webeditor/company/ICompanyDelete";
 import { ICompanyGetAll } from "@application/interface/usecase/webeditor/company/ICompanyGetAll";

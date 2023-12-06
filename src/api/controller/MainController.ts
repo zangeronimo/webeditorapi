@@ -1,5 +1,4 @@
-import { EnsureAuthenticated } from "@api/midleware/EnsureAuthenticated";
-import { EnsureHasRole } from "@api/midleware/EnsureHasRole";
+import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
 import { Router } from "express";
 import { AuthController } from "./webeditor/AuthController";
 import { CompanyController } from "./webeditor/CompanyController";

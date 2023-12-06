@@ -1,5 +1,5 @@
 import { GetAllRoleFilterModel } from "@application/model/webeditor/role";
-import { Role } from "@domain/entity/webeditor/Role";
+import { Role } from "@domain/entity/webeditor";
 
 export interface IRoleRepository {
   getAllByModuleAsync(moduleId: string): Promise<Role[]>;

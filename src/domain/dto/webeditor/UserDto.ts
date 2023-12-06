@@ -1,4 +1,4 @@
-import { User } from "@domain/entity/webeditor/User";
+import { User } from "@domain/entity/webeditor";
 import { RoleDto } from "./RoleDto";
 
 export class UserDto {

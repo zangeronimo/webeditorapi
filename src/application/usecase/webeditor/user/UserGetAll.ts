@@ -3,7 +3,7 @@ import { IUserGetAll } from "@application/interface/usecase/webeditor/user";
 import { GetAllUserFilterModel } from "@application/model/webeditor/user";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 import { UserDto } from "@domain/dto/webeditor";
-import { User } from "@domain/entity/webeditor/User";
+import { User } from "@domain/entity/webeditor";
 import { inject } from "@infra/di/Inject";
 
 export class UserGetAll implements IUserGetAll {

@@ -1,4 +1,4 @@
-import { Company } from "@domain/entity/webeditor/Company";
+import { Company } from "@domain/entity/webeditor";
 import { ModuleDto } from "./ModuleDto";
 
 export class CompanyDto {

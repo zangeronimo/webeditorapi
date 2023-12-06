@@ -1,7 +1,6 @@
 import { IUserRepository } from "@application/interface/repository/webeditor";
 import { GetAllUserFilterModel } from "@application/model/webeditor/user";
-import { Role } from "@domain/entity/webeditor/Role";
-import { User } from "@domain/entity/webeditor/User";
+import { Role, User } from "@domain/entity/webeditor";
 import { DbContext } from "@infra/context/DbContext";
 
 export class UserRepository implements IUserRepository {

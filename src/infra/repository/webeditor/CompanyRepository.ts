@@ -1,7 +1,6 @@
 import { ICompanyRepository } from "@application/interface/repository/webeditor";
 import { GetAllCompanyFilterModel } from "@application/model/webeditor/company";
-import { Company } from "@domain/entity/webeditor/Company";
-import { Module } from "@domain/entity/webeditor/Module";
+import { Company, Module } from "@domain/entity/webeditor";
 import { DbContext } from "@infra/context/DbContext";
 
 export class CompanyRepository implements ICompanyRepository {

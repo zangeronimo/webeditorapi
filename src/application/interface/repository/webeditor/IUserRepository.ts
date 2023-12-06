@@ -1,5 +1,5 @@
 import { GetAllUserFilterModel } from "@application/model/webeditor/user";
-import { User } from "@domain/entity/webeditor/User";
+import { User } from "@domain/entity/webeditor";
 
 export interface IUserRepository {
   getByIdAsync(id: string, company: string): Promise<User | null>;

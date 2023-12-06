@@ -1,5 +1,5 @@
 import { GetAllCompanyFilterModel } from "@application/model/webeditor/company";
-import { Company } from "@domain/entity/webeditor/Company";
+import { Company } from "@domain/entity/webeditor";
 
 export interface ICompanyRepository {
   getByIdAsync(id: string): Promise<Company | null>;

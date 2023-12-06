@@ -1,4 +1,4 @@
-import { Module } from "@domain/entity/webeditor/Module";
+import { Module } from "@domain/entity/webeditor";
 
 export class ModuleDto {
   id: string;

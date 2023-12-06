@@ -6,7 +6,7 @@ import { IRoleCreate } from "@application/interface/usecase/webeditor/role";
 import { Messages } from "@application/messages/Messages";
 import { RoleCreateDataModel } from "@application/model/webeditor/role";
 import { ModuleDto, RoleDto } from "@domain/dto/webeditor";
-import { Role } from "@domain/entity/webeditor/Role";
+import { Role } from "@domain/entity/webeditor";
 import { inject } from "@infra/di/Inject";
 
 export class RoleCreate implements IRoleCreate {

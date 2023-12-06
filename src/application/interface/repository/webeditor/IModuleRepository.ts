@@ -1,5 +1,5 @@
 import { GetAllModuleFilterModel } from "@application/model/webeditor/module";
-import { Module } from "@domain/entity/webeditor/Module";
+import { Module } from "@domain/entity/webeditor";
 
 export interface IModuleRepository {
   getAllByCompanyAsync(companyId: string): Promise<Module[]>;

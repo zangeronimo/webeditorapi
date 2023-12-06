@@ -1,4 +1,4 @@
-import { ICompanyRepository } from "@application/interface/repository/webeditor/ICompanyRepository";
+import { ICompanyRepository } from "@application/interface/repository/webeditor";
 import { ICompanyCreate } from "@application/interface/usecase/webeditor/company/ICompanyCreate";
 import { Messages } from "@application/messages/Messages";
 import { CompanyCreateDataModel } from "@application/model/webeditor/company/CompanyCreateModel";

@@ -1,4 +1,4 @@
-import { ICompanyRepository } from "@application/interface/repository/webeditor/ICompanyRepository";
+import { ICompanyRepository } from "@application/interface/repository/webeditor";
 import { GetAllCompanyFilterModel } from "@application/model/webeditor/company/GetAllCompanyFilterModel";
 import { Company } from "@domain/entity/webeditor/Company";
 import { Module } from "@domain/entity/webeditor/Module";

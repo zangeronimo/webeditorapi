@@ -1,5 +1,7 @@
-import { IModuleRepository } from "@application/interface/repository/webeditor/IModuleRepository";
-import { IRoleRepository } from "@application/interface/repository/webeditor/IRoleRepository";
+import {
+  IModuleRepository,
+  IRoleRepository,
+} from "@application/interface/repository/webeditor";
 import { IModuleGetAllByCompany } from "@application/interface/usecase/webeditor/module/IModuleGetAllByCompany";
 import { ModuleAndRoleForCompanyDto } from "@domain/dto/webeditor/ModuleAndRoleForCompanyDto";
 import { RoleDto } from "@domain/dto/webeditor/RoleDto";

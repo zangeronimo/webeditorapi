@@ -1,5 +1,7 @@
-import { IModuleRepository } from "@application/interface/repository/webeditor/IModuleRepository";
-import { IRoleRepository } from "@application/interface/repository/webeditor/IRoleRepository";
+import {
+  IModuleRepository,
+  IRoleRepository,
+} from "@application/interface/repository/webeditor";
 import { IRoleCreate } from "@application/interface/usecase/webeditor/role/IRoleCreate";
 import { Messages } from "@application/messages/Messages";
 import { RoleCreateDataModel } from "@application/model/webeditor/role/RoleCreateModel";

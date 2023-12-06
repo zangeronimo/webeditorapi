@@ -1,4 +1,4 @@
-import { IUserRepository } from "@application/interface/repository/webeditor/IUserRepository";
+import { IUserRepository } from "@application/interface/repository/webeditor";
 import { IUserUpdate } from "@application/interface/usecase/webeditor/user/IUserUpdate";
 import { Messages } from "@application/messages/Messages";
 import { UserUpdateDataModel } from "@application/model/webeditor/user/UserUpdateModel";

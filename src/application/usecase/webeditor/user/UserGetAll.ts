@@ -1,4 +1,4 @@
-import { IUserRepository } from "@application/interface/repository/webeditor/IUserRepository";
+import { IUserRepository } from "@application/interface/repository/webeditor";
 import { IUserGetAll } from "@application/interface/usecase/webeditor/user/IUserGetAll";
 import { GetAllUserFilterModel } from "@application/model/webeditor/user/GetAllUserFilterModel";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";

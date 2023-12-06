@@ -1,4 +1,4 @@
-import { IUserRepository } from "@application/interface/repository/webeditor/IUserRepository";
+import { IUserRepository } from "@application/interface/repository/webeditor";
 import { IHasRole } from "@application/interface/usecase/webeditor/IHasRole";
 import { inject } from "@infra/di/Inject";
 

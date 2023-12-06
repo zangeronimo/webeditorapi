@@ -1,4 +1,4 @@
-import { IModuleRepository } from "@application/interface/repository/webeditor/IModuleRepository";
+import { IModuleRepository } from "@application/interface/repository/webeditor";
 import { IModuleUpdate } from "@application/interface/usecase/webeditor/module/IModuleUpdate";
 import { Messages } from "@application/messages/Messages";
 import { ModuleUpdateDataModel } from "@application/model/webeditor/module/ModuleUpdateModel";

@@ -1,4 +1,4 @@
-import { ICompanyRepository } from "@application/interface/repository/webeditor/ICompanyRepository";
+import { ICompanyRepository } from "@application/interface/repository/webeditor";
 import { ICompanyGetAll } from "@application/interface/usecase/webeditor/company/ICompanyGetAll";
 import { GetAllCompanyFilterModel } from "@application/model/webeditor/company/GetAllCompanyFilterModel";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";

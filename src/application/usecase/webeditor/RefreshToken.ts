@@ -1,5 +1,5 @@
 import { ITokenProvider } from "@application/interface/provider";
-import { IUserRepository } from "@application/interface/repository/webeditor/IUserRepository";
+import { IUserRepository } from "@application/interface/repository/webeditor";
 import { IRefreshToken } from "@application/interface/usecase/webeditor/IRefreshToken";
 import { Messages } from "@application/messages/Messages";
 import { AuthDto } from "@domain/dto/webeditor/AuthDto";

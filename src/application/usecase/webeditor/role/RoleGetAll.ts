@@ -1,5 +1,7 @@
-import { IModuleRepository } from "@application/interface/repository/webeditor/IModuleRepository";
-import { IRoleRepository } from "@application/interface/repository/webeditor/IRoleRepository";
+import {
+  IModuleRepository,
+  IRoleRepository,
+} from "@application/interface/repository/webeditor";
 import { IRoleGetAll } from "@application/interface/usecase/webeditor/role/IRoleGetAll";
 import { GetAllRoleFilterModel } from "@application/model/webeditor/role/GetAllRoleFilterModel";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";

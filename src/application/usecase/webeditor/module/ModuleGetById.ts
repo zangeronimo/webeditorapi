@@ -1,4 +1,4 @@
-import { IModuleRepository } from "@application/interface/repository/webeditor/IModuleRepository";
+import { IModuleRepository } from "@application/interface/repository/webeditor";
 import { IModuleGetById } from "@application/interface/usecase/webeditor/module/IModuleGetById";
 import { Messages } from "@application/messages/Messages";
 import { ModuleDto } from "@domain/dto/webeditor/ModuleDto";

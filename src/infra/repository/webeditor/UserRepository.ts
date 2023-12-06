@@ -1,4 +1,4 @@
-import { IUserRepository } from "@application/interface/repository/webeditor/IUserRepository";
+import { IUserRepository } from "@application/interface/repository/webeditor";
 import { GetAllUserFilterModel } from "@application/model/webeditor/user/GetAllUserFilterModel";
 import { Role } from "@domain/entity/webeditor/Role";
 import { User } from "@domain/entity/webeditor/User";

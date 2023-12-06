@@ -1,4 +1,4 @@
-import { IModuleRepository } from "@application/interface/repository/webeditor/IModuleRepository";
+import { IModuleRepository } from "@application/interface/repository/webeditor";
 import { IModuleGetAll } from "@application/interface/usecase/webeditor/module/IModuleGetAll";
 import { GetAllModuleFilterModel } from "@application/model/webeditor/module/GetAllModuleFilterModel";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";

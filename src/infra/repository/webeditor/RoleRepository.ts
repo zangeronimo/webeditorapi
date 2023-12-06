@@ -1,4 +1,4 @@
-import { IRoleRepository } from "@application/interface/repository/webeditor/IRoleRepository";
+import { IRoleRepository } from "@application/interface/repository/webeditor";
 import { GetAllRoleFilterModel } from "@application/model/webeditor/role/GetAllRoleFilterModel";
 import { Role } from "@domain/entity/webeditor/Role";
 import { DbContext } from "@infra/context/DbContext";

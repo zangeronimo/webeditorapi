@@ -1,4 +1,4 @@
-import { ITokenProvider } from "@application/interface/provider/ITokenProvider";
+import { ITokenProvider } from "@application/interface/provider";
 import { Messages } from "@application/messages/Messages";
 import { TokenPayloadModel } from "@application/model/webeditor/TokenPayloadModel";
 import { User } from "@domain/entity/webeditor/User";

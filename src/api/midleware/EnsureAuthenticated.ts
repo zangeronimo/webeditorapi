@@ -1,4 +1,4 @@
-import { ITokenProvider } from "@application/interface/provider/ITokenProvider";
+import { ITokenProvider } from "@application/interface/provider";
 import { Messages } from "@application/messages/Messages";
 import { inject } from "@infra/di/Inject";
 import { NextFunction, Request, Response } from "express";

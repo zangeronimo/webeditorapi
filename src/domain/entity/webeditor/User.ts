@@ -1,4 +1,4 @@
-import { IHashProvider } from "@application/interface/provider/IHashProvider";
+import { IHashProvider } from "@application/interface/provider";
 import { UserCreateDataModel } from "@application/model/webeditor/user/UserCreateModel";
 import { UserUpdateDataModel } from "@application/model/webeditor/user/UserUpdateModel";
 import { inject } from "@infra/di/Inject";

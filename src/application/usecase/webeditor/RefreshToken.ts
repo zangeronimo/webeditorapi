@@ -1,4 +1,4 @@
-import { ITokenProvider } from "@application/interface/provider/ITokenProvider";
+import { ITokenProvider } from "@application/interface/provider";
 import { IUserRepository } from "@application/interface/repository/webeditor/IUserRepository";
 import { IRefreshToken } from "@application/interface/usecase/webeditor/IRefreshToken";
 import { Messages } from "@application/messages/Messages";

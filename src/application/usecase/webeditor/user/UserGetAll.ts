@@ -1,6 +1,6 @@
 import { IUserRepository } from "@application/interface/repository/webeditor";
 import { IUserGetAll } from "@application/interface/usecase/webeditor/user";
-import { GetAllUserFilterModel } from "@application/model/webeditor/user/GetAllUserFilterModel";
+import { GetAllUserFilterModel } from "@application/model/webeditor/user";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 import { UserDto } from "@domain/dto/webeditor/UserDto";
 import { User } from "@domain/entity/webeditor/User";

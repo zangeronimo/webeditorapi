@@ -6,9 +6,11 @@ import {
   ICompanyGetById,
   ICompanyUpdate,
 } from "@application/interface/usecase/webeditor/company";
-import { CompanyCreateDataModel } from "@application/model/webeditor/company/CompanyCreateModel";
-import { CompanyUpdateDataModel } from "@application/model/webeditor/company/CompanyUpdateModel";
-import { GetAllCompanyFilterModel } from "@application/model/webeditor/company/GetAllCompanyFilterModel";
+import {
+  CompanyCreateDataModel,
+  CompanyUpdateDataModel,
+  GetAllCompanyFilterModel,
+} from "@application/model/webeditor/company";
 import { inject } from "@infra/di/Inject";
 import { Request, Response, Router } from "express";
 

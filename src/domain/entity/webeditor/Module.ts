@@ -1,5 +1,7 @@
-import { ModuleCreateDataModel } from "@application/model/webeditor/module/ModuleCreateModel";
-import { ModuleUpdateDataModel } from "@application/model/webeditor/module/ModuleUpdateModel";
+import {
+  ModuleCreateDataModel,
+  ModuleUpdateDataModel,
+} from "@application/model/webeditor/module";
 
 export class Module {
   private _id: string;

@@ -1,4 +1,4 @@
-import { GetAllRoleFilterModel } from "@application/model/webeditor/role/GetAllRoleFilterModel";
+import { GetAllRoleFilterModel } from "@application/model/webeditor/role";
 import { Role } from "@domain/entity/webeditor/Role";
 
 export interface IRoleRepository {

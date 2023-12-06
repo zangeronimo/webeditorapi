@@ -1,4 +1,4 @@
-import { GetAllModuleFilterModel } from "@application/model/webeditor/module/GetAllModuleFilterModel";
+import { GetAllModuleFilterModel } from "@application/model/webeditor/module";
 import { Module } from "@domain/entity/webeditor/Module";
 
 export interface IModuleRepository {

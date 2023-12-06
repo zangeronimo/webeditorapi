@@ -7,9 +7,11 @@ import {
   IModuleGetById,
   IModuleUpdate,
 } from "@application/interface/usecase/webeditor/module";
-import { GetAllModuleFilterModel } from "@application/model/webeditor/module/GetAllModuleFilterModel";
-import { ModuleCreateDataModel } from "@application/model/webeditor/module/ModuleCreateModel";
-import { ModuleUpdateDataModel } from "@application/model/webeditor/module/ModuleUpdateModel";
+import {
+  GetAllModuleFilterModel,
+  ModuleCreateDataModel,
+  ModuleUpdateDataModel,
+} from "@application/model/webeditor/module";
 import { inject } from "@infra/di/Inject";
 import { Request, Response, Router } from "express";
 

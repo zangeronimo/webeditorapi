@@ -6,9 +6,11 @@ import {
   IRoleGetById,
   IRoleUpdate,
 } from "@application/interface/usecase/webeditor/role";
-import { GetAllRoleFilterModel } from "@application/model/webeditor/role/GetAllRoleFilterModel";
-import { RoleCreateDataModel } from "@application/model/webeditor/role/RoleCreateModel";
-import { RoleUpdateDataModel } from "@application/model/webeditor/role/RoleUpdateModel";
+import {
+  GetAllRoleFilterModel,
+  RoleCreateDataModel,
+  RoleUpdateDataModel,
+} from "@application/model/webeditor/role";
 import { inject } from "@infra/di/Inject";
 import { Request, Response, Router } from "express";
 

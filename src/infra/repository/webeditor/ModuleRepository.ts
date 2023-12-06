@@ -1,5 +1,5 @@
 import { IModuleRepository } from "@application/interface/repository/webeditor";
-import { GetAllModuleFilterModel } from "@application/model/webeditor/module/GetAllModuleFilterModel";
+import { GetAllModuleFilterModel } from "@application/model/webeditor/module";
 import { Module } from "@domain/entity/webeditor/Module";
 import { DbContext } from "@infra/context/DbContext";
 

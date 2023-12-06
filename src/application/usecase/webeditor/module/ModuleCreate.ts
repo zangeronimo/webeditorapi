@@ -1,7 +1,7 @@
 import { IModuleRepository } from "@application/interface/repository/webeditor";
 import { IModuleCreate } from "@application/interface/usecase/webeditor/module";
 import { Messages } from "@application/messages/Messages";
-import { ModuleCreateDataModel } from "@application/model/webeditor/module/ModuleCreateModel";
+import { ModuleCreateDataModel } from "@application/model/webeditor/module";
 import { ModuleDto } from "@domain/dto/webeditor/ModuleDto";
 import { Module } from "@domain/entity/webeditor/Module";
 import { inject } from "@infra/di/Inject";

@@ -1,4 +1,4 @@
-import { ModuleCreateDataModel } from "@application/model/webeditor/module/ModuleCreateModel";
+import { ModuleCreateDataModel } from "@application/model/webeditor/module";
 import { ModuleDto } from "@domain/dto/webeditor/ModuleDto";
 
 export interface IModuleCreate {

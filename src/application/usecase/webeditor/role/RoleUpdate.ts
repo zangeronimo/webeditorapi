@@ -4,7 +4,7 @@ import {
 } from "@application/interface/repository/webeditor";
 import { IRoleUpdate } from "@application/interface/usecase/webeditor/role";
 import { Messages } from "@application/messages/Messages";
-import { RoleUpdateDataModel } from "@application/model/webeditor/role/RoleUpdateModel";
+import { RoleUpdateDataModel } from "@application/model/webeditor/role";
 import { ModuleDto } from "@domain/dto/webeditor/ModuleDto";
 import { RoleDto } from "@domain/dto/webeditor/RoleDto";
 import { inject } from "@infra/di/Inject";

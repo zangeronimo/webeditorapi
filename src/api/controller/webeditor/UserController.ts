@@ -6,9 +6,11 @@ import {
   IUserGetById,
   IUserUpdate,
 } from "@application/interface/usecase/webeditor/user";
-import { GetAllUserFilterModel } from "@application/model/webeditor/user/GetAllUserFilterModel";
-import { UserCreateDataModel } from "@application/model/webeditor/user/UserCreateModel";
-import { UserUpdateDataModel } from "@application/model/webeditor/user/UserUpdateModel";
+import {
+  GetAllUserFilterModel,
+  UserCreateDataModel,
+  UserUpdateDataModel,
+} from "@application/model/webeditor/user";
 import { inject } from "@infra/di/Inject";
 import { Request, Response, Router } from "express";
 

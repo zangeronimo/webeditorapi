@@ -1,4 +1,4 @@
-import { GetAllModuleFilterModel } from "@application/model/webeditor/module/GetAllModuleFilterModel";
+import { GetAllModuleFilterModel } from "@application/model/webeditor/module";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 
 export interface IModuleGetAll {

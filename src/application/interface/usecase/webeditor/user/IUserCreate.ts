@@ -1,4 +1,4 @@
-import { UserCreateDataModel } from "@application/model/webeditor/user/UserCreateModel";
+import { UserCreateDataModel } from "@application/model/webeditor/user";
 import { UserDto } from "@domain/dto/webeditor/UserDto";
 
 export interface IUserCreate {

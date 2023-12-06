@@ -1,5 +1,7 @@
-import { CompanyCreateDataModel } from "@application/model/webeditor/company/CompanyCreateModel";
-import { CompanyUpdateDataModel } from "@application/model/webeditor/company/CompanyUpdateModel";
+import {
+  CompanyCreateDataModel,
+  CompanyUpdateDataModel,
+} from "@application/model/webeditor/company";
 import { Module } from "./Module";
 
 export class Company {

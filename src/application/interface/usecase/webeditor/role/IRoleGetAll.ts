@@ -1,4 +1,4 @@
-import { GetAllRoleFilterModel } from "@application/model/webeditor/role/GetAllRoleFilterModel";
+import { GetAllRoleFilterModel } from "@application/model/webeditor/role";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 
 export interface IRoleGetAll {

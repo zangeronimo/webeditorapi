@@ -4,7 +4,7 @@ import {
 } from "@application/interface/repository/webeditor";
 import { IRoleCreate } from "@application/interface/usecase/webeditor/role";
 import { Messages } from "@application/messages/Messages";
-import { RoleCreateDataModel } from "@application/model/webeditor/role/RoleCreateModel";
+import { RoleCreateDataModel } from "@application/model/webeditor/role";
 import { ModuleDto } from "@domain/dto/webeditor/ModuleDto";
 import { RoleDto } from "@domain/dto/webeditor/RoleDto";
 import { Role } from "@domain/entity/webeditor/Role";

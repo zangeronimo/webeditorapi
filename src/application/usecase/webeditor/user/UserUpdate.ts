@@ -1,7 +1,7 @@
 import { IUserRepository } from "@application/interface/repository/webeditor";
 import { IUserUpdate } from "@application/interface/usecase/webeditor/user";
 import { Messages } from "@application/messages/Messages";
-import { UserUpdateDataModel } from "@application/model/webeditor/user/UserUpdateModel";
+import { UserUpdateDataModel } from "@application/model/webeditor/user";
 import { UserDto } from "@domain/dto/webeditor/UserDto";
 import { inject } from "@infra/di/Inject";
 

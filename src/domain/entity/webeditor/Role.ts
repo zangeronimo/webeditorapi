@@ -1,5 +1,7 @@
-import { RoleCreateDataModel } from "@application/model/webeditor/role/RoleCreateModel";
-import { RoleUpdateDataModel } from "@application/model/webeditor/role/RoleUpdateModel";
+import {
+  RoleCreateDataModel,
+  RoleUpdateDataModel,
+} from "@application/model/webeditor/role";
 
 export class Role {
   private _id: string;

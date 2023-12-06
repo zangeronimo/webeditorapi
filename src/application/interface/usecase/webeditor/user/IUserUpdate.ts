@@ -1,4 +1,4 @@
-import { UserUpdateDataModel } from "@application/model/webeditor/user/UserUpdateModel";
+import { UserUpdateDataModel } from "@application/model/webeditor/user";
 import { UserDto } from "@domain/dto/webeditor/UserDto";
 
 export interface IUserUpdate {

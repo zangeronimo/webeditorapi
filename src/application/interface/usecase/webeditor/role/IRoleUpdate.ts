@@ -1,4 +1,4 @@
-import { RoleUpdateDataModel } from "@application/model/webeditor/role/RoleUpdateModel";
+import { RoleUpdateDataModel } from "@application/model/webeditor/role";
 import { RoleDto } from "@domain/dto/webeditor/RoleDto";
 
 export interface IRoleUpdate {

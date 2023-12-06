@@ -2,5 +2,5 @@ import { RoleCreateDataModel } from "@application/model/webeditor/role/RoleCreat
 import { RoleDto } from "@domain/dto/webeditor/RoleDto";
 
 export interface IRoleCreate {
-  ExecuteAsync(roleData: RoleCreateDataModel): Promise<RoleDto>;
+  executeAsync(roleData: RoleCreateDataModel): Promise<RoleDto>;
 }

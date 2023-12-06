@@ -5,7 +5,7 @@ import { User } from "@domain/entity/webeditor/User";
 import { sign, verify } from "jsonwebtoken";
 
 export class JwtWebTokenProvider implements ITokenProvider {
-  Generate(user: User, date: Date, exp: number): string {
+  generate(user: User, date: Date, exp: number): string {
     const token = sign(
       {
         sub: user.id,
@@ -17,11 +17,12 @@ export class JwtWebTokenProvider implements ITokenProvider {
     );
     return token;
   }
-  Verify(token: string) {
+
+  verify(token: string) {
     const payload: any = verify(token, "secret");
     const dateNow = new Date().getTime();
     if (dateNow - payload.exp >= 0) {
-      throw new Error(Messages.InvalidJwtToken);
+      throw new Error(Messages.invalidJwtToken);
     }
     return new TokenPayloadModel(
       payload.iat,

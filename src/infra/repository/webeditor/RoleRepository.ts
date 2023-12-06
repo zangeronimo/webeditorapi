@@ -6,8 +6,8 @@ import { DbContext } from "@infra/context/DbContext";
 export class RoleRepository implements IRoleRepository {
   constructor(readonly db: DbContext) {}
 
-  async getAllByModule(moduleId: string): Promise<Role[]> {
-    const rolesData = await this.db.query(
+  async getAllByModuleAsync(moduleId: string): Promise<Role[]> {
+    const rolesData = await this.db.queryAsync(
       `select
         id, name, label, sort_order, webeditor_modules_id
       from webeditor_roles
@@ -17,7 +17,7 @@ export class RoleRepository implements IRoleRepository {
     );
     const roles: Role[] = [];
     for (let i = 0; i < rolesData.length; i++) {
-      const role = Role.Restore(
+      const role = Role.restore(
         rolesData[i].id,
         rolesData[i].name,
         rolesData[i].label,
@@ -29,8 +29,8 @@ export class RoleRepository implements IRoleRepository {
     return roles;
   }
 
-  async getById(id: string): Promise<Role | null> {
-    const [roleData] = await this.db.query(
+  async getByIdAsync(id: string): Promise<Role | null> {
+    const [roleData] = await this.db.queryAsync(
       `select
         id, name, label, sort_order, webeditor_modules_id
        from webeditor_roles
@@ -38,7 +38,7 @@ export class RoleRepository implements IRoleRepository {
       [id]
     );
     return roleData
-      ? Role.Restore(
+      ? Role.restore(
           roleData.id,
           roleData.name,
           roleData.label,
@@ -48,8 +48,8 @@ export class RoleRepository implements IRoleRepository {
       : null;
   }
 
-  async getByName(name: string): Promise<Role | null> {
-    const [roleData] = await this.db.query(
+  async getByNameAsync(name: string): Promise<Role | null> {
+    const [roleData] = await this.db.queryAsync(
       `select
         id, name, label, sort_order, webeditor_modules_id
        from webeditor_roles
@@ -57,7 +57,7 @@ export class RoleRepository implements IRoleRepository {
       [name]
     );
     return roleData
-      ? Role.Restore(
+      ? Role.restore(
           roleData.id,
           roleData.name,
           roleData.label,
@@ -67,7 +67,7 @@ export class RoleRepository implements IRoleRepository {
       : null;
   }
 
-  async getAll(
+  async getAllAsync(
     model: GetAllRoleFilterModel
   ): Promise<{ itens: Role[]; total: number }> {
     let where = "deleted_at is null";
@@ -82,7 +82,7 @@ export class RoleRepository implements IRoleRepository {
     }
     const ordenation = `${model.orderBy} ${!!model.desc ? "desc" : "asc"}`;
     const offset = model.pageSize * (model.page - 1);
-    const [total] = await this.db.query(
+    const [total] = await this.db.queryAsync(
       `select count(*) from webeditor_roles where ${where}`,
       [
         model.name?.toLowerCase(),
@@ -90,7 +90,7 @@ export class RoleRepository implements IRoleRepository {
         model.moduleId,
       ]
     );
-    const rolesData: any[] = await this.db.query(
+    const rolesData: any[] = await this.db.queryAsync(
       `select
         id, name, label, sort_order, webeditor_modules_id
       from webeditor_roles
@@ -108,7 +108,7 @@ export class RoleRepository implements IRoleRepository {
     );
     const roles: Role[] = [];
     for (let i = 0; i < rolesData.length; i++) {
-      const role = Role.Restore(
+      const role = Role.restore(
         rolesData[i].id,
         rolesData[i].name,
         rolesData[i].label,
@@ -120,16 +120,16 @@ export class RoleRepository implements IRoleRepository {
     return { itens: roles, total: total.count };
   }
 
-  async delete(role: Role, date: Date): Promise<Role> {
-    await this.db.query(
+  async deleteAsync(role: Role, date: Date): Promise<Role> {
+    await this.db.queryAsync(
       "update webeditor_roles set deleted_at=$2, updated_at=$2 where id = $1 and deleted_at is null",
       [role.id, date]
     );
     return role;
   }
 
-  async update(role: Role): Promise<Role> {
-    await this.db.query(
+  async updateAsync(role: Role): Promise<Role> {
+    await this.db.queryAsync(
       "update webeditor_roles set name=$2, label=$3, sort_order=$4, webeditor_modules_id=$5, updated_at=$6 where id = $1 and deleted_at is null",
       [
         role.id,
@@ -143,8 +143,8 @@ export class RoleRepository implements IRoleRepository {
     return role;
   }
 
-  async save(role: Role): Promise<Role> {
-    await this.db.query(
+  async saveAsync(role: Role): Promise<Role> {
+    await this.db.queryAsync(
       "insert into webeditor_roles (id, name, label, sort_order, webeditor_modules_id) values ($1, $2, $3, $4, $5)",
       [role.id, role.name, role.label, role.order, role.moduleId]
     );

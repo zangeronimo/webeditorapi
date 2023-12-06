@@ -13,24 +13,24 @@ export class AuthController {
   router = Router();
 
   constructor() {
-    this.router.post("/", this.Auth);
+    this.router.post("/", this.auth);
   }
 
-  Auth = async (req: Request, res: Response) => {
+  private auth = async (req: Request, res: Response) => {
     try {
       const { grant_type } = req.body;
-      if (grant_type === "password") return this.Login(req, res);
-      if (grant_type === "refresh_token") return this.Refresh(req, res);
-      throw new Error(Messages.InvalidGrantType);
+      if (grant_type === "password") return this.login(req, res);
+      if (grant_type === "refresh_token") return this.refresh(req, res);
+      throw new Error(Messages.invalidGrantType);
     } catch (e: any) {
       return res.status(400).json(e.message);
     }
   };
 
-  private Login = async (req: Request, res: Response) => {
+  private login = async (req: Request, res: Response) => {
     try {
       const { username, password } = req.body;
-      const { token, refreshToken } = await this.makeLogin?.ExecuteAsync(
+      const { token, refreshToken } = await this.makeLogin?.executeAsync(
         username,
         password
       )!;
@@ -46,16 +46,16 @@ export class AuthController {
     }
   };
 
-  private Refresh = async (req: Request, res: Response) => {
+  private refresh = async (req: Request, res: Response) => {
     try {
       const refresh = req.headers.cookie
         ?.split("; ")
         .find((item) => item.includes("refreshToken"))
         ?.replace("refreshToken=", "");
       if (!refresh) {
-        throw new Error(Messages.InvalidJwtToken);
+        throw new Error(Messages.invalidJwtToken);
       }
-      const { token, refreshToken } = await this.refreshToken?.ExecuteAsync(
+      const { token, refreshToken } = await this.refreshToken?.executeAsync(
         refresh
       )!;
       res.cookie("refreshToken", refreshToken, {

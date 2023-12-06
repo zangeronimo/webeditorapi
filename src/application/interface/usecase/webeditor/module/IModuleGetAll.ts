@@ -2,5 +2,5 @@ import { GetAllModuleFilterModel } from "@application/model/webeditor/module/Get
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 
 export interface IModuleGetAll {
-  ExecuteAsync(model: GetAllModuleFilterModel): Promise<PaginatorResultDto>;
+  executeAsync(model: GetAllModuleFilterModel): Promise<PaginatorResultDto>;
 }

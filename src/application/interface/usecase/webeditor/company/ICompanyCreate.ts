@@ -2,5 +2,5 @@ import { CompanyCreateDataModel } from "@application/model/webeditor/company/Com
 import { CompanyDto } from "@domain/dto/webeditor/CompanyDto";
 
 export interface ICompanyCreate {
-  ExecuteAsync(companyData: CompanyCreateDataModel): Promise<CompanyDto>;
+  executeAsync(companyData: CompanyCreateDataModel): Promise<CompanyDto>;
 }

@@ -1,11 +1,11 @@
 import { Module } from "@domain/entity/webeditor/Module";
 
 export class ModuleDto {
-  public Id: string;
-  public Name: string;
+  id: string;
+  name: string;
 
   constructor(module: Module) {
-    this.Id = module.id;
-    this.Name = module.name;
+    this.id = module.id;
+    this.name = module.name;
   }
 }

@@ -1,13 +1,13 @@
 import { IHasRole } from "@application/interface/usecase/webeditor/IHasRole";
 import { Messages } from "@application/messages/Messages";
 import { inject } from "@infra/di/Inject";
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 
 export class EnsureHasRole {
   @inject("IHasRole")
   hasRole?: IHasRole;
 
-  Execute = (role: string) => {
+  execute = (role: string) => {
     return async (
       request: Request,
       response: Response,
@@ -15,18 +15,18 @@ export class EnsureHasRole {
     ): Promise<void> => {
       const { id, company } = request.user;
       try {
-        const hasPermission = await this.hasRole?.ExecuteAsync(
+        const hasPermission = await this.hasRole?.executeAsync(
           id,
           company,
           role
         );
         if (!hasPermission) {
-          response.status(403).json(Messages.AccessDenied);
+          response.status(403).json(Messages.accessDenied);
           return;
         }
         return next();
       } catch {
-        response.status(403).json(Messages.AccessDenied);
+        response.status(403).json(Messages.accessDenied);
       }
     };
   };

@@ -8,10 +8,10 @@ export class CompanyGetById implements ICompanyGetById {
   @inject("ICompanyRepository")
   _companyRepository?: ICompanyRepository;
 
-  async ExecuteAsync(id: string) {
-    const company = await this._companyRepository?.getById(id)!;
+  async executeAsync(id: string) {
+    const company = await this._companyRepository?.getByIdAsync(id)!;
     if (company === null) {
-      throw new Error(Messages.NotFound("Company"));
+      throw new Error(Messages.notFound("Company"));
     }
     return new CompanyDto(company);
   }

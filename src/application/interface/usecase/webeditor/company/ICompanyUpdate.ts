@@ -2,5 +2,5 @@ import { CompanyUpdateDataModel } from "@application/model/webeditor/company/Com
 import { CompanyDto } from "@domain/dto/webeditor/CompanyDto";
 
 export interface ICompanyUpdate {
-  ExecuteAsync(companyData: CompanyUpdateDataModel): Promise<CompanyDto>;
+  executeAsync(companyData: CompanyUpdateDataModel): Promise<CompanyDto>;
 }

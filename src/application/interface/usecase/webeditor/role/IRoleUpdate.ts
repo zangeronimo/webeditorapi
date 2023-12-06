@@ -2,5 +2,5 @@ import { RoleUpdateDataModel } from "@application/model/webeditor/role/RoleUpdat
 import { RoleDto } from "@domain/dto/webeditor/RoleDto";
 
 export interface IRoleUpdate {
-  ExecuteAsync(roleData: RoleUpdateDataModel): Promise<RoleDto>;
+  executeAsync(roleData: RoleUpdateDataModel): Promise<RoleDto>;
 }

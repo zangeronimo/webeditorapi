@@ -2,5 +2,5 @@ import { ModuleCreateDataModel } from "@application/model/webeditor/module/Modul
 import { ModuleDto } from "@domain/dto/webeditor/ModuleDto";
 
 export interface IModuleCreate {
-  ExecuteAsync(moduleData: ModuleCreateDataModel): Promise<ModuleDto>;
+  executeAsync(moduleData: ModuleCreateDataModel): Promise<ModuleDto>;
 }

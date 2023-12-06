@@ -1,5 +1,5 @@
 import { ModuleDto } from "@domain/dto/webeditor/ModuleDto";
 
 export interface IModuleDelete {
-  ExecuteAsync(id: string): Promise<ModuleDto>;
+  executeAsync(id: string): Promise<ModuleDto>;
 }

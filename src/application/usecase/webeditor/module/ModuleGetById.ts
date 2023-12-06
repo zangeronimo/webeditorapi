@@ -8,10 +8,10 @@ export class ModuleGetById implements IModuleGetById {
   @inject("IModuleRepository")
   _moduleRepository?: IModuleRepository;
 
-  async ExecuteAsync(id: string) {
-    const module = await this._moduleRepository?.getById(id)!;
+  async executeAsync(id: string) {
+    const module = await this._moduleRepository?.getByIdAsync(id)!;
     if (module === null) {
-      throw new Error(Messages.NotFound("Module"));
+      throw new Error(Messages.notFound("Module"));
     }
     return new ModuleDto(module);
   }

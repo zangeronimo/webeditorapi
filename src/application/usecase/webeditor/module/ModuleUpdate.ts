@@ -9,21 +9,21 @@ export class ModuleUpdate implements IModuleUpdate {
   @inject("IModuleRepository")
   _moduleRepository?: IModuleRepository;
 
-  async ExecuteAsync(moduleData: ModuleUpdateDataModel) {
-    const module = await this._moduleRepository?.getById(moduleData.id)!;
+  async executeAsync(moduleData: ModuleUpdateDataModel) {
+    const module = await this._moduleRepository?.getByIdAsync(moduleData.id)!;
     if (module === null) {
-      throw new Error(Messages.NotFound("Module"));
+      throw new Error(Messages.notFound("Module"));
     }
     if (moduleData.name !== module.name) {
-      const existName = await this._moduleRepository?.getByName(
+      const existName = await this._moduleRepository?.getByNameAsync(
         moduleData.name
       );
       if (existName !== null) {
-        throw new Error(Messages.AlreadyInUse("Name"));
+        throw new Error(Messages.alreadyInUse("Name"));
       }
     }
-    await module.Update(moduleData);
-    await this._moduleRepository?.update(module);
+    module.update(moduleData);
+    await this._moduleRepository?.updateAsync(module);
     return new ModuleDto(module);
   }
 }

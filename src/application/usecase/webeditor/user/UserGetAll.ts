@@ -10,8 +10,8 @@ export class UserGetAll implements IUserGetAll {
   @inject("IUserRepository")
   _userRepository?: IUserRepository;
 
-  async ExecuteAsync(model: GetAllUserFilterModel, company: string) {
-    const { itens: users, total } = await this._userRepository?.getAll(
+  async executeAsync(model: GetAllUserFilterModel, company: string) {
+    const { itens: users, total } = await this._userRepository?.getAllAsync(
       model,
       company
     )!;

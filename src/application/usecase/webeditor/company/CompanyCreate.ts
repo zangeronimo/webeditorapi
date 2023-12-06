@@ -10,15 +10,15 @@ export class CompanyCreate implements ICompanyCreate {
   @inject("ICompanyRepository")
   _companyRepository?: ICompanyRepository;
 
-  async ExecuteAsync(companyData: CompanyCreateDataModel) {
-    const companyExists = await this._companyRepository?.getByName(
+  async executeAsync(companyData: CompanyCreateDataModel) {
+    const companyExists = await this._companyRepository?.getByNameAsync(
       companyData.name
     )!;
     if (companyExists !== null) {
-      throw new Error(Messages.AlreadyInUse("Name"));
+      throw new Error(Messages.alreadyInUse("Name"));
     }
-    const company = await Company.Create(companyData);
-    await this._companyRepository?.save(company);
+    const company = Company.create(companyData);
+    await this._companyRepository?.saveAsync(company);
     return new CompanyDto(company);
   }
 }

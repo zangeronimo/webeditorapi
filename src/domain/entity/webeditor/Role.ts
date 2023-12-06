@@ -8,19 +8,19 @@ export class Role {
   private _order: number;
   private _updatedAt?: Date;
 
-  public get id() {
+  get id() {
     return this._id;
   }
-  public get name() {
+  get name() {
     return this._name;
   }
-  public get label() {
+  get label() {
     return this._label;
   }
-  public get order() {
+  get order() {
     return this._order;
   }
-  public get updatedAt() {
+  get updatedAt() {
     return this._updatedAt;
   }
 
@@ -37,7 +37,7 @@ export class Role {
     this._order = order;
   }
 
-  public static Restore(
+  static restore(
     id: string,
     name: string,
     label: string,
@@ -47,7 +47,7 @@ export class Role {
     return new Role(id, name, label, order, moduleId);
   }
 
-  public static Create(model: RoleCreateDataModel): Role {
+  static create(model: RoleCreateDataModel): Role {
     const role = new Role(
       crypto.randomUUID(),
       model.name,
@@ -58,11 +58,11 @@ export class Role {
     return role;
   }
 
-  public SetOrder(order: number) {
+  setOrder(order: number) {
     this._order = order;
   }
 
-  async Update(roleData: RoleUpdateDataModel) {
+  update(roleData: RoleUpdateDataModel) {
     this._updatedAt = new Date();
     this._name = roleData.name;
     this._label = roleData.label;

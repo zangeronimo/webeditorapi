@@ -31,41 +31,41 @@ export class UserController {
   ) {
     this.router.get(
       "/",
-      ensureAuthenticated.Execute,
-      ensureHasRole.Execute("WEBEDITOR_USER_VIEW"),
-      this.GetAll
+      ensureAuthenticated.execute,
+      ensureHasRole.execute("WEBEDITOR_USER_VIEW"),
+      this.getAll
     );
     this.router.get(
       "/:id",
-      ensureAuthenticated.Execute,
-      ensureHasRole.Execute("WEBEDITOR_USER_VIEW"),
-      this.GetById
+      ensureAuthenticated.execute,
+      ensureHasRole.execute("WEBEDITOR_USER_VIEW"),
+      this.getById
     );
     this.router.post(
       "",
-      ensureAuthenticated.Execute,
-      ensureHasRole.Execute("WEBEDITOR_USER_UPDATE"),
-      this.Create
+      ensureAuthenticated.execute,
+      ensureHasRole.execute("WEBEDITOR_USER_UPDATE"),
+      this.create
     );
     this.router.put(
       "/:id",
-      ensureAuthenticated.Execute,
-      ensureHasRole.Execute("WEBEDITOR_USER_UPDATE"),
-      this.Update
+      ensureAuthenticated.execute,
+      ensureHasRole.execute("WEBEDITOR_USER_UPDATE"),
+      this.update
     );
     this.router.delete(
       "/:id",
-      ensureAuthenticated.Execute,
-      ensureHasRole.Execute("WEBEDITOR_USER_DELETE"),
-      this.Delete
+      ensureAuthenticated.execute,
+      ensureHasRole.execute("WEBEDITOR_USER_DELETE"),
+      this.delete
     );
   }
 
-  GetAll = async (req: Request, res: Response) => {
+  private getAll = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
       const getAllUserFilterModel = new GetAllUserFilterModel(req.query);
-      const users = await this.userGetAll?.ExecuteAsync(
+      const users = await this.userGetAll?.executeAsync(
         getAllUserFilterModel,
         company
       );
@@ -75,18 +75,18 @@ export class UserController {
     }
   };
 
-  GetById = async (req: Request, res: Response) => {
+  private getById = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
       const { id } = req.params;
-      const user = await this.userGetById?.ExecuteAsync(id, company);
+      const user = await this.userGetById?.executeAsync(id, company);
       return res.json(user);
     } catch (e: any) {
       return res.status(400).json(e.message);
     }
   };
 
-  Create = async (req: Request, res: Response) => {
+  private create = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
       const { name, email, password, roles } = req.body;
@@ -96,7 +96,7 @@ export class UserController {
         password,
         roles
       );
-      const user = await this.userCreate?.ExecuteAsync(
+      const user = await this.userCreate?.executeAsync(
         userCreateDataModel,
         company
       );
@@ -106,7 +106,7 @@ export class UserController {
     }
   };
 
-  Update = async (req: Request, res: Response) => {
+  private update = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
       const { id, name, email, password, roles } = req.body;
@@ -117,7 +117,7 @@ export class UserController {
         password,
         roles
       );
-      const user = await this.userUpdate?.ExecuteAsync(
+      const user = await this.userUpdate?.executeAsync(
         userUpdateDataModel,
         company
       );
@@ -127,11 +127,11 @@ export class UserController {
     }
   };
 
-  Delete = async (req: Request, res: Response) => {
+  private delete = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
       const { id } = req.params;
-      const user = await this.userDelete?.ExecuteAsync(id, company);
+      const user = await this.userDelete?.executeAsync(id, company);
       return res.json(user);
     } catch (e: any) {
       return res.status(400).json(e.message);

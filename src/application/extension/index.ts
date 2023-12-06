@@ -1,5 +1,5 @@
 export class Extensions {
-  static NoAccents = Object.defineProperty(String.prototype, "noAccents", {
+  static noAccents = Object.defineProperty(String.prototype, "noAccents", {
     value: function noAccents() {
       return this.normalize("NFD").replace(/\p{Diacritic}/gu, "");
     },

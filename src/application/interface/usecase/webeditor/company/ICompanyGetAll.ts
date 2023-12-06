@@ -2,5 +2,5 @@ import { GetAllCompanyFilterModel } from "@application/model/webeditor/company/G
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 
 export interface ICompanyGetAll {
-  ExecuteAsync(model: GetAllCompanyFilterModel): Promise<PaginatorResultDto>;
+  executeAsync(model: GetAllCompanyFilterModel): Promise<PaginatorResultDto>;
 }

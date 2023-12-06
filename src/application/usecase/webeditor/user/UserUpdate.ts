@@ -9,19 +9,24 @@ export class UserUpdate implements IUserUpdate {
   @inject("IUserRepository")
   _userRepository?: IUserRepository;
 
-  async ExecuteAsync(userData: UserUpdateDataModel, company: string) {
-    const user = await this._userRepository?.getById(userData.id, company)!;
+  async executeAsync(userData: UserUpdateDataModel, company: string) {
+    const user = await this._userRepository?.getByIdAsync(
+      userData.id,
+      company
+    )!;
     if (user === null) {
-      throw new Error(Messages.NotFound("User"));
+      throw new Error(Messages.notFound("User"));
     }
     if (userData.email !== user.email) {
-      const existEmail = await this._userRepository?.getByEmail(userData.email);
+      const existEmail = await this._userRepository?.getByEmailAsync(
+        userData.email
+      );
       if (existEmail !== null) {
-        throw new Error(Messages.AlreadyInUse("Email"));
+        throw new Error(Messages.alreadyInUse("Email"));
       }
     }
-    await user.Update(userData);
-    await this._userRepository?.update(user);
+    await user.updateAsync(userData);
+    await this._userRepository?.updateAsync(user);
     return new UserDto(user);
   }
 }

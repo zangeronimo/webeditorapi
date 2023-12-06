@@ -11,16 +11,18 @@ export class ModuleGetAllByCompany implements IModuleGetAllByCompany {
   @inject("IRoleRepository")
   _roleRepository?: IRoleRepository;
 
-  async ExecuteAsync(companyId: string) {
-    const modules = await this._moduleRepository?.getAllByCompany(companyId)!;
+  async executeAsync(companyId: string) {
+    const modules = await this._moduleRepository?.getAllByCompanyAsync(
+      companyId
+    )!;
     const modulesDto = [];
     for (let i = 0; i < modules.length; i++) {
       const module = modules[i];
-      const roles = await this._roleRepository?.getAllByModule(module.id)!;
+      const roles = await this._roleRepository?.getAllByModuleAsync(module.id)!;
       const dto = new ModuleAndRoleForCompanyDto();
-      dto.Id = module.id;
-      dto.Name = module.name;
-      dto.Roles = roles?.map((role) => new RoleDto(role));
+      dto.id = module.id;
+      dto.name = module.name;
+      dto.roles = roles?.map((role) => new RoleDto(role));
       modulesDto.push(dto);
     }
     return modulesDto;

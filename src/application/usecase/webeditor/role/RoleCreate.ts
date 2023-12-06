@@ -14,16 +14,18 @@ export class RoleCreate implements IRoleCreate {
   @inject("IRoleRepository")
   _roleRepository?: IRoleRepository;
 
-  async ExecuteAsync(roleData: RoleCreateDataModel) {
-    const roleExists = await this._roleRepository?.getByName(roleData.name);
+  async executeAsync(roleData: RoleCreateDataModel) {
+    const roleExists = await this._roleRepository?.getByNameAsync(
+      roleData.name
+    );
     if (roleExists !== null) {
-      throw new Error(Messages.AlreadyInUse("Name"));
+      throw new Error(Messages.alreadyInUse("Name"));
     }
-    const role = await Role.Create(roleData);
-    await this._roleRepository?.save(role);
-    const module = await this._moduleRepository?.getById(role.moduleId);
+    const role = Role.create(roleData);
+    await this._roleRepository?.saveAsync(role);
+    const module = await this._moduleRepository?.getByIdAsync(role.moduleId);
     if (!module) {
-      throw new Error(Messages.NotFound("Module"));
+      throw new Error(Messages.notFound("Module"));
     }
     return new RoleDto(role, new ModuleDto(module));
   }

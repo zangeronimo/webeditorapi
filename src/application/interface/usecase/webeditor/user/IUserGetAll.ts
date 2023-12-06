@@ -2,7 +2,7 @@ import { GetAllUserFilterModel } from "@application/model/webeditor/user/GetAllU
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 
 export interface IUserGetAll {
-  ExecuteAsync(
+  executeAsync(
     model: GetAllUserFilterModel,
     company: string
   ): Promise<PaginatorResultDto>;

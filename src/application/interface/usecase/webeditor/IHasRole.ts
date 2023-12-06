@@ -1,5 +1,5 @@
 export interface IHasRole {
-  ExecuteAsync(
+  executeAsync(
     userId: string,
     companyId: string,
     role: string

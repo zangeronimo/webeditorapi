@@ -8,16 +8,16 @@ export class Company {
   private _updatedAt?: Date;
   private _modules: Module[];
 
-  public get id() {
+  get id() {
     return this._id;
   }
-  public get name() {
+  get name() {
     return this._name;
   }
-  public get updatedAt() {
+  get updatedAt() {
     return this._updatedAt;
   }
-  public get modules() {
+  get modules() {
     return this._modules;
   }
 
@@ -27,16 +27,16 @@ export class Company {
     this._modules = modules;
   }
 
-  public static Restore(id: string, name: string, modules: Module[]): Company {
+  static restore(id: string, name: string, modules: Module[]): Company {
     return new Company(id, name, modules);
   }
 
-  public static Create(model: CompanyCreateDataModel): Company {
+  static create(model: CompanyCreateDataModel): Company {
     const company = new Company(crypto.randomUUID(), model.name, model.modules);
     return company;
   }
 
-  async Update(model: CompanyUpdateDataModel) {
+  update(model: CompanyUpdateDataModel) {
     this._updatedAt = new Date();
     this._name = model.name;
     this._modules = model.modules;

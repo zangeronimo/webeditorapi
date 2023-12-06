@@ -7,17 +7,17 @@ import { DbContext } from "@infra/context/DbContext";
 export class UserRepository implements IUserRepository {
   constructor(readonly db: DbContext) {}
 
-  async getById(id: string, company: string): Promise<User | null> {
-    const [userData] = await this.db.query(
+  async getByIdAsync(id: string, company: string): Promise<User | null> {
+    const [userData] = await this.db.queryAsync(
       `select
         id, name, email, password, webeditor_companies_id
        from webeditor_users
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
     );
-    const rolesData = await this.getRolesFromUser(userData?.id);
+    const rolesData = await this.getRolesFromUserAsync(userData?.id);
     return userData
-      ? User.Restore(
+      ? User.restore(
           userData.id,
           userData.name,
           userData.email,
@@ -28,14 +28,14 @@ export class UserRepository implements IUserRepository {
       : null;
   }
 
-  async getByEmail(email: string): Promise<User | null> {
-    const [userData] = await this.db.query(
+  async getByEmailAsync(email: string): Promise<User | null> {
+    const [userData] = await this.db.queryAsync(
       "select id, name, email, password, webeditor_companies_id from webeditor_users where email = $1 and deleted_at is null",
       [email]
     );
-    const rolesData = await this.getRolesFromUser(userData?.id);
+    const rolesData = await this.getRolesFromUserAsync(userData?.id);
     return userData
-      ? User.Restore(
+      ? User.restore(
           userData.id,
           userData.name,
           userData.email,
@@ -46,7 +46,7 @@ export class UserRepository implements IUserRepository {
       : null;
   }
 
-  async getAll(
+  async getAllAsync(
     model: GetAllUserFilterModel,
     company: string
   ): Promise<{ itens: User[]; total: number }> {
@@ -59,7 +59,7 @@ export class UserRepository implements IUserRepository {
     }
     const ordenation = `${model.orderBy} ${!!model.desc ? "desc" : "asc"}`;
     const offset = model.pageSize * (model.page - 1);
-    const [total] = await this.db.query(
+    const [total] = await this.db.queryAsync(
       `select count(*) from webeditor_users where ${where}`,
       [
         company,
@@ -67,7 +67,7 @@ export class UserRepository implements IUserRepository {
         model.email?.toLowerCase(),
       ]
     );
-    const usersData: any[] = await this.db.query(
+    const usersData: any[] = await this.db.queryAsync(
       `select
         id, name, email, password, webeditor_companies_id
       from webeditor_users
@@ -85,8 +85,8 @@ export class UserRepository implements IUserRepository {
     );
     const users: User[] = [];
     for (let i = 0; i < usersData.length; i++) {
-      const rolesData = await this.getRolesFromUser(usersData[i].id);
-      const user = User.Restore(
+      const rolesData = await this.getRolesFromUserAsync(usersData[i].id);
+      const user = User.restore(
         usersData[i].id,
         usersData[i].name,
         usersData[i].email,
@@ -99,8 +99,8 @@ export class UserRepository implements IUserRepository {
     return { itens: users, total: total.count };
   }
 
-  private async getRolesFromUser(userId: string): Promise<Role[]> {
-    const rolesData = await this.db.query(
+  private async getRolesFromUserAsync(userId: string): Promise<Role[]> {
+    const rolesData = await this.db.queryAsync(
       `select
         r.id,
         r.name,
@@ -119,7 +119,7 @@ export class UserRepository implements IUserRepository {
       [userId]
     );
     return rolesData.map((role: any) =>
-      Role.Restore(
+      Role.restore(
         role.id,
         role.name,
         role.label,
@@ -131,27 +131,27 @@ export class UserRepository implements IUserRepository {
 
   private async addRolesForUser(userId: string, roles: Role[]) {
     for (let i = 0; i < roles.length; i++) {
-      await this.db.query(
+      await this.db.queryAsync(
         `insert into webeditor_users_has_webeditor_roles (webeditor_users_id, webeditor_roles_id) values ($1, $2)`,
         [userId, roles[i].id]
       );
     }
   }
 
-  async delete(user: User, date: Date): Promise<User> {
-    await this.db.query(
+  async deleteAsync(user: User, date: Date): Promise<User> {
+    await this.db.queryAsync(
       "update webeditor_users set deleted_at=$3, updated_at=$3 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [user.id, user.companyId, date]
     );
     return user;
   }
 
-  async update(user: User): Promise<User> {
-    await this.db.query(
+  async updateAsync(user: User): Promise<User> {
+    await this.db.queryAsync(
       `delete from webeditor_users_has_webeditor_roles where webeditor_users_id = $1`,
       [user.id]
     );
-    await this.db.query(
+    await this.db.queryAsync(
       "update webeditor_users set name=$3, email=$4, password=$5, updated_at=$6 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [
         user.id,
@@ -166,8 +166,8 @@ export class UserRepository implements IUserRepository {
     return user;
   }
 
-  async save(user: User): Promise<User> {
-    await this.db.query(
+  async saveAsync(user: User): Promise<User> {
+    await this.db.queryAsync(
       "insert into webeditor_users (id, name, email, password, webeditor_companies_id) values ($1, $2, $3, $4, $5)",
       [user.id, user.name, user.email, user.password, user.companyId]
     );

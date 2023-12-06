@@ -6,8 +6,8 @@ export class HasRole implements IHasRole {
   @inject("IUserRepository")
   _userRepository?: IUserRepository;
 
-  async ExecuteAsync(userId: string, companyId: string, role: string) {
-    const user = await this._userRepository?.getById(userId, companyId)!;
+  async executeAsync(userId: string, companyId: string, role: string) {
+    const user = await this._userRepository?.getByIdAsync(userId, companyId)!;
     if (user === null) {
       return false;
     }

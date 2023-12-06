@@ -2,13 +2,13 @@ import { GetAllModuleFilterModel } from "@application/model/webeditor/module/Get
 import { Module } from "@domain/entity/webeditor/Module";
 
 export interface IModuleRepository {
-  getAllByCompany(companyId: string): Promise<Module[]>;
-  getById(id: string): Promise<Module | null>;
-  getByName(name: string): Promise<Module | null>;
-  getAll(
+  getAllByCompanyAsync(companyId: string): Promise<Module[]>;
+  getByIdAsync(id: string): Promise<Module | null>;
+  getByNameAsync(name: string): Promise<Module | null>;
+  getAllAsync(
     model: GetAllModuleFilterModel
   ): Promise<{ itens: Module[]; total: number }>;
-  update(module: Module): Promise<Module>;
-  save(module: Module): Promise<Module>;
-  delete(module: Module, date: Date): Promise<Module>;
+  updateAsync(module: Module): Promise<Module>;
+  saveAsync(module: Module): Promise<Module>;
+  deleteAsync(module: Module, date: Date): Promise<Module>;
 }

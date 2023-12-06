@@ -2,7 +2,7 @@ import { UserCreateDataModel } from "@application/model/webeditor/user/UserCreat
 import { UserDto } from "@domain/dto/webeditor/UserDto";
 
 export interface IUserCreate {
-  ExecuteAsync(
+  executeAsync(
     userData: UserCreateDataModel,
     company: string
   ): Promise<UserDto>;

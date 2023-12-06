@@ -1,7 +1,9 @@
 import { EnsureAuthenticated } from "@api/midleware/EnsureAuthenticated";
+import { EnsureHasRole } from "@api/midleware/EnsureHasRole";
 import { IModuleCreate } from "@application/interface/usecase/webeditor/module/IModuleCreate";
 import { IModuleDelete } from "@application/interface/usecase/webeditor/module/IModuleDelete";
 import { IModuleGetAll } from "@application/interface/usecase/webeditor/module/IModuleGetAll";
+import { IModuleGetAllByCompany } from "@application/interface/usecase/webeditor/module/IModuleGetAllByCompany";
 import { IModuleGetById } from "@application/interface/usecase/webeditor/module/IModuleGetById";
 import { IModuleUpdate } from "@application/interface/usecase/webeditor/module/IModuleUpdate";
 import { GetAllModuleFilterModel } from "@application/model/webeditor/module/GetAllModuleFilterModel";
@@ -9,8 +11,6 @@ import { ModuleCreateDataModel } from "@application/model/webeditor/module/Modul
 import { ModuleUpdateDataModel } from "@application/model/webeditor/module/ModuleUpdateModel";
 import { inject } from "@infra/di/Inject";
 import { Request, Response, Router } from "express";
-import { EnsureHasRole } from "@api/midleware/EnsureHasRole";
-import { IModuleGetAllByCompany } from "@application/interface/usecase/webeditor/module/IModuleGetAllByCompany";
 
 export class ModuleController {
   @inject("IModuleGetAllByCompany")
@@ -34,56 +34,56 @@ export class ModuleController {
   ) {
     this.router.get(
       "/get-all-by-company",
-      ensureAuthenticated.Execute,
-      ensureHasRole.Execute("WEBEDITOR_MODULE_VIEW"),
-      this.GetAllByCompany
+      ensureAuthenticated.execute,
+      ensureHasRole.execute("WEBEDITOR_MODULE_VIEW"),
+      this.getAllByCompany
     );
     this.router.get(
       "/",
-      ensureAuthenticated.Execute,
-      ensureHasRole.Execute("WEBEDITOR_MODULE_VIEW"),
-      this.GetAll
+      ensureAuthenticated.execute,
+      ensureHasRole.execute("WEBEDITOR_MODULE_VIEW"),
+      this.getAll
     );
     this.router.get(
       "/:id",
-      ensureAuthenticated.Execute,
-      ensureHasRole.Execute("WEBEDITOR_MODULE_VIEW"),
-      this.GetById
+      ensureAuthenticated.execute,
+      ensureHasRole.execute("WEBEDITOR_MODULE_VIEW"),
+      this.getById
     );
     this.router.post(
       "",
-      ensureAuthenticated.Execute,
-      ensureHasRole.Execute("WEBEDITOR_MODULE_UPDATE"),
-      this.Create
+      ensureAuthenticated.execute,
+      ensureHasRole.execute("WEBEDITOR_MODULE_UPDATE"),
+      this.create
     );
     this.router.put(
       "/:id",
-      ensureAuthenticated.Execute,
-      ensureHasRole.Execute("WEBEDITOR_MODULE_UPDATE"),
-      this.Update
+      ensureAuthenticated.execute,
+      ensureHasRole.execute("WEBEDITOR_MODULE_UPDATE"),
+      this.update
     );
     this.router.delete(
       "/:id",
-      ensureAuthenticated.Execute,
-      ensureHasRole.Execute("WEBEDITOR_MODULE_DELETE"),
-      this.Delete
+      ensureAuthenticated.execute,
+      ensureHasRole.execute("WEBEDITOR_MODULE_DELETE"),
+      this.delete
     );
   }
 
-  GetAllByCompany = async (req: Request, res: Response) => {
+  private getAllByCompany = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const modules = await this.moduleGetAllByCompany?.ExecuteAsync(company);
+      const modules = await this.moduleGetAllByCompany?.executeAsync(company);
       return res.json(modules);
     } catch (e: any) {
       return res.status(400).json(e.message);
     }
   };
 
-  GetAll = async (req: Request, res: Response) => {
+  private getAll = async (req: Request, res: Response) => {
     try {
       const getAllModuleFilterModel = new GetAllModuleFilterModel(req.query);
-      const modules = await this.moduleGetAll?.ExecuteAsync(
+      const modules = await this.moduleGetAll?.executeAsync(
         getAllModuleFilterModel
       );
       return res.json(modules);
@@ -92,21 +92,21 @@ export class ModuleController {
     }
   };
 
-  GetById = async (req: Request, res: Response) => {
+  private getById = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const module = await this.moduleGetById?.ExecuteAsync(id);
+      const module = await this.moduleGetById?.executeAsync(id);
       return res.json(module);
     } catch (e: any) {
       return res.status(400).json(e.message);
     }
   };
 
-  Create = async (req: Request, res: Response) => {
+  private create = async (req: Request, res: Response) => {
     try {
       const { name, label, order, moduleId } = req.body;
       const moduleCreateDataModel = new ModuleCreateDataModel(name);
-      const module = await this.moduleCreate?.ExecuteAsync(
+      const module = await this.moduleCreate?.executeAsync(
         moduleCreateDataModel
       );
       return res.status(201).json(module);
@@ -115,11 +115,11 @@ export class ModuleController {
     }
   };
 
-  Update = async (req: Request, res: Response) => {
+  private update = async (req: Request, res: Response) => {
     try {
       const { id, name, label, order, moduleId } = req.body;
       const moduleUpdateDataModel = new ModuleUpdateDataModel(id, name);
-      const module = await this.moduleUpdate?.ExecuteAsync(
+      const module = await this.moduleUpdate?.executeAsync(
         moduleUpdateDataModel
       );
       return res.json(module);
@@ -128,10 +128,10 @@ export class ModuleController {
     }
   };
 
-  Delete = async (req: Request, res: Response) => {
+  private delete = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const module = await this.moduleDelete?.ExecuteAsync(id);
+      const module = await this.moduleDelete?.executeAsync(id);
       return res.json(module);
     } catch (e: any) {
       return res.status(400).json(e.message);

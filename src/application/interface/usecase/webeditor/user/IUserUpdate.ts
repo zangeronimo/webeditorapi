@@ -2,7 +2,7 @@ import { UserUpdateDataModel } from "@application/model/webeditor/user/UserUpdat
 import { UserDto } from "@domain/dto/webeditor/UserDto";
 
 export interface IUserUpdate {
-  ExecuteAsync(
+  executeAsync(
     userData: UserUpdateDataModel,
     company: string
   ): Promise<UserDto>;

@@ -8,12 +8,12 @@ export class UserDelete implements IUserDelete {
   @inject("IUserRepository")
   _userRepository?: IUserRepository;
 
-  async ExecuteAsync(id: string, company: string) {
-    const user = await this._userRepository?.getById(id, company)!;
+  async executeAsync(id: string, company: string) {
+    const user = await this._userRepository?.getByIdAsync(id, company)!;
     if (user === null) {
-      throw new Error(Messages.NotFound("User"));
+      throw new Error(Messages.notFound("User"));
     }
-    await this._userRepository?.delete(user, new Date());
+    await this._userRepository?.deleteAsync(user, new Date());
     return new UserDto(user);
   }
 }

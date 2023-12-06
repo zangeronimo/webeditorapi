@@ -2,5 +2,5 @@ import { GetAllRoleFilterModel } from "@application/model/webeditor/role/GetAllR
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 
 export interface IRoleGetAll {
-  ExecuteAsync(model: GetAllRoleFilterModel): Promise<PaginatorResultDto>;
+  executeAsync(model: GetAllRoleFilterModel): Promise<PaginatorResultDto>;
 }

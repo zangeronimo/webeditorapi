@@ -1,8 +1,8 @@
 export class Messages {
-  static InvalidUsernameOrPassword = "Invalid username or password.";
-  static InvalidJwtToken = "Invalid JWT token.";
-  static InvalidGrantType = "Invalid grant_type.";
-  static NotFound = (field: string) => `${field} not found.`;
-  static AlreadyInUse = (field: string) => `${field} already in use.`;
-  static AccessDenied = "Access denied.";
+  static invalidUsernameOrPassword = "Invalid username or password.";
+  static invalidJwtToken = "Invalid JWT token.";
+  static invalidGrantType = "Invalid grant_type.";
+  static notFound = (field: string) => `${field} not found.`;
+  static alreadyInUse = (field: string) => `${field} already in use.`;
+  static accessDenied = "Access denied.";
 }

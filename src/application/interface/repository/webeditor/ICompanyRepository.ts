@@ -2,12 +2,12 @@ import { GetAllCompanyFilterModel } from "@application/model/webeditor/company/G
 import { Company } from "@domain/entity/webeditor/Company";
 
 export interface ICompanyRepository {
-  getById(id: string): Promise<Company | null>;
-  getByName(name: string): Promise<Company | null>;
-  getAll(
+  getByIdAsync(id: string): Promise<Company | null>;
+  getByNameAsync(name: string): Promise<Company | null>;
+  getAllAsync(
     model: GetAllCompanyFilterModel
   ): Promise<{ itens: Company[]; total: number }>;
-  update(company: Company): Promise<Company>;
-  save(company: Company): Promise<Company>;
-  delete(company: Company, date: Date): Promise<Company>;
+  updateAsync(company: Company): Promise<Company>;
+  saveAsync(company: Company): Promise<Company>;
+  deleteAsync(company: Company, date: Date): Promise<Company>;
 }

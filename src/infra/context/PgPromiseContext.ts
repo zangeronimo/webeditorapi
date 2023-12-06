@@ -10,15 +10,11 @@ export class PgPromiseContext implements DbContext {
     );
   }
 
-  query(
-    statement: string,
-    data: any,
-    transactional: boolean = false
-  ): Promise<any> {
+  queryAsync(statement: string, data: any): Promise<any> {
     return this.connection.query(statement, data);
   }
 
-  async close(): Promise<void> {
+  async closeAsync(): Promise<void> {
     await this.connection.$pool.end();
   }
 }

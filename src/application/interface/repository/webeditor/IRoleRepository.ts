@@ -2,13 +2,13 @@ import { GetAllRoleFilterModel } from "@application/model/webeditor/role/GetAllR
 import { Role } from "@domain/entity/webeditor/Role";
 
 export interface IRoleRepository {
-  getAllByModule(moduleId: string): Promise<Role[]>;
-  getById(id: string): Promise<Role | null>;
-  getByName(name: string): Promise<Role | null>;
-  getAll(
+  getAllByModuleAsync(moduleId: string): Promise<Role[]>;
+  getByIdAsync(id: string): Promise<Role | null>;
+  getByNameAsync(name: string): Promise<Role | null>;
+  getAllAsync(
     model: GetAllRoleFilterModel
   ): Promise<{ itens: Role[]; total: number }>;
-  update(user: Role): Promise<Role>;
-  save(user: Role): Promise<Role>;
-  delete(user: Role, date: Date): Promise<Role>;
+  updateAsync(user: Role): Promise<Role>;
+  saveAsync(user: Role): Promise<Role>;
+  deleteAsync(user: Role, date: Date): Promise<Role>;
 }

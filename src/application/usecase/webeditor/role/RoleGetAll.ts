@@ -1,11 +1,11 @@
-import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
-import { IRoleGetAll } from "@application/interface/usecase/webeditor/role/IRoleGetAll";
+import { IModuleRepository } from "@application/interface/repository/webeditor/IModuleRepository";
 import { IRoleRepository } from "@application/interface/repository/webeditor/IRoleRepository";
+import { IRoleGetAll } from "@application/interface/usecase/webeditor/role/IRoleGetAll";
 import { GetAllRoleFilterModel } from "@application/model/webeditor/role/GetAllRoleFilterModel";
+import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
+import { ModuleDto } from "@domain/dto/webeditor/ModuleDto";
 import { RoleDto } from "@domain/dto/webeditor/RoleDto";
 import { inject } from "@infra/di/Inject";
-import { IModuleRepository } from "@application/interface/repository/webeditor/IModuleRepository";
-import { ModuleDto } from "@domain/dto/webeditor/ModuleDto";
 
 export class RoleGetAll implements IRoleGetAll {
   @inject("IModuleRepository")
@@ -13,12 +13,16 @@ export class RoleGetAll implements IRoleGetAll {
   @inject("IRoleRepository")
   _roleRepository?: IRoleRepository;
 
-  async ExecuteAsync(model: GetAllRoleFilterModel) {
-    const { itens: roles, total } = await this._roleRepository?.getAll(model)!;
+  async executeAsync(model: GetAllRoleFilterModel) {
+    const { itens: roles, total } = await this._roleRepository?.getAllAsync(
+      model
+    )!;
 
     const rolesDto = [];
     for (let i = 0; i < roles.length; i++) {
-      const module = await this._moduleRepository?.getById(roles[i].moduleId);
+      const module = await this._moduleRepository?.getByIdAsync(
+        roles[i].moduleId
+      );
       if (!module) {
         throw new Error("Module not found");
       }

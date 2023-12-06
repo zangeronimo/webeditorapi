@@ -6,13 +6,13 @@ export class Module {
   private _name: string;
   private _updatedAt?: Date;
 
-  public get id() {
+  get id() {
     return this._id;
   }
-  public get name() {
+  get name() {
     return this._name;
   }
-  public get updatedAt() {
+  get updatedAt() {
     return this._updatedAt;
   }
 
@@ -21,16 +21,16 @@ export class Module {
     this._name = name;
   }
 
-  public static Restore(id: string, name: string): Module {
+  static restore(id: string, name: string): Module {
     return new Module(id, name);
   }
 
-  public static Create(model: ModuleCreateDataModel): Module {
+  static create(model: ModuleCreateDataModel): Module {
     const module = new Module(crypto.randomUUID(), model.name);
     return module;
   }
 
-  async Update(model: ModuleUpdateDataModel) {
+  update(model: ModuleUpdateDataModel) {
     this._updatedAt = new Date();
     this._name = model.name;
   }

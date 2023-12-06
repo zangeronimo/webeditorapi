@@ -11,25 +11,25 @@ export class RefreshToken implements IRefreshToken {
   @inject("IUserRepository")
   _userRepository?: IUserRepository;
 
-  async ExecuteAsync(refresh: string) {
-    const payload = this._tokenProvider?.Verify(refresh);
+  async executeAsync(refresh: string) {
+    const payload = this._tokenProvider?.verify(refresh);
     if (!payload) {
-      throw new Error(Messages.InvalidUsernameOrPassword);
+      throw new Error(Messages.invalidUsernameOrPassword);
     }
-    const user = await this._userRepository?.getById(
+    const user = await this._userRepository?.getByIdAsync(
       payload.sub,
       payload.company
     )!;
     if (user === null) {
-      throw new Error(Messages.InvalidUsernameOrPassword);
+      throw new Error(Messages.invalidUsernameOrPassword);
     }
     const dateNow = new Date();
-    const token = this._tokenProvider?.Generate(
+    const token = this._tokenProvider?.generate(
       user,
       dateNow,
       dateNow.getTime() + 15000
     );
-    const refreshToken = this._tokenProvider?.Generate(
+    const refreshToken = this._tokenProvider?.generate(
       user,
       dateNow,
       dateNow.getTime() + 3600000

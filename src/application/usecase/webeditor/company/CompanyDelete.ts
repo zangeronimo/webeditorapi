@@ -8,12 +8,12 @@ export class CompanyDelete implements ICompanyDelete {
   @inject("ICompanyRepository")
   _companyRepository?: ICompanyRepository;
 
-  async ExecuteAsync(id: string) {
-    const company = await this._companyRepository?.getById(id)!;
+  async executeAsync(id: string) {
+    const company = await this._companyRepository?.getByIdAsync(id)!;
     if (company === null) {
-      throw new Error(Messages.NotFound("Company"));
+      throw new Error(Messages.notFound("Company"));
     }
-    await this._companyRepository?.delete(company, new Date());
+    await this._companyRepository?.deleteAsync(company, new Date());
     return new CompanyDto(company);
   }
 }

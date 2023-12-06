@@ -8,12 +8,12 @@ export class ModuleDelete implements IModuleDelete {
   @inject("IModuleRepository")
   _moduleRepository?: IModuleRepository;
 
-  async ExecuteAsync(id: string) {
-    const module = await this._moduleRepository?.getById(id)!;
+  async executeAsync(id: string) {
+    const module = await this._moduleRepository?.getByIdAsync(id)!;
     if (module === null) {
-      throw new Error(Messages.NotFound("Module"));
+      throw new Error(Messages.notFound("Module"));
     }
-    await this._moduleRepository?.delete(module, new Date());
+    await this._moduleRepository?.deleteAsync(module, new Date());
     return new ModuleDto(module);
   }
 }

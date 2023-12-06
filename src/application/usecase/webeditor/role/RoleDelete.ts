@@ -12,15 +12,15 @@ export class RoleDelete implements IRoleDelete {
   @inject("IRoleRepository")
   _roleRepository?: IRoleRepository;
 
-  async ExecuteAsync(id: string) {
-    const role = await this._roleRepository?.getById(id)!;
+  async executeAsync(id: string) {
+    const role = await this._roleRepository?.getByIdAsync(id)!;
     if (role === null) {
-      throw new Error(Messages.NotFound("Role"));
+      throw new Error(Messages.notFound("Role"));
     }
-    await this._roleRepository?.delete(role, new Date());
-    const module = await this._moduleRepository?.getById(role.moduleId);
+    await this._roleRepository?.deleteAsync(role, new Date());
+    const module = await this._moduleRepository?.getByIdAsync(role.moduleId);
     if (!module) {
-      throw new Error(Messages.NotFound("Module"));
+      throw new Error(Messages.notFound("Module"));
     }
     return new RoleDto(role, new ModuleDto(module));
   }

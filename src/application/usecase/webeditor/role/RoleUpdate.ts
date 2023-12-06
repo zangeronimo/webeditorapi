@@ -13,22 +13,24 @@ export class RoleUpdate implements IRoleUpdate {
   @inject("IRoleRepository")
   _roleRepository?: IRoleRepository;
 
-  async ExecuteAsync(roleData: RoleUpdateDataModel) {
-    const role = await this._roleRepository?.getById(roleData.id)!;
+  async executeAsync(roleData: RoleUpdateDataModel) {
+    const role = await this._roleRepository?.getByIdAsync(roleData.id)!;
     if (role === null) {
-      throw new Error(Messages.NotFound("Role"));
+      throw new Error(Messages.notFound("Role"));
     }
     if (roleData.name !== role.name) {
-      const existName = await this._roleRepository?.getByName(roleData.name);
+      const existName = await this._roleRepository?.getByNameAsync(
+        roleData.name
+      );
       if (existName !== null) {
-        throw new Error(Messages.AlreadyInUse("Name"));
+        throw new Error(Messages.alreadyInUse("Name"));
       }
     }
-    await role.Update(roleData);
-    await this._roleRepository?.update(role);
-    const module = await this._moduleRepository?.getById(role.moduleId);
+    role.update(roleData);
+    await this._roleRepository?.updateAsync(role);
+    const module = await this._moduleRepository?.getByIdAsync(role.moduleId);
     if (!module) {
-      throw new Error(Messages.NotFound("Module"));
+      throw new Error(Messages.notFound("Module"));
     }
     return new RoleDto(role, new ModuleDto(module));
   }

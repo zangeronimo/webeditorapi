@@ -2,6 +2,6 @@ import { TokenPayloadModel } from "@application/model/webeditor/TokenPayloadMode
 import { User } from "@domain/entity/webeditor/User";
 
 export interface ITokenProvider {
-  Generate(user: User, date: Date, exp: number): string;
-  Verify(token: string): TokenPayloadModel;
+  generate(user: User, date: Date, exp: number): string;
+  verify(token: string): TokenPayloadModel;
 }

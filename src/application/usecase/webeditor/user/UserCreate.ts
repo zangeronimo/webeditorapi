@@ -10,13 +10,15 @@ export class UserCreate implements IUserCreate {
   @inject("IUserRepository")
   _userRepository?: IUserRepository;
 
-  async ExecuteAsync(userData: UserCreateDataModel, company: string) {
-    const emailExists = await this._userRepository?.getByEmail(userData.email);
+  async executeAsync(userData: UserCreateDataModel, company: string) {
+    const emailExists = await this._userRepository?.getByEmailAsync(
+      userData.email
+    );
     if (emailExists !== null) {
-      throw new Error(Messages.AlreadyInUse("Email"));
+      throw new Error(Messages.alreadyInUse("Email"));
     }
-    const user = await User.Create(userData, company);
-    await this._userRepository?.save(user);
+    const user = await User.create(userData, company);
+    await this._userRepository?.saveAsync(user);
     return new UserDto(user);
   }
 }

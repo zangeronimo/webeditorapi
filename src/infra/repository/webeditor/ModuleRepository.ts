@@ -6,8 +6,8 @@ import { DbContext } from "@infra/context/DbContext";
 export class ModuleRepository implements IModuleRepository {
   constructor(readonly db: DbContext) {}
 
-  async getAllByCompany(companyId: string): Promise<Module[]> {
-    const modulesData = await this.db.query(
+  async getAllByCompanyAsync(companyId: string): Promise<Module[]> {
+    const modulesData = await this.db.queryAsync(
       `select
         m.id, m.name
       from webeditor_modules m
@@ -18,35 +18,35 @@ export class ModuleRepository implements IModuleRepository {
     );
     const modules: Module[] = [];
     for (let i = 0; i < modulesData.length; i++) {
-      const module = Module.Restore(modulesData[i].id, modulesData[i].name);
+      const module = Module.restore(modulesData[i].id, modulesData[i].name);
       modules.push(module);
     }
     return modules;
   }
 
-  async getById(id: string): Promise<Module | null> {
-    const [moduleData] = await this.db.query(
+  async getByIdAsync(id: string): Promise<Module | null> {
+    const [moduleData] = await this.db.queryAsync(
       `select
         id, name
        from webeditor_modules
        where id = $1 and deleted_at is null`,
       [id]
     );
-    return moduleData ? Module.Restore(moduleData.id, moduleData.name) : null;
+    return moduleData ? Module.restore(moduleData.id, moduleData.name) : null;
   }
 
-  async getByName(name: string): Promise<Module | null> {
-    const [moduleData] = await this.db.query(
+  async getByNameAsync(name: string): Promise<Module | null> {
+    const [moduleData] = await this.db.queryAsync(
       `select
         id, name
        from webeditor_modules
        where name = $1 and deleted_at is null`,
       [name]
     );
-    return moduleData ? Module.Restore(moduleData.id, moduleData.name) : null;
+    return moduleData ? Module.restore(moduleData.id, moduleData.name) : null;
   }
 
-  async getAll(
+  async getAllAsync(
     model: GetAllModuleFilterModel
   ): Promise<{ itens: Module[]; total: number }> {
     let where = "deleted_at is null";
@@ -55,11 +55,11 @@ export class ModuleRepository implements IModuleRepository {
     }
     const ordenation = `${model.orderBy} ${!!model.desc ? "desc" : "asc"}`;
     const offset = model.pageSize * (model.page - 1);
-    const [total] = await this.db.query(
+    const [total] = await this.db.queryAsync(
       `select count(*) from webeditor_modules where ${where}`,
       [`%${model.name?.toLowerCase().noAccents()}%`]
     );
-    const modulesData: any[] = await this.db.query(
+    const modulesData: any[] = await this.db.queryAsync(
       `select
         id, name
       from webeditor_modules
@@ -71,30 +71,30 @@ export class ModuleRepository implements IModuleRepository {
     );
     const modules: Module[] = [];
     for (let i = 0; i < modulesData.length; i++) {
-      const module = Module.Restore(modulesData[i].id, modulesData[i].name);
+      const module = Module.restore(modulesData[i].id, modulesData[i].name);
       modules.push(module);
     }
     return { itens: modules, total: total.count };
   }
 
-  async delete(module: Module, date: Date): Promise<Module> {
-    await this.db.query(
+  async deleteAsync(module: Module, date: Date): Promise<Module> {
+    await this.db.queryAsync(
       "update webeditor_modules set deleted_at=$2, updated_at=$2 where id = $1 and deleted_at is null",
       [module.id, date]
     );
     return module;
   }
 
-  async update(module: Module): Promise<Module> {
-    await this.db.query(
+  async updateAsync(module: Module): Promise<Module> {
+    await this.db.queryAsync(
       "update webeditor_modules set name=$2, updated_at=$3 where id = $1 and deleted_at is null",
       [module.id, module.name, module.updatedAt]
     );
     return module;
   }
 
-  async save(module: Module): Promise<Module> {
-    await this.db.query(
+  async saveAsync(module: Module): Promise<Module> {
+    await this.db.queryAsync(
       "insert into webeditor_modules (id, name) values ($1, $2)",
       [module.id, module.name]
     );

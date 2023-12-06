@@ -10,15 +10,15 @@ export class ModuleCreate implements IModuleCreate {
   @inject("IModuleRepository")
   _moduleRepository?: IModuleRepository;
 
-  async ExecuteAsync(moduleData: ModuleCreateDataModel) {
-    const moduleExists = await this._moduleRepository?.getByName(
+  async executeAsync(moduleData: ModuleCreateDataModel) {
+    const moduleExists = await this._moduleRepository?.getByNameAsync(
       moduleData.name
     );
     if (moduleExists !== null) {
-      throw new Error(Messages.AlreadyInUse("Name"));
+      throw new Error(Messages.alreadyInUse("Name"));
     }
-    const module = await Module.Create(moduleData);
-    await this._moduleRepository?.save(module);
+    const module = Module.create(moduleData);
+    await this._moduleRepository?.saveAsync(module);
     return new ModuleDto(module);
   }
 }

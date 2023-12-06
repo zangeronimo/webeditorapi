@@ -2,5 +2,5 @@ import { ModuleUpdateDataModel } from "@application/model/webeditor/module/Modul
 import { ModuleDto } from "@domain/dto/webeditor/ModuleDto";
 
 export interface IModuleUpdate {
-  ExecuteAsync(moduleData: ModuleUpdateDataModel): Promise<ModuleDto>;
+  executeAsync(moduleData: ModuleUpdateDataModel): Promise<ModuleDto>;
 }

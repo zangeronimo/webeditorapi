@@ -9,21 +9,23 @@ export class CompanyUpdate implements ICompanyUpdate {
   @inject("ICompanyRepository")
   _companyRepository?: ICompanyRepository;
 
-  async ExecuteAsync(companyData: CompanyUpdateDataModel) {
-    const company = await this._companyRepository?.getById(companyData.id)!;
+  async executeAsync(companyData: CompanyUpdateDataModel) {
+    const company = await this._companyRepository?.getByIdAsync(
+      companyData.id
+    )!;
     if (company === null) {
-      throw new Error(Messages.NotFound("Company"));
+      throw new Error(Messages.notFound("Company"));
     }
     if (companyData.name !== company.name) {
-      const existName = await this._companyRepository?.getByName(
+      const existName = await this._companyRepository?.getByNameAsync(
         companyData.name
       );
       if (existName !== null) {
-        throw new Error(Messages.AlreadyInUse("Name"));
+        throw new Error(Messages.alreadyInUse("Name"));
       }
     }
-    await company.Update(companyData);
-    await this._companyRepository?.update(company);
+    company.update(companyData);
+    await this._companyRepository?.updateAsync(company);
     return new CompanyDto(company);
   }
 }

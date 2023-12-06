@@ -1,10 +1,12 @@
 import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
 import { Router } from "express";
-import { AuthController } from "./webeditor/AuthController";
-import { CompanyController } from "./webeditor/CompanyController";
-import { ModuleController } from "./webeditor/ModuleController";
-import { RoleController } from "./webeditor/RoleController";
-import { UserController } from "./webeditor/UserController";
+import {
+  AuthController,
+  CompanyController,
+  ModuleController,
+  RoleController,
+  UserController,
+} from "./webeditor";
 
 export class MainController {
   ensureAuthenticated = new EnsureAuthenticated();

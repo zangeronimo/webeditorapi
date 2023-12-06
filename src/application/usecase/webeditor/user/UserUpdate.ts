@@ -2,7 +2,7 @@ import { IUserRepository } from "@application/interface/repository/webeditor";
 import { IUserUpdate } from "@application/interface/usecase/webeditor/user";
 import { Messages } from "@application/messages/Messages";
 import { UserUpdateDataModel } from "@application/model/webeditor/user";
-import { UserDto } from "@domain/dto/webeditor/UserDto";
+import { UserDto } from "@domain/dto/webeditor";
 import { inject } from "@infra/di/Inject";
 
 export class UserUpdate implements IUserUpdate {

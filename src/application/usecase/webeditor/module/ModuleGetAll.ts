@@ -2,7 +2,7 @@ import { IModuleRepository } from "@application/interface/repository/webeditor";
 import { IModuleGetAll } from "@application/interface/usecase/webeditor/module";
 import { GetAllModuleFilterModel } from "@application/model/webeditor/module";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
-import { ModuleDto } from "@domain/dto/webeditor/ModuleDto";
+import { ModuleDto } from "@domain/dto/webeditor";
 import { Module } from "@domain/entity/webeditor/Module";
 import { inject } from "@infra/di/Inject";
 

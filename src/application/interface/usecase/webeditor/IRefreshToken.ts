@@ -1,4 +1,4 @@
-import { AuthDto } from "@domain/dto/webeditor/AuthDto";
+import { AuthDto } from "@domain/dto/webeditor";
 
 export interface IRefreshToken {
   executeAsync(

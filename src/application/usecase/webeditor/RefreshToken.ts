@@ -2,7 +2,7 @@ import { ITokenProvider } from "@application/interface/provider";
 import { IUserRepository } from "@application/interface/repository/webeditor";
 import { IRefreshToken } from "@application/interface/usecase/webeditor";
 import { Messages } from "@application/messages/Messages";
-import { AuthDto } from "@domain/dto/webeditor/AuthDto";
+import { AuthDto } from "@domain/dto/webeditor";
 import { inject } from "@infra/di/Inject";
 
 export class RefreshToken implements IRefreshToken {

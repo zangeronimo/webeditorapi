@@ -1,5 +1,5 @@
 import { UserUpdateDataModel } from "@application/model/webeditor/user";
-import { UserDto } from "@domain/dto/webeditor/UserDto";
+import { UserDto } from "@domain/dto/webeditor";
 
 export interface IUserUpdate {
   executeAsync(

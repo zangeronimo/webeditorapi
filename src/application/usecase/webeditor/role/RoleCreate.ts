@@ -5,8 +5,7 @@ import {
 import { IRoleCreate } from "@application/interface/usecase/webeditor/role";
 import { Messages } from "@application/messages/Messages";
 import { RoleCreateDataModel } from "@application/model/webeditor/role";
-import { ModuleDto } from "@domain/dto/webeditor/ModuleDto";
-import { RoleDto } from "@domain/dto/webeditor/RoleDto";
+import { ModuleDto, RoleDto } from "@domain/dto/webeditor";
 import { Role } from "@domain/entity/webeditor/Role";
 import { inject } from "@infra/di/Inject";
 

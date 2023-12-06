@@ -1,5 +1,5 @@
 import { UserCreateDataModel } from "@application/model/webeditor/user";
-import { UserDto } from "@domain/dto/webeditor/UserDto";
+import { UserDto } from "@domain/dto/webeditor";
 
 export interface IUserCreate {
   executeAsync(

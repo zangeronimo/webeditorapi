@@ -1,27 +1,37 @@
-import { HasRole } from "@application/usecase/webeditor/HasRole";
-import { MakeLogin } from "@application/usecase/webeditor/MakeLogin";
-import { RefreshToken } from "@application/usecase/webeditor/RefreshToken";
-import { CompanyCreate } from "@application/usecase/webeditor/company/CompanyCreate";
-import { CompanyDelete } from "@application/usecase/webeditor/company/CompanyDelete";
-import { CompanyGetAll } from "@application/usecase/webeditor/company/CompanyGetAll";
-import { CompanyGetById } from "@application/usecase/webeditor/company/CompanyGetById";
-import { CompanyUpdate } from "@application/usecase/webeditor/company/CompanyUpdate";
-import { ModuleCreate } from "@application/usecase/webeditor/module/ModuleCreate";
-import { ModuleDelete } from "@application/usecase/webeditor/module/ModuleDelete";
-import { ModuleGetAll } from "@application/usecase/webeditor/module/ModuleGetAll";
-import { ModuleGetAllByCompany } from "@application/usecase/webeditor/module/ModuleGetAllByCompany";
-import { ModuleGetById } from "@application/usecase/webeditor/module/ModuleGetById";
-import { ModuleUpdate } from "@application/usecase/webeditor/module/ModuleUpdate";
-import { RoleCreate } from "@application/usecase/webeditor/role/RoleCreate";
-import { RoleDelete } from "@application/usecase/webeditor/role/RoleDelete";
-import { RoleGetAll } from "@application/usecase/webeditor/role/RoleGetAll";
-import { RoleGetById } from "@application/usecase/webeditor/role/RoleGetById";
-import { RoleUpdate } from "@application/usecase/webeditor/role/RoleUpdate";
-import { UserCreate } from "@application/usecase/webeditor/user/UserCreate";
-import { UserDelete } from "@application/usecase/webeditor/user/UserDelete";
-import { UserGetAll } from "@application/usecase/webeditor/user/UserGetAll";
-import { UserGetById } from "@application/usecase/webeditor/user/UserGetById";
-import { UserUpdate } from "@application/usecase/webeditor/user/UserUpdate";
+import {
+  HasRole,
+  MakeLogin,
+  RefreshToken,
+} from "@application/usecase/webeditor";
+import {
+  CompanyCreate,
+  CompanyDelete,
+  CompanyGetAll,
+  CompanyGetById,
+  CompanyUpdate,
+} from "@application/usecase/webeditor/company";
+import {
+  ModuleCreate,
+  ModuleDelete,
+  ModuleGetAll,
+  ModuleGetAllByCompany,
+  ModuleGetById,
+  ModuleUpdate,
+} from "@application/usecase/webeditor/module";
+import {
+  RoleCreate,
+  RoleDelete,
+  RoleGetAll,
+  RoleGetById,
+  RoleUpdate,
+} from "@application/usecase/webeditor/role";
+import {
+  UserCreate,
+  UserDelete,
+  UserGetAll,
+  UserGetById,
+  UserUpdate,
+} from "@application/usecase/webeditor/user";
 import { PgPromiseContext } from "@infra/context/PgPromiseContext";
 import { BCryptHashProvider } from "@infra/provider/BCryptHashProvider";
 import { JwtWebTokenProvider } from "@infra/provider/JwtWebTokenProvider";

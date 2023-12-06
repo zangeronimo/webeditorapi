@@ -5,8 +5,7 @@ import { ExtensionDI } from "@infra/di/ExtensionDI";
 import cors from "cors";
 import express from "express";
 
-Extensions.noAccents;
-
+Extensions.init();
 const dbContext = new PgPromiseContext();
 ExtensionDI.init(dbContext);
 

@@ -2,7 +2,7 @@ import {
   IModuleRepository,
   IRoleRepository,
 } from "@application/interface/repository/webeditor";
-import { IRoleGetAll } from "@application/interface/usecase/webeditor/role/IRoleGetAll";
+import { IRoleGetAll } from "@application/interface/usecase/webeditor/role";
 import { GetAllRoleFilterModel } from "@application/model/webeditor/role/GetAllRoleFilterModel";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 import { ModuleDto } from "@domain/dto/webeditor/ModuleDto";

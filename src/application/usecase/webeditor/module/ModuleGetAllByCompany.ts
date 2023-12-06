@@ -2,7 +2,7 @@ import {
   IModuleRepository,
   IRoleRepository,
 } from "@application/interface/repository/webeditor";
-import { IModuleGetAllByCompany } from "@application/interface/usecase/webeditor/module/IModuleGetAllByCompany";
+import { IModuleGetAllByCompany } from "@application/interface/usecase/webeditor/module";
 import { ModuleAndRoleForCompanyDto } from "@domain/dto/webeditor/ModuleAndRoleForCompanyDto";
 import { RoleDto } from "@domain/dto/webeditor/RoleDto";
 import { inject } from "@infra/di/Inject";

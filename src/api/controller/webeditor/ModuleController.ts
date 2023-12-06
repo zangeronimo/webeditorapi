@@ -1,10 +1,12 @@
 import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
-import { IModuleCreate } from "@application/interface/usecase/webeditor/module/IModuleCreate";
-import { IModuleDelete } from "@application/interface/usecase/webeditor/module/IModuleDelete";
-import { IModuleGetAll } from "@application/interface/usecase/webeditor/module/IModuleGetAll";
-import { IModuleGetAllByCompany } from "@application/interface/usecase/webeditor/module/IModuleGetAllByCompany";
-import { IModuleGetById } from "@application/interface/usecase/webeditor/module/IModuleGetById";
-import { IModuleUpdate } from "@application/interface/usecase/webeditor/module/IModuleUpdate";
+import {
+  IModuleCreate,
+  IModuleDelete,
+  IModuleGetAll,
+  IModuleGetAllByCompany,
+  IModuleGetById,
+  IModuleUpdate,
+} from "@application/interface/usecase/webeditor/module";
 import { GetAllModuleFilterModel } from "@application/model/webeditor/module/GetAllModuleFilterModel";
 import { ModuleCreateDataModel } from "@application/model/webeditor/module/ModuleCreateModel";
 import { ModuleUpdateDataModel } from "@application/model/webeditor/module/ModuleUpdateModel";

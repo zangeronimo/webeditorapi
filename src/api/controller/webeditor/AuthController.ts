@@ -1,5 +1,7 @@
-import { IMakeLogin } from "@application/interface/usecase/webeditor/IMakeLogin";
-import { IRefreshToken } from "@application/interface/usecase/webeditor/IRefreshToken";
+import {
+  IMakeLogin,
+  IRefreshToken,
+} from "@application/interface/usecase/webeditor";
 import { Messages } from "@application/messages/Messages";
 import { inject } from "@infra/di/Inject";
 import { Request, Response, Router } from "express";

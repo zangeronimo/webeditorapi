@@ -2,7 +2,7 @@ import {
   IModuleRepository,
   IRoleRepository,
 } from "@application/interface/repository/webeditor";
-import { IRoleGetById } from "@application/interface/usecase/webeditor/role/IRoleGetById";
+import { IRoleGetById } from "@application/interface/usecase/webeditor/role";
 import { Messages } from "@application/messages/Messages";
 import { ModuleDto } from "@domain/dto/webeditor/ModuleDto";
 import { RoleDto } from "@domain/dto/webeditor/RoleDto";

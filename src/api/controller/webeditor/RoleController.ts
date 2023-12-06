@@ -1,9 +1,11 @@
 import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
-import { IRoleCreate } from "@application/interface/usecase/webeditor/role/IRoleCreate";
-import { IRoleDelete } from "@application/interface/usecase/webeditor/role/IRoleDelete";
-import { IRoleGetAll } from "@application/interface/usecase/webeditor/role/IRoleGetAll";
-import { IRoleGetById } from "@application/interface/usecase/webeditor/role/IRoleGetById";
-import { IRoleUpdate } from "@application/interface/usecase/webeditor/role/IRoleUpdate";
+import {
+  IRoleCreate,
+  IRoleDelete,
+  IRoleGetAll,
+  IRoleGetById,
+  IRoleUpdate,
+} from "@application/interface/usecase/webeditor/role";
 import { GetAllRoleFilterModel } from "@application/model/webeditor/role/GetAllRoleFilterModel";
 import { RoleCreateDataModel } from "@application/model/webeditor/role/RoleCreateModel";
 import { RoleUpdateDataModel } from "@application/model/webeditor/role/RoleUpdateModel";

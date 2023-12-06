@@ -1,5 +1,5 @@
 import { ICompanyRepository } from "@application/interface/repository/webeditor";
-import { ICompanyGetById } from "@application/interface/usecase/webeditor/company/ICompanyGetById";
+import { ICompanyGetById } from "@application/interface/usecase/webeditor/company";
 import { Messages } from "@application/messages/Messages";
 import { CompanyDto } from "@domain/dto/webeditor/CompanyDto";
 import { inject } from "@infra/di/Inject";

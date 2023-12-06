@@ -1,5 +1,5 @@
 import { IUserRepository } from "@application/interface/repository/webeditor";
-import { IHasRole } from "@application/interface/usecase/webeditor/IHasRole";
+import { IHasRole } from "@application/interface/usecase/webeditor";
 import { inject } from "@infra/di/Inject";
 
 export class HasRole implements IHasRole {

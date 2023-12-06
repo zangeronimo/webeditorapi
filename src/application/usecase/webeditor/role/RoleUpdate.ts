@@ -2,7 +2,7 @@ import {
   IModuleRepository,
   IRoleRepository,
 } from "@application/interface/repository/webeditor";
-import { IRoleUpdate } from "@application/interface/usecase/webeditor/role/IRoleUpdate";
+import { IRoleUpdate } from "@application/interface/usecase/webeditor/role";
 import { Messages } from "@application/messages/Messages";
 import { RoleUpdateDataModel } from "@application/model/webeditor/role/RoleUpdateModel";
 import { ModuleDto } from "@domain/dto/webeditor/ModuleDto";

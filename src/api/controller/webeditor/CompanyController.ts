@@ -1,9 +1,11 @@
 import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
-import { ICompanyCreate } from "@application/interface/usecase/webeditor/company/ICompanyCreate";
-import { ICompanyDelete } from "@application/interface/usecase/webeditor/company/ICompanyDelete";
-import { ICompanyGetAll } from "@application/interface/usecase/webeditor/company/ICompanyGetAll";
-import { ICompanyGetById } from "@application/interface/usecase/webeditor/company/ICompanyGetById";
-import { ICompanyUpdate } from "@application/interface/usecase/webeditor/company/ICompanyUpdate";
+import {
+  ICompanyCreate,
+  ICompanyDelete,
+  ICompanyGetAll,
+  ICompanyGetById,
+  ICompanyUpdate,
+} from "@application/interface/usecase/webeditor/company";
 import { CompanyCreateDataModel } from "@application/model/webeditor/company/CompanyCreateModel";
 import { CompanyUpdateDataModel } from "@application/model/webeditor/company/CompanyUpdateModel";
 import { GetAllCompanyFilterModel } from "@application/model/webeditor/company/GetAllCompanyFilterModel";

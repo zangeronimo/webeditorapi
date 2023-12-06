@@ -1,5 +1,5 @@
 import { IModuleRepository } from "@application/interface/repository/webeditor";
-import { IModuleCreate } from "@application/interface/usecase/webeditor/module/IModuleCreate";
+import { IModuleCreate } from "@application/interface/usecase/webeditor/module";
 import { Messages } from "@application/messages/Messages";
 import { ModuleCreateDataModel } from "@application/model/webeditor/module/ModuleCreateModel";
 import { ModuleDto } from "@domain/dto/webeditor/ModuleDto";

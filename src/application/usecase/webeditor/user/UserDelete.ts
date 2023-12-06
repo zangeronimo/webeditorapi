@@ -1,5 +1,5 @@
 import { IUserRepository } from "@application/interface/repository/webeditor";
-import { IUserDelete } from "@application/interface/usecase/webeditor/user/IUserDelete";
+import { IUserDelete } from "@application/interface/usecase/webeditor/user";
 import { Messages } from "@application/messages/Messages";
 import { UserDto } from "@domain/dto/webeditor/UserDto";
 import { inject } from "@infra/di/Inject";

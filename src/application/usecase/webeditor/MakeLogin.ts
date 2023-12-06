@@ -1,6 +1,6 @@
 import { ITokenProvider } from "@application/interface/provider";
 import { IUserRepository } from "@application/interface/repository/webeditor";
-import { IMakeLogin } from "@application/interface/usecase/webeditor/IMakeLogin";
+import { IMakeLogin } from "@application/interface/usecase/webeditor";
 import { Messages } from "@application/messages/Messages";
 import { AuthDto } from "@domain/dto/webeditor/AuthDto";
 import { inject } from "@infra/di/Inject";

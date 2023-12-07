@@ -5,10 +5,6 @@ import { DbContext } from "@infra/context";
 
 export class CompanyRepository implements ICompanyRepository {
   constructor(readonly db: DbContext) {}
-  updateAsync(company: Company): Promise<Company> {
-    throw new Error("Method not implemented.");
-  }
-
   async getByIdAsync(id: string): Promise<Company | null> {
     const [companyData] = await this.db.queryAsync(
       `select
@@ -81,7 +77,7 @@ export class CompanyRepository implements ICompanyRepository {
     return company;
   }
 
-  async update(company: Company): Promise<Company> {
+  async updateAsync(company: Company): Promise<Company> {
     await this.db.queryAsync(
       `delete from webeditor_companies_has_webeditor_modules where webeditor_companies_id = $1`,
       [company.id]

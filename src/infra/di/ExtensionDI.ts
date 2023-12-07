@@ -33,8 +33,7 @@ import {
   UserUpdate,
 } from "@application/usecase/webeditor/user";
 import { PgPromiseContext } from "@infra/context";
-import { BCryptHashProvider } from "@infra/provider/BCryptHashProvider";
-import { JwtWebTokenProvider } from "@infra/provider/JwtWebTokenProvider";
+import { BCryptHashProvider, JwtWebTokenProvider } from "@infra/provider";
 import { CompanyRepository } from "@infra/repository/webeditor/CompanyRepository";
 import { ModuleRepository } from "@infra/repository/webeditor/ModuleRepository";
 import { RoleRepository } from "@infra/repository/webeditor/RoleRepository";

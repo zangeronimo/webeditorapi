@@ -6,7 +6,7 @@ import { IRoleUpdate } from "@application/interface/usecase/webeditor/role";
 import { Messages } from "@application/messages/Messages";
 import { RoleUpdateDataModel } from "@application/model/webeditor/role";
 import { ModuleDto, RoleDto } from "@domain/dto/webeditor";
-import { inject } from "@infra/di/Inject";
+import { inject } from "@infra/di";
 
 export class RoleUpdate implements IRoleUpdate {
   @inject("IModuleRepository")

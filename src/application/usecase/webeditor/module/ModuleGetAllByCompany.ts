@@ -4,7 +4,7 @@ import {
 } from "@application/interface/repository/webeditor";
 import { IModuleGetAllByCompany } from "@application/interface/usecase/webeditor/module";
 import { ModuleAndRoleForCompanyDto, RoleDto } from "@domain/dto/webeditor";
-import { inject } from "@infra/di/Inject";
+import { inject } from "@infra/di";
 
 export class ModuleGetAllByCompany implements IModuleGetAllByCompany {
   @inject("IModuleRepository")

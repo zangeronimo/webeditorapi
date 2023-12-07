@@ -3,7 +3,7 @@ import {
   IRefreshToken,
 } from "@application/interface/usecase/webeditor";
 import { Messages } from "@application/messages/Messages";
-import { inject } from "@infra/di/Inject";
+import { inject } from "@infra/di";
 import { Request, Response, Router } from "express";
 
 export class AuthController {

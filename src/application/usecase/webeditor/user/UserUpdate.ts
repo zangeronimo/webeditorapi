@@ -3,7 +3,7 @@ import { IUserUpdate } from "@application/interface/usecase/webeditor/user";
 import { Messages } from "@application/messages/Messages";
 import { UserUpdateDataModel } from "@application/model/webeditor/user";
 import { UserDto } from "@domain/dto/webeditor";
-import { inject } from "@infra/di/Inject";
+import { inject } from "@infra/di";
 
 export class UserUpdate implements IUserUpdate {
   @inject("IUserRepository")

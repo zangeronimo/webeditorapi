@@ -5,7 +5,7 @@ import {
 import { IRoleDelete } from "@application/interface/usecase/webeditor/role";
 import { Messages } from "@application/messages/Messages";
 import { ModuleDto, RoleDto } from "@domain/dto/webeditor";
-import { inject } from "@infra/di/Inject";
+import { inject } from "@infra/di";
 
 export class RoleDelete implements IRoleDelete {
   @inject("IModuleRepository")

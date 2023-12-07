@@ -7,7 +7,7 @@ import { Messages } from "@application/messages/Messages";
 import { RoleCreateDataModel } from "@application/model/webeditor/role";
 import { ModuleDto, RoleDto } from "@domain/dto/webeditor";
 import { Role } from "@domain/entity/webeditor";
-import { inject } from "@infra/di/Inject";
+import { inject } from "@infra/di";
 
 export class RoleCreate implements IRoleCreate {
   @inject("IModuleRepository")

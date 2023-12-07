@@ -11,7 +11,7 @@ import {
   RoleCreateDataModel,
   RoleUpdateDataModel,
 } from "@application/model/webeditor/role";
-import { inject } from "@infra/di/Inject";
+import { inject } from "@infra/di";
 import { Request, Response, Router } from "express";
 
 export class RoleController {

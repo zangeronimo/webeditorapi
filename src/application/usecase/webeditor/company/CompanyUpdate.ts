@@ -3,7 +3,7 @@ import { ICompanyUpdate } from "@application/interface/usecase/webeditor/company
 import { Messages } from "@application/messages/Messages";
 import { CompanyUpdateDataModel } from "@application/model/webeditor/company";
 import { CompanyDto } from "@domain/dto/webeditor";
-import { inject } from "@infra/di/Inject";
+import { inject } from "@infra/di";
 
 export class CompanyUpdate implements ICompanyUpdate {
   @inject("ICompanyRepository")

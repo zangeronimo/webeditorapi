@@ -4,7 +4,7 @@ import { GetAllCompanyFilterModel } from "@application/model/webeditor/company";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 import { CompanyDto } from "@domain/dto/webeditor";
 import { Company } from "@domain/entity/webeditor";
-import { inject } from "@infra/di/Inject";
+import { inject } from "@infra/di";
 
 export class CompanyGetAll implements ICompanyGetAll {
   @inject("ICompanyRepository")

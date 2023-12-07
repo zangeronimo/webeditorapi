@@ -3,7 +3,7 @@ import { IUserRepository } from "@application/interface/repository/webeditor";
 import { IMakeLogin } from "@application/interface/usecase/webeditor";
 import { Messages } from "@application/messages/Messages";
 import { AuthDto } from "@domain/dto/webeditor";
-import { inject } from "@infra/di/Inject";
+import { inject } from "@infra/di";
 
 export class MakeLogin implements IMakeLogin {
   @inject("ITokenProvider")

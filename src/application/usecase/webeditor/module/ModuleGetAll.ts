@@ -4,7 +4,7 @@ import { GetAllModuleFilterModel } from "@application/model/webeditor/module";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 import { ModuleDto } from "@domain/dto/webeditor";
 import { Module } from "@domain/entity/webeditor";
-import { inject } from "@infra/di/Inject";
+import { inject } from "@infra/di";
 
 export class ModuleGetAll implements IModuleGetAll {
   @inject("IModuleRepository")

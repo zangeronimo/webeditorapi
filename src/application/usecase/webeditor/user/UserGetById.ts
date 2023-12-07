@@ -2,7 +2,7 @@ import { IUserRepository } from "@application/interface/repository/webeditor";
 import { IUserGetById } from "@application/interface/usecase/webeditor/user";
 import { Messages } from "@application/messages/Messages";
 import { UserDto } from "@domain/dto/webeditor";
-import { inject } from "@infra/di/Inject";
+import { inject } from "@infra/di";
 
 export class UserGetById implements IUserGetById {
   @inject("IUserRepository")

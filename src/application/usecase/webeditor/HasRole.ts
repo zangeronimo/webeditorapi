@@ -1,6 +1,6 @@
 import { IUserRepository } from "@application/interface/repository/webeditor";
 import { IHasRole } from "@application/interface/usecase/webeditor";
-import { inject } from "@infra/di/Inject";
+import { inject } from "@infra/di";
 
 export class HasRole implements IHasRole {
   @inject("IUserRepository")

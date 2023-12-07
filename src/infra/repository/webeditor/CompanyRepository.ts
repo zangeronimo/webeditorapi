@@ -1,7 +1,7 @@
 import { ICompanyRepository } from "@application/interface/repository/webeditor";
 import { GetAllCompanyFilterModel } from "@application/model/webeditor/company";
 import { Company, Module } from "@domain/entity/webeditor";
-import { DbContext } from "@infra/context/DbContext";
+import { DbContext } from "@infra/context";
 
 export class CompanyRepository implements ICompanyRepository {
   constructor(readonly db: DbContext) {}

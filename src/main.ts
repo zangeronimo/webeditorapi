@@ -1,6 +1,6 @@
 import { MainController } from "@api/controller/MainController";
 import { Extensions } from "@application/extension";
-import { PgPromiseContext } from "@infra/context/PgPromiseContext";
+import { PgPromiseContext } from "@infra/context";
 import { ExtensionDI } from "@infra/di/ExtensionDI";
 import cors from "cors";
 import express from "express";

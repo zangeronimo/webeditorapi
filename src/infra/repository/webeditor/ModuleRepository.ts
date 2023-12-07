@@ -1,7 +1,7 @@
 import { IModuleRepository } from "@application/interface/repository/webeditor";
 import { GetAllModuleFilterModel } from "@application/model/webeditor/module";
 import { Module } from "@domain/entity/webeditor";
-import { DbContext } from "@infra/context/DbContext";
+import { DbContext } from "@infra/context";
 
 export class ModuleRepository implements IModuleRepository {
   constructor(readonly db: DbContext) {}

@@ -1,9 +1,10 @@
+import cors from "cors";
+import express from "express";
+
 import { MainController } from "@api/controller/MainController";
 import { Extensions } from "@application/extension";
 import { PgPromiseContext } from "@infra/context";
-import { ExtensionDI } from "@infra/di";
-import cors from "cors";
-import express from "express";
+import { ExtensionDI } from "@infra/di/ExtensionDI";
 
 Extensions.init();
 const dbContext = new PgPromiseContext();

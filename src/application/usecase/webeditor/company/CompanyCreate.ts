@@ -4,7 +4,7 @@ import { Messages } from "@application/messages/Messages";
 import { CompanyCreateDataModel } from "@application/model/webeditor/company";
 import { CompanyDto } from "@domain/dto/webeditor";
 import { Company } from "@domain/entity/webeditor";
-import { inject } from "@infra/di";
+import { inject } from "@infra/di/Inject";
 
 export class CompanyCreate implements ICompanyCreate {
   @inject("ICompanyRepository")

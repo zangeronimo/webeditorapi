@@ -4,7 +4,7 @@ import { Messages } from "@application/messages/Messages";
 import { UserCreateDataModel } from "@application/model/webeditor/user";
 import { UserDto } from "@domain/dto/webeditor";
 import { User } from "@domain/entity/webeditor";
-import { inject } from "@infra/di";
+import { inject } from "@infra/di/Inject";
 
 export class UserCreate implements IUserCreate {
   @inject("IUserRepository")

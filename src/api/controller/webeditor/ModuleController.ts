@@ -12,7 +12,7 @@ import {
   ModuleCreateDataModel,
   ModuleUpdateDataModel,
 } from "@application/model/webeditor/module";
-import { inject } from "@infra/di";
+import { inject } from "@infra/di/Inject";
 import { Request, Response, Router } from "express";
 
 export class ModuleController {

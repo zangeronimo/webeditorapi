@@ -11,7 +11,7 @@ import {
   CompanyUpdateDataModel,
   GetAllCompanyFilterModel,
 } from "@application/model/webeditor/company";
-import { inject } from "@infra/di";
+import { inject } from "@infra/di/Inject";
 import { Request, Response, Router } from "express";
 
 export class CompanyController {

@@ -3,7 +3,7 @@ import {
   UserCreateDataModel,
   UserUpdateDataModel,
 } from "@application/model/webeditor/user";
-import { inject } from "@infra/di";
+import { inject } from "@infra/di/Inject";
 import { Role } from "./Role";
 
 export class User {

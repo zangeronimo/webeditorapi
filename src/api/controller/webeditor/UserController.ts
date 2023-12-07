@@ -11,7 +11,7 @@ import {
   UserCreateDataModel,
   UserUpdateDataModel,
 } from "@application/model/webeditor/user";
-import { inject } from "@infra/di";
+import { inject } from "@infra/di/Inject";
 import { Request, Response, Router } from "express";
 
 export class UserController {

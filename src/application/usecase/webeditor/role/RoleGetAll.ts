@@ -6,7 +6,7 @@ import { IRoleGetAll } from "@application/interface/usecase/webeditor/role";
 import { GetAllRoleFilterModel } from "@application/model/webeditor/role";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 import { ModuleDto, RoleDto } from "@domain/dto/webeditor";
-import { inject } from "@infra/di";
+import { inject } from "@infra/di/Inject";
 
 export class RoleGetAll implements IRoleGetAll {
   @inject("IModuleRepository")

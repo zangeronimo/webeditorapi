@@ -40,7 +40,7 @@ import {
   RoleRepository,
   UserRepository,
 } from "@infra/repository/webeditor";
-import { Registry } from "./";
+import { Registry } from "./Registry";
 
 export class ExtensionDI {
   static init = (dbContext: PgPromiseContext) => {

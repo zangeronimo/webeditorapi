@@ -5,7 +5,7 @@ import {
 import { IRoleGetById } from "@application/interface/usecase/webeditor/role";
 import { Messages } from "@application/messages/Messages";
 import { ModuleDto, RoleDto } from "@domain/dto/webeditor";
-import { inject } from "@infra/di";
+import { inject } from "@infra/di/Inject";
 
 export class RoleGetById implements IRoleGetById {
   @inject("IModuleRepository")

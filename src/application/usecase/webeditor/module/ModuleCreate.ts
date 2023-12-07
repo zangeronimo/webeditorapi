@@ -4,7 +4,7 @@ import { Messages } from "@application/messages/Messages";
 import { ModuleCreateDataModel } from "@application/model/webeditor/module";
 import { ModuleDto } from "@domain/dto/webeditor";
 import { Module } from "@domain/entity/webeditor";
-import { inject } from "@infra/di";
+import { inject } from "@infra/di/Inject";
 
 export class ModuleCreate implements IModuleCreate {
   @inject("IModuleRepository")

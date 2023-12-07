@@ -3,7 +3,7 @@ import { IModuleUpdate } from "@application/interface/usecase/webeditor/module";
 import { Messages } from "@application/messages/Messages";
 import { ModuleUpdateDataModel } from "@application/model/webeditor/module";
 import { ModuleDto } from "@domain/dto/webeditor";
-import { inject } from "@infra/di";
+import { inject } from "@infra/di/Inject";
 
 export class ModuleUpdate implements IModuleUpdate {
   @inject("IModuleRepository")

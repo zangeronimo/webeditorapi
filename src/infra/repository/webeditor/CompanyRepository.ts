@@ -13,7 +13,7 @@ export class CompanyRepository implements ICompanyRepository {
        where id = $1 and deleted_at is null`,
       [id]
     );
-    const modulesData = await this.getModulesFromCompany(companyData?.id);
+    const modulesData = await this.getModulesFromCompanyAsync(companyData?.id);
     return companyData
       ? Company.restore(companyData.id, companyData.name, modulesData)
       : null;
@@ -27,7 +27,7 @@ export class CompanyRepository implements ICompanyRepository {
        where name = $1 and deleted_at is null`,
       [name]
     );
-    const modulesData = await this.getModulesFromCompany(companyData?.id);
+    const modulesData = await this.getModulesFromCompanyAsync(companyData?.id);
     return companyData
       ? Company.restore(companyData.id, companyData.name, modulesData)
       : null;
@@ -58,7 +58,9 @@ export class CompanyRepository implements ICompanyRepository {
     );
     const companies: Company[] = [];
     for (let i = 0; i < companiesData.length; i++) {
-      const modulesData = await this.getModulesFromCompany(companiesData[i].id);
+      const modulesData = await this.getModulesFromCompanyAsync(
+        companiesData[i].id
+      );
       const company = Company.restore(
         companiesData[i].id,
         companiesData[i].name,
@@ -99,7 +101,9 @@ export class CompanyRepository implements ICompanyRepository {
     return company;
   }
 
-  private async getModulesFromCompany(companyId: string): Promise<Module[]> {
+  private async getModulesFromCompanyAsync(
+    companyId: string
+  ): Promise<Module[]> {
     const modulesData = await this.db.queryAsync(
       `select
         m.id,

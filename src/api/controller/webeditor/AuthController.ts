@@ -18,18 +18,18 @@ export class AuthController {
     this.router.post("/", this.auth);
   }
 
-  private auth = async (req: Request, res: Response) => {
+  private auth = (req: Request, res: Response) => {
     try {
       const { grant_type } = req.body;
-      if (grant_type === "password") return this.login(req, res);
-      if (grant_type === "refresh_token") return this.refresh(req, res);
+      if (grant_type === "password") return this.loginAsync(req, res);
+      if (grant_type === "refresh_token") return this.refreshAsync(req, res);
       throw new Error(Messages.invalidGrantType);
     } catch (e: any) {
       return res.status(400).json(e.message);
     }
   };
 
-  private login = async (req: Request, res: Response) => {
+  private loginAsync = async (req: Request, res: Response) => {
     try {
       const { username, password } = req.body;
       const { token, refreshToken } = await this.makeLogin?.executeAsync(
@@ -48,7 +48,7 @@ export class AuthController {
     }
   };
 
-  private refresh = async (req: Request, res: Response) => {
+  private refreshAsync = async (req: Request, res: Response) => {
     try {
       const refresh = req.headers.cookie
         ?.split("; ")

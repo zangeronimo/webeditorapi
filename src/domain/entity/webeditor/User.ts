@@ -62,7 +62,7 @@ export class User {
     return new User(id, name, email, password, roles, companyId);
   }
 
-  static async create(
+  static async createAsync(
     userData: UserCreateDataModel,
     companyId: string
   ): Promise<User> {
@@ -74,11 +74,11 @@ export class User {
       userData.roles,
       companyId
     );
-    await user.setPassword(userData.password);
+    await user.setPasswordAsync(userData.password);
     return user;
   }
 
-  private async setPassword(password: string) {
+  private async setPasswordAsync(password: string) {
     this._password = await this._hashProvider?.generateHashAsync(password)!;
   }
 
@@ -95,7 +95,7 @@ export class User {
     this._email = userData.email;
     this._roles = userData.roles;
     if (!!userData.password) {
-      await this.setPassword(userData.password);
+      await this.setPasswordAsync(userData.password);
     }
   }
 }

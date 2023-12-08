@@ -7,7 +7,7 @@ export class EnsureHasRole {
   @inject("IHasRole")
   hasRole?: IHasRole;
 
-  execute = (role: string) => {
+  executeAsync = (role: string) => {
     return async (
       request: Request,
       response: Response,

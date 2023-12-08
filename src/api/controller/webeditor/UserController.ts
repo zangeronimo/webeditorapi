@@ -35,36 +35,36 @@ export class UserController {
     this.router.get(
       "/",
       ensureAuthenticated.execute,
-      ensureHasRole.execute("WEBEDITOR_USER_VIEW"),
-      this.getAll
+      ensureHasRole.executeAsync("WEBEDITOR_USER_VIEW"),
+      this.getAllAsync
     );
     this.router.get(
       "/:id",
       ensureAuthenticated.execute,
-      ensureHasRole.execute("WEBEDITOR_USER_VIEW"),
-      this.getById
+      ensureHasRole.executeAsync("WEBEDITOR_USER_VIEW"),
+      this.getByIdAsync
     );
     this.router.post(
       "",
       ensureAuthenticated.execute,
-      ensureHasRole.execute("WEBEDITOR_USER_UPDATE"),
-      this.create
+      ensureHasRole.executeAsync("WEBEDITOR_USER_UPDATE"),
+      this.createAsync
     );
     this.router.put(
       "/:id",
       ensureAuthenticated.execute,
-      ensureHasRole.execute("WEBEDITOR_USER_UPDATE"),
-      this.update
+      ensureHasRole.executeAsync("WEBEDITOR_USER_UPDATE"),
+      this.updateAsync
     );
     this.router.delete(
       "/:id",
       ensureAuthenticated.execute,
-      ensureHasRole.execute("WEBEDITOR_USER_DELETE"),
-      this.delete
+      ensureHasRole.executeAsync("WEBEDITOR_USER_DELETE"),
+      this.deleteAsync
     );
   }
 
-  private getAll = async (req: Request, res: Response) => {
+  private getAllAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
       const getAllUserFilterModel = new GetAllUserFilterModel(req.query);
@@ -78,7 +78,7 @@ export class UserController {
     }
   };
 
-  private getById = async (req: Request, res: Response) => {
+  private getByIdAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
       const { id } = req.params;
@@ -89,7 +89,7 @@ export class UserController {
     }
   };
 
-  private create = async (req: Request, res: Response) => {
+  private createAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
       const { name, email, password, roles } = req.body;
@@ -109,7 +109,7 @@ export class UserController {
     }
   };
 
-  private update = async (req: Request, res: Response) => {
+  private updateAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
       const { id, name, email, password, roles } = req.body;
@@ -130,7 +130,7 @@ export class UserController {
     }
   };
 
-  private delete = async (req: Request, res: Response) => {
+  private deleteAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
       const { id } = req.params;

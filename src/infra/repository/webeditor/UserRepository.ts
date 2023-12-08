@@ -128,7 +128,7 @@ export class UserRepository implements IUserRepository {
     );
   }
 
-  private async addRolesForUser(userId: string, roles: Role[]) {
+  private async addRolesForUserAsync(userId: string, roles: Role[]) {
     for (let i = 0; i < roles.length; i++) {
       await this.db.queryAsync(
         `insert into webeditor_users_has_webeditor_roles (webeditor_users_id, webeditor_roles_id) values ($1, $2)`,
@@ -161,7 +161,7 @@ export class UserRepository implements IUserRepository {
         user.updatedAt,
       ]
     );
-    await this.addRolesForUser(user.id, user.roles);
+    await this.addRolesForUserAsync(user.id, user.roles);
     return user;
   }
 
@@ -170,7 +170,7 @@ export class UserRepository implements IUserRepository {
       "insert into webeditor_users (id, name, email, password, webeditor_companies_id) values ($1, $2, $3, $4, $5)",
       [user.id, user.name, user.email, user.password, user.companyId]
     );
-    await this.addRolesForUser(user.id, user.roles);
+    await this.addRolesForUserAsync(user.id, user.roles);
     return user;
   }
 }

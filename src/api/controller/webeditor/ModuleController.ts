@@ -38,42 +38,42 @@ export class ModuleController {
     this.router.get(
       "/get-all-by-company",
       ensureAuthenticated.execute,
-      ensureHasRole.execute("WEBEDITOR_MODULE_VIEW"),
-      this.getAllByCompany
+      ensureHasRole.executeAsync("WEBEDITOR_MODULE_VIEW"),
+      this.getAllByCompanyAsync
     );
     this.router.get(
       "/",
       ensureAuthenticated.execute,
-      ensureHasRole.execute("WEBEDITOR_MODULE_VIEW"),
-      this.getAll
+      ensureHasRole.executeAsync("WEBEDITOR_MODULE_VIEW"),
+      this.getAllAsync
     );
     this.router.get(
       "/:id",
       ensureAuthenticated.execute,
-      ensureHasRole.execute("WEBEDITOR_MODULE_VIEW"),
-      this.getById
+      ensureHasRole.executeAsync("WEBEDITOR_MODULE_VIEW"),
+      this.getByIdAsync
     );
     this.router.post(
       "",
       ensureAuthenticated.execute,
-      ensureHasRole.execute("WEBEDITOR_MODULE_UPDATE"),
-      this.create
+      ensureHasRole.executeAsync("WEBEDITOR_MODULE_UPDATE"),
+      this.createAsync
     );
     this.router.put(
       "/:id",
       ensureAuthenticated.execute,
-      ensureHasRole.execute("WEBEDITOR_MODULE_UPDATE"),
-      this.update
+      ensureHasRole.executeAsync("WEBEDITOR_MODULE_UPDATE"),
+      this.updateAsync
     );
     this.router.delete(
       "/:id",
       ensureAuthenticated.execute,
-      ensureHasRole.execute("WEBEDITOR_MODULE_DELETE"),
-      this.delete
+      ensureHasRole.executeAsync("WEBEDITOR_MODULE_DELETE"),
+      this.deleteAsync
     );
   }
 
-  private getAllByCompany = async (req: Request, res: Response) => {
+  private getAllByCompanyAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
       const modules = await this.moduleGetAllByCompany?.executeAsync(company);
@@ -83,7 +83,7 @@ export class ModuleController {
     }
   };
 
-  private getAll = async (req: Request, res: Response) => {
+  private getAllAsync = async (req: Request, res: Response) => {
     try {
       const getAllModuleFilterModel = new GetAllModuleFilterModel(req.query);
       const modules = await this.moduleGetAll?.executeAsync(
@@ -95,7 +95,7 @@ export class ModuleController {
     }
   };
 
-  private getById = async (req: Request, res: Response) => {
+  private getByIdAsync = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
       const module = await this.moduleGetById?.executeAsync(id);
@@ -105,7 +105,7 @@ export class ModuleController {
     }
   };
 
-  private create = async (req: Request, res: Response) => {
+  private createAsync = async (req: Request, res: Response) => {
     try {
       const { name, label, order, moduleId } = req.body;
       const moduleCreateDataModel = new ModuleCreateDataModel(name);
@@ -118,7 +118,7 @@ export class ModuleController {
     }
   };
 
-  private update = async (req: Request, res: Response) => {
+  private updateAsync = async (req: Request, res: Response) => {
     try {
       const { id, name, label, order, moduleId } = req.body;
       const moduleUpdateDataModel = new ModuleUpdateDataModel(id, name);
@@ -131,7 +131,7 @@ export class ModuleController {
     }
   };
 
-  private delete = async (req: Request, res: Response) => {
+  private deleteAsync = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
       const module = await this.moduleDelete?.executeAsync(id);

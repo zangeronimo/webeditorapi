@@ -1,6 +1,7 @@
 import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
-import { ClientController } from "./ClientController";
 import { Router } from "express";
+import { ClientController } from "./ClientController";
+import { ProjectController } from "./ProjectController";
 
 export class TimeSheetRouters {
   static init = (
@@ -12,7 +13,12 @@ export class TimeSheetRouters {
       ensureAuthenticated,
       ensureHasRole
     );
+    const projectController = new ProjectController(
+      ensureAuthenticated,
+      ensureHasRole
+    );
 
     router.use("/timesheet/client", clientController.router);
+    router.use("/timesheet/project", projectController.router);
   };
 }

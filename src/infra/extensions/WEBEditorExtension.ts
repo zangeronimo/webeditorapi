@@ -1,57 +1,43 @@
 import {
-  HasRole,
-  MakeLogin,
-  RefreshToken,
-} from "@application/usecase/webeditor";
-import {
-  CompanyCreate,
-  CompanyDelete,
   CompanyGetAll,
   CompanyGetById,
+  CompanyCreate,
   CompanyUpdate,
+  CompanyDelete,
 } from "@application/usecase/webeditor/company";
 import {
-  ModuleCreate,
-  ModuleDelete,
-  ModuleGetAll,
   ModuleGetAllByCompany,
+  ModuleGetAll,
   ModuleGetById,
+  ModuleCreate,
   ModuleUpdate,
+  ModuleDelete,
 } from "@application/usecase/webeditor/module";
 import {
-  RoleCreate,
-  RoleDelete,
   RoleGetAll,
   RoleGetById,
+  RoleCreate,
   RoleUpdate,
+  RoleDelete,
 } from "@application/usecase/webeditor/role";
 import {
-  UserCreate,
-  UserDelete,
   UserGetAll,
   UserGetById,
+  UserCreate,
   UserUpdate,
+  UserDelete,
 } from "@application/usecase/webeditor/user";
-import { PgPromiseContext } from "@infra/context";
-import { BCryptHashProvider, JwtWebTokenProvider } from "@infra/provider";
+import { Registry } from "../di/Registry";
+import { DbContext } from "@infra/context";
 import {
+  UserRepository,
+  RoleRepository,
   CompanyRepository,
   ModuleRepository,
-  RoleRepository,
-  UserRepository,
 } from "@infra/repository/webeditor";
-import { Registry } from "./Registry";
-import {
-  ClientCreate,
-  ClientDelete,
-  ClientGetAll,
-  ClientGetById,
-  ClientUpdate,
-} from "@application/usecase/timesheet/client";
-import { ClientRepository } from "@infra/repository/timesheet";
 
-export class ExtensionDI {
-  static init = (dbContext: PgPromiseContext) => {
+export class WEBEditorExtension {
+  static init(dbContext: DbContext) {
     // Registry Repositories
     Registry.getInstance().provide(
       "IUserRepository",
@@ -70,17 +56,7 @@ export class ExtensionDI {
       new ModuleRepository(dbContext)
     );
 
-    Registry.getInstance().provide(
-      "IClientRepository",
-      new ClientRepository(dbContext)
-    );
-    // Registry Providers
-    Registry.getInstance().provide("IMakeLogin", new MakeLogin());
-    Registry.getInstance().provide("IRefreshToken", new RefreshToken());
-    Registry.getInstance().provide("IHasRole", new HasRole());
-    Registry.getInstance().provide("IHashProvider", new BCryptHashProvider());
-    Registry.getInstance().provide("ITokenProvider", new JwtWebTokenProvider());
-    // Registry Company UseCases
+    // Registry Company useCases
     Registry.getInstance().provide("ICompanyGetAll", new CompanyGetAll());
     Registry.getInstance().provide("ICompanyGetById", new CompanyGetById());
     Registry.getInstance().provide("ICompanyCreate", new CompanyCreate());
@@ -108,12 +84,5 @@ export class ExtensionDI {
     Registry.getInstance().provide("IUserCreate", new UserCreate());
     Registry.getInstance().provide("IUserUpdate", new UserUpdate());
     Registry.getInstance().provide("IUserDelete", new UserDelete());
-
-    // Registry Client useCases
-    Registry.getInstance().provide("IClientGetAll", new ClientGetAll());
-    Registry.getInstance().provide("IClientGetById", new ClientGetById());
-    Registry.getInstance().provide("IClientCreate", new ClientCreate());
-    Registry.getInstance().provide("IClientUpdate", new ClientUpdate());
-    Registry.getInstance().provide("IClientDelete", new ClientDelete());
-  };
+  }
 }

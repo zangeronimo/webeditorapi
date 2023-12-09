@@ -1,4 +1,4 @@
-import { Client } from "@domain/entity/timesheet/Client";
+import { Client } from "@domain/entity/timesheet";
 
 export class ClientDto {
   id: string;

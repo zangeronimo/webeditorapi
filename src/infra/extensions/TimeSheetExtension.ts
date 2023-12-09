@@ -13,6 +13,13 @@ import {
   EpicUpdate,
 } from "@application/usecase/timesheet/epic";
 import {
+  PbiCreate,
+  PbiDelete,
+  PbiGetAll,
+  PbiGetById,
+  PbiUpdate,
+} from "@application/usecase/timesheet/pbi";
+import {
   ProjectCreate,
   ProjectDelete,
   ProjectGetAll,
@@ -22,9 +29,10 @@ import {
 import { DbContext } from "@infra/context";
 import {
   ClientRepository,
+  EpicRepository,
+  PbiRepository,
   ProjectRepository,
 } from "@infra/repository/timesheet";
-import { EpicRepository } from "@infra/repository/timesheet/EpicRepository";
 import { Registry } from "../di/Registry";
 
 export class TimeSheetExtension {
@@ -41,6 +49,10 @@ export class TimeSheetExtension {
     Registry.getInstance().provide(
       "IEpicRepository",
       new EpicRepository(dbContext)
+    );
+    Registry.getInstance().provide(
+      "IPbiRepository",
+      new PbiRepository(dbContext)
     );
 
     // Registry Client useCases
@@ -63,5 +75,12 @@ export class TimeSheetExtension {
     Registry.getInstance().provide("IEpicCreate", new EpicCreate());
     Registry.getInstance().provide("IEpicUpdate", new EpicUpdate());
     Registry.getInstance().provide("IEpicDelete", new EpicDelete());
+
+    // Registry Pbi useCases
+    Registry.getInstance().provide("IPbiGetAll", new PbiGetAll());
+    Registry.getInstance().provide("IPbiGetById", new PbiGetById());
+    Registry.getInstance().provide("IPbiCreate", new PbiCreate());
+    Registry.getInstance().provide("IPbiUpdate", new PbiUpdate());
+    Registry.getInstance().provide("IPbiDelete", new PbiDelete());
   }
 }

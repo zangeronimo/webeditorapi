@@ -3,6 +3,11 @@ import { Task } from "@domain/entity/timesheet";
 
 export interface ITaskRepository {
   getByIdAsync(id: string, company: string): Promise<Task | null>;
+  checkUserHasOtherTaskOpenedAsync(
+    userId: string,
+    taskId: string,
+    company: string
+  ): Promise<boolean>;
   getByNameAsync(
     name: string,
     pbiId: string,

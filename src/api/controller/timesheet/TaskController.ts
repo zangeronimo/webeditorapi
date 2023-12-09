@@ -5,6 +5,7 @@ import {
   ITaskCreate,
   ITaskUpdate,
   ITaskDelete,
+  ITaskRegisterWork,
 } from "@application/interface/usecase/timesheet/task";
 import {
   TaskCreateDataModel,
@@ -23,6 +24,8 @@ export class TaskController {
   taskCreate?: ITaskCreate;
   @inject("ITaskUpdate")
   taskUpdate?: ITaskUpdate;
+  @inject("ITaskRegisterWork")
+  taskRegisterWork?: ITaskRegisterWork;
   @inject("ITaskDelete")
   taskDelete?: ITaskDelete;
 
@@ -55,6 +58,12 @@ export class TaskController {
       ensureAuthenticated.execute,
       ensureHasRole.executeAsync("TIMESHEET_TASK_UPDATE"),
       this.updateAsync
+    );
+    this.router.patch(
+      "/register-work/:id",
+      ensureAuthenticated.execute,
+      ensureHasRole.executeAsync("TIMESHEET_TASK_UPDATE"),
+      this.registerWorkAsync
     );
     this.router.delete(
       "/:id",
@@ -125,6 +134,17 @@ export class TaskController {
         company
       );
       return res.json(task);
+    } catch (e: any) {
+      return res.status(400).json(e.message);
+    }
+  };
+
+  private registerWorkAsync = async (req: Request, res: Response) => {
+    try {
+      const { id: userId, company } = req.user;
+      const { id } = req.params;
+      await this.taskRegisterWork?.executeAsync(id, userId, company);
+      return res.status(204).json();
     } catch (e: any) {
       return res.status(400).json(e.message);
     }

@@ -6,7 +6,7 @@ export class TaskDto {
   description: string;
   status: number;
 
-  constructor(client: Task) {
+  constructor(client: Task, readonly totalInHours: number) {
     this.id = client.id;
     this.name = client.name;
     this.description = client.description;

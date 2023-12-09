@@ -14,6 +14,6 @@ export class TaskDelete implements ITaskDelete {
       throw new Error(Messages.notFound("Task"));
     }
     await this._taskRepository?.deleteAsync(task, new Date());
-    return new TaskDto(task);
+    return new TaskDto(task, 0);
   }
 }

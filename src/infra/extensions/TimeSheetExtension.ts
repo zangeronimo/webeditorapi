@@ -31,6 +31,7 @@ import {
   TaskDelete,
   TaskGetAll,
   TaskGetById,
+  TaskRegisterWork,
   TaskUpdate,
 } from "@application/usecase/timesheet/task";
 import { DbContext } from "@infra/context";
@@ -100,6 +101,7 @@ export class TimeSheetExtension {
     Registry.getInstance().provide("ITaskGetById", new TaskGetById());
     Registry.getInstance().provide("ITaskCreate", new TaskCreate());
     Registry.getInstance().provide("ITaskUpdate", new TaskUpdate());
+    Registry.getInstance().provide("ITaskRegisterWork", new TaskRegisterWork());
     Registry.getInstance().provide("ITaskDelete", new TaskDelete());
   }
 }

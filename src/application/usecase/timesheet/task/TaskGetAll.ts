@@ -4,6 +4,7 @@ import { GetAllTaskFilterModel } from "@application/model/timesheet/task";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 import { TaskDto } from "@domain/dto/timesheet";
 import { Task } from "@domain/entity/timesheet";
+import { Entry } from "@domain/valueObject/timesheet";
 import { inject } from "@infra/di/Inject";
 
 export class TaskGetAll implements ITaskGetAll {
@@ -16,7 +17,10 @@ export class TaskGetAll implements ITaskGetAll {
       company
     )!;
 
-    const tasksDto = tasks.map((task: Task) => new TaskDto(task));
+    const tasksDto = tasks.map((task: Task) => {
+      const totalCalculated = Entry.calculateTotalInHours(task.entries);
+      return new TaskDto(task, totalCalculated);
+    });
     return new PaginatorResultDto(tasksDto, total);
   }
 }

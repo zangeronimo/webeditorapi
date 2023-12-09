@@ -2,6 +2,7 @@ import { ITaskRepository } from "@application/interface/repository/timesheet/ITa
 import { ITaskGetById } from "@application/interface/usecase/timesheet/task";
 import { Messages } from "@application/messages/Messages";
 import { TaskDto } from "@domain/dto/timesheet";
+import { Entry } from "@domain/valueObject/timesheet";
 import { inject } from "@infra/di/Inject";
 
 export class TaskGetById implements ITaskGetById {
@@ -13,6 +14,7 @@ export class TaskGetById implements ITaskGetById {
     if (task === null) {
       throw new Error(Messages.notFound("Task"));
     }
-    return new TaskDto(task);
+    const totalCalculated = Entry.calculateTotalInHours(task.entries);
+    return new TaskDto(task, totalCalculated);
   }
 }

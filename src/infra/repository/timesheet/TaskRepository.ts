@@ -1,10 +1,15 @@
 import { ITaskRepository } from "@application/interface/repository/timesheet";
 import { GetAllTaskFilterModel } from "@application/model/timesheet/task";
 import { Task } from "@domain/entity/timesheet";
+import { EntryTypeEnum } from "@domain/enum/EntryTypeEnum";
+import { Entry } from "@domain/valueObject/timesheet";
 import { DbContext } from "@infra/context";
 
 export class TaskRepository implements ITaskRepository {
   constructor(readonly db: DbContext) {}
+  commitAsync(): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
 
   async getByIdAsync(id: string, company: string): Promise<Task | null> {
     const [taskData] = await this.db.queryAsync(
@@ -14,6 +19,8 @@ export class TaskRepository implements ITaskRepository {
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
     );
+    const entries = await this.getEntriesAsync(id, company);
+
     return taskData
       ? Task.restore(
           taskData.id,
@@ -21,9 +28,28 @@ export class TaskRepository implements ITaskRepository {
           taskData.description,
           taskData.status,
           taskData.timesheet_pbis_id,
-          taskData.webeditor_companies_id
+          taskData.webeditor_companies_id,
+          entries
         )
       : null;
+  }
+
+  async checkUserHasOtherTaskOpenedAsync(
+    userId: string,
+    taskId: string,
+    company: string
+  ): Promise<boolean> {
+    const [taskData] = await this.db.queryAsync(
+      `select
+        entry_type
+       from timesheet_entries
+       where webeditor_users_id = $1 and timesheet_tasks_id != $2 and webeditor_companies_id = $3
+       order by point_date desc
+       limit 1`,
+      [userId, taskId, company]
+    );
+
+    return taskData?.entry_type === EntryTypeEnum.OPEN;
   }
 
   async getByNameAsync(
@@ -42,7 +68,8 @@ export class TaskRepository implements ITaskRepository {
           taskData.description,
           taskData.status,
           taskData.timesheet_pbis_id,
-          taskData.webeditor_companies_id
+          taskData.webeditor_companies_id,
+          []
         )
       : null;
   }
@@ -82,13 +109,15 @@ export class TaskRepository implements ITaskRepository {
     );
     const tasks: Task[] = [];
     for (let i = 0; i < tasksData.length; i++) {
+      const entries = await this.getEntriesAsync(tasksData[i].id, company);
       const task = Task.restore(
         tasksData[i].id,
         tasksData[i].name,
         tasksData[i].description,
         tasksData[i].status,
         tasksData[i].timesheet_pbis_id,
-        tasksData[i].webeditor_companies_id
+        tasksData[i].webeditor_companies_id,
+        entries
       );
       tasks.push(task);
     }
@@ -104,6 +133,7 @@ export class TaskRepository implements ITaskRepository {
   }
 
   async updateAsync(task: Task): Promise<Task> {
+    const hasEntries = task.entries.length > 0;
     await this.db.queryAsync(
       "update timesheet_tasks set name=$3, description=$4, status=$5, timesheet_pbis_id=$6, updated_at=$7 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [
@@ -114,8 +144,31 @@ export class TaskRepository implements ITaskRepository {
         task.status,
         task.pbiId,
         task.updatedAt,
-      ]
+      ],
+      hasEntries
     );
+    if (hasEntries) {
+      await this.db.queryAsync(
+        "delete from timesheet_entries where timesheet_tasks_id = $1",
+        [task.id],
+        true
+      );
+      for (let i = 0; i < task.entries.length; i++) {
+        const entry = task.entries[i];
+        await this.db.queryAsync(
+          "insert into timesheet_entries (point_date, entry_type, timesheet_tasks_id, webeditor_users_id, webeditor_companies_id) values ($1, $2, $3, $4, $5)",
+          [
+            entry.pointDate,
+            entry.entryType,
+            entry.taskId,
+            entry.userId,
+            task.companyId,
+          ],
+          true
+        );
+      }
+      await this.db.commitAsync();
+    }
     return task;
   }
 
@@ -132,5 +185,29 @@ export class TaskRepository implements ITaskRepository {
       ]
     );
     return task;
+  }
+
+  private async getEntriesAsync(
+    taskId: string,
+    company: string
+  ): Promise<Entry[]> {
+    const entriesData = await this.db.queryAsync(
+      `select
+         point_date, entry_type, timesheet_tasks_id, webeditor_users_id
+       from timesheet_entries
+       where timesheet_tasks_id = $1 and webeditor_companies_id = $2
+       order by point_date`,
+      [taskId, company]
+    );
+
+    return entriesData.map(
+      (entry: any) =>
+        new Entry(
+          entry.timesheet_tasks_id,
+          entry.webeditor_users_id,
+          entry.entry_type,
+          entry.point_date
+        )
+    );
   }
 }

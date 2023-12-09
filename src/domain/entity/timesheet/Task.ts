@@ -3,6 +3,8 @@ import {
   TaskUpdateDataModel,
 } from "@application/model/timesheet/task";
 import { ActiveEnum } from "@domain/enum";
+import { EntryTypeEnum } from "@domain/enum/EntryTypeEnum";
+import { Entry } from "@domain/valueObject/timesheet";
 
 export class Task {
   private _id: string;
@@ -37,7 +39,8 @@ export class Task {
     description: string,
     status: ActiveEnum,
     pbiId: string,
-    readonly companyId: string
+    readonly companyId: string,
+    readonly entries: Entry[] = []
   ) {
     this._id = id;
     this._name = name;
@@ -52,9 +55,10 @@ export class Task {
     description: string,
     status: ActiveEnum,
     pbiId: string,
-    companyId: string
+    companyId: string,
+    entries: Entry[]
   ): Task {
-    return new Task(id, name, description, status, pbiId, companyId);
+    return new Task(id, name, description, status, pbiId, companyId, entries);
   }
 
   static create(model: TaskCreateDataModel, companyId: string): Task {
@@ -64,7 +68,8 @@ export class Task {
       model.description,
       model.status,
       model.pbiId,
-      companyId
+      companyId,
+      []
     );
     return task;
   }
@@ -75,5 +80,17 @@ export class Task {
     this._description = model.description;
     this._status = model.status;
     this._pbiId = model.pbiId;
+  }
+
+  startsWork(userId: string) {
+    this._updatedAt = new Date();
+    const entry = new Entry(this._id, userId, EntryTypeEnum.OPEN, new Date());
+    this.entries.push(entry);
+  }
+
+  stopsWork(userId: string) {
+    this._updatedAt = new Date();
+    const entry = new Entry(this._id, userId, EntryTypeEnum.CLOSE, new Date());
+    this.entries.push(entry);
   }
 }

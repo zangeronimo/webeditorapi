@@ -21,6 +21,6 @@ export class TaskCreate implements ITaskCreate {
     }
     const task = Task.create(taskData, company);
     await this._taskRepository?.saveAsync(task);
-    return new TaskDto(task);
+    return new TaskDto(task, 0);
   }
 }

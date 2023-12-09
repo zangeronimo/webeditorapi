@@ -5,4 +5,8 @@ export class Messages {
   static notFound = (field: string) => `${field} not found.`;
   static alreadyInUse = (field: string) => `${field} already in use.`;
   static accessDenied = "Access denied.";
+  static timesheet = {
+    EntryOpened: "You already have another task opened.",
+    EntryRegisteredThisMinute: "You already have registered at this minute.",
+  };
 }

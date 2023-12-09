@@ -26,12 +26,20 @@ import {
   ProjectGetById,
   ProjectUpdate,
 } from "@application/usecase/timesheet/project";
+import {
+  TaskCreate,
+  TaskDelete,
+  TaskGetAll,
+  TaskGetById,
+  TaskUpdate,
+} from "@application/usecase/timesheet/task";
 import { DbContext } from "@infra/context";
 import {
   ClientRepository,
   EpicRepository,
   PbiRepository,
   ProjectRepository,
+  TaskRepository,
 } from "@infra/repository/timesheet";
 import { Registry } from "../di/Registry";
 
@@ -53,6 +61,10 @@ export class TimeSheetExtension {
     Registry.getInstance().provide(
       "IPbiRepository",
       new PbiRepository(dbContext)
+    );
+    Registry.getInstance().provide(
+      "ITaskRepository",
+      new TaskRepository(dbContext)
     );
 
     // Registry Client useCases
@@ -82,5 +94,12 @@ export class TimeSheetExtension {
     Registry.getInstance().provide("IPbiCreate", new PbiCreate());
     Registry.getInstance().provide("IPbiUpdate", new PbiUpdate());
     Registry.getInstance().provide("IPbiDelete", new PbiDelete());
+
+    // Registry Task useCases
+    Registry.getInstance().provide("ITaskGetAll", new TaskGetAll());
+    Registry.getInstance().provide("ITaskGetById", new TaskGetById());
+    Registry.getInstance().provide("ITaskCreate", new TaskCreate());
+    Registry.getInstance().provide("ITaskUpdate", new TaskUpdate());
+    Registry.getInstance().provide("ITaskDelete", new TaskDelete());
   }
 }

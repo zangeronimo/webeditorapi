@@ -41,6 +41,14 @@ import {
   UserRepository,
 } from "@infra/repository/webeditor";
 import { Registry } from "./Registry";
+import {
+  ClientCreate,
+  ClientDelete,
+  ClientGetAll,
+  ClientGetById,
+  ClientUpdate,
+} from "@application/usecase/timesheet/client";
+import { ClientRepository } from "@infra/repository/timesheet";
 
 export class ExtensionDI {
   static init = (dbContext: PgPromiseContext) => {
@@ -60,6 +68,11 @@ export class ExtensionDI {
     Registry.getInstance().provide(
       "IModuleRepository",
       new ModuleRepository(dbContext)
+    );
+
+    Registry.getInstance().provide(
+      "IClientRepository",
+      new ClientRepository(dbContext)
     );
     // Registry Providers
     Registry.getInstance().provide("IMakeLogin", new MakeLogin());
@@ -95,5 +108,12 @@ export class ExtensionDI {
     Registry.getInstance().provide("IUserCreate", new UserCreate());
     Registry.getInstance().provide("IUserUpdate", new UserUpdate());
     Registry.getInstance().provide("IUserDelete", new UserDelete());
+
+    // Registry Client useCases
+    Registry.getInstance().provide("IClientGetAll", new ClientGetAll());
+    Registry.getInstance().provide("IClientGetById", new ClientGetById());
+    Registry.getInstance().provide("IClientCreate", new ClientCreate());
+    Registry.getInstance().provide("IClientUpdate", new ClientUpdate());
+    Registry.getInstance().provide("IClientDelete", new ClientDelete());
   };
 }

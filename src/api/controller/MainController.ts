@@ -7,6 +7,7 @@ import {
   RoleController,
   UserController,
 } from "./webeditor";
+import { ClientController } from "./timesheet";
 
 export class MainController {
   ensureAuthenticated = new EnsureAuthenticated();
@@ -28,6 +29,11 @@ export class MainController {
     this.ensureAuthenticated,
     this.ensureHasRole
   );
+
+  clientController = new ClientController(
+    this.ensureAuthenticated,
+    this.ensureHasRole
+  );
   router = Router();
 
   constructor() {
@@ -36,5 +42,7 @@ export class MainController {
     this.router.use("/module", this.moduleController.router);
     this.router.use("/role", this.roleController.router);
     this.router.use("/user", this.userController.router);
+
+    this.router.use("/timesheet/client", this.clientController.router);
   }
 }

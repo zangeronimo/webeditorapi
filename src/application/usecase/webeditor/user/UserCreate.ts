@@ -17,7 +17,7 @@ export class UserCreate implements IUserCreate {
     if (emailExists !== null) {
       throw new Error(Messages.alreadyInUse("Email"));
     }
-    const user = await User.create(userData, company);
+    const user = await User.createAsync(userData, company);
     await this._userRepository?.saveAsync(user);
     return new UserDto(user);
   }

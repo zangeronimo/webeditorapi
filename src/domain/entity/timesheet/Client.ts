@@ -44,13 +44,13 @@ export class Client {
   }
 
   static create(model: ClientCreateDataModel, companyId: string): Client {
-    const company = new Client(
+    const client = new Client(
       crypto.randomUUID(),
       model.name,
       model.status,
       companyId
     );
-    return company;
+    return client;
   }
 
   update(model: ClientUpdateDataModel) {

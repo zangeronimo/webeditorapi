@@ -1,23 +1,31 @@
 import {
+  ClientCreate,
+  ClientDelete,
   ClientGetAll,
   ClientGetById,
-  ClientCreate,
   ClientUpdate,
-  ClientDelete,
 } from "@application/usecase/timesheet/client";
-import { Registry } from "../di/Registry";
+import {
+  EpicCreate,
+  EpicDelete,
+  EpicGetAll,
+  EpicGetById,
+  EpicUpdate,
+} from "@application/usecase/timesheet/epic";
+import {
+  ProjectCreate,
+  ProjectDelete,
+  ProjectGetAll,
+  ProjectGetById,
+  ProjectUpdate,
+} from "@application/usecase/timesheet/project";
+import { DbContext } from "@infra/context";
 import {
   ClientRepository,
   ProjectRepository,
 } from "@infra/repository/timesheet";
-import { DbContext } from "@infra/context";
-import {
-  ProjectGetAll,
-  ProjectGetById,
-  ProjectCreate,
-  ProjectUpdate,
-  ProjectDelete,
-} from "@application/usecase/timesheet/project";
+import { EpicRepository } from "@infra/repository/timesheet/EpicRepository";
+import { Registry } from "../di/Registry";
 
 export class TimeSheetExtension {
   static init(dbContext: DbContext) {
@@ -29,6 +37,10 @@ export class TimeSheetExtension {
     Registry.getInstance().provide(
       "IProjectRepository",
       new ProjectRepository(dbContext)
+    );
+    Registry.getInstance().provide(
+      "IEpicRepository",
+      new EpicRepository(dbContext)
     );
 
     // Registry Client useCases
@@ -44,5 +56,12 @@ export class TimeSheetExtension {
     Registry.getInstance().provide("IProjectCreate", new ProjectCreate());
     Registry.getInstance().provide("IProjectUpdate", new ProjectUpdate());
     Registry.getInstance().provide("IProjectDelete", new ProjectDelete());
+
+    // Registry Epic useCases
+    Registry.getInstance().provide("IEpicGetAll", new EpicGetAll());
+    Registry.getInstance().provide("IEpicGetById", new EpicGetById());
+    Registry.getInstance().provide("IEpicCreate", new EpicCreate());
+    Registry.getInstance().provide("IEpicUpdate", new EpicUpdate());
+    Registry.getInstance().provide("IEpicDelete", new EpicDelete());
   }
 }

@@ -1,15 +1,15 @@
 import {
-  ProjectCreateDataModel,
-  ProjectUpdateDataModel,
-} from "@application/model/timesheet/project";
+  EpicCreateDataModel,
+  EpicUpdateDataModel,
+} from "@application/model/timesheet/epic";
 import { ActiveEnum } from "@domain/enum";
 
-export class Project {
+export class Epic {
   private _id: string;
   private _name: string;
   private _description: string;
   private _status: ActiveEnum;
-  private _clientId?: string;
+  private _projectId?: string;
   private _updatedAt?: Date;
 
   get id() {
@@ -24,8 +24,8 @@ export class Project {
   get status() {
     return this._status;
   }
-  get clientId() {
-    return this._clientId;
+  get projectId() {
+    return this._projectId;
   }
   get updatedAt() {
     return this._updatedAt;
@@ -36,14 +36,14 @@ export class Project {
     name: string,
     description: string,
     status: ActiveEnum,
-    clientId: string,
+    projectId: string,
     readonly companyId: string
   ) {
     this._id = id;
     this._name = name;
     this._description = description;
     this._status = status;
-    this._clientId = clientId;
+    this._projectId = projectId;
   }
 
   static restore(
@@ -51,29 +51,29 @@ export class Project {
     name: string,
     description: string,
     status: ActiveEnum,
-    clientId: string,
+    projectId: string,
     companyId: string
-  ): Project {
-    return new Project(id, name, description, status, clientId, companyId);
+  ): Epic {
+    return new Epic(id, name, description, status, projectId, companyId);
   }
 
-  static create(model: ProjectCreateDataModel, companyId: string): Project {
-    const project = new Project(
+  static create(model: EpicCreateDataModel, companyId: string): Epic {
+    const epic = new Epic(
       crypto.randomUUID(),
       model.name,
       model.description,
       model.status,
-      model.clientId,
+      model.projectId,
       companyId
     );
-    return project;
+    return epic;
   }
 
-  update(model: ProjectUpdateDataModel) {
+  update(model: EpicUpdateDataModel) {
     this._updatedAt = new Date();
     this._name = model.name;
     this._description = model.description;
     this._status = model.status;
-    this._clientId = model.clientId;
+    this._projectId = model.projectId;
   }
 }

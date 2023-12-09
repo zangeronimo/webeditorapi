@@ -9,7 +9,7 @@ export class ProjectRepository implements IProjectRepository {
   async getByIdAsync(id: string, company: string): Promise<Project | null> {
     const [projectData] = await this.db.queryAsync(
       `select
-        id, name, description, status, webeditor_companies_id
+        id, name, description, status, timesheet_clients_id, webeditor_companies_id
        from timesheet_projects
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
@@ -20,6 +20,7 @@ export class ProjectRepository implements IProjectRepository {
           projectData.name,
           projectData.description,
           projectData.status,
+          projectData.timesheet_clients_id,
           projectData.webeditor_companies_id
         )
       : null;
@@ -31,7 +32,7 @@ export class ProjectRepository implements IProjectRepository {
     company: string
   ): Promise<Project | null> {
     const [projectData] = await this.db.queryAsync(
-      "select id, name, description, status, webeditor_companies_id from timesheet_projects where name = $1 and timesheet_clients_id = $2 and webeditor_companies_id = $3 and deleted_at is null",
+      "select id, name, description, status, timesheet_clients_id, webeditor_companies_id from timesheet_projects where name = $1 and timesheet_clients_id = $2 and webeditor_companies_id = $3 and deleted_at is null",
       [name, clientId, company]
     );
     return projectData
@@ -40,6 +41,7 @@ export class ProjectRepository implements IProjectRepository {
           projectData.name,
           projectData.description,
           projectData.status,
+          projectData.timesheet_clients_id,
           projectData.webeditor_companies_id
         )
       : null;
@@ -64,7 +66,7 @@ export class ProjectRepository implements IProjectRepository {
     );
     const projectsData: any[] = await this.db.queryAsync(
       `select
-        id, name, description, status, webeditor_companies_id
+        id, name, description, status, timesheet_clients_id, webeditor_companies_id
       from timesheet_projects
       where ${where}
       order by ${ordenation}
@@ -85,6 +87,7 @@ export class ProjectRepository implements IProjectRepository {
         projectsData[i].name,
         projectsData[i].description,
         projectsData[i].status,
+        projectsData[i].timesheet_clients_id,
         projectsData[i].webeditor_companies_id
       );
       projects.push(project);
@@ -102,13 +105,14 @@ export class ProjectRepository implements IProjectRepository {
 
   async updateAsync(project: Project): Promise<Project> {
     await this.db.queryAsync(
-      "update timesheet_projects set name=$3, description=$4, status=$5, updated_at=$6 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      "update timesheet_projects set name=$3, description=$4, status=$5, timesheet_clients_id=$6, updated_at=$7 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [
         project.id,
         project.companyId,
         project.name,
         project.description,
         project.status,
+        project.clientId,
         project.updatedAt,
       ]
     );
@@ -117,12 +121,13 @@ export class ProjectRepository implements IProjectRepository {
 
   async saveAsync(project: Project): Promise<Project> {
     await this.db.queryAsync(
-      "insert into timesheet_projects (id, name, description, status, webeditor_companies_id) values ($1, $2, $3, $4, $5)",
+      "insert into timesheet_projects (id, name, description, status, timesheet_clients_id, webeditor_companies_id) values ($1, $2, $3, $4, $5, $6)",
       [
         project.id,
         project.name,
         project.description,
         project.status,
+        project.clientId,
         project.companyId,
       ]
     );

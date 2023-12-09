@@ -3,6 +3,7 @@ export class ProjectUpdateDataModel {
     readonly id: string,
     readonly name: string,
     readonly description: string,
-    readonly status: number
+    readonly status: number,
+    readonly clientId: string
   ) {}
 }

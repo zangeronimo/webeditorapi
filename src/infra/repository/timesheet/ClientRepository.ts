@@ -1,7 +1,6 @@
 import { IClientRepository } from "@application/interface/repository/timesheet";
 import { GetAllClientFilterModel } from "@application/model/timesheet/client";
 import { Client } from "@domain/entity/timesheet";
-import { Role } from "@domain/entity/webeditor";
 import { DbContext } from "@infra/context";
 
 export class ClientRepository implements IClientRepository {

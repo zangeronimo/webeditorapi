@@ -82,14 +82,22 @@ export class TaskRepository implements ITaskRepository {
     if (!!model.name) {
       where += ` and LOWER(UNACCENT(name)) like $2`;
     }
+    if (!!model.pbiId) {
+      where += ` and timesheet_pbis_id = $3`;
+    }
     if (!!model.status) {
-      where += ` and status = $3`;
+      where += ` and status = $4`;
     }
     const ordenation = `${model.orderBy} ${!!model.desc ? "desc" : "asc"}`;
     const offset = model.pageSize * (model.page - 1);
     const [total] = await this.db.queryAsync(
       `select count(*) from timesheet_tasks where ${where}`,
-      [company, `%${model.name?.toLowerCase().noAccents()}%`, model.status]
+      [
+        company,
+        `%${model.name?.toLowerCase().noAccents()}%`,
+        model.pbiId,
+        model.status,
+      ]
     );
     const tasksData: any[] = await this.db.queryAsync(
       `select
@@ -97,11 +105,12 @@ export class TaskRepository implements ITaskRepository {
       from timesheet_tasks
       where ${where}
       order by ${ordenation}
-      limit $4
-      offset $5`,
+      limit $5
+      offset $6`,
       [
         company,
         `%${model.name?.toLowerCase().noAccents()}%`,
+        model.pbiId,
         model.status,
         model.pageSize,
         offset,

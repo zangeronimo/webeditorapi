@@ -1,4 +1,5 @@
 import { Epic } from "@domain/entity/timesheet";
+import { ProjectDto } from "./ProjectDto";
 
 export class EpicDto {
   id: string;
@@ -6,7 +7,7 @@ export class EpicDto {
   description: string;
   status: number;
 
-  constructor(epic: Epic) {
+  constructor(epic: Epic, readonly project?: ProjectDto) {
     this.id = epic.id;
     this.name = epic.name;
     this.description = epic.description;

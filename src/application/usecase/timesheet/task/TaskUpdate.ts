@@ -1,14 +1,19 @@
-import { ITaskRepository } from "@application/interface/repository/timesheet";
+import {
+  IPbiRepository,
+  ITaskRepository,
+} from "@application/interface/repository/timesheet";
 import { ITaskUpdate } from "@application/interface/usecase/timesheet/task";
 import { Messages } from "@application/messages/Messages";
 import { TaskUpdateDataModel } from "@application/model/timesheet/task";
-import { TaskDto } from "@domain/dto/timesheet";
+import { PbiDto, TaskDto } from "@domain/dto/timesheet";
 import { Entry } from "@domain/valueObject/timesheet";
 import { inject } from "@infra/di/Inject";
 
 export class TaskUpdate implements ITaskUpdate {
   @inject("ITaskRepository")
   _taskRepository?: ITaskRepository;
+  @inject("IPbiRepository")
+  _pbiRepository?: IPbiRepository;
 
   async executeAsync(taskData: TaskUpdateDataModel, company: string) {
     const task = await this._taskRepository?.getByIdAsync(
@@ -31,6 +36,7 @@ export class TaskUpdate implements ITaskUpdate {
     task.update(taskData);
     await this._taskRepository?.updateAsync(task);
     const totalCalculated = Entry.calculateTotalInHours(task.entries);
-    return new TaskDto(task, totalCalculated);
+    const pbi = await this._pbiRepository?.getByIdAsync(task.pbiId!, company);
+    return new TaskDto(task, totalCalculated, new PbiDto(pbi!));
   }
 }

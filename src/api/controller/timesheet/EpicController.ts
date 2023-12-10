@@ -92,12 +92,12 @@ export class EpicController {
   private createAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const { name, description, status, project } = req.body;
+      const { name, description, status, projectId } = req.body;
       const epicCreateDataModel = new EpicCreateDataModel(
         name,
         description,
         status,
-        project.id
+        projectId
       );
       const epic = await this.epicCreate?.executeAsync(
         epicCreateDataModel,
@@ -112,13 +112,13 @@ export class EpicController {
   private updateAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const { id, name, description, status, project } = req.body;
+      const { id, name, description, status, projectId } = req.body;
       const epicUpdateDataModel = new EpicUpdateDataModel(
         id,
         name,
         description,
         status,
-        project.id
+        projectId
       );
       const epic = await this.epicUpdate?.executeAsync(
         epicUpdateDataModel,

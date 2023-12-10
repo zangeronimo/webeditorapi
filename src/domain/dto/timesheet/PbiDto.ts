@@ -1,4 +1,5 @@
 import { Pbi } from "@domain/entity/timesheet";
+import { EpicDto } from "./EpicDto";
 
 export class PbiDto {
   id: string;
@@ -6,7 +7,7 @@ export class PbiDto {
   description: string;
   status: number;
 
-  constructor(pbi: Pbi) {
+  constructor(pbi: Pbi, readonly epic?: EpicDto) {
     this.id = pbi.id;
     this.name = pbi.name;
     this.description = pbi.description;

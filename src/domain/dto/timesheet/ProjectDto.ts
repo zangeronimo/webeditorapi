@@ -6,13 +6,11 @@ export class ProjectDto {
   name: string;
   description: string;
   status: number;
-  client?: ClientDto;
 
-  constructor(project: Project, client?: ClientDto) {
+  constructor(project: Project, readonly client?: ClientDto) {
     this.id = project.id;
     this.name = project.name;
     this.description = project.description;
     this.status = project.status.valueOf();
-    this.client = client;
   }
 }

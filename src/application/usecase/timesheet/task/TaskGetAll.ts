@@ -1,15 +1,19 @@
-import { ITaskRepository } from "@application/interface/repository/timesheet/ITaskRepository";
+import {
+  IPbiRepository,
+  ITaskRepository,
+} from "@application/interface/repository/timesheet";
 import { ITaskGetAll } from "@application/interface/usecase/timesheet/task";
 import { GetAllTaskFilterModel } from "@application/model/timesheet/task";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
-import { TaskDto } from "@domain/dto/timesheet";
-import { Task } from "@domain/entity/timesheet";
+import { PbiDto, TaskDto } from "@domain/dto/timesheet";
 import { Entry } from "@domain/valueObject/timesheet";
 import { inject } from "@infra/di/Inject";
 
 export class TaskGetAll implements ITaskGetAll {
   @inject("ITaskRepository")
   _taskRepository?: ITaskRepository;
+  @inject("IPbiRepository")
+  _pbiRepository?: IPbiRepository;
 
   async executeAsync(model: GetAllTaskFilterModel, company: string) {
     const { itens: tasks, total } = await this._taskRepository?.getAllAsync(
@@ -17,10 +21,15 @@ export class TaskGetAll implements ITaskGetAll {
       company
     )!;
 
-    const tasksDto = tasks.map((task: Task) => {
-      const totalCalculated = Entry.calculateTotalInHours(task.entries);
-      return new TaskDto(task, totalCalculated);
-    });
+    const tasksDto: TaskDto[] = [];
+    for (let i = 0; i < tasks.length; i++) {
+      const pbi = await this._pbiRepository?.getByIdAsync(
+        tasks[i].pbiId!,
+        company
+      );
+      const totalCalculated = Entry.calculateTotalInHours(tasks[i].entries);
+      tasksDto.push(new TaskDto(tasks[i], totalCalculated, new PbiDto(pbi!)));
+    }
     return new PaginatorResultDto(tasksDto, total);
   }
 }

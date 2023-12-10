@@ -7,6 +7,7 @@ export class GetAllTaskFilterModel implements IPagination, IOrdenation {
   public orderBy: string;
   public desc: boolean;
   public name: string;
+  public pbiId: string;
   public status: number;
 
   constructor(query: any) {
@@ -15,6 +16,7 @@ export class GetAllTaskFilterModel implements IPagination, IOrdenation {
     this.orderBy = query.orderBy ?? "name";
     this.desc = query.desc === "true";
     this.name = query.name;
+    this.pbiId = query.pbiId;
     this.status = query.status;
   }
 }

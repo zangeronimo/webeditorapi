@@ -101,12 +101,12 @@ export class TaskController {
   private createAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const { name, description, status, pbi } = req.body;
+      const { name, description, status, pbiId } = req.body;
       const taskCreateDataModel = new TaskCreateDataModel(
         name,
         description,
         status,
-        pbi.id
+        pbiId
       );
       const task = await this.taskCreate?.executeAsync(
         taskCreateDataModel,
@@ -121,13 +121,13 @@ export class TaskController {
   private updateAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const { id, name, description, status, pbi } = req.body;
+      const { id, name, description, status, pbiId } = req.body;
       const taskUpdateDataModel = new TaskUpdateDataModel(
         id,
         name,
         description,
         status,
-        pbi.id
+        pbiId
       );
       const task = await this.taskUpdate?.executeAsync(
         taskUpdateDataModel,

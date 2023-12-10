@@ -55,14 +55,22 @@ export class PbiRepository implements IPbiRepository {
     if (!!model.name) {
       where += ` and LOWER(UNACCENT(name)) like $2`;
     }
+    if (!!model.epicId) {
+      where += ` and timesheet_epics_id = $3`;
+    }
     if (!!model.status) {
-      where += ` and status = $3`;
+      where += ` and status = $4`;
     }
     const ordenation = `${model.orderBy} ${!!model.desc ? "desc" : "asc"}`;
     const offset = model.pageSize * (model.page - 1);
     const [total] = await this.db.queryAsync(
       `select count(*) from timesheet_pbis where ${where}`,
-      [company, `%${model.name?.toLowerCase().noAccents()}%`, model.status]
+      [
+        company,
+        `%${model.name?.toLowerCase().noAccents()}%`,
+        model.epicId,
+        model.status,
+      ]
     );
     const pbisData: any[] = await this.db.queryAsync(
       `select
@@ -70,11 +78,12 @@ export class PbiRepository implements IPbiRepository {
       from timesheet_pbis
       where ${where}
       order by ${ordenation}
-      limit $4
-      offset $5`,
+      limit $5
+      offset $6`,
       [
         company,
         `%${model.name?.toLowerCase().noAccents()}%`,
+        model.epicId,
         model.status,
         model.pageSize,
         offset,

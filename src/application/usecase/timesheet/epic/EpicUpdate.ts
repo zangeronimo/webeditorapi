@@ -1,13 +1,18 @@
-import { IEpicRepository } from "@application/interface/repository/timesheet";
+import {
+  IEpicRepository,
+  IProjectRepository,
+} from "@application/interface/repository/timesheet";
 import { IEpicUpdate } from "@application/interface/usecase/timesheet/epic";
 import { Messages } from "@application/messages/Messages";
 import { EpicUpdateDataModel } from "@application/model/timesheet/epic";
-import { EpicDto } from "@domain/dto/timesheet";
+import { EpicDto, ProjectDto } from "@domain/dto/timesheet";
 import { inject } from "@infra/di/Inject";
 
 export class EpicUpdate implements IEpicUpdate {
   @inject("IEpicRepository")
   _epicRepository?: IEpicRepository;
+  @inject("IProjectRepository")
+  _projectRepository?: IProjectRepository;
 
   async executeAsync(epicData: EpicUpdateDataModel, company: string) {
     const epic = await this._epicRepository?.getByIdAsync(
@@ -29,6 +34,10 @@ export class EpicUpdate implements IEpicUpdate {
     }
     epic.update(epicData);
     await this._epicRepository?.updateAsync(epic);
-    return new EpicDto(epic);
+    const project = await this._projectRepository?.getByIdAsync(
+      epic.projectId!,
+      company
+    );
+    return new EpicDto(epic, new ProjectDto(project!));
   }
 }

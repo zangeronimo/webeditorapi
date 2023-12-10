@@ -1,14 +1,19 @@
-import { ITaskRepository } from "@application/interface/repository/timesheet/ITaskRepository";
+import {
+  IPbiRepository,
+  ITaskRepository,
+} from "@application/interface/repository/timesheet";
 import { ITaskCreate } from "@application/interface/usecase/timesheet/task";
 import { Messages } from "@application/messages/Messages";
 import { TaskCreateDataModel } from "@application/model/timesheet/task";
-import { TaskDto } from "@domain/dto/timesheet";
+import { PbiDto, TaskDto } from "@domain/dto/timesheet";
 import { Task } from "@domain/entity/timesheet";
 import { inject } from "@infra/di/Inject";
 
 export class TaskCreate implements ITaskCreate {
   @inject("ITaskRepository")
   _taskRepository?: ITaskRepository;
+  @inject("IPbiRepository")
+  _pbiRepository?: IPbiRepository;
 
   async executeAsync(taskData: TaskCreateDataModel, company: string) {
     const nameExists = await this._taskRepository?.getByNameAsync(
@@ -21,6 +26,7 @@ export class TaskCreate implements ITaskCreate {
     }
     const task = Task.create(taskData, company);
     await this._taskRepository?.saveAsync(task);
-    return new TaskDto(task, 0);
+    const pbi = await this._pbiRepository?.getByIdAsync(task.pbiId!, company);
+    return new TaskDto(task, 0, new PbiDto(pbi!));
   }
 }

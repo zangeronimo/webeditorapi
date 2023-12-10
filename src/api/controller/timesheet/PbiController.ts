@@ -92,12 +92,12 @@ export class PbiController {
   private createAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const { name, description, status, epic } = req.body;
+      const { name, description, status, epicId } = req.body;
       const pbiCreateDataModel = new PbiCreateDataModel(
         name,
         description,
         status,
-        epic.id
+        epicId
       );
       const pbi = await this.pbiCreate?.executeAsync(
         pbiCreateDataModel,
@@ -112,13 +112,13 @@ export class PbiController {
   private updateAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const { id, name, description, status, epic } = req.body;
+      const { id, name, description, status, epicId } = req.body;
       const pbiUpdateDataModel = new PbiUpdateDataModel(
         id,
         name,
         description,
         status,
-        epic.id
+        epicId
       );
       const pbi = await this.pbiUpdate?.executeAsync(
         pbiUpdateDataModel,

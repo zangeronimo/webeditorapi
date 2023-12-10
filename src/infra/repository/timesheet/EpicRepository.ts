@@ -55,14 +55,22 @@ export class EpicRepository implements IEpicRepository {
     if (!!model.name) {
       where += ` and LOWER(UNACCENT(name)) like $2`;
     }
+    if (!!model.projectId) {
+      where += ` and timesheet_projects_id = $3`;
+    }
     if (!!model.status) {
-      where += ` and status = $3`;
+      where += ` and status = $4`;
     }
     const ordenation = `${model.orderBy} ${!!model.desc ? "desc" : "asc"}`;
     const offset = model.pageSize * (model.page - 1);
     const [total] = await this.db.queryAsync(
       `select count(*) from timesheet_epics where ${where}`,
-      [company, `%${model.name?.toLowerCase().noAccents()}%`, model.status]
+      [
+        company,
+        `%${model.name?.toLowerCase().noAccents()}%`,
+        model.projectId,
+        model.status,
+      ]
     );
     const epicsData: any[] = await this.db.queryAsync(
       `select
@@ -70,11 +78,12 @@ export class EpicRepository implements IEpicRepository {
       from timesheet_epics
       where ${where}
       order by ${ordenation}
-      limit $4
-      offset $5`,
+      limit $5
+      offset $6`,
       [
         company,
         `%${model.name?.toLowerCase().noAccents()}%`,
+        model.projectId,
         model.status,
         model.pageSize,
         offset,

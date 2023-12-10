@@ -1,13 +1,18 @@
-import { IPbiRepository } from "@application/interface/repository/timesheet";
+import {
+  IEpicRepository,
+  IPbiRepository,
+} from "@application/interface/repository/timesheet";
 import { IPbiUpdate } from "@application/interface/usecase/timesheet/pbi";
 import { Messages } from "@application/messages/Messages";
 import { PbiUpdateDataModel } from "@application/model/timesheet/pbi";
-import { PbiDto } from "@domain/dto/timesheet";
+import { EpicDto, PbiDto } from "@domain/dto/timesheet";
 import { inject } from "@infra/di/Inject";
 
 export class PbiUpdate implements IPbiUpdate {
   @inject("IPbiRepository")
   _pbiRepository?: IPbiRepository;
+  @inject("IEpicRepository")
+  _epicRepository?: IEpicRepository;
 
   async executeAsync(pbiData: PbiUpdateDataModel, company: string) {
     const pbi = await this._pbiRepository?.getByIdAsync(pbiData.id, company)!;
@@ -26,6 +31,7 @@ export class PbiUpdate implements IPbiUpdate {
     }
     pbi.update(pbiData);
     await this._pbiRepository?.updateAsync(pbi);
-    return new PbiDto(pbi);
+    const epic = await this._epicRepository?.getByIdAsync(pbi.epicId!, company);
+    return new PbiDto(pbi, new EpicDto(epic!));
   }
 }

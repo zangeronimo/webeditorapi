@@ -92,12 +92,12 @@ export class ProjectController {
   private createAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const { name, description, status, client } = req.body;
+      const { name, description, status, clientId } = req.body;
       const projectCreateDataModel = new ProjectCreateDataModel(
         name,
         description,
         status,
-        client.id
+        clientId
       );
       const project = await this.projectCreate?.executeAsync(
         projectCreateDataModel,
@@ -112,13 +112,13 @@ export class ProjectController {
   private updateAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const { id, name, description, status, client } = req.body;
+      const { id, name, description, status, clientId } = req.body;
       const projectUpdateDataModel = new ProjectUpdateDataModel(
         id,
         name,
         description,
         status,
-        client.id
+        clientId
       );
       const project = await this.projectUpdate?.executeAsync(
         projectUpdateDataModel,

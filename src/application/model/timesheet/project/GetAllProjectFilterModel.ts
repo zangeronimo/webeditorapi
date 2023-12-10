@@ -7,6 +7,7 @@ export class GetAllProjectFilterModel implements IPagination, IOrdenation {
   public orderBy: string;
   public desc: boolean;
   public name: string;
+  public clientId: string;
   public status: number;
 
   constructor(query: any) {
@@ -15,6 +16,7 @@ export class GetAllProjectFilterModel implements IPagination, IOrdenation {
     this.orderBy = query.orderBy ?? "name";
     this.desc = query.desc === "true";
     this.name = query.name;
+    this.clientId = query.clientId;
     this.status = query.status;
   }
 }

@@ -10,11 +10,12 @@ export class TaskDto {
   constructor(
     task: Task,
     readonly totalInHours: number,
-    readonly pbi?: PbiDto
+    readonly pbi?: PbiDto,
+    readonly working = false
   ) {
-    this.id = task.id;
-    this.name = task.name;
-    this.description = task.description;
-    this.status = task.status.valueOf();
+    this.id = task?.id;
+    this.name = task?.name;
+    this.description = task?.description;
+    this.status = task?.status?.valueOf();
   }
 }

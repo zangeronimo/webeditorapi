@@ -6,8 +6,8 @@ export class ClientDto {
   status: number;
 
   constructor(client: Client) {
-    this.id = client.id;
-    this.name = client.name;
-    this.status = client.status.valueOf();
+    this.id = client?.id;
+    this.name = client?.name;
+    this.status = client?.status.valueOf();
   }
 }

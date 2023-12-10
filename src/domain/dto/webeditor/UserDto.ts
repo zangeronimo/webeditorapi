@@ -8,9 +8,9 @@ export class UserDto {
   roles: RoleDto[];
 
   constructor(user: User) {
-    this.id = user.id;
-    this.name = user.name;
-    this.email = user.email;
-    this.roles = user.roles.map((role) => new RoleDto(role));
+    this.id = user?.id;
+    this.name = user?.name;
+    this.email = user?.email;
+    this.roles = user?.roles?.map((role) => new RoleDto(role));
   }
 }

@@ -34,6 +34,24 @@ export class TaskRepository implements ITaskRepository {
       : null;
   }
 
+  async checkTaskHasOpenedByUser(
+    userId: string,
+    taskId: string,
+    company: string
+  ): Promise<boolean> {
+    const [taskData] = await this.db.queryAsync(
+      `select
+        entry_type
+       from timesheet_entries
+       where webeditor_users_id = $1 and timesheet_tasks_id = $2 and webeditor_companies_id = $3
+       order by point_date desc
+       limit 1`,
+      [userId, taskId, company]
+    );
+
+    return taskData?.entry_type === EntryTypeEnum.OPEN;
+  }
+
   async checkUserHasOtherTaskOpenedAsync(
     userId: string,
     taskId: string,

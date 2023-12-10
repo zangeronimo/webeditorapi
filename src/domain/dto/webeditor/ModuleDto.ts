@@ -5,7 +5,7 @@ export class ModuleDto {
   name: string;
 
   constructor(module: Module) {
-    this.id = module.id;
-    this.name = module.name;
+    this.id = module?.id;
+    this.name = module?.name;
   }
 }

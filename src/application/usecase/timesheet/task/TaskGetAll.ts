@@ -15,7 +15,11 @@ export class TaskGetAll implements ITaskGetAll {
   @inject("IPbiRepository")
   _pbiRepository?: IPbiRepository;
 
-  async executeAsync(model: GetAllTaskFilterModel, company: string) {
+  async executeAsync(
+    model: GetAllTaskFilterModel,
+    userId: string,
+    company: string
+  ) {
     const { itens: tasks, total } = await this._taskRepository?.getAllAsync(
       model,
       company
@@ -28,7 +32,14 @@ export class TaskGetAll implements ITaskGetAll {
         company
       );
       const totalCalculated = Entry.calculateTotalInHours(tasks[i].entries);
-      tasksDto.push(new TaskDto(tasks[i], totalCalculated, new PbiDto(pbi!)));
+      const working = await this._taskRepository?.checkTaskHasOpenedByUser(
+        userId,
+        tasks[i].id,
+        company
+      );
+      tasksDto.push(
+        new TaskDto(tasks[i], totalCalculated, new PbiDto(pbi!), working)
+      );
     }
     return new PaginatorResultDto(tasksDto, total);
   }

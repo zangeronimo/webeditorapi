@@ -14,13 +14,18 @@ export class TaskGetById implements ITaskGetById {
   @inject("IPbiRepository")
   _pbiRepository?: IPbiRepository;
 
-  async executeAsync(id: string, company: string) {
+  async executeAsync(id: string, userId: string, company: string) {
     const task = await this._taskRepository?.getByIdAsync(id, company)!;
     if (task === null) {
       throw new Error(Messages.notFound("Task"));
     }
     const totalCalculated = Entry.calculateTotalInHours(task.entries);
+    const working = await this._taskRepository?.checkTaskHasOpenedByUser(
+      userId,
+      task.id,
+      company
+    );
     const pbi = await this._pbiRepository?.getByIdAsync(task.pbiId!, company);
-    return new TaskDto(task, totalCalculated, new PbiDto(pbi!));
+    return new TaskDto(task, totalCalculated, new PbiDto(pbi!), working);
   }
 }

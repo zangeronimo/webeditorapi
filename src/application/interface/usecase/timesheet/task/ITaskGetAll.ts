@@ -4,6 +4,7 @@ import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 export interface ITaskGetAll {
   executeAsync(
     model: GetAllTaskFilterModel,
+    userId: string,
     company: string
   ): Promise<PaginatorResultDto>;
 }

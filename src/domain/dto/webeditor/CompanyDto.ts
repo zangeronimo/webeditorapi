@@ -7,8 +7,8 @@ export class CompanyDto {
   modules: ModuleDto[];
 
   constructor(company: Company) {
-    this.id = company.id;
-    this.name = company.name;
-    this.modules = company.modules.map((module) => new ModuleDto(module));
+    this.id = company?.id;
+    this.name = company?.name;
+    this.modules = company?.modules?.map((module) => new ModuleDto(module));
   }
 }

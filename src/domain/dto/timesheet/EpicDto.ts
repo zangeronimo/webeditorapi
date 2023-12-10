@@ -8,9 +8,9 @@ export class EpicDto {
   status: number;
 
   constructor(epic: Epic, readonly project?: ProjectDto) {
-    this.id = epic.id;
-    this.name = epic.name;
-    this.description = epic.description;
-    this.status = epic.status.valueOf();
+    this.id = epic?.id;
+    this.name = epic?.name;
+    this.description = epic?.description;
+    this.status = epic?.status?.valueOf();
   }
 }

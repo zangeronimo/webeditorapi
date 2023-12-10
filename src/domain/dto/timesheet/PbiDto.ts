@@ -8,9 +8,9 @@ export class PbiDto {
   status: number;
 
   constructor(pbi: Pbi, readonly epic?: EpicDto) {
-    this.id = pbi.id;
-    this.name = pbi.name;
-    this.description = pbi.description;
-    this.status = pbi.status.valueOf();
+    this.id = pbi?.id;
+    this.name = pbi?.name;
+    this.description = pbi?.description;
+    this.status = pbi?.status?.valueOf();
   }
 }

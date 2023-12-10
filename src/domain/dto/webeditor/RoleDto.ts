@@ -9,10 +9,10 @@ export class RoleDto {
   module?: ModuleDto;
 
   constructor(role: Role, module?: ModuleDto) {
-    this.id = role.id;
-    this.name = role.name;
-    this.label = role.label;
-    this.order = role.order;
+    this.id = role?.id;
+    this.name = role?.name;
+    this.label = role?.label;
+    this.order = role?.order;
     this.module = module;
   }
 }

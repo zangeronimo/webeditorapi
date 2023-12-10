@@ -75,10 +75,11 @@ export class TaskController {
 
   private getAllAsync = async (req: Request, res: Response) => {
     try {
-      const { company } = req.user;
+      const { id: userId, company } = req.user;
       const getAllTaskFilterModel = new GetAllTaskFilterModel(req.query);
       const tasks = await this.taskGetAll?.executeAsync(
         getAllTaskFilterModel,
+        userId,
         company
       );
       return res.json(tasks);
@@ -89,9 +90,9 @@ export class TaskController {
 
   private getByIdAsync = async (req: Request, res: Response) => {
     try {
-      const { company } = req.user;
+      const { id: userId, company } = req.user;
       const { id } = req.params;
-      const task = await this.taskGetById?.executeAsync(id, company);
+      const task = await this.taskGetById?.executeAsync(id, userId, company);
       return res.json(task);
     } catch (e: any) {
       return res.status(400).json(e.message);

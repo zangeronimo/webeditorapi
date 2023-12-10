@@ -6,10 +6,10 @@ export class TaskDto {
   description: string;
   status: number;
 
-  constructor(client: Task, readonly totalInHours: number) {
-    this.id = client.id;
-    this.name = client.name;
-    this.description = client.description;
-    this.status = client.status.valueOf();
+  constructor(task: Task, readonly totalInHours: number) {
+    this.id = task.id;
+    this.name = task.name;
+    this.description = task.description;
+    this.status = task.status.valueOf();
   }
 }

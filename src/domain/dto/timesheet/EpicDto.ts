@@ -6,10 +6,10 @@ export class EpicDto {
   description: string;
   status: number;
 
-  constructor(client: Epic) {
-    this.id = client.id;
-    this.name = client.name;
-    this.description = client.description;
-    this.status = client.status.valueOf();
+  constructor(epic: Epic) {
+    this.id = epic.id;
+    this.name = epic.name;
+    this.description = epic.description;
+    this.status = epic.status.valueOf();
   }
 }

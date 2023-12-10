@@ -20,22 +20,15 @@ export class PgPromiseContext implements DbContext {
   }
 
   async commitAsync() {
-    await this.connection
-      .tx(async (t: any) => {
-        const transactions = [];
-        for (const transaction of this.transactions) {
-          transactions.push(
-            await t.query(transaction.statement, transaction.data)
-          );
-        }
-        return t.batch(transactions);
-      })
-      .then((data: any) => {
-        console.log("commit");
-      })
-      .catch((error: any) => {
-        console.log("error");
-      });
+    await this.connection.tx(async (t: any) => {
+      const transactions = [];
+      for (const transaction of this.transactions) {
+        transactions.push(
+          await t.query(transaction.statement, transaction.data)
+        );
+      }
+      return t.batch(transactions);
+    });
   }
 
   async closeAsync(): Promise<void> {

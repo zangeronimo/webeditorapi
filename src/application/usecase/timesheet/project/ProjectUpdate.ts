@@ -1,13 +1,18 @@
-import { IProjectRepository } from "@application/interface/repository/timesheet";
+import {
+  IClientRepository,
+  IProjectRepository,
+} from "@application/interface/repository/timesheet";
 import { IProjectUpdate } from "@application/interface/usecase/timesheet/project";
 import { Messages } from "@application/messages/Messages";
 import { ProjectUpdateDataModel } from "@application/model/timesheet/project";
-import { ProjectDto } from "@domain/dto/timesheet";
+import { ClientDto, ProjectDto } from "@domain/dto/timesheet";
 import { inject } from "@infra/di/Inject";
 
 export class ProjectUpdate implements IProjectUpdate {
   @inject("IProjectRepository")
   _projectRepository?: IProjectRepository;
+  @inject("IClientRepository")
+  _clientRepository?: IClientRepository;
 
   async executeAsync(projectData: ProjectUpdateDataModel, company: string) {
     const project = await this._projectRepository?.getByIdAsync(
@@ -29,6 +34,10 @@ export class ProjectUpdate implements IProjectUpdate {
     }
     project.update(projectData);
     await this._projectRepository?.updateAsync(project);
-    return new ProjectDto(project);
+    const client = await this._clientRepository?.getByIdAsync(
+      project.clientId!,
+      company
+    );
+    return new ProjectDto(project, new ClientDto(client!));
   }
 }

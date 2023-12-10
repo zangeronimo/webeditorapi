@@ -9,7 +9,7 @@ export class TaskDto {
 
   constructor(
     task: Task,
-    readonly totalInHours: number,
+    readonly totalInSeconds: number,
     readonly pbi?: PbiDto,
     readonly working = false
   ) {

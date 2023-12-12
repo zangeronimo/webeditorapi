@@ -5,17 +5,16 @@ import {
 } from "@application/model/webeditor/user";
 import { inject } from "@infra/di/Inject";
 import { Role } from "./Role";
+import { Password } from "@domain/valueObject/Password";
+import { BPKDF2Provider } from "@infra/provider";
 
 export class User {
   private _id: string;
   private _name: string;
   private _email: string;
-  private _password: string;
+  private _password: Password;
   private _updatedAt?: Date;
   private _roles: Role[];
-
-  @inject("IHashProvider")
-  _hashProvider?: IHashProvider;
 
   get id() {
     return this._id;
@@ -40,7 +39,7 @@ export class User {
     id: string,
     name: string,
     email: string,
-    password: string = "",
+    password: Password,
     roles: Role[],
     readonly companyId: string
   ) {
@@ -56,10 +55,18 @@ export class User {
     name: string,
     email: string,
     password: string,
+    salt: string,
     companyId: string,
     roles: Role[]
   ): User {
-    return new User(id, name, email, password, roles, companyId);
+    return new User(
+      id,
+      name,
+      email,
+      Password.restore(password, salt),
+      roles,
+      companyId
+    );
   }
 
   static async createAsync(
@@ -70,23 +77,11 @@ export class User {
       crypto.randomUUID(),
       userData.name,
       userData.email,
-      userData.password,
+      Password.create(userData.password),
       userData.roles,
       companyId
     );
-    await user.setPasswordAsync(userData.password);
     return user;
-  }
-
-  private async setPasswordAsync(password: string) {
-    this._password = await this._hashProvider?.generateHashAsync(password)!;
-  }
-
-  async checkPasswordAsync(password: string): Promise<boolean> {
-    return await this._hashProvider?.compareHashAsync(
-      password,
-      this._password
-    )!;
   }
 
   async updateAsync(userData: UserUpdateDataModel) {
@@ -95,7 +90,7 @@ export class User {
     this._email = userData.email;
     this._roles = userData.roles;
     if (!!userData.password) {
-      await this.setPasswordAsync(userData.password);
+      this._password = Password.create(userData.password);
     }
   }
 }

@@ -1,2 +1,2 @@
-export * from "./BCryptHashProvider";
+export * from "./BPKDFProvider";
 export * from "./JwtWebTokenProvider";

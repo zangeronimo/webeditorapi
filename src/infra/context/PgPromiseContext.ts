@@ -6,9 +6,7 @@ export class PgPromiseContext implements DbContext {
   transactions: { statement: string; data: any }[];
 
   constructor() {
-    this.connection = pgPromise()(
-      "postgres://postgres:virtual@localhost:5432/webeditor"
-    );
+    this.connection = pgPromise()(atob(process.env.POSTGRES_URL!));
     this.transactions = [];
   }
 

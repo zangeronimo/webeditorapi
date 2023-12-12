@@ -13,13 +13,13 @@ export class JwtWebTokenProvider implements ITokenProvider {
         exp,
         company: user.companyId,
       },
-      "secret"
+      process.env.SECRET_KEY!
     );
     return token;
   }
 
   verify(token: string) {
-    const payload: any = verify(token, "secret");
+    const payload: any = verify(token, process.env.SECRET_KEY!);
     const dateNow = new Date().getTime();
     if (dateNow - payload.exp >= 0) {
       throw new Error(Messages.invalidJwtToken);

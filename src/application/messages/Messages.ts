@@ -1,4 +1,6 @@
 export class Messages {
+  static passwordHashFail =
+    "Something wrong with the generating password process.";
   static invalidUsernameOrPassword = "Invalid username or password.";
   static invalidJwtToken = "Invalid JWT token.";
   static invalidGrantType = "Invalid grant_type.";

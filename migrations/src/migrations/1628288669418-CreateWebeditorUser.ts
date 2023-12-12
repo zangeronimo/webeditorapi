@@ -1,60 +1,65 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export default class CreateWebeditorUser1628288669418 implements MigrationInterface {
-
+export default class CreateWebeditorUser1628288669418
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'webeditor_users',
+        name: "webeditor_users",
         columns: [
           {
-            name: 'id',
-            type: 'uuid',
+            name: "id",
+            type: "uuid",
             isPrimary: true,
-            generationStrategy: 'uuid',
-            default: 'uuid_generate_v4()',
+            generationStrategy: "uuid",
+            default: "uuid_generate_v4()",
           },
           {
-            name: 'name',
-            type: 'varchar(150)',
+            name: "name",
+            type: "varchar(150)",
           },
           {
-            name: 'email',
-            type: 'varchar(150)',
+            name: "email",
+            type: "varchar(150)",
           },
           {
-            name: 'password',
-            type: 'varchar(100)',
+            name: "password",
+            type: "varchar(200)",
           },
           {
-            name: 'webeditor_companies_id',
-            type: 'uuid',
+            name: "salt",
+            type: "varchar(50)",
           },
           {
-            name: 'created_at',
-            type: 'timestamp',
-            default: 'now()',
+            name: "webeditor_companies_id",
+            type: "uuid",
           },
           {
-            name: 'updated_at',
-            type: 'timestamp',
-            default: 'now()',
+            name: "created_at",
+            type: "timestamp",
+            default: "now()",
           },
           {
-            name: 'deleted_at',
-            type: 'timestamp',
+            name: "updated_at",
+            type: "timestamp",
+            default: "now()",
+          },
+          {
+            name: "deleted_at",
+            type: "timestamp",
             isNullable: true,
             default: null,
           },
         ],
         foreignKeys: [
           {
-            name: 'WebeditorCompanies',
-            referencedTableName: 'webeditor_companies',
-            referencedColumnNames: ['id'],
-            columnNames: ['webeditor_companies_id'],
-            onDelete: 'CASCADE',
-            onUpdate: 'CASCADE',
+            name: "WebeditorCompanies",
+            referencedTableName: "webeditor_companies",
+            referencedColumnNames: ["id"],
+            columnNames: ["webeditor_companies_id"],
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
           },
         ],
       })
@@ -62,7 +67,6 @@ export default class CreateWebeditorUser1628288669418 implements MigrationInterf
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('webeditor_users');
+    await queryRunner.dropTable("webeditor_users");
   }
-
 }

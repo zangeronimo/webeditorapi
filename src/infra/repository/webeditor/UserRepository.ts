@@ -9,7 +9,7 @@ export class UserRepository implements IUserRepository {
   async getByIdAsync(id: string, company: string): Promise<User | null> {
     const [userData] = await this.db.queryAsync(
       `select
-        id, name, email, password, webeditor_companies_id
+        id, name, email, password, salt, webeditor_companies_id
        from webeditor_users
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
@@ -21,6 +21,7 @@ export class UserRepository implements IUserRepository {
           userData.name,
           userData.email,
           userData.password,
+          userData.salt,
           userData.webeditor_companies_id,
           rolesData
         )
@@ -29,7 +30,7 @@ export class UserRepository implements IUserRepository {
 
   async getByEmailAsync(email: string): Promise<User | null> {
     const [userData] = await this.db.queryAsync(
-      "select id, name, email, password, webeditor_companies_id from webeditor_users where email = $1 and deleted_at is null",
+      "select id, name, email, password, salt, webeditor_companies_id from webeditor_users where email = $1 and deleted_at is null",
       [email]
     );
     const rolesData = await this.getRolesFromUserAsync(userData?.id);
@@ -39,6 +40,7 @@ export class UserRepository implements IUserRepository {
           userData.name,
           userData.email,
           userData.password,
+          userData.salt,
           userData.webeditor_companies_id,
           rolesData
         )
@@ -68,7 +70,7 @@ export class UserRepository implements IUserRepository {
     );
     const usersData: any[] = await this.db.queryAsync(
       `select
-        id, name, email, password, webeditor_companies_id
+        id, name, email, password,salt, webeditor_companies_id
       from webeditor_users
       where ${where}
       order by ${ordenation}
@@ -90,6 +92,7 @@ export class UserRepository implements IUserRepository {
         usersData[i].name,
         usersData[i].email,
         usersData[i].password,
+        usersData[i].salt,
         usersData[i].webeditor_companies_id,
         rolesData
       );
@@ -151,13 +154,14 @@ export class UserRepository implements IUserRepository {
       [user.id]
     );
     await this.db.queryAsync(
-      "update webeditor_users set name=$3, email=$4, password=$5, updated_at=$6 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      "update webeditor_users set name=$3, email=$4, password=$5, salt=$6, updated_at=$7 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [
         user.id,
         user.companyId,
         user.name,
         user.email,
-        user.password,
+        user.password.value,
+        user.password.salt,
         user.updatedAt,
       ]
     );
@@ -167,8 +171,15 @@ export class UserRepository implements IUserRepository {
 
   async saveAsync(user: User): Promise<User> {
     await this.db.queryAsync(
-      "insert into webeditor_users (id, name, email, password, webeditor_companies_id) values ($1, $2, $3, $4, $5)",
-      [user.id, user.name, user.email, user.password, user.companyId]
+      "insert into webeditor_users (id, name, email, password, salt, webeditor_companies_id) values ($1, $2, $3, $4, $5, $6)",
+      [
+        user.id,
+        user.name,
+        user.email,
+        user.password.value,
+        user.password.salt,
+        user.companyId,
+      ]
     );
     await this.addRolesForUserAsync(user.id, user.roles);
     return user;

@@ -16,7 +16,7 @@ export class MakeLogin implements IMakeLogin {
     if (user === null) {
       throw new Error(Messages.invalidUsernameOrPassword);
     }
-    if ((await user.checkPasswordAsync(password)) === false) {
+    if (user.password.validate(password) === false) {
       throw new Error(Messages.invalidUsernameOrPassword);
     }
     const dateNow = new Date();

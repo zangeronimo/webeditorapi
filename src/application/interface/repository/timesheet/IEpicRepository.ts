@@ -12,7 +12,7 @@ export interface IEpicRepository {
     model: GetAllEpicFilterModel,
     company: string
   ): Promise<{ itens: Epic[]; total: number }>;
-  updateAsync(epic: Epic): Promise<Epic>;
-  saveAsync(epic: Epic): Promise<Epic>;
-  deleteAsync(epic: Epic, date: Date): Promise<Epic>;
+  updateAsync(epic: Epic): Promise<void>;
+  saveAsync(epic: Epic): Promise<void>;
+  deleteAsync(epic: Epic, date: Date): Promise<void>;
 }

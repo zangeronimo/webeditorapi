@@ -134,8 +134,8 @@ export class EpicController {
     try {
       const { company } = req.user;
       const { id } = req.params;
-      const epic = await this.epicDelete?.executeAsync(id, company);
-      return res.json(epic);
+      await this.epicDelete?.executeAsync(id, company);
+      return res.status(204).json();
     } catch (e: any) {
       return res.status(400).json(e.message);
     }

@@ -37,7 +37,8 @@ export class Epic {
     description: string,
     status: ActiveEnum,
     projectId: string,
-    readonly companyId: string
+    readonly companyId: string,
+    readonly sequence?: number
   ) {
     this._id = id;
     this._name = name;
@@ -48,13 +49,22 @@ export class Epic {
 
   static restore(
     id: string,
+    sequence: number,
     name: string,
     description: string,
     status: ActiveEnum,
     projectId: string,
     companyId: string
   ): Epic {
-    return new Epic(id, name, description, status, projectId, companyId);
+    return new Epic(
+      id,
+      name,
+      description,
+      status,
+      projectId,
+      companyId,
+      sequence
+    );
   }
 
   static create(model: EpicCreateDataModel, companyId: string): Epic {

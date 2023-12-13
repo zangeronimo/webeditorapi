@@ -28,6 +28,10 @@ export class EpicCreate implements IEpicCreate {
       epic.projectId!,
       company
     );
-    return new EpicDto(epic, new ProjectDto(project!));
+    const epicSaved = await this._epicRepository?.getByIdAsync(
+      epic.id,
+      company
+    );
+    return new EpicDto(epicSaved!, new ProjectDto(project!));
   }
 }

@@ -9,7 +9,7 @@ export class EpicRepository implements IEpicRepository {
   async getByIdAsync(id: string, company: string): Promise<Epic | null> {
     const [epicData] = await this.db.queryAsync(
       `select
-        id, name, description, status, timesheet_projects_id, webeditor_companies_id
+        id, sequence, name, description, status, timesheet_projects_id, webeditor_companies_id
        from timesheet_epics
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
@@ -17,6 +17,7 @@ export class EpicRepository implements IEpicRepository {
     return epicData
       ? Epic.restore(
           epicData.id,
+          epicData.sequence,
           epicData.name,
           epicData.description,
           epicData.status,
@@ -32,12 +33,13 @@ export class EpicRepository implements IEpicRepository {
     company: string
   ): Promise<Epic | null> {
     const [epicData] = await this.db.queryAsync(
-      "select id, name, description, status, timesheet_projects_id, webeditor_companies_id from timesheet_epics where name = $1 and timesheet_projects_id = $2 and webeditor_companies_id = $3 and deleted_at is null",
+      "select id, sequence, name, description, status, timesheet_projects_id, webeditor_companies_id from timesheet_epics where name = $1 and timesheet_projects_id = $2 and webeditor_companies_id = $3 and deleted_at is null",
       [name, epicId, company]
     );
     return epicData
       ? Epic.restore(
           epicData.id,
+          epicData.sequence,
           epicData.name,
           epicData.description,
           epicData.status,
@@ -74,7 +76,7 @@ export class EpicRepository implements IEpicRepository {
     );
     const epicsData: any[] = await this.db.queryAsync(
       `select
-        id, name, description, status, timesheet_projects_id, webeditor_companies_id
+        id, sequence, name, description, status, timesheet_projects_id, webeditor_companies_id
       from timesheet_epics
       where ${where}
       order by ${ordenation}
@@ -93,6 +95,7 @@ export class EpicRepository implements IEpicRepository {
     for (let i = 0; i < epicsData.length; i++) {
       const epic = Epic.restore(
         epicsData[i].id,
+        epicsData[i].sequence,
         epicsData[i].name,
         epicsData[i].description,
         epicsData[i].status,
@@ -104,15 +107,14 @@ export class EpicRepository implements IEpicRepository {
     return { itens: epics, total: total.count };
   }
 
-  async deleteAsync(epic: Epic, date: Date): Promise<Epic> {
+  async deleteAsync(epic: Epic, date: Date): Promise<void> {
     await this.db.queryAsync(
       "update timesheet_epics set deleted_at=$3, updated_at=$3 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [epic.id, epic.companyId, date]
     );
-    return epic;
   }
 
-  async updateAsync(epic: Epic): Promise<Epic> {
+  async updateAsync(epic: Epic): Promise<void> {
     await this.db.queryAsync(
       "update timesheet_epics set name=$3, description=$4, status=$5, timesheet_projects_id=$6, updated_at=$7 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [
@@ -125,10 +127,9 @@ export class EpicRepository implements IEpicRepository {
         epic.updatedAt,
       ]
     );
-    return epic;
   }
 
-  async saveAsync(epic: Epic): Promise<Epic> {
+  async saveAsync(epic: Epic): Promise<void> {
     await this.db.queryAsync(
       "insert into timesheet_epics (id, name, description, status, timesheet_projects_id, webeditor_companies_id) values ($1, $2, $3, $4, $5, $6)",
       [
@@ -140,6 +141,5 @@ export class EpicRepository implements IEpicRepository {
         epic.companyId,
       ]
     );
-    return epic;
   }
 }

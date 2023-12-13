@@ -37,7 +37,8 @@ export class Pbi {
     description: string,
     status: ActiveEnum,
     epicId: string,
-    readonly companyId: string
+    readonly companyId: string,
+    readonly sequence?: number
   ) {
     this._id = id;
     this._name = name;
@@ -48,13 +49,14 @@ export class Pbi {
 
   static restore(
     id: string,
+    sequence: number,
     name: string,
     description: string,
     status: ActiveEnum,
     epicId: string,
     companyId: string
   ): Pbi {
-    return new Pbi(id, name, description, status, epicId, companyId);
+    return new Pbi(id, name, description, status, epicId, companyId, sequence);
   }
 
   static create(model: PbiCreateDataModel, companyId: string): Pbi {

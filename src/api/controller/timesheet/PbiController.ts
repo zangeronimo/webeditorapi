@@ -134,8 +134,8 @@ export class PbiController {
     try {
       const { company } = req.user;
       const { id } = req.params;
-      const pbi = await this.pbiDelete?.executeAsync(id, company);
-      return res.json(pbi);
+      await this.pbiDelete?.executeAsync(id, company);
+      return res.status(204).json();
     } catch (e: any) {
       return res.status(400).json(e.message);
     }

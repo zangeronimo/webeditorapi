@@ -27,6 +27,7 @@ export class PbiCreate implements IPbiCreate {
     const pbi = Pbi.create(pbiData, company);
     await this._pbiRepository?.saveAsync(pbi);
     const epic = await this._epicRepository?.getByIdAsync(pbi.epicId!, company);
-    return new PbiDto(pbi, new EpicDto(epic!));
+    const pbiSaved = await this._pbiRepository?.getByIdAsync(pbi.id, company);
+    return new PbiDto(pbiSaved!, new EpicDto(epic!));
   }
 }

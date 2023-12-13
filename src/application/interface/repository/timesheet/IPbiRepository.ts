@@ -12,7 +12,7 @@ export interface IPbiRepository {
     model: GetAllPbiFilterModel,
     company: string
   ): Promise<{ itens: Pbi[]; total: number }>;
-  updateAsync(pbi: Pbi): Promise<Pbi>;
-  saveAsync(pbi: Pbi): Promise<Pbi>;
-  deleteAsync(pbi: Pbi, date: Date): Promise<Pbi>;
+  updateAsync(pbi: Pbi): Promise<void>;
+  saveAsync(pbi: Pbi): Promise<void>;
+  deleteAsync(pbi: Pbi, date: Date): Promise<void>;
 }

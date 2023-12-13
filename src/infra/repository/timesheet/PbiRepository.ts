@@ -9,7 +9,7 @@ export class PbiRepository implements IPbiRepository {
   async getByIdAsync(id: string, company: string): Promise<Pbi | null> {
     const [pbiData] = await this.db.queryAsync(
       `select
-        id, name, description, status, timesheet_epics_id, webeditor_companies_id
+        id, sequence, name, description, status, timesheet_epics_id, webeditor_companies_id
        from timesheet_pbis
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
@@ -17,6 +17,7 @@ export class PbiRepository implements IPbiRepository {
     return pbiData
       ? Pbi.restore(
           pbiData.id,
+          pbiData.sequence,
           pbiData.name,
           pbiData.description,
           pbiData.status,
@@ -32,12 +33,13 @@ export class PbiRepository implements IPbiRepository {
     company: string
   ): Promise<Pbi | null> {
     const [pbiData] = await this.db.queryAsync(
-      "select id, name, description, status, timesheet_epics_id, webeditor_companies_id from timesheet_pbis where name = $1 and timesheet_epics_id = $2 and webeditor_companies_id = $3 and deleted_at is null",
+      "select id, sequence, name, description, status, timesheet_epics_id, webeditor_companies_id from timesheet_pbis where name = $1 and timesheet_epics_id = $2 and webeditor_companies_id = $3 and deleted_at is null",
       [name, pbiId, company]
     );
     return pbiData
       ? Pbi.restore(
           pbiData.id,
+          pbiData.sequence,
           pbiData.name,
           pbiData.description,
           pbiData.status,
@@ -74,7 +76,7 @@ export class PbiRepository implements IPbiRepository {
     );
     const pbisData: any[] = await this.db.queryAsync(
       `select
-        id, name, description, status, timesheet_epics_id, webeditor_companies_id
+        id, sequence, name, description, status, timesheet_epics_id, webeditor_companies_id
       from timesheet_pbis
       where ${where}
       order by ${ordenation}
@@ -93,6 +95,7 @@ export class PbiRepository implements IPbiRepository {
     for (let i = 0; i < pbisData.length; i++) {
       const pbi = Pbi.restore(
         pbisData[i].id,
+        pbisData[i].sequence,
         pbisData[i].name,
         pbisData[i].description,
         pbisData[i].status,
@@ -104,15 +107,14 @@ export class PbiRepository implements IPbiRepository {
     return { itens: pbis, total: total.count };
   }
 
-  async deleteAsync(pbi: Pbi, date: Date): Promise<Pbi> {
+  async deleteAsync(pbi: Pbi, date: Date): Promise<void> {
     await this.db.queryAsync(
       "update timesheet_pbis set deleted_at=$3, updated_at=$3 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [pbi.id, pbi.companyId, date]
     );
-    return pbi;
   }
 
-  async updateAsync(pbi: Pbi): Promise<Pbi> {
+  async updateAsync(pbi: Pbi): Promise<void> {
     await this.db.queryAsync(
       "update timesheet_pbis set name=$3, description=$4, status=$5, timesheet_epics_id=$6, updated_at=$7 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [
@@ -125,14 +127,12 @@ export class PbiRepository implements IPbiRepository {
         pbi.updatedAt,
       ]
     );
-    return pbi;
   }
 
-  async saveAsync(pbi: Pbi): Promise<Pbi> {
+  async saveAsync(pbi: Pbi): Promise<void> {
     await this.db.queryAsync(
       "insert into timesheet_pbis (id, name, description, status, timesheet_epics_id, webeditor_companies_id) values ($1, $2, $3, $4, $5, $6)",
       [pbi.id, pbi.name, pbi.description, pbi.status, pbi.epicId, pbi.companyId]
     );
-    return pbi;
   }
 }

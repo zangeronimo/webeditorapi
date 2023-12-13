@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class TimeSheetCreatePbis1702080270071 implements MigrationInterface {
+export class TimeSheetPBIStatus1702080270070 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "timesheet_pbis",
+        name: "timesheet_pbis_status",
         columns: [
           {
             name: "id",
@@ -14,19 +14,13 @@ export class TimeSheetCreatePbis1702080270071 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "sequence",
+            name: "order",
             type: "int",
-            isGenerated: true,
-            generationStrategy: "increment",
+            default: 0,
           },
           {
             name: "name",
-            type: "varchar(200)",
-          },
-          {
-            name: "description",
-            type: "varchar",
-            isNullable: false,
+            type: "varchar(30)",
           },
           {
             name: "status",
@@ -34,11 +28,7 @@ export class TimeSheetCreatePbis1702080270071 implements MigrationInterface {
             default: 0,
           },
           {
-            name: "timesheet_pbis_status_id",
-            type: "uuid",
-          },
-          {
-            name: "timesheet_epics_id",
+            name: "timesheet_clients_id",
             type: "uuid",
           },
           {
@@ -64,18 +54,10 @@ export class TimeSheetCreatePbis1702080270071 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: "TimesheetPbiStatus",
-            referencedTableName: "timesheet_pbis_status",
+            name: "TimesheetClient",
+            referencedTableName: "timesheet_clients",
             referencedColumnNames: ["id"],
-            columnNames: ["timesheet_pbis_status_id"],
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE",
-          },
-          {
-            name: "TimesheetEpic",
-            referencedTableName: "timesheet_epics",
-            referencedColumnNames: ["id"],
-            columnNames: ["timesheet_epics_id"],
+            columnNames: ["timesheet_clients_id"],
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
           },
@@ -93,6 +75,6 @@ export class TimeSheetCreatePbis1702080270071 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("timesheet_pbis");
+    await queryRunner.dropTable("timesheet_pbis_status");
   }
 }

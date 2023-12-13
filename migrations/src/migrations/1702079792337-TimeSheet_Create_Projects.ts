@@ -18,7 +18,6 @@ export class TimeSheetCreateProjects1702079792337
           {
             name: "sequence",
             type: "int",
-            isPrimary: true,
             isGenerated: true,
             generationStrategy: "increment",
           },

@@ -16,7 +16,6 @@ export class TimeSheetCreateEpics1702080118245 implements MigrationInterface {
           {
             name: "sequence",
             type: "int",
-            isPrimary: true,
             isGenerated: true,
             generationStrategy: "increment",
           },

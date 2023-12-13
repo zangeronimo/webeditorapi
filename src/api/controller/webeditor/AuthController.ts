@@ -39,7 +39,7 @@ export class AuthController {
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         sameSite: "strict",
-        expires: new Date(new Date().getTime() + 3600000),
+        expires: new Date(new Date().getTime() + +process.env.REFRESH_EXP!),
         secure: true,
       });
       return res.json(token);
@@ -63,7 +63,7 @@ export class AuthController {
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         sameSite: "strict",
-        expires: new Date(new Date().getTime() + 3600000),
+        expires: new Date(new Date().getTime() + +process.env.REFRESH_EXP!),
         secure: true,
       });
       return res.json(token);

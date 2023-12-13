@@ -27,12 +27,12 @@ export class RefreshToken implements IRefreshToken {
     const token = this._tokenProvider?.generate(
       user,
       dateNow,
-      dateNow.getTime() + 15000
+      dateNow.getTime() + +process.env.TOKEN_EXP!
     );
     const refreshToken = this._tokenProvider?.generate(
       user,
       dateNow,
-      dateNow.getTime() + 3600000
+      dateNow.getTime() + +process.env.REFRESH_EXP!
     );
     return { token: new AuthDto(token!), refreshToken: refreshToken! };
   }

@@ -14,6 +14,13 @@ export class TimeSheetCreateEpics1702080118245 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
+            name: "sequence",
+            type: "int",
+            isPrimary: true,
+            isGenerated: true,
+            generationStrategy: "increment",
+          },
+          {
             name: "name",
             type: "varchar(200)",
           },

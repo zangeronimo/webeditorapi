@@ -37,7 +37,8 @@ export class Project {
     description: string,
     status: ActiveEnum,
     clientId: string,
-    readonly companyId: string
+    readonly companyId: string,
+    readonly sequence?: number
   ) {
     this._id = id;
     this._name = name;
@@ -48,13 +49,22 @@ export class Project {
 
   static restore(
     id: string,
+    sequence: number,
     name: string,
     description: string,
     status: ActiveEnum,
     clientId: string,
     companyId: string
   ): Project {
-    return new Project(id, name, description, status, clientId, companyId);
+    return new Project(
+      id,
+      name,
+      description,
+      status,
+      clientId,
+      companyId,
+      sequence
+    );
   }
 
   static create(model: ProjectCreateDataModel, companyId: string): Project {

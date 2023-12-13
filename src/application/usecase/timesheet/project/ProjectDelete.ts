@@ -17,10 +17,5 @@ export class ProjectDelete implements IProjectDelete {
       throw new Error(Messages.notFound("Project"));
     }
     await this._projectRepository?.deleteAsync(project, new Date());
-    const client = await this._clientRepository?.getByIdAsync(
-      project.clientId!,
-      company
-    );
-    return new ProjectDto(project, new ClientDto(client!));
   }
 }

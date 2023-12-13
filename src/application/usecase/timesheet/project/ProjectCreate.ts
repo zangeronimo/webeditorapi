@@ -23,11 +23,15 @@ export class ProjectCreate implements IProjectCreate {
       throw new Error(Messages.alreadyInUse("Name"));
     }
     const project = Project.create(projectData, company);
-    await this._projectRepository?.saveAsync(project);
+    await this._projectRepository?.saveAsync(project)!;
     const client = await this._clientRepository?.getByIdAsync(
       project.clientId!,
       company
     );
-    return new ProjectDto(project, new ClientDto(client!));
+    const projectSaved = await this._projectRepository?.getByIdAsync(
+      project.id,
+      company
+    );
+    return new ProjectDto(projectSaved!, new ClientDto(client!));
   }
 }

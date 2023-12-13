@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class TimeSheetCreateTimeSheets1702080568672
-  implements MigrationInterface
-{
+export class TimeSheetCreateEntries1702080568672 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({

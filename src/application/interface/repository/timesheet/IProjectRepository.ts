@@ -12,7 +12,7 @@ export interface IProjectRepository {
     model: GetAllProjectFilterModel,
     company: string
   ): Promise<{ itens: Project[]; total: number }>;
-  updateAsync(project: Project): Promise<Project>;
-  saveAsync(project: Project): Promise<Project>;
-  deleteAsync(project: Project, date: Date): Promise<Project>;
+  updateAsync(project: Project): Promise<void>;
+  saveAsync(project: Project): Promise<void>;
+  deleteAsync(project: Project, date: Date): Promise<void>;
 }

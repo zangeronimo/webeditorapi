@@ -14,6 +14,13 @@ export class TimeSheetCreatePbis1702080270071 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
+            name: "sequence",
+            type: "int",
+            isPrimary: true,
+            isGenerated: true,
+            generationStrategy: "increment",
+          },
+          {
             name: "name",
             type: "varchar(200)",
           },

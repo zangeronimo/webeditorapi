@@ -14,6 +14,13 @@ export class TimeSheetCreateTasks1702080404611 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
+            name: "sequence",
+            type: "int",
+            isPrimary: true,
+            isGenerated: true,
+            generationStrategy: "increment",
+          },
+          {
             name: "name",
             type: "varchar(200)",
           },

@@ -10,7 +10,7 @@ export class PbiStatusDto {
   constructor(pbiStatus: PbiStatus) {
     this.id = pbiStatus?.id;
     this.name = pbiStatus?.name;
-    this.order = pbiStatus?.order;
+    this.order = pbiStatus?.sortOrder;
     this.status = pbiStatus?.status?.valueOf();
   }
 }

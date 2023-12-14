@@ -9,7 +9,7 @@ export class PbiRepository implements IPbiRepository {
   async getByIdAsync(id: string, company: string): Promise<Pbi | null> {
     const [pbiData] = await this.db.queryAsync(
       `select
-        id, sequence, name, description, status, timesheet_epics_id, webeditor_companies_id
+        id, sequence, name, description, status, timesheet_epics_id, timesheet_pbis_status_id, webeditor_companies_id
        from timesheet_pbis
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
@@ -22,6 +22,7 @@ export class PbiRepository implements IPbiRepository {
           pbiData.description,
           pbiData.status,
           pbiData.timesheet_epics_id,
+          pbiData.timesheet_pbis_status_id,
           pbiData.webeditor_companies_id
         )
       : null;
@@ -33,7 +34,7 @@ export class PbiRepository implements IPbiRepository {
     company: string
   ): Promise<Pbi | null> {
     const [pbiData] = await this.db.queryAsync(
-      "select id, sequence, name, description, status, timesheet_epics_id, webeditor_companies_id from timesheet_pbis where name = $1 and timesheet_epics_id = $2 and webeditor_companies_id = $3 and deleted_at is null",
+      "select id, sequence, name, description, status, timesheet_epics_id, timesheet_pbis_status_id, webeditor_companies_id from timesheet_pbis where name = $1 and timesheet_epics_id = $2 and webeditor_companies_id = $3 and deleted_at is null",
       [name, pbiId, company]
     );
     return pbiData
@@ -44,6 +45,7 @@ export class PbiRepository implements IPbiRepository {
           pbiData.description,
           pbiData.status,
           pbiData.timesheet_epics_id,
+          pbiData.timesheet_pbis_status_id,
           pbiData.webeditor_companies_id
         )
       : null;
@@ -76,7 +78,7 @@ export class PbiRepository implements IPbiRepository {
     );
     const pbisData: any[] = await this.db.queryAsync(
       `select
-        id, sequence, name, description, status, timesheet_epics_id, webeditor_companies_id
+        id, sequence, name, description, status, timesheet_epics_id, timesheet_pbis_status_id, webeditor_companies_id
       from timesheet_pbis
       where ${where}
       order by ${ordenation}
@@ -100,6 +102,7 @@ export class PbiRepository implements IPbiRepository {
         pbisData[i].description,
         pbisData[i].status,
         pbisData[i].timesheet_epics_id,
+        pbisData[i].timesheet_pbis_status_id,
         pbisData[i].webeditor_companies_id
       );
       pbis.push(pbi);
@@ -116,7 +119,7 @@ export class PbiRepository implements IPbiRepository {
 
   async updateAsync(pbi: Pbi): Promise<void> {
     await this.db.queryAsync(
-      "update timesheet_pbis set name=$3, description=$4, status=$5, timesheet_epics_id=$6, updated_at=$7 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      "update timesheet_pbis set name=$3, description=$4, status=$5, timesheet_epics_id=$6, timesheet_pbis_status_id=$7, updated_at=$8 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [
         pbi.id,
         pbi.companyId,
@@ -124,6 +127,7 @@ export class PbiRepository implements IPbiRepository {
         pbi.description,
         pbi.status,
         pbi.epicId,
+        pbi.pbiStatusId,
         pbi.updatedAt,
       ]
     );
@@ -131,8 +135,16 @@ export class PbiRepository implements IPbiRepository {
 
   async saveAsync(pbi: Pbi): Promise<void> {
     await this.db.queryAsync(
-      "insert into timesheet_pbis (id, name, description, status, timesheet_epics_id, webeditor_companies_id) values ($1, $2, $3, $4, $5, $6)",
-      [pbi.id, pbi.name, pbi.description, pbi.status, pbi.epicId, pbi.companyId]
+      "insert into timesheet_pbis (id, name, description, status, timesheet_epics_id, timesheet_pbis_status_id, webeditor_companies_id) values ($1, $2, $3, $4, $5, $6, $7)",
+      [
+        pbi.id,
+        pbi.name,
+        pbi.description,
+        pbi.status,
+        pbi.epicId,
+        pbi.pbiStatusId,
+        pbi.companyId,
+      ]
     );
   }
 }

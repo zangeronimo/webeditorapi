@@ -10,6 +10,7 @@ export class Pbi {
   private _description: string;
   private _status: ActiveEnum;
   private _epicId?: string;
+  private _pbiStatusId?: string;
   private _updatedAt?: Date;
 
   get id() {
@@ -27,6 +28,9 @@ export class Pbi {
   get epicId() {
     return this._epicId;
   }
+  get pbiStatusId() {
+    return this._pbiStatusId;
+  }
   get updatedAt() {
     return this._updatedAt;
   }
@@ -37,6 +41,7 @@ export class Pbi {
     description: string,
     status: ActiveEnum,
     epicId: string,
+    pbiStatusId: string,
     readonly companyId: string,
     readonly sequence?: number
   ) {
@@ -45,6 +50,7 @@ export class Pbi {
     this._description = description;
     this._status = status;
     this._epicId = epicId;
+    this._pbiStatusId = pbiStatusId;
   }
 
   static restore(
@@ -54,9 +60,19 @@ export class Pbi {
     description: string,
     status: ActiveEnum,
     epicId: string,
+    pbiStatusId: string,
     companyId: string
   ): Pbi {
-    return new Pbi(id, name, description, status, epicId, companyId, sequence);
+    return new Pbi(
+      id,
+      name,
+      description,
+      status,
+      epicId,
+      pbiStatusId,
+      companyId,
+      sequence
+    );
   }
 
   static create(model: PbiCreateDataModel, companyId: string): Pbi {
@@ -66,6 +82,7 @@ export class Pbi {
       model.description,
       model.status,
       model.epicId,
+      model.pbiStatusId,
       companyId
     );
     return pbi;
@@ -77,5 +94,6 @@ export class Pbi {
     this._description = model.description;
     this._status = model.status;
     this._epicId = model.epicId;
+    this._pbiStatusId = model.pbiStatusId;
   }
 }

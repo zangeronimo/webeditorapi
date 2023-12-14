@@ -7,6 +7,7 @@ export class PbiDto {
   name: string;
   description: string;
   status: number;
+  pbiStatusId: string;
 
   constructor(pbi: Pbi, readonly epic?: EpicDto) {
     this.id = pbi?.id;
@@ -14,5 +15,6 @@ export class PbiDto {
     this.name = pbi?.name;
     this.description = pbi?.description;
     this.status = pbi?.status?.valueOf();
+    this.pbiStatusId = pbi?.pbiStatusId!;
   }
 }

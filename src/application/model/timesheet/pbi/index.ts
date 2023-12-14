@@ -1,3 +1,3 @@
 export * from "./PbiCreateModel";
-export * from "./PbicUpdateModel";
+export * from "./PbiUpdateModel";
 export * from "./GetAllPbiFilterModel";

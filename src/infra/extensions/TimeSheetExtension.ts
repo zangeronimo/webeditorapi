@@ -20,6 +20,13 @@ import {
   PbiUpdate,
 } from "@application/usecase/timesheet/pbi";
 import {
+  PbiStatusCreate,
+  PbiStatusDelete,
+  PbiStatusGetAll,
+  PbiStatusGetById,
+  PbiStatusUpdate,
+} from "@application/usecase/timesheet/pbiStatus";
+import {
   ProjectCreate,
   ProjectDelete,
   ProjectGetAll,
@@ -39,6 +46,7 @@ import {
   ClientRepository,
   EpicRepository,
   PbiRepository,
+  PbiStatusRepository,
   ProjectRepository,
   TaskRepository,
 } from "@infra/repository/timesheet";
@@ -62,6 +70,10 @@ export class TimeSheetExtension {
     Registry.getInstance().provide(
       "IPbiRepository",
       new PbiRepository(dbContext)
+    );
+    Registry.getInstance().provide(
+      "IPbiStatusRepository",
+      new PbiStatusRepository(dbContext)
     );
     Registry.getInstance().provide(
       "ITaskRepository",
@@ -95,6 +107,13 @@ export class TimeSheetExtension {
     Registry.getInstance().provide("IPbiCreate", new PbiCreate());
     Registry.getInstance().provide("IPbiUpdate", new PbiUpdate());
     Registry.getInstance().provide("IPbiDelete", new PbiDelete());
+
+    // Registry PbiStatus useCases
+    Registry.getInstance().provide("IPbiStatusGetAll", new PbiStatusGetAll());
+    Registry.getInstance().provide("IPbiStatusGetById", new PbiStatusGetById());
+    Registry.getInstance().provide("IPbiStatusCreate", new PbiStatusCreate());
+    Registry.getInstance().provide("IPbiStatusUpdate", new PbiStatusUpdate());
+    Registry.getInstance().provide("IPbiStatusDelete", new PbiStatusDelete());
 
     // Registry Task useCases
     Registry.getInstance().provide("ITaskGetAll", new TaskGetAll());

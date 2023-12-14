@@ -1,9 +1,9 @@
-export class PbiUpdateDataModel {
+export class PbiStatusUpdateDataModel {
   constructor(
     readonly id: string,
     readonly name: string,
-    readonly description: string,
+    readonly sortOrder: number,
     readonly status: number,
-    readonly epicId: string
+    readonly clientId: string
   ) {}
 }

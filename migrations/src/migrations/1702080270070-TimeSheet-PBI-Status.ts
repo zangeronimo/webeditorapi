@@ -14,7 +14,7 @@ export class TimeSheetPBIStatus1702080270070 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "order",
+            name: "sort_order",
             type: "int",
             default: 0,
           },

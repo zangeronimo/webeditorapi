@@ -1,7 +1,7 @@
 import { ITaskRepository } from "@application/interface/repository/timesheet";
 import { GetAllTaskFilterModel } from "@application/model/timesheet/task";
 import { Task } from "@domain/entity/timesheet";
-import { EntryTypeEnum } from "@domain/enum/EntryTypeEnum";
+import { EntryTypeEnum } from "@domain/enum";
 import { Entry } from "@domain/valueObject/timesheet";
 import { DbContext } from "@infra/context";
 

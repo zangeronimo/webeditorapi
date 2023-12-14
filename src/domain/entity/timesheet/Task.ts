@@ -2,15 +2,14 @@ import {
   TaskCreateDataModel,
   TaskUpdateDataModel,
 } from "@application/model/timesheet/task";
-import { ActiveEnum } from "@domain/enum";
-import { EntryTypeEnum } from "@domain/enum/EntryTypeEnum";
+import { EntryTypeEnum, TimeSheetTaskStatusEnum } from "@domain/enum";
 import { Entry } from "@domain/valueObject/timesheet";
 
 export class Task {
   private _id: string;
   private _name: string;
   private _description: string;
-  private _status: ActiveEnum;
+  private _status: TimeSheetTaskStatusEnum;
   private _pbiId?: string;
   private _updatedAt?: Date;
 
@@ -37,7 +36,7 @@ export class Task {
     id: string,
     name: string,
     description: string,
-    status: ActiveEnum,
+    status: TimeSheetTaskStatusEnum,
     pbiId: string,
     readonly companyId: string,
     readonly entries: Entry[] = []
@@ -53,7 +52,7 @@ export class Task {
     id: string,
     name: string,
     description: string,
-    status: ActiveEnum,
+    status: TimeSheetTaskStatusEnum,
     pbiId: string,
     companyId: string,
     entries: Entry[]

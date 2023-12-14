@@ -1,7 +1,7 @@
 import { ITaskRepository } from "@application/interface/repository/timesheet/ITaskRepository";
 import { ITaskRegisterWork } from "@application/interface/usecase/timesheet/task";
 import { Messages } from "@application/messages/Messages";
-import { EntryTypeEnum } from "@domain/enum/EntryTypeEnum";
+import { EntryTypeEnum } from "@domain/enum";
 import { inject } from "@infra/di/Inject";
 
 export class TaskRegisterWork implements ITaskRegisterWork {

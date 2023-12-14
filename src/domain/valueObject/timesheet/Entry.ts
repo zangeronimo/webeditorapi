@@ -1,5 +1,5 @@
 import { Messages } from "@application/messages/Messages";
-import { EntryTypeEnum } from "@domain/enum/EntryTypeEnum";
+import { EntryTypeEnum } from "@domain/enum";
 
 export class Entry {
   constructor(

@@ -94,10 +94,10 @@ export class PbiStatusController {
   private createAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const { name, sortOrder, status, clientId } = req.body;
+      const { name, order, status, clientId } = req.body;
       const pbiStatusCreateDataModel = new PbiStatusCreateDataModel(
         name,
-        sortOrder,
+        order,
         status,
         clientId
       );
@@ -114,11 +114,11 @@ export class PbiStatusController {
   private updateAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const { id, name, sortOrder, status, clientId } = req.body;
+      const { id, name, order, status, clientId } = req.body;
       const pbiStatusUpdateDataModel = new PbiStatusUpdateDataModel(
         id,
         name,
-        sortOrder,
+        order,
         status,
         clientId
       );

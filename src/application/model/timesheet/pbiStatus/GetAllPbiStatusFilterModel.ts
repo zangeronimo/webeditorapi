@@ -7,7 +7,7 @@ export class GetAllPbiStatusFilterModel implements IPagination, IOrdenation {
   public orderBy: string;
   public desc: boolean;
   public name: string;
-  public sortOrder: number;
+  public order: number;
   public clientId: string;
   public status: number;
 
@@ -17,7 +17,7 @@ export class GetAllPbiStatusFilterModel implements IPagination, IOrdenation {
     this.orderBy = query.orderBy ?? "name";
     this.desc = query.desc === "true";
     this.name = query.name;
-    this.sortOrder = query.sortOrder;
+    this.order = query.order;
     this.clientId = query.clientId;
     this.status = query.status;
   }

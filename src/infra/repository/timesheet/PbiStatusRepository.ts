@@ -58,7 +58,7 @@ export class PbiStatusRepository implements IPbiStatusRepository {
     if (!!model.clientId) {
       where += ` and timesheet_clients_id = $3`;
     }
-    if (!!model.sortOrder) {
+    if (!!model.order) {
       where += ` and sort_order = $4`;
     }
     if (!!model.status) {
@@ -72,7 +72,7 @@ export class PbiStatusRepository implements IPbiStatusRepository {
         company,
         `%${model.name?.toLowerCase().noAccents()}%`,
         model.clientId,
-        model.sortOrder,
+        model.order,
         model.status,
       ]
     );
@@ -88,7 +88,7 @@ export class PbiStatusRepository implements IPbiStatusRepository {
         company,
         `%${model.name?.toLowerCase().noAccents()}%`,
         model.clientId,
-        model.sortOrder,
+        model.order,
         model.status,
         model.pageSize,
         offset,
@@ -123,7 +123,7 @@ export class PbiStatusRepository implements IPbiStatusRepository {
         pbiStatus.id,
         pbiStatus.companyId,
         pbiStatus.name,
-        pbiStatus.sortOrder,
+        pbiStatus.order,
         pbiStatus.status,
         pbiStatus.clientId,
         pbiStatus.updatedAt,
@@ -137,7 +137,7 @@ export class PbiStatusRepository implements IPbiStatusRepository {
       [
         pbiStatus.id,
         pbiStatus.name,
-        pbiStatus.sortOrder,
+        pbiStatus.order,
         pbiStatus.status,
         pbiStatus.clientId,
         pbiStatus.companyId,

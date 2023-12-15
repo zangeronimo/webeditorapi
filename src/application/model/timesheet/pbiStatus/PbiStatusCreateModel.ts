@@ -1,7 +1,7 @@
 export class PbiStatusCreateDataModel {
   constructor(
     readonly name: string,
-    readonly sortOrder: number,
+    readonly order: number,
     readonly status: number,
     readonly clientId: string
   ) {}

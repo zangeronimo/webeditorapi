@@ -7,7 +7,7 @@ import { ActiveEnum } from "@domain/enum";
 export class PbiStatus {
   private _id: string;
   private _name: string;
-  private _sortOrder: number;
+  private _order: number;
   private _status: ActiveEnum;
   private _clientId?: string;
   private _updatedAt?: Date;
@@ -18,8 +18,8 @@ export class PbiStatus {
   get name() {
     return this._name;
   }
-  get sortOrder() {
-    return this._sortOrder;
+  get order() {
+    return this._order;
   }
   get status() {
     return this._status;
@@ -34,7 +34,7 @@ export class PbiStatus {
   private constructor(
     id: string,
     name: string,
-    sortOrder: number,
+    order: number,
     status: ActiveEnum,
     clientId: string,
     readonly companyId: string,
@@ -42,7 +42,7 @@ export class PbiStatus {
   ) {
     this._id = id;
     this._name = name;
-    this._sortOrder = sortOrder;
+    this._order = order;
     this._status = status;
     this._clientId = clientId;
   }
@@ -50,19 +50,19 @@ export class PbiStatus {
   static restore(
     id: string,
     name: string,
-    sortOrder: number,
+    order: number,
     status: ActiveEnum,
     clientId: string,
     companyId: string
   ): PbiStatus {
-    return new PbiStatus(id, name, sortOrder, status, clientId, companyId);
+    return new PbiStatus(id, name, order, status, clientId, companyId);
   }
 
   static create(model: PbiStatusCreateDataModel, companyId: string): PbiStatus {
     const pbi = new PbiStatus(
       crypto.randomUUID(),
       model.name,
-      model.sortOrder,
+      model.order,
       model.status,
       model.clientId,
       companyId
@@ -73,7 +73,7 @@ export class PbiStatus {
   update(model: PbiStatusUpdateDataModel) {
     this._updatedAt = new Date();
     this._name = model.name;
-    this._sortOrder = model.sortOrder;
+    this._order = model.order;
     this._status = model.status;
     this._clientId = model.clientId;
   }

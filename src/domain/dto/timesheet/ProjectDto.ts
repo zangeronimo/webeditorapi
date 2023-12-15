@@ -7,6 +7,7 @@ export class ProjectDto {
   name: string;
   description: string;
   status: number;
+  clientId: string;
 
   constructor(project: Project, readonly client?: ClientDto) {
     this.id = project?.id;
@@ -14,5 +15,6 @@ export class ProjectDto {
     this.name = project?.name;
     this.description = project?.description;
     this.status = project?.status?.valueOf();
+    this.clientId = project?.clientId!;
   }
 }

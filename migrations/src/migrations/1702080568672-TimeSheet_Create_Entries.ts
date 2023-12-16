@@ -25,7 +25,7 @@ export class TimeSheetCreateEntries1702080568672 implements MigrationInterface {
             enumName: "entryTypeEnum",
           },
           {
-            name: "timesheet_tasks_id",
+            name: "timesheet_pbis_id",
             type: "uuid",
           },
           {
@@ -55,10 +55,10 @@ export class TimeSheetCreateEntries1702080568672 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: "TimesheetTasks",
-            referencedTableName: "timesheet_tasks",
+            name: "TimesheetPbis",
+            referencedTableName: "timesheet_pbis",
             referencedColumnNames: ["id"],
-            columnNames: ["timesheet_tasks_id"],
+            columnNames: ["timesheet_pbis_id"],
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
           },

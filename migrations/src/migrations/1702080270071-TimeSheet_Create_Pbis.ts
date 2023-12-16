@@ -34,6 +34,11 @@ export class TimeSheetCreatePbis1702080270071 implements MigrationInterface {
             default: 0,
           },
           {
+            name: "sort_order",
+            type: "int",
+            default: 0,
+          },
+          {
             name: "timesheet_pbis_status_id",
             type: "uuid",
           },

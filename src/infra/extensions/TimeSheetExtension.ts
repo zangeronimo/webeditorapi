@@ -17,6 +17,7 @@ import {
   PbiDelete,
   PbiGetAll,
   PbiGetById,
+  PbiRegisterWork,
   PbiUpdate,
 } from "@application/usecase/timesheet/pbi";
 import {
@@ -33,14 +34,6 @@ import {
   ProjectGetById,
   ProjectUpdate,
 } from "@application/usecase/timesheet/project";
-import {
-  TaskCreate,
-  TaskDelete,
-  TaskGetAll,
-  TaskGetById,
-  TaskRegisterWork,
-  TaskUpdate,
-} from "@application/usecase/timesheet/task";
 import { DbContext } from "@infra/context";
 import {
   ClientRepository,
@@ -48,7 +41,6 @@ import {
   PbiRepository,
   PbiStatusRepository,
   ProjectRepository,
-  TaskRepository,
 } from "@infra/repository/timesheet";
 import { Registry } from "../di/Registry";
 
@@ -74,10 +66,6 @@ export class TimeSheetExtension {
     Registry.getInstance().provide(
       "IPbiStatusRepository",
       new PbiStatusRepository(dbContext)
-    );
-    Registry.getInstance().provide(
-      "ITaskRepository",
-      new TaskRepository(dbContext)
     );
 
     // Registry Client useCases
@@ -106,6 +94,7 @@ export class TimeSheetExtension {
     Registry.getInstance().provide("IPbiGetById", new PbiGetById());
     Registry.getInstance().provide("IPbiCreate", new PbiCreate());
     Registry.getInstance().provide("IPbiUpdate", new PbiUpdate());
+    Registry.getInstance().provide("IPbiRegisterWork", new PbiRegisterWork());
     Registry.getInstance().provide("IPbiDelete", new PbiDelete());
 
     // Registry PbiStatus useCases
@@ -114,13 +103,5 @@ export class TimeSheetExtension {
     Registry.getInstance().provide("IPbiStatusCreate", new PbiStatusCreate());
     Registry.getInstance().provide("IPbiStatusUpdate", new PbiStatusUpdate());
     Registry.getInstance().provide("IPbiStatusDelete", new PbiStatusDelete());
-
-    // Registry Task useCases
-    Registry.getInstance().provide("ITaskGetAll", new TaskGetAll());
-    Registry.getInstance().provide("ITaskGetById", new TaskGetById());
-    Registry.getInstance().provide("ITaskCreate", new TaskCreate());
-    Registry.getInstance().provide("ITaskUpdate", new TaskUpdate());
-    Registry.getInstance().provide("ITaskRegisterWork", new TaskRegisterWork());
-    Registry.getInstance().provide("ITaskDelete", new TaskDelete());
   }
 }

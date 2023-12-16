@@ -3,7 +3,7 @@ import { EntryTypeEnum } from "@domain/enum";
 
 export class Entry {
   constructor(
-    readonly taskId: string,
+    readonly pbiId: string,
     readonly userId: string,
     readonly entryType = EntryTypeEnum.OPEN,
     readonly pointDate = new Date()

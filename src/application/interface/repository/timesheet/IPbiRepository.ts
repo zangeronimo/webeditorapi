@@ -3,6 +3,16 @@ import { Pbi } from "@domain/entity/timesheet";
 
 export interface IPbiRepository {
   getByIdAsync(id: string, company: string): Promise<Pbi | null>;
+  checkPbiHasOpenedByUser(
+    userId: string,
+    pbiId: string,
+    company: string
+  ): Promise<boolean>;
+  checkUserHasOtherPbiOpenedAsync(
+    userId: string,
+    pbiId: string,
+    company: string
+  ): Promise<boolean>;
   getByNameAsync(
     name: string,
     epicId: string,

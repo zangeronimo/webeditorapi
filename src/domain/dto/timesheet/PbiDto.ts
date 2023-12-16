@@ -9,7 +9,12 @@ export class PbiDto {
   status: number;
   pbiStatusId: string;
 
-  constructor(pbi: Pbi, readonly epic?: EpicDto) {
+  constructor(
+    pbi: Pbi,
+    readonly totalInSeconds: number,
+    readonly epic?: EpicDto,
+    readonly working = false
+  ) {
     this.id = pbi?.id;
     this.sequence = pbi?.sequence!;
     this.name = pbi?.name;

@@ -1,5 +1,5 @@
 import { PbiDto } from "@domain/dto/timesheet";
 
 export interface IPbiGetById {
-  executeAsync(id: string, company: string): Promise<PbiDto>;
+  executeAsync(id: string, userId: string, company: string): Promise<PbiDto>;
 }

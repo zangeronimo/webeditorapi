@@ -1,6 +1,8 @@
 import { IPbiRepository } from "@application/interface/repository/timesheet";
 import { GetAllPbiFilterModel } from "@application/model/timesheet/pbi";
 import { Pbi } from "@domain/entity/timesheet";
+import { EntryTypeEnum } from "@domain/enum";
+import { Entry } from "@domain/valueObject/timesheet";
 import { DbContext } from "@infra/context";
 
 export class PbiRepository implements IPbiRepository {
@@ -14,6 +16,7 @@ export class PbiRepository implements IPbiRepository {
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
     );
+    const entries = await this.getEntriesAsync(id, company);
     return pbiData
       ? Pbi.restore(
           pbiData.id,
@@ -23,7 +26,8 @@ export class PbiRepository implements IPbiRepository {
           pbiData.status,
           pbiData.timesheet_epics_id,
           pbiData.timesheet_pbis_status_id,
-          pbiData.webeditor_companies_id
+          pbiData.webeditor_companies_id,
+          entries
         )
       : null;
   }
@@ -49,6 +53,42 @@ export class PbiRepository implements IPbiRepository {
           pbiData.webeditor_companies_id
         )
       : null;
+  }
+
+  async checkPbiHasOpenedByUser(
+    userId: string,
+    pbiId: string,
+    company: string
+  ): Promise<boolean> {
+    const [pbiData] = await this.db.queryAsync(
+      `select
+        entry_type
+       from timesheet_entries
+       where webeditor_users_id = $1 and timesheet_pbis_id = $2 and webeditor_companies_id = $3
+       order by point_date desc
+       limit 1`,
+      [userId, pbiId, company]
+    );
+
+    return pbiData?.entry_type === EntryTypeEnum.OPEN;
+  }
+
+  async checkUserHasOtherPbiOpenedAsync(
+    userId: string,
+    pbiId: string,
+    company: string
+  ): Promise<boolean> {
+    const [pbiData] = await this.db.queryAsync(
+      `select
+        entry_type
+       from timesheet_entries
+       where webeditor_users_id = $1 and timesheet_pbis_id != $2 and webeditor_companies_id = $3
+       order by point_date desc
+       limit 1`,
+      [userId, pbiId, company]
+    );
+
+    return pbiData?.entry_type === EntryTypeEnum.OPEN;
   }
 
   async getAllAsync(
@@ -95,6 +135,7 @@ export class PbiRepository implements IPbiRepository {
     );
     const pbis: Pbi[] = [];
     for (let i = 0; i < pbisData.length; i++) {
+      const entries = await this.getEntriesAsync(pbisData[i].id, company);
       const pbi = Pbi.restore(
         pbisData[i].id,
         pbisData[i].sequence,
@@ -103,7 +144,8 @@ export class PbiRepository implements IPbiRepository {
         pbisData[i].status,
         pbisData[i].timesheet_epics_id,
         pbisData[i].timesheet_pbis_status_id,
-        pbisData[i].webeditor_companies_id
+        pbisData[i].webeditor_companies_id,
+        entries
       );
       pbis.push(pbi);
     }
@@ -118,6 +160,7 @@ export class PbiRepository implements IPbiRepository {
   }
 
   async updateAsync(pbi: Pbi): Promise<void> {
+    const hasEntries = pbi.entries.length > 0;
     await this.db.queryAsync(
       "update timesheet_pbis set name=$3, description=$4, status=$5, timesheet_epics_id=$6, timesheet_pbis_status_id=$7, updated_at=$8 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [
@@ -129,8 +172,31 @@ export class PbiRepository implements IPbiRepository {
         pbi.epicId,
         pbi.pbiStatusId,
         pbi.updatedAt,
-      ]
+      ],
+      hasEntries
     );
+    if (hasEntries) {
+      await this.db.queryAsync(
+        "delete from timesheet_entries where timesheet_pbis_id = $1",
+        [pbi.id],
+        true
+      );
+      for (let i = 0; i < pbi.entries.length; i++) {
+        const entry = pbi.entries[i];
+        await this.db.queryAsync(
+          "insert into timesheet_entries (point_date, entry_type, timesheet_pbis_id, webeditor_users_id, webeditor_companies_id) values ($1, $2, $3, $4, $5)",
+          [
+            entry.pointDate,
+            entry.entryType,
+            entry.pbiId,
+            entry.userId,
+            pbi.companyId,
+          ],
+          true
+        );
+      }
+      await this.db.commitAsync();
+    }
   }
 
   async saveAsync(pbi: Pbi): Promise<void> {
@@ -145,6 +211,30 @@ export class PbiRepository implements IPbiRepository {
         pbi.pbiStatusId,
         pbi.companyId,
       ]
+    );
+  }
+
+  private async getEntriesAsync(
+    pbiId: string,
+    company: string
+  ): Promise<Entry[]> {
+    const entriesData = await this.db.queryAsync(
+      `select
+         point_date, entry_type, timesheet_pbis_id, webeditor_users_id
+       from timesheet_entries
+       where timesheet_pbis_id = $1 and webeditor_companies_id = $2
+       order by point_date`,
+      [pbiId, company]
+    );
+
+    return entriesData.map(
+      (entry: any) =>
+        new Entry(
+          entry.timesheet_pbis_id,
+          entry.webeditor_users_id,
+          entry.entry_type,
+          entry.point_date
+        )
     );
   }
 }

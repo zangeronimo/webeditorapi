@@ -2,7 +2,8 @@ import {
   PbiCreateDataModel,
   PbiUpdateDataModel,
 } from "@application/model/timesheet/pbi";
-import { ActiveEnum } from "@domain/enum";
+import { ActiveEnum, EntryTypeEnum } from "@domain/enum";
+import { Entry } from "@domain/valueObject/timesheet";
 
 export class Pbi {
   private _id: string;
@@ -43,7 +44,8 @@ export class Pbi {
     epicId: string,
     pbiStatusId: string,
     readonly companyId: string,
-    readonly sequence?: number
+    readonly sequence?: number,
+    readonly entries: Entry[] = []
   ) {
     this._id = id;
     this._name = name;
@@ -61,7 +63,8 @@ export class Pbi {
     status: ActiveEnum,
     epicId: string,
     pbiStatusId: string,
-    companyId: string
+    companyId: string,
+    entries?: Entry[]
   ): Pbi {
     return new Pbi(
       id,
@@ -71,7 +74,8 @@ export class Pbi {
       epicId,
       pbiStatusId,
       companyId,
-      sequence
+      sequence,
+      entries
     );
   }
 
@@ -95,5 +99,17 @@ export class Pbi {
     this._status = model.status;
     this._epicId = model.epicId;
     this._pbiStatusId = model.pbiStatusId;
+  }
+
+  startsWork(userId: string) {
+    this._updatedAt = new Date();
+    const entry = new Entry(this._id, userId, EntryTypeEnum.OPEN, new Date());
+    this.entries.push(entry);
+  }
+
+  stopsWork(userId: string) {
+    this._updatedAt = new Date();
+    const entry = new Entry(this._id, userId, EntryTypeEnum.CLOSE, new Date());
+    this.entries.push(entry);
   }
 }

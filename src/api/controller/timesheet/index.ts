@@ -4,7 +4,6 @@ import { ClientController } from "./ClientController";
 import { EpicController } from "./EpicController";
 import { PbiController } from "./PbiController";
 import { ProjectController } from "./ProjectController";
-import { TaskController } from "./TaskController";
 import { PbiStatusController } from "./PbiStatusController";
 
 export class TimeSheetRouters {
@@ -30,16 +29,11 @@ export class TimeSheetRouters {
       ensureAuthenticated,
       ensureHasRole
     );
-    const taskController = new TaskController(
-      ensureAuthenticated,
-      ensureHasRole
-    );
 
     router.use("/timesheet/client", clientController.router);
     router.use("/timesheet/epic", epicController.router);
     router.use("/timesheet/pbi", pbiController.router);
     router.use("/timesheet/pbiStatus", pbiStatusController.router);
     router.use("/timesheet/project", projectController.router);
-    router.use("/timesheet/task", taskController.router);
   };
 }

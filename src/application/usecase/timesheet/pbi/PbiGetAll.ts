@@ -6,7 +6,7 @@ import { IPbiGetAll } from "@application/interface/usecase/timesheet/pbi";
 import { GetAllPbiFilterModel } from "@application/model/timesheet/pbi";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 import { EpicDto, PbiDto } from "@domain/dto/timesheet";
-import { Pbi } from "@domain/entity/timesheet";
+import { Entry } from "@domain/valueObject/timesheet";
 import { inject } from "@infra/di/Inject";
 
 export class PbiGetAll implements IPbiGetAll {
@@ -15,7 +15,11 @@ export class PbiGetAll implements IPbiGetAll {
   @inject("IEpicRepository")
   _epicRepository?: IEpicRepository;
 
-  async executeAsync(model: GetAllPbiFilterModel, company: string) {
+  async executeAsync(
+    model: GetAllPbiFilterModel,
+    userId: string,
+    company: string
+  ) {
     const { itens: pbis, total } = await this._pbiRepository?.getAllAsync(
       model,
       company
@@ -27,7 +31,15 @@ export class PbiGetAll implements IPbiGetAll {
         pbis[i].epicId!,
         company
       );
-      pbisDto.push(new PbiDto(pbis[i], new EpicDto(epic!)));
+      const totalCalculated = Entry.calculateTotalInHours(pbis[i].entries);
+      const working = await this._pbiRepository?.checkPbiHasOpenedByUser(
+        userId,
+        pbis[i].id,
+        company
+      );
+      pbisDto.push(
+        new PbiDto(pbis[i], totalCalculated, new EpicDto(epic!), working)
+      );
     }
     return new PaginatorResultDto(pbisDto, total);
   }

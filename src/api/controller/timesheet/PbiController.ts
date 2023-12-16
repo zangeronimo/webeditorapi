@@ -5,6 +5,7 @@ import {
   IPbiCreate,
   IPbiUpdate,
   IPbiDelete,
+  IPbiRegisterWork,
 } from "@application/interface/usecase/timesheet/pbi";
 import {
   PbiCreateDataModel,
@@ -23,6 +24,8 @@ export class PbiController {
   pbiCreate?: IPbiCreate;
   @inject("IPbiUpdate")
   pbiUpdate?: IPbiUpdate;
+  @inject("IPbiRegisterWork")
+  pbiRegisterWork?: IPbiRegisterWork;
   @inject("IPbiDelete")
   pbiDelete?: IPbiDelete;
 
@@ -56,6 +59,12 @@ export class PbiController {
       ensureHasRole.executeAsync("TIMESHEET_PBI_UPDATE"),
       this.updateAsync
     );
+    this.router.patch(
+      "/register-work/:id",
+      ensureAuthenticated.execute,
+      ensureHasRole.executeAsync("TIMESHEET_PBI_UPDATE"),
+      this.registerWorkAsync
+    );
     this.router.delete(
       "/:id",
       ensureAuthenticated.execute,
@@ -66,10 +75,11 @@ export class PbiController {
 
   private getAllAsync = async (req: Request, res: Response) => {
     try {
-      const { company } = req.user;
+      const { id: userId, company } = req.user;
       const getAllPbiFilterModel = new GetAllPbiFilterModel(req.query);
       const pbis = await this.pbiGetAll?.executeAsync(
         getAllPbiFilterModel,
+        userId,
         company
       );
       return res.json(pbis);
@@ -80,9 +90,9 @@ export class PbiController {
 
   private getByIdAsync = async (req: Request, res: Response) => {
     try {
-      const { company } = req.user;
+      const { id: userId, company } = req.user;
       const { id } = req.params;
-      const pbi = await this.pbiGetById?.executeAsync(id, company);
+      const pbi = await this.pbiGetById?.executeAsync(id, userId, company);
       return res.json(pbi);
     } catch (e: any) {
       return res.status(400).json(e.message);
@@ -112,7 +122,7 @@ export class PbiController {
 
   private updateAsync = async (req: Request, res: Response) => {
     try {
-      const { company } = req.user;
+      const { id: userId, company } = req.user;
       const { id, name, description, status, epicId, pbiStatusId } = req.body;
       const pbiUpdateDataModel = new PbiUpdateDataModel(
         id,
@@ -124,9 +134,21 @@ export class PbiController {
       );
       const pbi = await this.pbiUpdate?.executeAsync(
         pbiUpdateDataModel,
+        userId,
         company
       );
       return res.json(pbi);
+    } catch (e: any) {
+      return res.status(400).json(e.message);
+    }
+  };
+
+  private registerWorkAsync = async (req: Request, res: Response) => {
+    try {
+      const { id: userId, company } = req.user;
+      const { id } = req.params;
+      await this.pbiRegisterWork?.executeAsync(id, userId, company);
+      return res.status(204).json();
     } catch (e: any) {
       return res.status(400).json(e.message);
     }

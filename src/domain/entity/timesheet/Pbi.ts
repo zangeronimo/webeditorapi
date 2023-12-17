@@ -9,6 +9,7 @@ export class Pbi {
   private _id: string;
   private _name: string;
   private _description: string;
+  private _order: number;
   private _status: ActiveEnum;
   private _epicId?: string;
   private _pbiStatusId?: string;
@@ -22,6 +23,9 @@ export class Pbi {
   }
   get description() {
     return this._description;
+  }
+  get order() {
+    return this._order;
   }
   get status() {
     return this._status;
@@ -40,6 +44,7 @@ export class Pbi {
     id: string,
     name: string,
     description: string,
+    order: number,
     status: ActiveEnum,
     epicId: string,
     pbiStatusId: string,
@@ -50,6 +55,7 @@ export class Pbi {
     this._id = id;
     this._name = name;
     this._description = description;
+    this._order = order;
     this._status = status;
     this._epicId = epicId;
     this._pbiStatusId = pbiStatusId;
@@ -60,6 +66,7 @@ export class Pbi {
     sequence: number,
     name: string,
     description: string,
+    order: number,
     status: ActiveEnum,
     epicId: string,
     pbiStatusId: string,
@@ -70,6 +77,7 @@ export class Pbi {
       id,
       name,
       description,
+      order,
       status,
       epicId,
       pbiStatusId,
@@ -84,6 +92,7 @@ export class Pbi {
       crypto.randomUUID(),
       model.name,
       model.description,
+      model.order,
       model.status,
       model.epicId,
       model.pbiStatusId,
@@ -96,7 +105,7 @@ export class Pbi {
     this._updatedAt = new Date();
     this._name = model.name;
     this._description = model.description;
-    this._status = model.status;
+    (this._order = model.order), (this._status = model.status);
     this._epicId = model.epicId;
     this._pbiStatusId = model.pbiStatusId;
   }

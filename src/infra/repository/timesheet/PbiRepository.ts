@@ -11,7 +11,7 @@ export class PbiRepository implements IPbiRepository {
   async getByIdAsync(id: string, company: string): Promise<Pbi | null> {
     const [pbiData] = await this.db.queryAsync(
       `select
-        id, sequence, name, description, status, timesheet_epics_id, timesheet_pbis_status_id, webeditor_companies_id
+        id, sequence, name, description, sort_order, status, timesheet_epics_id, timesheet_pbis_status_id, webeditor_companies_id
        from timesheet_pbis
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
@@ -23,6 +23,7 @@ export class PbiRepository implements IPbiRepository {
           pbiData.sequence,
           pbiData.name,
           pbiData.description,
+          pbiData.sort_order,
           pbiData.status,
           pbiData.timesheet_epics_id,
           pbiData.timesheet_pbis_status_id,
@@ -38,7 +39,7 @@ export class PbiRepository implements IPbiRepository {
     company: string
   ): Promise<Pbi | null> {
     const [pbiData] = await this.db.queryAsync(
-      "select id, sequence, name, description, status, timesheet_epics_id, timesheet_pbis_status_id, webeditor_companies_id from timesheet_pbis where name = $1 and timesheet_epics_id = $2 and webeditor_companies_id = $3 and deleted_at is null",
+      "select id, sequence, name, description, sort_order, status, timesheet_epics_id, timesheet_pbis_status_id, webeditor_companies_id from timesheet_pbis where name = $1 and timesheet_epics_id = $2 and webeditor_companies_id = $3 and deleted_at is null",
       [name, pbiId, company]
     );
     return pbiData
@@ -47,6 +48,7 @@ export class PbiRepository implements IPbiRepository {
           pbiData.sequence,
           pbiData.name,
           pbiData.description,
+          pbiData.sort_order,
           pbiData.status,
           pbiData.timesheet_epics_id,
           pbiData.timesheet_pbis_status_id,
@@ -118,7 +120,7 @@ export class PbiRepository implements IPbiRepository {
     );
     const pbisData: any[] = await this.db.queryAsync(
       `select
-        id, sequence, name, description, status, timesheet_epics_id, timesheet_pbis_status_id, webeditor_companies_id
+        id, sequence, name, description, sort_order, status, timesheet_epics_id, timesheet_pbis_status_id, webeditor_companies_id
       from timesheet_pbis
       where ${where}
       order by ${ordenation}
@@ -141,6 +143,7 @@ export class PbiRepository implements IPbiRepository {
         pbisData[i].sequence,
         pbisData[i].name,
         pbisData[i].description,
+        pbisData[i].sort_order,
         pbisData[i].status,
         pbisData[i].timesheet_epics_id,
         pbisData[i].timesheet_pbis_status_id,
@@ -162,12 +165,13 @@ export class PbiRepository implements IPbiRepository {
   async updateAsync(pbi: Pbi): Promise<void> {
     const hasEntries = pbi.entries.length > 0;
     await this.db.queryAsync(
-      "update timesheet_pbis set name=$3, description=$4, status=$5, timesheet_epics_id=$6, timesheet_pbis_status_id=$7, updated_at=$8 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      "update timesheet_pbis set name=$3, description=$4, sort_order=$5, status=$6, timesheet_epics_id=$7, timesheet_pbis_status_id=$8, updated_at=$9 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [
         pbi.id,
         pbi.companyId,
         pbi.name,
         pbi.description,
+        pbi.order,
         pbi.status,
         pbi.epicId,
         pbi.pbiStatusId,
@@ -201,11 +205,12 @@ export class PbiRepository implements IPbiRepository {
 
   async saveAsync(pbi: Pbi): Promise<void> {
     await this.db.queryAsync(
-      "insert into timesheet_pbis (id, name, description, status, timesheet_epics_id, timesheet_pbis_status_id, webeditor_companies_id) values ($1, $2, $3, $4, $5, $6, $7)",
+      "insert into timesheet_pbis (id, name, description, sort_order, status, timesheet_epics_id, timesheet_pbis_status_id, webeditor_companies_id) values ($1, $2, $3, $4, $5, $6, $7, $8)",
       [
         pbi.id,
         pbi.name,
         pbi.description,
+        pbi.order,
         pbi.status,
         pbi.epicId,
         pbi.pbiStatusId,

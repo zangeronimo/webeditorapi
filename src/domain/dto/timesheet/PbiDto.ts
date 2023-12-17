@@ -6,7 +6,9 @@ export class PbiDto {
   sequence: number;
   name: string;
   description: string;
+  order: number;
   status: number;
+  epicId: string;
   pbiStatusId: string;
 
   constructor(
@@ -19,7 +21,8 @@ export class PbiDto {
     this.sequence = pbi?.sequence!;
     this.name = pbi?.name;
     this.description = pbi?.description;
-    this.status = pbi?.status?.valueOf();
+    (this.order = pbi?.order), (this.status = pbi?.status?.valueOf());
+    this.epicId = pbi?.epicId!;
     this.pbiStatusId = pbi?.pbiStatusId!;
   }
 }

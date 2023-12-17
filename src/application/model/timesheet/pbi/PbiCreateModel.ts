@@ -4,6 +4,7 @@ export class PbiCreateDataModel {
     readonly description: string,
     readonly status: number,
     readonly epicId: string,
-    readonly pbiStatusId: string
+    readonly pbiStatusId: string,
+    readonly order: number
   ) {}
 }

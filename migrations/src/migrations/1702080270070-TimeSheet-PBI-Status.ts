@@ -28,10 +28,6 @@ export class TimeSheetPBIStatus1702080270070 implements MigrationInterface {
             default: 0,
           },
           {
-            name: "timesheet_clients_id",
-            type: "uuid",
-          },
-          {
             name: "webeditor_companies_id",
             type: "uuid",
           },
@@ -53,14 +49,6 @@ export class TimeSheetPBIStatus1702080270070 implements MigrationInterface {
           },
         ],
         foreignKeys: [
-          {
-            name: "TimesheetClient",
-            referencedTableName: "timesheet_clients",
-            referencedColumnNames: ["id"],
-            columnNames: ["timesheet_clients_id"],
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE",
-          },
           {
             name: "WebeditorCompanies",
             referencedTableName: "webeditor_companies",

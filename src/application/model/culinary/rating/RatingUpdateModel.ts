@@ -1,4 +1,4 @@
-export class LevelUpdateDataModel {
+export class RatingUpdateDataModel {
   constructor(
     readonly id: string,
     readonly rate: number,

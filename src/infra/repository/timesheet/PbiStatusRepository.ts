@@ -9,7 +9,7 @@ export class PbiStatusRepository implements IPbiStatusRepository {
   async getByIdAsync(id: string, company: string): Promise<PbiStatus | null> {
     const [pbiStatusData] = await this.db.queryAsync(
       `select
-        id, name, sort_order, status, timesheet_clients_id, webeditor_companies_id
+        id, name, sort_order, status, webeditor_companies_id
        from timesheet_pbis_status
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
@@ -20,7 +20,6 @@ export class PbiStatusRepository implements IPbiStatusRepository {
           pbiStatusData.name,
           pbiStatusData.sort_order,
           pbiStatusData.status,
-          pbiStatusData.timesheet_clients_id,
           pbiStatusData.webeditor_companies_id
         )
       : null;
@@ -28,12 +27,11 @@ export class PbiStatusRepository implements IPbiStatusRepository {
 
   async getByNameAsync(
     name: string,
-    pbiStatusId: string,
     company: string
   ): Promise<PbiStatus | null> {
     const [pbiStatusData] = await this.db.queryAsync(
-      "select id, name, sort_order, status, timesheet_clients_id, webeditor_companies_id from timesheet_pbis_status where name = $1 and timesheet_clients_id = $2 and webeditor_companies_id = $3 and deleted_at is null",
-      [name, pbiStatusId, company]
+      "select id, name, sort_order, status, webeditor_companies_id from timesheet_pbis_status where name = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      [name, company]
     );
     return pbiStatusData
       ? PbiStatus.restore(
@@ -41,7 +39,6 @@ export class PbiStatusRepository implements IPbiStatusRepository {
           pbiStatusData.name,
           pbiStatusData.sort_order,
           pbiStatusData.status,
-          pbiStatusData.timesheet_clients_id,
           pbiStatusData.webeditor_companies_id
         )
       : null;
@@ -55,14 +52,11 @@ export class PbiStatusRepository implements IPbiStatusRepository {
     if (!!model.name) {
       where += ` and LOWER(UNACCENT(name)) like $2`;
     }
-    if (!!model.clientId) {
-      where += ` and timesheet_clients_id = $3`;
-    }
     if (!!model.order) {
-      where += ` and sort_order = $4`;
+      where += ` and sort_order = $3`;
     }
     if (!!model.status) {
-      where += ` and status = $5`;
+      where += ` and status = $4`;
     }
     const ordenation = `${model.orderBy} ${!!model.desc ? "desc" : "asc"}`;
     const offset = model.pageSize * (model.page - 1);
@@ -71,23 +65,21 @@ export class PbiStatusRepository implements IPbiStatusRepository {
       [
         company,
         `%${model.name?.toLowerCase().noAccents()}%`,
-        model.clientId,
         model.order,
         model.status,
       ]
     );
     const pbiStatusData: any[] = await this.db.queryAsync(
       `select
-        id, name, sort_order, status, timesheet_clients_id, webeditor_companies_id
+        id, name, sort_order, status, webeditor_companies_id
       from timesheet_pbis_status
       where ${where}
       order by ${ordenation}
-      limit $6
-      offset $7`,
+      limit $5
+      offset $6`,
       [
         company,
         `%${model.name?.toLowerCase().noAccents()}%`,
-        model.clientId,
         model.order,
         model.status,
         model.pageSize,
@@ -101,7 +93,6 @@ export class PbiStatusRepository implements IPbiStatusRepository {
         pbiStatusData[i].name,
         pbiStatusData[i].sort_order,
         pbiStatusData[i].status,
-        pbiStatusData[i].timesheet_clients_id,
         pbiStatusData[i].webeditor_companies_id
       );
       pbiStatuss.push(pbiStatus);
@@ -118,14 +109,13 @@ export class PbiStatusRepository implements IPbiStatusRepository {
 
   async updateAsync(pbiStatus: PbiStatus): Promise<void> {
     await this.db.queryAsync(
-      "update timesheet_pbis_status set name=$3, sort_order=$4, status=$5, timesheet_clients_id=$6, updated_at=$7 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      "update timesheet_pbis_status set name=$3, sort_order=$4, status=$5, updated_at=$6 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [
         pbiStatus.id,
         pbiStatus.companyId,
         pbiStatus.name,
         pbiStatus.order,
         pbiStatus.status,
-        pbiStatus.clientId,
         pbiStatus.updatedAt,
       ]
     );
@@ -133,13 +123,12 @@ export class PbiStatusRepository implements IPbiStatusRepository {
 
   async saveAsync(pbiStatus: PbiStatus): Promise<void> {
     await this.db.queryAsync(
-      "insert into timesheet_pbis_status (id, name, sort_order, status, timesheet_clients_id, webeditor_companies_id) values ($1, $2, $3, $4, $5, $6)",
+      "insert into timesheet_pbis_status (id, name, sort_order, status, webeditor_companies_id) values ($1, $2, $3, $4, $5)",
       [
         pbiStatus.id,
         pbiStatus.name,
         pbiStatus.order,
         pbiStatus.status,
-        pbiStatus.clientId,
         pbiStatus.companyId,
       ]
     );

@@ -8,7 +8,6 @@ export class GetAllPbiStatusFilterModel implements IPagination, IOrdenation {
   public desc: boolean;
   public name: string;
   public order: number;
-  public clientId: string;
   public status: number;
 
   constructor(query: any) {
@@ -18,7 +17,6 @@ export class GetAllPbiStatusFilterModel implements IPagination, IOrdenation {
     this.desc = query.desc === "true";
     this.name = query.name;
     this.order = query.order;
-    this.clientId = query.clientId;
     this.status = query.status;
   }
 }

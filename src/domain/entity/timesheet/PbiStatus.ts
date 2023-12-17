@@ -9,7 +9,6 @@ export class PbiStatus {
   private _name: string;
   private _order: number;
   private _status: ActiveEnum;
-  private _clientId?: string;
   private _updatedAt?: Date;
 
   get id() {
@@ -24,9 +23,6 @@ export class PbiStatus {
   get status() {
     return this._status;
   }
-  get clientId() {
-    return this._clientId;
-  }
   get updatedAt() {
     return this._updatedAt;
   }
@@ -36,7 +32,6 @@ export class PbiStatus {
     name: string,
     order: number,
     status: ActiveEnum,
-    clientId: string,
     readonly companyId: string,
     readonly sequence?: number
   ) {
@@ -44,7 +39,6 @@ export class PbiStatus {
     this._name = name;
     this._order = order;
     this._status = status;
-    this._clientId = clientId;
   }
 
   static restore(
@@ -52,10 +46,9 @@ export class PbiStatus {
     name: string,
     order: number,
     status: ActiveEnum,
-    clientId: string,
     companyId: string
   ): PbiStatus {
-    return new PbiStatus(id, name, order, status, clientId, companyId);
+    return new PbiStatus(id, name, order, status, companyId);
   }
 
   static create(model: PbiStatusCreateDataModel, companyId: string): PbiStatus {
@@ -64,7 +57,6 @@ export class PbiStatus {
       model.name,
       model.order,
       model.status,
-      model.clientId,
       companyId
     );
     return pbi;
@@ -75,6 +67,5 @@ export class PbiStatus {
     this._name = model.name;
     this._order = model.order;
     this._status = model.status;
-    this._clientId = model.clientId;
   }
 }

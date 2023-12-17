@@ -13,7 +13,6 @@ export class PbiStatusCreate implements IPbiStatusCreate {
   async executeAsync(pbiStatusData: PbiStatusCreateDataModel, company: string) {
     const nameExists = await this._pbiStatusRepository?.getByNameAsync(
       pbiStatusData.name,
-      pbiStatusData.clientId,
       company
     );
     if (nameExists !== null) {

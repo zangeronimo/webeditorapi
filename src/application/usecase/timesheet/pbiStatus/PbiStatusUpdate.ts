@@ -20,7 +20,6 @@ export class PbiStatusUpdate implements IPbiStatusUpdate {
     if (pbiStatusData.name !== pbiStatus.name) {
       const existName = await this._pbiStatusRepository?.getByNameAsync(
         pbiStatusData.name,
-        pbiStatusData.clientId,
         company
       );
       if (existName !== null) {

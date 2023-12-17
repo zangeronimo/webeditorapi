@@ -3,11 +3,7 @@ import { PbiStatus } from "@domain/entity/timesheet";
 
 export interface IPbiStatusRepository {
   getByIdAsync(id: string, company: string): Promise<PbiStatus | null>;
-  getByNameAsync(
-    name: string,
-    clientId: string,
-    company: string
-  ): Promise<PbiStatus | null>;
+  getByNameAsync(name: string, company: string): Promise<PbiStatus | null>;
   getAllAsync(
     model: GetAllPbiStatusFilterModel,
     company: string

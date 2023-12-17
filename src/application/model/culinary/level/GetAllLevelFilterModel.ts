@@ -8,6 +8,7 @@ export class GetAllLevelFilterModel implements IPagination, IOrdenation {
   public desc: boolean;
   public name: string;
   public slug: string;
+  public active: number;
 
   constructor(query: any) {
     this.page = query.page;
@@ -16,5 +17,6 @@ export class GetAllLevelFilterModel implements IPagination, IOrdenation {
     this.desc = query.desc === "true";
     this.name = query.name;
     this.slug = query.slug;
+    this.active = query.active;
   }
 }

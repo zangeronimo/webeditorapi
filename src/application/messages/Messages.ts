@@ -5,6 +5,7 @@ export class Messages {
   static invalidJwtToken = "Invalid JWT token.";
   static invalidGrantType = "Invalid grant_type.";
   static notFound = (field: string) => `${field} not found.`;
+  static notCreated = (field: string) => `${field} not created.`;
   static alreadyInUse = (field: string) => `${field} already in use.`;
   static accessDenied = "Access denied.";
   static timesheet = {

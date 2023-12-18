@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 import dotenv from "dotenv";
-
+import path from "path";
 import { MainController } from "@api/controller/MainController";
 import { Extensions } from "@application/extension";
 import { PgPromiseContext } from "@infra/context";
@@ -23,6 +23,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use("/files", express.static(path.resolve(__dirname, "..", "upload")));
 
 const mainController = new MainController();
 app.use(mainController.router);

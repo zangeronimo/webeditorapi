@@ -5,9 +5,6 @@ import { DbContext } from "@infra/context";
 
 export class LevelRepository implements ILevelRepository {
   constructor(readonly db: DbContext) {}
-  getBySlugsync(slug: string, company: string): Promise<Level | null> {
-    throw new Error("Method not implemented.");
-  }
 
   async getByIdAsync(id: string, company: string): Promise<Level | null> {
     const [levelData] = await this.db.queryAsync(

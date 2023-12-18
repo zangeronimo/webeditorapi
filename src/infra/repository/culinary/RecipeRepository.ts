@@ -10,7 +10,7 @@ export class RecipeRepository implements IRecipeRepository {
     const [recipeData] = await this.db.queryAsync(
       `select
         id, slug, name, ingredients, preparation, active, recipe_categories_id, webeditor_companies_id
-       from recipe_recipes
+       from recipes
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
     );
@@ -30,7 +30,7 @@ export class RecipeRepository implements IRecipeRepository {
 
   async getBySlugAsync(slug: string, company: string): Promise<Recipe | null> {
     const [recipeData] = await this.db.queryAsync(
-      "select id, slug, name, ingredients, preparation, active, recipe_categories_id, webeditor_companies_id from recipe_recipes where slug = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      "select id, slug, name, ingredients, preparation, active, recipe_categories_id, webeditor_companies_id from recipes where slug = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [slug, company]
     );
     return recipeData
@@ -67,7 +67,7 @@ export class RecipeRepository implements IRecipeRepository {
     const ordenation = `${model.orderBy} ${!!model.desc ? "desc" : "asc"}`;
     const offset = model.pageSize * (model.page - 1);
     const [total] = await this.db.queryAsync(
-      `select count(*) from recipe_recipes where ${where}`,
+      `select count(*) from recipes where ${where}`,
       [
         company,
         `%${model.name?.toLowerCase().noAccents()}%`,
@@ -79,7 +79,7 @@ export class RecipeRepository implements IRecipeRepository {
     const recipesData: any[] = await this.db.queryAsync(
       `select
         id, slug, name, ingredients, preparation, active, recipe_categories_id, webeditor_companies_id
-      from recipe_recipes
+      from recipes
       where ${where}
       order by ${ordenation}
       limit $6
@@ -113,7 +113,7 @@ export class RecipeRepository implements IRecipeRepository {
 
   async deleteAsync(recipe: Recipe, date: Date): Promise<Recipe> {
     await this.db.queryAsync(
-      "update recipe_recipes set deleted_at=$3, updated_at=$3 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      "update recipes set deleted_at=$3, updated_at=$3 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [recipe.id, recipe.companyId, date]
     );
     return recipe;
@@ -121,7 +121,7 @@ export class RecipeRepository implements IRecipeRepository {
 
   async updateAsync(recipe: Recipe): Promise<Recipe> {
     await this.db.queryAsync(
-      "update recipe_recipes set slug=$3, name=$4, ingredients=$5, preparation=$6, active=$7, recipe_categories_id=$8, updated_at=$9 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      "update recipes set slug=$3, name=$4, ingredients=$5, preparation=$6, active=$7, recipe_categories_id=$8, updated_at=$9 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [
         recipe.id,
         recipe.companyId,
@@ -139,7 +139,7 @@ export class RecipeRepository implements IRecipeRepository {
 
   async saveAsync(recipe: Recipe): Promise<Recipe> {
     await this.db.queryAsync(
-      "insert into recipe_recipes (id, slug, name, ingredients, preparation, active, recipe_categories_id, webeditor_companies_id) values ($1, $2, $3, $4, $5, $6, $7, $8)",
+      "insert into recipes (id, slug, name, ingredients, preparation, active, recipe_categories_id, webeditor_companies_id) values ($1, $2, $3, $4, $5, $6, $7, $8)",
       [
         recipe.id,
         recipe.slug,

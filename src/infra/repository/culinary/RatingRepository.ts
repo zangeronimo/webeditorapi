@@ -9,7 +9,7 @@ export class RatingRepository implements IRatingRepository {
   async getByIdAsync(id: string, company: string): Promise<Rating | null> {
     const [ratingData] = await this.db.queryAsync(
       `select
-        id, rate, comment, name, active, recipe_id, webeditor_companies_id
+        id, rate, comment, name, active, recipes_id, webeditor_companies_id
        from recipe_ratings
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
@@ -20,7 +20,7 @@ export class RatingRepository implements IRatingRepository {
           ratingData.rate,
           ratingData.comment,
           ratingData.active,
-          ratingData.recipe_id,
+          ratingData.recipes_id,
           ratingData.webeditor_companies_id,
           ratingData.name
         )
@@ -29,7 +29,7 @@ export class RatingRepository implements IRatingRepository {
 
   async getBySlugAsync(slug: string, company: string): Promise<Rating | null> {
     const [ratingData] = await this.db.queryAsync(
-      "select id, rate, comment, name, active, recipe_id, webeditor_companies_id from recipe_ratings where slug = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      "select id, rate, comment, name, active, recipes_id, webeditor_companies_id from recipe_ratings where slug = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [slug, company]
     );
     return ratingData
@@ -38,7 +38,7 @@ export class RatingRepository implements IRatingRepository {
           ratingData.rate,
           ratingData.comment,
           ratingData.active,
-          ratingData.recipe_id,
+          ratingData.recipes_id,
           ratingData.webeditor_companies_id,
           ratingData.name
         )
@@ -57,7 +57,7 @@ export class RatingRepository implements IRatingRepository {
       where += ` and active = $3`;
     }
     if (!!model.recipeId) {
-      where += ` and recipe_id = $4`;
+      where += ` and recipes_id = $4`;
     }
     const ordenation = `${model.orderBy} ${!!model.desc ? "desc" : "asc"}`;
     const offset = model.pageSize * (model.page - 1);
@@ -72,7 +72,7 @@ export class RatingRepository implements IRatingRepository {
     );
     const ratingsData: any[] = await this.db.queryAsync(
       `select
-        id, rate, comment, name, active, recipe_id, webeditor_companies_id
+        id, rate, comment, name, active, recipes_id, webeditor_companies_id
       from recipe_ratings
       where ${where}
       order by ${ordenation}
@@ -94,7 +94,7 @@ export class RatingRepository implements IRatingRepository {
         ratingsData[i].rate,
         ratingsData[i].comment,
         ratingsData[i].active,
-        ratingsData[i].recipe_id,
+        ratingsData[i].recipes_id,
         ratingsData[i].webeditor_companies_id,
         ratingsData[i].name
       );
@@ -113,7 +113,7 @@ export class RatingRepository implements IRatingRepository {
 
   async updateAsync(rating: Rating): Promise<Rating> {
     await this.db.queryAsync(
-      "update recipe_ratings set rate=$3, comment=$4, name=$5, active=$6, recipe_id=$7, updated_at=$8 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      "update recipe_ratings set rate=$3, comment=$4, name=$5, active=$6, recipes_id=$7, updated_at=$8 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [
         rating.id,
         rating.companyId,
@@ -130,7 +130,7 @@ export class RatingRepository implements IRatingRepository {
 
   async saveAsync(rating: Rating): Promise<Rating> {
     await this.db.queryAsync(
-      "insert into recipe_ratings (id, rate, comment, name, active, recipe_id, webeditor_companies_id) values ($1, $2, $3, $4, $5, $6, $7)",
+      "insert into recipe_ratings (id, rate, comment, name, active, recipes_id, webeditor_companies_id) values ($1, $2, $3, $4, $5, $6, $7)",
       [
         rating.id,
         rating.rate,

@@ -4,6 +4,7 @@ export class RecipeCreateDataModel {
     readonly ingredients: string,
     readonly preparation: string,
     readonly active: number,
-    readonly categoryId: string
+    readonly categoryId: string,
+    readonly imageUpload?: string
   ) {}
 }

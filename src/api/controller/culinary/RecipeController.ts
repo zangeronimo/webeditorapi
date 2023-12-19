@@ -92,13 +92,21 @@ export class RecipeController {
   private createAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const { name, ingredients, preparation, active, categoryId } = req.body;
+      const {
+        name,
+        ingredients,
+        preparation,
+        active,
+        categoryId,
+        imageUpload,
+      } = req.body;
       const recipeCreateDataModel = new RecipeCreateDataModel(
         name,
         ingredients,
         preparation,
         active,
-        categoryId
+        categoryId,
+        imageUpload
       );
       const recipe = await this.recipeCreate?.executeAsync(
         recipeCreateDataModel,
@@ -113,8 +121,16 @@ export class RecipeController {
   private updateAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const { id, slug, name, ingredients, preparation, active, categoryId } =
-        req.body;
+      const {
+        id,
+        slug,
+        name,
+        ingredients,
+        preparation,
+        active,
+        categoryId,
+        imageUpload,
+      } = req.body;
       const recipeUpdateDataModel = new RecipeUpdateDataModel(
         id,
         slug,
@@ -122,7 +138,8 @@ export class RecipeController {
         ingredients,
         preparation,
         active,
-        categoryId
+        categoryId,
+        imageUpload
       );
       const recipe = await this.recipeUpdate?.executeAsync(
         recipeUpdateDataModel,

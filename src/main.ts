@@ -22,7 +22,7 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 app.use("/files", express.static(path.resolve(__dirname, "..", "upload")));
 
 const mainController = new MainController();

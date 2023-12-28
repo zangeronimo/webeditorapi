@@ -1,11 +1,15 @@
 import { IHasRole } from "@application/interface/usecase/webeditor";
 import { Messages } from "@application/messages/Messages";
-import { inject } from "@infra/di/Inject";
 import { NextFunction, Request, Response } from "express";
+import { inject, injectable } from "tsyringe";
 
-export class EnsureHasRole {
-  @inject("IHasRole")
-  hasRole?: IHasRole;
+@injectable()
+export class EnsureHasRole implements IEnsureHasRole {
+  constructor(
+    @inject("IHasRole")
+    readonly hasRole: IHasRole,
+  ) {}
+
 
   executeAsync = (role: string) => {
     return async (
@@ -15,7 +19,7 @@ export class EnsureHasRole {
     ): Promise<void> => {
       const { id, company } = request.user;
       try {
-        const hasPermission = await this.hasRole?.executeAsync(
+        const hasPermission = await this.hasRole.executeAsync(
           id,
           company,
           role
@@ -30,4 +34,8 @@ export class EnsureHasRole {
       }
     };
   };
+}
+
+export interface IEnsureHasRole {
+  executeAsync: any
 }

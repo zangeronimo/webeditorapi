@@ -2,10 +2,14 @@ import { IPbiStatusRepository } from "@application/interface/repository/timeshee
 import { GetAllPbiStatusFilterModel } from "@application/model/timesheet/pbiStatus";
 import { PbiStatus } from "@domain/entity/timesheet";
 import { DbContext } from "@infra/context";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class PbiStatusRepository implements IPbiStatusRepository {
-  constructor(readonly db: DbContext) {}
-
+  constructor(
+    @inject('DbContext')
+    readonly db: DbContext
+  ) {}
   async getByIdAsync(id: string, company: string): Promise<PbiStatus | null> {
     const [pbiStatusData] = await this.db.queryAsync(
       `select

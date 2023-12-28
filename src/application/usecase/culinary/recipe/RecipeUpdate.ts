@@ -4,16 +4,19 @@ import { IRecipeUpdate } from "@application/interface/usecase/culinary/recipe";
 import { Messages } from "@application/messages/Messages";
 import { RecipeUpdateDataModel } from "@application/model/culinary/recipe";
 import { RecipeDto } from "@domain/dto/culinary";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class RecipeUpdate implements IRecipeUpdate {
-  @inject("IRecipeRepository")
-  _recipeRepository?: IRecipeRepository;
-  @inject("IStorageProvider")
-  _storageProvider?: IStorageProvider;
+  constructor(
+    @inject("IRecipeRepository")
+    readonly _recipeRepository: IRecipeRepository,
+    @inject("IStorageProvider")
+    readonly _storageProvider: IStorageProvider,
+  ) {}
 
   async executeAsync(recipeData: RecipeUpdateDataModel, company: string) {
-    const recipe = await this._recipeRepository?.getByIdAsync(
+    const recipe = await this._recipeRepository.getByIdAsync(
       recipeData.id,
       company
     )!;
@@ -21,7 +24,7 @@ export class RecipeUpdate implements IRecipeUpdate {
       throw new Error(Messages.notFound("Recipe"));
     }
     if (recipeData.slug !== recipe.slug) {
-      const existSlug = await this._recipeRepository?.getBySlugAsync(
+      const existSlug = await this._recipeRepository.getBySlugAsync(
         recipeData.slug,
         company
       );
@@ -30,13 +33,13 @@ export class RecipeUpdate implements IRecipeUpdate {
       }
     }
     if (recipeData.imageUpload) {
-      const filePath = await this._storageProvider?.saveFile(
+      const filePath = await this._storageProvider.saveFile(
         recipeData.imageUpload,
         company
       );
     }
     recipe.update(recipeData);
-    await this._recipeRepository?.updateAsync(recipe);
+    await this._recipeRepository.updateAsync(recipe);
     return new RecipeDto(recipe);
   }
 }

@@ -1,22 +1,30 @@
+import { EnsureAuthenticated, EnsureHasRole, IEnsureAuthenticated, IEnsureHasRole } from "@api/midleware";
+import { IHashProvider, ITokenProvider } from "@application/interface/provider";
+import { IStorageProvider } from "@application/interface/provider/IStorageProvider";
+import { IHasRole, IMakeLogin, IRefreshToken } from "@application/interface/usecase/webeditor";
 import {
   HasRole,
   MakeLogin,
   RefreshToken,
 } from "@application/usecase/webeditor";
+import { DbContext, PgPromiseContext } from "@infra/context";
 import { BPKDF2Provider, JwtWebTokenProvider } from "@infra/provider";
 import { DiskStorageProvider } from "@infra/provider/DiskStorageProvider";
-import { Registry } from "../di/Registry";
+import { container } from "tsyringe";
 
 export class ProviderExtesion {
   static init() {
-    Registry.getInstance().provide("IMakeLogin", new MakeLogin());
-    Registry.getInstance().provide("IRefreshToken", new RefreshToken());
-    Registry.getInstance().provide("IHasRole", new HasRole());
-    Registry.getInstance().provide("IHashProvider", new BPKDF2Provider());
-    Registry.getInstance().provide("ITokenProvider", new JwtWebTokenProvider());
-    Registry.getInstance().provide(
+    container.registerSingleton<DbContext>("DbContext", PgPromiseContext)
+    container.registerSingleton<IEnsureAuthenticated>("IEnsureAuthenticated", EnsureAuthenticated)
+    container.registerSingleton<IEnsureHasRole>("IEnsureHasRole", EnsureHasRole)
+    container.registerSingleton<IMakeLogin>("IMakeLogin", MakeLogin);
+    container.registerSingleton<IRefreshToken>("IRefreshToken", RefreshToken);
+    container.registerSingleton<IHasRole>("IHasRole", HasRole);
+    container.registerSingleton<IHashProvider>("IHashProvider", BPKDF2Provider);
+    container.registerSingleton<ITokenProvider>("ITokenProvider", JwtWebTokenProvider);
+    container.registerSingleton<IStorageProvider>(
       "IStorageProvider",
-      new DiskStorageProvider()
+      DiskStorageProvider
     );
   }
 }

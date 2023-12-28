@@ -1,65 +1,52 @@
 import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
 import {
-  IRatingGetAll,
-  IRatingGetById,
-  IRatingCreate,
-  IRatingUpdate,
-  IRatingDelete,
-} from "@application/interface/usecase/culinary/rating";
-import {
+  GetAllRatingFilterModel,
   RatingCreateDataModel,
   RatingUpdateDataModel,
-  GetAllRatingFilterModel,
 } from "@application/model/culinary/rating";
-import { inject } from "@infra/di/Inject";
+import { RatingCreate, RatingDelete, RatingGetAll, RatingGetById, RatingUpdate } from "@application/usecase/culinary/rating";
 import { Request, Response, Router } from "express";
+import { container } from "tsyringe";
 
 export class RatingController {
-  @inject("IRatingGetAll")
-  ratingGetAll?: IRatingGetAll;
-  @inject("IRatingGetById")
-  ratingGetById?: IRatingGetById;
-  @inject("IRatingCreate")
-  ratingCreate?: IRatingCreate;
-  @inject("IRatingUpdate")
-  ratingUpdate?: IRatingUpdate;
-  @inject("IRatingDelete")
-  ratingDelete?: IRatingDelete;
-
   router = Router();
+  ratingGetAll = container.resolve(RatingGetAll);
+  ratingGetById = container.resolve(RatingGetById);
+  ratingCreate = container.resolve(RatingCreate);
+  ratingUpdate = container.resolve(RatingUpdate);
+  ratingDelete = container.resolve(RatingDelete);
+  ensureAuthenticated = container.resolve(EnsureAuthenticated);
+  ensureHasRole = container.resolve(EnsureHasRole);
 
-  constructor(
-    ensureAuthenticated: EnsureAuthenticated,
-    ensureHasRole: EnsureHasRole
-  ) {
+  constructor() {
     this.router.get(
       "/",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("CULINARY_RATING_VIEW"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("CULINARY_RATING_VIEW"),
       this.getAllAsync
     );
     this.router.get(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("CULINARY_RATING_VIEW"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("CULINARY_RATING_VIEW"),
       this.getByIdAsync
     );
     this.router.post(
       "",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("CULINARY_RATING_UPDATE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("CULINARY_RATING_UPDATE"),
       this.createAsync
     );
     this.router.put(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("CULINARY_RATING_UPDATE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("CULINARY_RATING_UPDATE"),
       this.updateAsync
     );
     this.router.delete(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("CULINARY_RATING_DELETE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("CULINARY_RATING_DELETE"),
       this.deleteAsync
     );
   }
@@ -68,7 +55,7 @@ export class RatingController {
     try {
       const { company } = req.user;
       const getAllRatingFilterModel = new GetAllRatingFilterModel(req.query);
-      const ratings = await this.ratingGetAll?.executeAsync(
+      const ratings = await this.ratingGetAll.executeAsync(
         getAllRatingFilterModel,
         company
       );
@@ -82,7 +69,7 @@ export class RatingController {
     try {
       const { company } = req.user;
       const { id } = req.params;
-      const rating = await this.ratingGetById?.executeAsync(id, company);
+      const rating = await this.ratingGetById.executeAsync(id, company);
       return res.json(rating);
     } catch (e: any) {
       return res.status(400).json(e.message);
@@ -100,7 +87,7 @@ export class RatingController {
         recipeId,
         name
       );
-      const rating = await this.ratingCreate?.executeAsync(
+      const rating = await this.ratingCreate.executeAsync(
         ratingCreateDataModel,
         company
       );
@@ -122,7 +109,7 @@ export class RatingController {
         recipeId,
         name
       );
-      const rating = await this.ratingUpdate?.executeAsync(
+      const rating = await this.ratingUpdate.executeAsync(
         ratingUpdateDataModel,
         company
       );
@@ -136,7 +123,7 @@ export class RatingController {
     try {
       const { company } = req.user;
       const { id } = req.params;
-      const rating = await this.ratingDelete?.executeAsync(id, company);
+      const rating = await this.ratingDelete.executeAsync(id, company);
       return res.json(rating);
     } catch (e: any) {
       return res.status(400).json(e.message);

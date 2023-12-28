@@ -4,14 +4,17 @@ import { GetAllModuleFilterModel } from "@application/model/webeditor/module";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 import { ModuleDto } from "@domain/dto/webeditor";
 import { Module } from "@domain/entity/webeditor";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class ModuleGetAll implements IModuleGetAll {
-  @inject("IModuleRepository")
-  _moduleRepository?: IModuleRepository;
+  constructor(
+    @inject("IModuleRepository")
+    readonly _moduleRepository: IModuleRepository,
+  ) {}
 
   async executeAsync(model: GetAllModuleFilterModel) {
-    const { itens: modules, total } = await this._moduleRepository?.getAllAsync(
+    const { itens: modules, total } = await this._moduleRepository.getAllAsync(
       model
     )!;
 

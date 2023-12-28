@@ -2,9 +2,14 @@ import { IModuleRepository } from "@application/interface/repository/webeditor";
 import { GetAllModuleFilterModel } from "@application/model/webeditor/module";
 import { Module } from "@domain/entity/webeditor";
 import { DbContext } from "@infra/context";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class ModuleRepository implements IModuleRepository {
-  constructor(readonly db: DbContext) {}
+  constructor(
+    @inject('DbContext')
+    readonly db: DbContext
+  ) {}
 
   async getAllByCompanyAsync(companyId: string): Promise<Module[]> {
     const modulesData = await this.db.queryAsync(

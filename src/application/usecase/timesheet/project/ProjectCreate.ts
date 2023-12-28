@@ -5,16 +5,19 @@ import { Messages } from "@application/messages/Messages";
 import { ProjectCreateDataModel } from "@application/model/timesheet/project";
 import { ClientDto, ProjectDto } from "@domain/dto/timesheet";
 import { Project } from "@domain/entity/timesheet";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class ProjectCreate implements IProjectCreate {
-  @inject("IProjectRepository")
-  _projectRepository?: IProjectRepository;
-  @inject("IClientRepository")
-  _clientRepository?: IClientRepository;
+  constructor(
+    @inject("IProjectRepository")
+    readonly _projectRepository: IProjectRepository,
+    @inject("IClientRepository")
+    readonly _clientRepository: IClientRepository,
+  ) {}
 
   async executeAsync(projectData: ProjectCreateDataModel, company: string) {
-    const nameExists = await this._projectRepository?.getByNameAsync(
+    const nameExists = await this._projectRepository.getByNameAsync(
       projectData.name,
       projectData.clientId,
       company
@@ -23,12 +26,12 @@ export class ProjectCreate implements IProjectCreate {
       throw new Error(Messages.alreadyInUse("Name"));
     }
     const project = Project.create(projectData, company);
-    await this._projectRepository?.saveAsync(project)!;
-    const client = await this._clientRepository?.getByIdAsync(
+    await this._projectRepository.saveAsync(project)!;
+    const client = await this._clientRepository.getByIdAsync(
       project.clientId!,
       company
     );
-    const projectSaved = await this._projectRepository?.getByIdAsync(
+    const projectSaved = await this._projectRepository.getByIdAsync(
       project.id,
       company
     );

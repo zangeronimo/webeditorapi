@@ -4,14 +4,17 @@ import { GetAllClientFilterModel } from "@application/model/timesheet/client";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 import { ClientDto } from "@domain/dto/timesheet";
 import { Client } from "@domain/entity/timesheet";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class ClientGetAll implements IClientGetAll {
-  @inject("IClientRepository")
-  _clientRepository?: IClientRepository;
+  constructor(
+    @inject("IClientRepository")
+    readonly _clientRepository: IClientRepository,
+  ) {}
 
   async executeAsync(model: GetAllClientFilterModel, company: string) {
-    const { itens: clients, total } = await this._clientRepository?.getAllAsync(
+    const { itens: clients, total } = await this._clientRepository.getAllAsync(
       model,
       company
     )!;

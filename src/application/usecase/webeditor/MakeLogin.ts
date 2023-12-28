@@ -3,16 +3,20 @@ import { IUserRepository } from "@application/interface/repository/webeditor";
 import { IMakeLogin } from "@application/interface/usecase/webeditor";
 import { Messages } from "@application/messages/Messages";
 import { AuthDto } from "@domain/dto/webeditor";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class MakeLogin implements IMakeLogin {
-  @inject("ITokenProvider")
-  _tokenProvider?: ITokenProvider;
-  @inject("IUserRepository")
-  _userRepository?: IUserRepository;
+
+  constructor(
+    @inject("ITokenProvider")
+    readonly _tokenProvider: ITokenProvider,
+    @inject("IUserRepository")
+    readonly _userRepository: IUserRepository,
+  ) {}
 
   async executeAsync(email: string, password: string) {
-    const user = await this._userRepository?.getByEmailAsync(email)!;
+    const user = await this._userRepository.getByEmailAsync(email)!;
     if (user === null) {
       throw new Error(Messages.invalidUsernameOrPassword);
     }
@@ -20,12 +24,12 @@ export class MakeLogin implements IMakeLogin {
       throw new Error(Messages.invalidUsernameOrPassword);
     }
     const dateNow = new Date();
-    const token = this._tokenProvider?.generate(
+    const token = this._tokenProvider.generate(
       user,
       dateNow,
       dateNow.getTime() + +process.env.TOKEN_EXP!
     );
-    const refreshToken = this._tokenProvider?.generate(
+    const refreshToken = this._tokenProvider.generate(
       user,
       dateNow,
       dateNow.getTime() + +process.env.REFRESH_EXP!

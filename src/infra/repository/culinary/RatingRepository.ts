@@ -2,9 +2,14 @@ import { IRatingRepository } from "@application/interface/repository/culinary";
 import { GetAllRatingFilterModel } from "@application/model/culinary/rating";
 import { Rating } from "@domain/entity/culinary";
 import { DbContext } from "@infra/context";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class RatingRepository implements IRatingRepository {
-  constructor(readonly db: DbContext) {}
+  constructor(
+    @inject('DbContext')
+    readonly db: DbContext
+  ) {}
 
   async getByIdAsync(id: string, company: string): Promise<Rating | null> {
     const [ratingData] = await this.db.queryAsync(

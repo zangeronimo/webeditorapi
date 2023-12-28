@@ -2,9 +2,14 @@ import { ICategoryRepository } from "@application/interface/repository/culinary"
 import { GetAllCategoryFilterModel } from "@application/model/culinary/category";
 import { Category } from "@domain/entity/culinary";
 import { DbContext } from "@infra/context";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class CategoryRepository implements ICategoryRepository {
-  constructor(readonly db: DbContext) {}
+  constructor(
+    @inject('DbContext')
+    readonly db: DbContext
+  ) {}
 
   async getByIdAsync(id: string, company: string): Promise<Category | null> {
     const [categoryData] = await this.db.queryAsync(

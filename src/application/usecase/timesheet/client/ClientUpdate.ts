@@ -3,14 +3,17 @@ import { IClientUpdate } from "@application/interface/usecase/timesheet/client";
 import { Messages } from "@application/messages/Messages";
 import { ClientUpdateDataModel } from "@application/model/timesheet/client";
 import { ClientDto } from "@domain/dto/timesheet";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class ClientUpdate implements IClientUpdate {
-  @inject("IClientRepository")
-  _clientRepository?: IClientRepository;
+  constructor(
+    @inject("IClientRepository")
+    readonly _clientRepository: IClientRepository,
+  ) {}
 
   async executeAsync(clientData: ClientUpdateDataModel, company: string) {
-    const client = await this._clientRepository?.getByIdAsync(
+    const client = await this._clientRepository.getByIdAsync(
       clientData.id,
       company
     )!;
@@ -18,7 +21,7 @@ export class ClientUpdate implements IClientUpdate {
       throw new Error(Messages.notFound("Client"));
     }
     if (clientData.name !== client.name) {
-      const existName = await this._clientRepository?.getByNameAsync(
+      const existName = await this._clientRepository.getByNameAsync(
         clientData.name,
         company
       );
@@ -27,7 +30,7 @@ export class ClientUpdate implements IClientUpdate {
       }
     }
     client.update(clientData);
-    await this._clientRepository?.updateAsync(client);
+    await this._clientRepository.updateAsync(client);
     return new ClientDto(client);
   }
 }

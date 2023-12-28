@@ -2,9 +2,14 @@ import { IProjectRepository } from "@application/interface/repository/timesheet"
 import { GetAllProjectFilterModel } from "@application/model/timesheet/project";
 import { Project } from "@domain/entity/timesheet";
 import { DbContext } from "@infra/context";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class ProjectRepository implements IProjectRepository {
-  constructor(readonly db: DbContext) {}
+  constructor(
+    @inject('DbContext')
+    readonly db: DbContext
+  ) {}
 
   async getByIdAsync(id: string, company: string): Promise<Project | null> {
     const [projectData] = await this.db.queryAsync(

@@ -1,74 +1,59 @@
 import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
 import {
-  IPbiGetAll,
-  IPbiGetById,
-  IPbiCreate,
-  IPbiUpdate,
-  IPbiDelete,
-  IPbiRegisterWork,
-} from "@application/interface/usecase/timesheet/pbi";
-import {
+  GetAllPbiFilterModel,
   PbiCreateDataModel,
   PbiUpdateDataModel,
-  GetAllPbiFilterModel,
 } from "@application/model/timesheet/pbi";
-import { inject } from "@infra/di/Inject";
+import { PbiCreate, PbiDelete, PbiGetAll, PbiGetById, PbiRegisterWork, PbiUpdate } from "@application/usecase/timesheet/pbi";
 import { Request, Response, Router } from "express";
+import { container } from "tsyringe";
 
 export class PbiController {
-  @inject("IPbiGetAll")
-  pbiGetAll?: IPbiGetAll;
-  @inject("IPbiGetById")
-  pbiGetById?: IPbiGetById;
-  @inject("IPbiCreate")
-  pbiCreate?: IPbiCreate;
-  @inject("IPbiUpdate")
-  pbiUpdate?: IPbiUpdate;
-  @inject("IPbiRegisterWork")
-  pbiRegisterWork?: IPbiRegisterWork;
-  @inject("IPbiDelete")
-  pbiDelete?: IPbiDelete;
-
   router = Router();
+  pbiGetAll = container.resolve(PbiGetAll);
+  pbiGetById = container.resolve(PbiGetById);
+  pbiCreate = container.resolve(PbiCreate);
+  pbiUpdate = container.resolve(PbiUpdate);
+  pbiRegisterWork = container.resolve(PbiRegisterWork);
+  pbiDelete = container.resolve(PbiDelete);
+  ensureAuthenticated = container.resolve(EnsureAuthenticated);
+  ensureHasRole = container.resolve(EnsureHasRole);
 
-  constructor(
-    ensureAuthenticated: EnsureAuthenticated,
-    ensureHasRole: EnsureHasRole
-  ) {
+  constructor() {
     this.router.get(
       "/",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("TIMESHEET_PBI_VIEW"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("TIMESHEET_PBI_VIEW"),
       this.getAllAsync
     );
     this.router.get(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("TIMESHEET_PBI_VIEW"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("TIMESHEET_PBI_VIEW"),
       this.getByIdAsync
     );
     this.router.post(
       "",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("TIMESHEET_PBI_UPDATE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("TIMESHEET_PBI_UPDATE"),
       this.createAsync
     );
     this.router.put(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("TIMESHEET_PBI_UPDATE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("TIMESHEET_PBI_UPDATE"),
       this.updateAsync
     );
     this.router.patch(
       "/register-work/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("TIMESHEET_PBI_UPDATE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("TIMESHEET_PBI_UPDATE"),
       this.registerWorkAsync
     );
     this.router.delete(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("TIMESHEET_PBI_DELETE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("TIMESHEET_PBI_DELETE"),
       this.deleteAsync
     );
   }
@@ -77,7 +62,7 @@ export class PbiController {
     try {
       const { id: userId, company } = req.user;
       const getAllPbiFilterModel = new GetAllPbiFilterModel(req.query);
-      const pbis = await this.pbiGetAll?.executeAsync(
+      const pbis = await this.pbiGetAll.executeAsync(
         getAllPbiFilterModel,
         userId,
         company
@@ -92,7 +77,7 @@ export class PbiController {
     try {
       const { id: userId, company } = req.user;
       const { id } = req.params;
-      const pbi = await this.pbiGetById?.executeAsync(id, userId, company);
+      const pbi = await this.pbiGetById.executeAsync(id, userId, company);
       return res.json(pbi);
     } catch (e: any) {
       return res.status(400).json(e.message);
@@ -112,7 +97,7 @@ export class PbiController {
         pbiStatusId,
         order
       );
-      const pbi = await this.pbiCreate?.executeAsync(
+      const pbi = await this.pbiCreate.executeAsync(
         pbiCreateDataModel,
         company
       );
@@ -136,7 +121,7 @@ export class PbiController {
         pbiStatusId,
         order
       );
-      const pbi = await this.pbiUpdate?.executeAsync(
+      const pbi = await this.pbiUpdate.executeAsync(
         pbiUpdateDataModel,
         userId,
         company
@@ -151,7 +136,7 @@ export class PbiController {
     try {
       const { id: userId, company } = req.user;
       const { id } = req.params;
-      await this.pbiRegisterWork?.executeAsync(id, userId, company);
+      await this.pbiRegisterWork.executeAsync(id, userId, company);
       return res.status(204).json();
     } catch (e: any) {
       return res.status(400).json(e.message);
@@ -162,7 +147,7 @@ export class PbiController {
     try {
       const { company } = req.user;
       const { id } = req.params;
-      await this.pbiDelete?.executeAsync(id, company);
+      await this.pbiDelete.executeAsync(id, company);
       return res.status(204).json();
     } catch (e: any) {
       return res.status(400).json(e.message);

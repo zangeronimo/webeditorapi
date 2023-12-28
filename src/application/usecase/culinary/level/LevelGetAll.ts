@@ -4,14 +4,17 @@ import { GetAllLevelFilterModel } from "@application/model/culinary/level";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 import { LevelDto } from "@domain/dto/culinary";
 import { Level } from "@domain/entity/culinary";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class LevelGetAll implements ILevelGetAll {
-  @inject("ILevelRepository")
-  _levelRepository?: ILevelRepository;
+  constructor(
+    @inject("ILevelRepository")
+    readonly _levelRepository: ILevelRepository,
+  ) {}
 
   async executeAsync(model: GetAllLevelFilterModel, company: string) {
-    const { itens: levels, total } = await this._levelRepository?.getAllAsync(
+    const { itens: levels, total } = await this._levelRepository.getAllAsync(
       model,
       company
     )!;

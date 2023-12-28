@@ -1,65 +1,52 @@
 import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
 import {
-  ILevelGetAll,
-  ILevelGetById,
-  ILevelCreate,
-  ILevelUpdate,
-  ILevelDelete,
-} from "@application/interface/usecase/culinary/level";
-import {
+  GetAllLevelFilterModel,
   LevelCreateDataModel,
   LevelUpdateDataModel,
-  GetAllLevelFilterModel,
 } from "@application/model/culinary/level";
-import { inject } from "@infra/di/Inject";
+import { LevelCreate, LevelDelete, LevelGetAll, LevelGetById, LevelUpdate } from "@application/usecase/culinary/level";
 import { Request, Response, Router } from "express";
+import { container } from "tsyringe";
 
 export class LevelController {
-  @inject("ILevelGetAll")
-  levelGetAll?: ILevelGetAll;
-  @inject("ILevelGetById")
-  levelGetById?: ILevelGetById;
-  @inject("ILevelCreate")
-  levelCreate?: ILevelCreate;
-  @inject("ILevelUpdate")
-  levelUpdate?: ILevelUpdate;
-  @inject("ILevelDelete")
-  levelDelete?: ILevelDelete;
-
   router = Router();
+  levelGetAll = container.resolve(LevelGetAll);
+  levelGetById = container.resolve(LevelGetById);
+  levelCreate = container.resolve(LevelCreate);
+  levelUpdate = container.resolve(LevelUpdate);
+  levelDelete = container.resolve(LevelDelete);
+  ensureAuthenticated = container.resolve(EnsureAuthenticated);
+  ensureHasRole = container.resolve(EnsureHasRole);
 
-  constructor(
-    ensureAuthenticated: EnsureAuthenticated,
-    ensureHasRole: EnsureHasRole
-  ) {
+  constructor() {
     this.router.get(
       "/",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("CULINARY_LEVEL_VIEW"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("CULINARY_LEVEL_VIEW"),
       this.getAllAsync
     );
     this.router.get(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("CULINARY_LEVEL_VIEW"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("CULINARY_LEVEL_VIEW"),
       this.getByIdAsync
     );
     this.router.post(
       "",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("CULINARY_LEVEL_UPDATE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("CULINARY_LEVEL_UPDATE"),
       this.createAsync
     );
     this.router.put(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("CULINARY_LEVEL_UPDATE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("CULINARY_LEVEL_UPDATE"),
       this.updateAsync
     );
     this.router.delete(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("CULINARY_LEVEL_DELETE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("CULINARY_LEVEL_DELETE"),
       this.deleteAsync
     );
   }
@@ -68,7 +55,7 @@ export class LevelController {
     try {
       const { company } = req.user;
       const getAllLevelFilterModel = new GetAllLevelFilterModel(req.query);
-      const levels = await this.levelGetAll?.executeAsync(
+      const levels = await this.levelGetAll.executeAsync(
         getAllLevelFilterModel,
         company
       );
@@ -82,7 +69,7 @@ export class LevelController {
     try {
       const { company } = req.user;
       const { id } = req.params;
-      const level = await this.levelGetById?.executeAsync(id, company);
+      const level = await this.levelGetById.executeAsync(id, company);
       return res.json(level);
     } catch (e: any) {
       return res.status(400).json(e.message);
@@ -94,7 +81,7 @@ export class LevelController {
       const { company } = req.user;
       const { name, active } = req.body;
       const levelCreateDataModel = new LevelCreateDataModel(name, active);
-      const level = await this.levelCreate?.executeAsync(
+      const level = await this.levelCreate.executeAsync(
         levelCreateDataModel,
         company
       );
@@ -114,7 +101,7 @@ export class LevelController {
         name,
         active
       );
-      const level = await this.levelUpdate?.executeAsync(
+      const level = await this.levelUpdate.executeAsync(
         levelUpdateDataModel,
         company
       );
@@ -128,7 +115,7 @@ export class LevelController {
     try {
       const { company } = req.user;
       const { id } = req.params;
-      const level = await this.levelDelete?.executeAsync(id, company);
+      const level = await this.levelDelete.executeAsync(id, company);
       return res.json(level);
     } catch (e: any) {
       return res.status(400).json(e.message);

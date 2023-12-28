@@ -2,9 +2,14 @@ import { IRecipeRepository } from "@application/interface/repository/culinary";
 import { GetAllRecipeFilterModel } from "@application/model/culinary/recipe";
 import { Recipe } from "@domain/entity/culinary";
 import { DbContext } from "@infra/context";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class RecipeRepository implements IRecipeRepository {
-  constructor(readonly db: DbContext) {}
+  constructor(
+    @inject('DbContext')
+    readonly db: DbContext
+  ) {}
 
   async getByIdAsync(id: string, company: string): Promise<Recipe | null> {
     const [recipeData] = await this.db.queryAsync(

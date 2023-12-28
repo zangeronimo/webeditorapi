@@ -2,9 +2,14 @@ import { IRoleRepository } from "@application/interface/repository/webeditor";
 import { GetAllRoleFilterModel } from "@application/model/webeditor/role";
 import { Role } from "@domain/entity/webeditor";
 import { DbContext } from "@infra/context";
+import {  inject, injectable } from "tsyringe";
 
+@injectable()
 export class RoleRepository implements IRoleRepository {
-  constructor(readonly db: DbContext) {}
+  constructor(
+    @inject('DbContext')
+    readonly db: DbContext
+  ) {}
 
   async getAllByModuleAsync(moduleId: string): Promise<Role[]> {
     const rolesData = await this.db.queryAsync(

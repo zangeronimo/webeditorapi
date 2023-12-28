@@ -3,14 +3,17 @@ import { IUserUpdate } from "@application/interface/usecase/webeditor/user";
 import { Messages } from "@application/messages/Messages";
 import { UserUpdateDataModel } from "@application/model/webeditor/user";
 import { UserDto } from "@domain/dto/webeditor";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class UserUpdate implements IUserUpdate {
-  @inject("IUserRepository")
-  _userRepository?: IUserRepository;
+  constructor(
+    @inject("IUserRepository")
+    readonly _userRepository: IUserRepository,
+  ) {}
 
   async executeAsync(userData: UserUpdateDataModel, company: string) {
-    const user = await this._userRepository?.getByIdAsync(
+    const user = await this._userRepository.getByIdAsync(
       userData.id,
       company
     )!;
@@ -18,7 +21,7 @@ export class UserUpdate implements IUserUpdate {
       throw new Error(Messages.notFound("User"));
     }
     if (userData.email !== user.email) {
-      const existEmail = await this._userRepository?.getByEmailAsync(
+      const existEmail = await this._userRepository.getByEmailAsync(
         userData.email
       );
       if (existEmail !== null) {
@@ -26,7 +29,7 @@ export class UserUpdate implements IUserUpdate {
       }
     }
     await user.updateAsync(userData);
-    await this._userRepository?.updateAsync(user);
+    await this._userRepository.updateAsync(user);
     return new UserDto(user);
   }
 }

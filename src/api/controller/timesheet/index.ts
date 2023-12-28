@@ -1,4 +1,3 @@
-import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
 import { Router } from "express";
 import { ClientController } from "./ClientController";
 import { EpicController } from "./EpicController";
@@ -8,27 +7,13 @@ import { PbiStatusController } from "./PbiStatusController";
 
 export class TimeSheetRouters {
   static init = (
-    ensureAuthenticated: EnsureAuthenticated,
-    ensureHasRole: EnsureHasRole,
     router: Router
   ) => {
-    const clientController = new ClientController(
-      ensureAuthenticated,
-      ensureHasRole
-    );
-    const projectController = new ProjectController(
-      ensureAuthenticated,
-      ensureHasRole
-    );
-    const epicController = new EpicController(
-      ensureAuthenticated,
-      ensureHasRole
-    );
-    const pbiController = new PbiController(ensureAuthenticated, ensureHasRole);
-    const pbiStatusController = new PbiStatusController(
-      ensureAuthenticated,
-      ensureHasRole
-    );
+    const clientController = new ClientController();
+    const projectController = new ProjectController();
+    const epicController = new EpicController();
+    const pbiController = new PbiController();
+    const pbiStatusController = new PbiStatusController();
 
     router.use("/timesheet/client", clientController.router);
     router.use("/timesheet/epic", epicController.router);

@@ -2,9 +2,14 @@ import { IClientRepository } from "@application/interface/repository/timesheet";
 import { GetAllClientFilterModel } from "@application/model/timesheet/client";
 import { Client } from "@domain/entity/timesheet";
 import { DbContext } from "@infra/context";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class ClientRepository implements IClientRepository {
-  constructor(readonly db: DbContext) {}
+  constructor(
+    @inject('DbContext')
+    readonly db: DbContext
+  ) {}
 
   async getByIdAsync(id: string, company: string): Promise<Client | null> {
     const [clientData] = await this.db.queryAsync(

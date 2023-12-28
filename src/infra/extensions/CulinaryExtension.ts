@@ -1,9 +1,14 @@
+import { ICategoryRepository, ILevelRepository, IRatingRepository, IRecipeRepository } from "@application/interface/repository/culinary";
+import { ICategoryCreate, ICategoryDelete, ICategoryGetAll, ICategoryGetById, ICategoryUpdate } from "@application/interface/usecase/culinary/category";
+import { ILevelCreate, ILevelDelete, ILevelGetAll, ILevelGetById, ILevelUpdate } from "@application/interface/usecase/culinary/level";
+import { IRatingCreate, IRatingDelete, IRatingGetAll, IRatingGetById, IRatingUpdate } from "@application/interface/usecase/culinary/rating";
+import { IRecipeCreate, IRecipeDelete, IRecipeGetAll, IRecipeGetById, IRecipeUpdate } from "@application/interface/usecase/culinary/recipe";
 import {
+  CategoryCreate,
+  CategoryDelete,
   CategoryGetAll,
   CategoryGetById,
-  CategoryCreate,
   CategoryUpdate,
-  CategoryDelete,
 } from "@application/usecase/culinary/category";
 import {
   LevelCreate,
@@ -13,74 +18,73 @@ import {
   LevelUpdate,
 } from "@application/usecase/culinary/level";
 import {
+  RatingCreate,
+  RatingDelete,
   RatingGetAll,
   RatingGetById,
-  RatingCreate,
   RatingUpdate,
-  RatingDelete,
 } from "@application/usecase/culinary/rating";
 import {
+  RecipeCreate,
+  RecipeDelete,
   RecipeGetAll,
   RecipeGetById,
-  RecipeCreate,
   RecipeUpdate,
-  RecipeDelete,
 } from "@application/usecase/culinary/recipe";
-import { DbContext } from "@infra/context";
-import { Registry } from "@infra/di/Registry";
 import {
   CategoryRepository,
   LevelRepository,
   RatingRepository,
   RecipeRepository,
 } from "@infra/repository/culinary";
+import { container } from "tsyringe";
 
 export class CulinaryExtension {
-  static init(dbContext: DbContext) {
+  static init() {
     // Registry Repositories
-    Registry.getInstance().provide(
+    container.registerSingleton<ILevelRepository>(
       "ILevelRepository",
-      new LevelRepository(dbContext)
+      LevelRepository
     );
-    Registry.getInstance().provide(
+    container.registerSingleton<ICategoryRepository>(
       "ICategoryRepository",
-      new CategoryRepository(dbContext)
+      CategoryRepository
     );
-    Registry.getInstance().provide(
+    container.registerSingleton<IRecipeRepository>(
       "IRecipeRepository",
-      new RecipeRepository(dbContext)
+      RecipeRepository
     );
-    Registry.getInstance().provide(
+    container.registerSingleton<IRatingRepository>(
       "IRatingRepository",
-      new RatingRepository(dbContext)
+      RatingRepository
     );
 
     // Registry Level useCases
-    Registry.getInstance().provide("ILevelGetAll", new LevelGetAll());
-    Registry.getInstance().provide("ILevelGetById", new LevelGetById());
-    Registry.getInstance().provide("ILevelCreate", new LevelCreate());
-    Registry.getInstance().provide("ILevelUpdate", new LevelUpdate());
-    Registry.getInstance().provide("ILevelDelete", new LevelDelete());
+    container.registerSingleton<ILevelGetAll>("ILevelGetAll", LevelGetAll);
+    container.registerSingleton<ILevelGetById>("ILevelGetById", LevelGetById);
+    container.registerSingleton<ILevelCreate>("ILevelCreate", LevelCreate);
+    container.registerSingleton<ILevelUpdate>("ILevelUpdate", LevelUpdate);
+    container.registerSingleton<ILevelDelete>("ILevelDelete", LevelDelete);
 
     // Registry Category useCases
-    Registry.getInstance().provide("ICategoryGetAll", new CategoryGetAll());
-    Registry.getInstance().provide("ICategoryGetById", new CategoryGetById());
-    Registry.getInstance().provide("ICategoryCreate", new CategoryCreate());
-    Registry.getInstance().provide("ICategoryUpdate", new CategoryUpdate());
-    Registry.getInstance().provide("ICategoryDelete", new CategoryDelete());
+    container.registerSingleton<ICategoryGetAll>("ICategoryGetAll", CategoryGetAll);
+    container.registerSingleton<ICategoryGetById>("ICategoryGetById", CategoryGetById);
+    container.registerSingleton<ICategoryCreate>("ICategoryCreate", CategoryCreate);
+    container.registerSingleton<ICategoryUpdate>("ICategoryUpdate", CategoryUpdate);
+    container.registerSingleton<ICategoryDelete>("ICategoryDelete", CategoryDelete);
 
     // Registry Recipe useCases
-    Registry.getInstance().provide("IRecipeGetAll", new RecipeGetAll());
-    Registry.getInstance().provide("IRecipeGetById", new RecipeGetById());
-    Registry.getInstance().provide("IRecipeCreate", new RecipeCreate());
-    Registry.getInstance().provide("IRecipeUpdate", new RecipeUpdate());
-    Registry.getInstance().provide("IRecipeDelete", new RecipeDelete());
+    container.registerSingleton<IRecipeGetAll>("IRecipeGetAll", RecipeGetAll);
+    container.registerSingleton<IRecipeGetById>("IRecipeGetById", RecipeGetById);
+    container.registerSingleton<IRecipeCreate>("IRecipeCreate", RecipeCreate);
+    container.registerSingleton<IRecipeUpdate>("IRecipeUpdate", RecipeUpdate);
+    container.registerSingleton<IRecipeDelete>("IRecipeDelete", RecipeDelete);
 
     // Registry Rating useCases
-    Registry.getInstance().provide("IRatingGetAll", new RatingGetAll());
-    Registry.getInstance().provide("IRatingGetById", new RatingGetById());
-    Registry.getInstance().provide("IRatingCreate", new RatingCreate());
-    Registry.getInstance().provide("IRatingUpdate", new RatingUpdate());
-    Registry.getInstance().provide("IRatingDelete", new RatingDelete());
+    container.registerSingleton<IRatingGetAll>("IRatingGetAll", RatingGetAll);
+    container.registerSingleton<IRatingGetById>("IRatingGetById", RatingGetById);
+    container.registerSingleton<IRatingCreate>("IRatingCreate", RatingCreate);
+    container.registerSingleton<IRatingUpdate>("IRatingUpdate", RatingUpdate);
+    container.registerSingleton<IRatingDelete>("IRatingDelete", RatingDelete);
   }
 }

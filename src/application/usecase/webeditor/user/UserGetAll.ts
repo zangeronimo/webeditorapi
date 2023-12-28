@@ -4,14 +4,17 @@ import { GetAllUserFilterModel } from "@application/model/webeditor/user";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 import { UserDto } from "@domain/dto/webeditor";
 import { User } from "@domain/entity/webeditor";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class UserGetAll implements IUserGetAll {
-  @inject("IUserRepository")
-  _userRepository?: IUserRepository;
+  constructor(
+    @inject("IUserRepository")
+    readonly _userRepository: IUserRepository,
+  ) {}
 
   async executeAsync(model: GetAllUserFilterModel, company: string) {
-    const { itens: users, total } = await this._userRepository?.getAllAsync(
+    const { itens: users, total } = await this._userRepository.getAllAsync(
       model,
       company
     )!;

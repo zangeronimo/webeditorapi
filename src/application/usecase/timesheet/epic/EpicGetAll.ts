@@ -4,23 +4,26 @@ import { IEpicGetAll } from "@application/interface/usecase/timesheet/epic";
 import { GetAllEpicFilterModel } from "@application/model/timesheet/epic";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 import { EpicDto, ProjectDto } from "@domain/dto/timesheet";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class EpicGetAll implements IEpicGetAll {
-  @inject("IEpicRepository")
-  _epicRepository?: IEpicRepository;
-  @inject("IProjectRepository")
-  _projectRepository?: IProjectRepository;
+  constructor(
+    @inject("IEpicRepository")
+    readonly _epicRepository: IEpicRepository,
+    @inject("IProjectRepository")
+    readonly _projectRepository: IProjectRepository,
+  ) {}
 
   async executeAsync(model: GetAllEpicFilterModel, company: string) {
-    const { itens: epics, total } = await this._epicRepository?.getAllAsync(
+    const { itens: epics, total } = await this._epicRepository.getAllAsync(
       model,
       company
     )!;
 
     const epicsDto: EpicDto[] = [];
     for (let i = 0; i < epics.length; i++) {
-      const project = await this._projectRepository?.getByIdAsync(
+      const project = await this._projectRepository.getByIdAsync(
         epics[i].projectId!,
         company
       );

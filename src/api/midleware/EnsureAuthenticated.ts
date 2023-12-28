@@ -1,11 +1,14 @@
 import { ITokenProvider } from "@application/interface/provider";
 import { Messages } from "@application/messages/Messages";
-import { inject } from "@infra/di/Inject";
 import { NextFunction, Request, Response } from "express";
+import { inject, injectable } from "tsyringe";
 
-export class EnsureAuthenticated {
-  @inject("ITokenProvider")
-  tokenProvider?: ITokenProvider;
+@injectable()
+export class EnsureAuthenticated implements IEnsureAuthenticated {
+  constructor(
+    @inject("ITokenProvider")
+    readonly tokenProvider: ITokenProvider
+  ) {}
 
   execute = (
     request: Request,
@@ -19,7 +22,7 @@ export class EnsureAuthenticated {
     }
     const [, token] = authHeader.split(" ");
     try {
-      const tokenPayloadModel = this.tokenProvider?.verify(token);
+      const tokenPayloadModel = this.tokenProvider.verify(token);
       const { sub, company } = tokenPayloadModel!;
       request.user = { id: sub, company };
       return next();
@@ -27,4 +30,8 @@ export class EnsureAuthenticated {
       response.status(401).json(Messages.invalidJwtToken);
     }
   };
+}
+
+export interface IEnsureAuthenticated {
+  execute: any
 }

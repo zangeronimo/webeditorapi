@@ -5,16 +5,19 @@ import { Messages } from "@application/messages/Messages";
 import { EpicCreateDataModel } from "@application/model/timesheet/epic";
 import { EpicDto, ProjectDto } from "@domain/dto/timesheet";
 import { Epic } from "@domain/entity/timesheet";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class EpicCreate implements IEpicCreate {
-  @inject("IEpicRepository")
-  _epicRepository?: IEpicRepository;
-  @inject("IProjectRepository")
-  _projectRepository?: IProjectRepository;
+  constructor(
+    @inject("IEpicRepository")
+    readonly _epicRepository: IEpicRepository,
+    @inject("IProjectRepository")
+    readonly _projectRepository: IProjectRepository,
+  ) {}
 
   async executeAsync(epicData: EpicCreateDataModel, company: string) {
-    const nameExists = await this._epicRepository?.getByNameAsync(
+    const nameExists = await this._epicRepository.getByNameAsync(
       epicData.name,
       epicData.projectId,
       company
@@ -23,12 +26,12 @@ export class EpicCreate implements IEpicCreate {
       throw new Error(Messages.alreadyInUse("Name"));
     }
     const epic = Epic.create(epicData, company);
-    await this._epicRepository?.saveAsync(epic);
-    const project = await this._projectRepository?.getByIdAsync(
+    await this._epicRepository.saveAsync(epic);
+    const project = await this._projectRepository.getByIdAsync(
       epic.projectId!,
       company
     );
-    const epicSaved = await this._epicRepository?.getByIdAsync(
+    const epicSaved = await this._epicRepository.getByIdAsync(
       epic.id,
       company
     );

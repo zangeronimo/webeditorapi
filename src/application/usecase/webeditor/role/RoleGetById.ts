@@ -5,20 +5,23 @@ import {
 import { IRoleGetById } from "@application/interface/usecase/webeditor/role";
 import { Messages } from "@application/messages/Messages";
 import { ModuleDto, RoleDto } from "@domain/dto/webeditor";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class RoleGetById implements IRoleGetById {
-  @inject("IModuleRepository")
-  _moduleRepository?: IModuleRepository;
-  @inject("IRoleRepository")
-  _roleRepository?: IRoleRepository;
+  constructor(
+    @inject("IModuleRepository")
+    readonly _moduleRepository: IModuleRepository,
+    @inject("IRoleRepository")
+    readonly _roleRepository: IRoleRepository,
+  ) {}
 
   async executeAsync(id: string) {
-    const role = await this._roleRepository?.getByIdAsync(id)!;
+    const role = await this._roleRepository.getByIdAsync(id)!;
     if (role === null) {
       throw new Error(Messages.notFound("Role"));
     }
-    const module = await this._moduleRepository?.getByIdAsync(role.moduleId);
+    const module = await this._moduleRepository.getByIdAsync(role.moduleId);
     if (!module) {
       throw new Error(Messages.notFound("Module"));
     }

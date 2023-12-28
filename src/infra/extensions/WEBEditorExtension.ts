@@ -1,88 +1,92 @@
+import { ICompanyRepository, IModuleRepository, IRoleRepository, IUserRepository } from "@application/interface/repository/webeditor";
+import { ICompanyCreate, ICompanyDelete, ICompanyGetAll, ICompanyGetById, ICompanyUpdate } from "@application/interface/usecase/webeditor/company";
+import { IModuleCreate, IModuleDelete, IModuleGetAll, IModuleGetAllByCompany, IModuleGetById, IModuleUpdate } from "@application/interface/usecase/webeditor/module";
+import { IRoleCreate, IRoleDelete, IRoleGetAll, IRoleGetById, IRoleUpdate } from "@application/interface/usecase/webeditor/role";
+import { IUserCreate, IUserDelete, IUserGetAll, IUserGetById, IUserUpdate } from "@application/interface/usecase/webeditor/user";
 import {
+  CompanyCreate,
+  CompanyDelete,
   CompanyGetAll,
   CompanyGetById,
-  CompanyCreate,
   CompanyUpdate,
-  CompanyDelete,
 } from "@application/usecase/webeditor/company";
 import {
-  ModuleGetAllByCompany,
-  ModuleGetAll,
-  ModuleGetById,
   ModuleCreate,
-  ModuleUpdate,
   ModuleDelete,
+  ModuleGetAll,
+  ModuleGetAllByCompany,
+  ModuleGetById,
+  ModuleUpdate,
 } from "@application/usecase/webeditor/module";
 import {
+  RoleCreate,
+  RoleDelete,
   RoleGetAll,
   RoleGetById,
-  RoleCreate,
   RoleUpdate,
-  RoleDelete,
 } from "@application/usecase/webeditor/role";
 import {
+  UserCreate,
+  UserDelete,
   UserGetAll,
   UserGetById,
-  UserCreate,
   UserUpdate,
-  UserDelete,
 } from "@application/usecase/webeditor/user";
-import { Registry } from "../di/Registry";
-import { DbContext } from "@infra/context";
 import {
-  UserRepository,
-  RoleRepository,
   CompanyRepository,
   ModuleRepository,
+  RoleRepository,
+  UserRepository,
 } from "@infra/repository/webeditor";
+import { container } from "tsyringe";
 
 export class WEBEditorExtension {
-  static init(dbContext: DbContext) {
+  static init() {
     // Registry Repositories
-    Registry.getInstance().provide(
+    container.registerSingleton<IUserRepository>(
       "IUserRepository",
-      new UserRepository(dbContext)
+      UserRepository
     );
-    Registry.getInstance().provide(
+    container.registerSingleton<IRoleRepository>(
       "IRoleRepository",
-      new RoleRepository(dbContext)
+      RoleRepository
     );
-    Registry.getInstance().provide(
+    container.registerSingleton<ICompanyRepository>(
       "ICompanyRepository",
-      new CompanyRepository(dbContext)
+      CompanyRepository
     );
-    Registry.getInstance().provide(
+    container.registerSingleton<IModuleRepository>(
       "IModuleRepository",
-      new ModuleRepository(dbContext)
+      ModuleRepository
     );
 
     // Registry Company useCases
-    Registry.getInstance().provide("ICompanyGetAll", new CompanyGetAll());
-    Registry.getInstance().provide("ICompanyGetById", new CompanyGetById());
-    Registry.getInstance().provide("ICompanyCreate", new CompanyCreate());
-    Registry.getInstance().provide("ICompanyUpdate", new CompanyUpdate());
-    Registry.getInstance().provide("ICompanyDelete", new CompanyDelete());
+    container.registerSingleton<ICompanyGetAll>("ICompanyGetAll", CompanyGetAll);
+    container.registerSingleton<ICompanyGetById>("ICompanyGetById", CompanyGetById);
+    container.registerSingleton<ICompanyCreate>("ICompanyCreate", CompanyCreate);
+    container.registerSingleton<ICompanyUpdate>("ICompanyUpdate", CompanyUpdate);
+    container.registerSingleton<ICompanyDelete>("ICompanyDelete", CompanyDelete);
     // Registry Module useCases
-    Registry.getInstance().provide(
+    container.registerSingleton<IModuleGetAllByCompany>(
       "IModuleGetAllByCompany",
-      new ModuleGetAllByCompany()
+      ModuleGetAllByCompany
     );
-    Registry.getInstance().provide("IModuleGetAll", new ModuleGetAll());
-    Registry.getInstance().provide("IModuleGetById", new ModuleGetById());
-    Registry.getInstance().provide("IModuleCreate", new ModuleCreate());
-    Registry.getInstance().provide("IModuleUpdate", new ModuleUpdate());
-    Registry.getInstance().provide("IModuleDelete", new ModuleDelete());
+    container.registerSingleton<IModuleGetAll>("IModuleGetAll", ModuleGetAll);
+    container.registerSingleton<IModuleGetById>("IModuleGetById", ModuleGetById);
+    container.registerSingleton<IModuleCreate>("IModuleCreate", ModuleCreate);
+    container.registerSingleton<IModuleUpdate>("IModuleUpdate", ModuleUpdate);
+    container.registerSingleton<IModuleDelete>("IModuleDelete", ModuleDelete);
     // Registry Role useCases
-    Registry.getInstance().provide("IRoleGetAll", new RoleGetAll());
-    Registry.getInstance().provide("IRoleGetById", new RoleGetById());
-    Registry.getInstance().provide("IRoleCreate", new RoleCreate());
-    Registry.getInstance().provide("IRoleUpdate", new RoleUpdate());
-    Registry.getInstance().provide("IRoleDelete", new RoleDelete());
+    container.registerSingleton<IRoleGetAll>("IRoleGetAll", RoleGetAll);
+    container.registerSingleton<IRoleGetById>("IRoleGetById", RoleGetById);
+    container.registerSingleton<IRoleCreate>("IRoleCreate", RoleCreate);
+    container.registerSingleton<IRoleUpdate>("IRoleUpdate", RoleUpdate);
+    container.registerSingleton<IRoleDelete>("IRoleDelete", RoleDelete);
     // Registry User useCases
-    Registry.getInstance().provide("IUserGetAll", new UserGetAll());
-    Registry.getInstance().provide("IUserGetById", new UserGetById());
-    Registry.getInstance().provide("IUserCreate", new UserCreate());
-    Registry.getInstance().provide("IUserUpdate", new UserUpdate());
-    Registry.getInstance().provide("IUserDelete", new UserDelete());
+    container.registerSingleton<IUserGetAll>("IUserGetAll", UserGetAll);
+    container.registerSingleton<IUserGetById>("IUserGetById", UserGetById);
+    container.registerSingleton<IUserCreate>("IUserCreate", UserCreate);
+    container.registerSingleton<IUserUpdate>("IUserUpdate", UserUpdate);
+    container.registerSingleton<IUserDelete>("IUserDelete", UserDelete);
   }
 }

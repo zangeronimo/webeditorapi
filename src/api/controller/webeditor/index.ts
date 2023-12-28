@@ -1,4 +1,3 @@
-import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
 import { AuthController } from "./AuthController";
 import { CompanyController } from "./CompanyController";
 import { ModuleController } from "./ModuleController";
@@ -8,27 +7,13 @@ import { Router } from "express";
 
 export class WEBEditorRouters {
   static init = (
-    ensureAuthenticated: EnsureAuthenticated,
-    ensureHasRole: EnsureHasRole,
     router: Router
   ) => {
     const authController = new AuthController();
-    const userController = new UserController(
-      ensureAuthenticated,
-      ensureHasRole
-    );
-    const roleController = new RoleController(
-      ensureAuthenticated,
-      ensureHasRole
-    );
-    const companyController = new CompanyController(
-      ensureAuthenticated,
-      ensureHasRole
-    );
-    const moduleController = new ModuleController(
-      ensureAuthenticated,
-      ensureHasRole
-    );
+    const userController = new UserController();
+    const roleController = new RoleController();
+    const companyController = new CompanyController();
+    const moduleController = new ModuleController();
 
     router.use("/auth", authController.router);
     router.use("/company", companyController.router);

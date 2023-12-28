@@ -2,9 +2,14 @@ import { ILevelRepository } from "@application/interface/repository/culinary";
 import { GetAllLevelFilterModel } from "@application/model/culinary/level";
 import { Level } from "@domain/entity/culinary";
 import { DbContext } from "@infra/context";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class LevelRepository implements ILevelRepository {
-  constructor(readonly db: DbContext) {}
+  constructor(
+    @inject('DbContext')
+    readonly db: DbContext
+  ) {}
 
   async getByIdAsync(id: string, company: string): Promise<Level | null> {
     const [levelData] = await this.db.queryAsync(

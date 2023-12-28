@@ -6,16 +6,19 @@ import { IProjectUpdate } from "@application/interface/usecase/timesheet/project
 import { Messages } from "@application/messages/Messages";
 import { ProjectUpdateDataModel } from "@application/model/timesheet/project";
 import { ClientDto, ProjectDto } from "@domain/dto/timesheet";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class ProjectUpdate implements IProjectUpdate {
-  @inject("IProjectRepository")
-  _projectRepository?: IProjectRepository;
-  @inject("IClientRepository")
-  _clientRepository?: IClientRepository;
+  constructor(
+    @inject("IProjectRepository")
+    readonly _projectRepository: IProjectRepository,
+    @inject("IClientRepository")
+    readonly _clientRepository: IClientRepository,
+  ) {}
 
   async executeAsync(projectData: ProjectUpdateDataModel, company: string) {
-    const project = await this._projectRepository?.getByIdAsync(
+    const project = await this._projectRepository.getByIdAsync(
       projectData.id,
       company
     )!;
@@ -23,7 +26,7 @@ export class ProjectUpdate implements IProjectUpdate {
       throw new Error(Messages.notFound("Project"));
     }
     if (projectData.name !== project.name) {
-      const existName = await this._projectRepository?.getByNameAsync(
+      const existName = await this._projectRepository.getByNameAsync(
         projectData.name,
         projectData.clientId,
         company
@@ -33,8 +36,8 @@ export class ProjectUpdate implements IProjectUpdate {
       }
     }
     project.update(projectData);
-    await this._projectRepository?.updateAsync(project);
-    const client = await this._clientRepository?.getByIdAsync(
+    await this._projectRepository.updateAsync(project);
+    const client = await this._clientRepository.getByIdAsync(
       project.clientId!,
       company
     );

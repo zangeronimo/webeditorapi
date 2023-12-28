@@ -2,14 +2,17 @@ import { IPbiStatusRepository } from "@application/interface/repository/timeshee
 import { IPbiStatusGetById } from "@application/interface/usecase/timesheet/pbiStatus";
 import { Messages } from "@application/messages/Messages";
 import { PbiStatusDto } from "@domain/dto/timesheet";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class PbiStatusGetById implements IPbiStatusGetById {
-  @inject("IPbiStatusRepository")
-  _pbiStatusRepository?: IPbiStatusRepository;
+  constructor(
+    @inject("IPbiStatusRepository")
+    readonly _pbiStatusRepository: IPbiStatusRepository,
+  ) {}
 
   async executeAsync(id: string, company: string) {
-    const pbiStatus = await this._pbiStatusRepository?.getByIdAsync(
+    const pbiStatus = await this._pbiStatusRepository.getByIdAsync(
       id,
       company
     )!;

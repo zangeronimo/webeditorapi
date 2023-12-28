@@ -1,65 +1,52 @@
 import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
 import {
-  IRoleCreate,
-  IRoleDelete,
-  IRoleGetAll,
-  IRoleGetById,
-  IRoleUpdate,
-} from "@application/interface/usecase/webeditor/role";
-import {
   GetAllRoleFilterModel,
   RoleCreateDataModel,
   RoleUpdateDataModel,
 } from "@application/model/webeditor/role";
-import { inject } from "@infra/di/Inject";
+import { RoleGetAll, RoleGetById, RoleCreate, RoleUpdate, RoleDelete } from "@application/usecase/webeditor/role";
 import { Request, Response, Router } from "express";
+import { container } from "tsyringe";
 
 export class RoleController {
-  @inject("IRoleGetAll")
-  roleGetAll?: IRoleGetAll;
-  @inject("IRoleGetById")
-  roleGetById?: IRoleGetById;
-  @inject("IRoleCreate")
-  roleCreate?: IRoleCreate;
-  @inject("IRoleUpdate")
-  roleUpdate?: IRoleUpdate;
-  @inject("IRoleDelete")
-  roleDelete?: IRoleDelete;
-
   router = Router();
+  roleGetAll = container.resolve(RoleGetAll);
+  roleGetById = container.resolve(RoleGetById);
+  roleCreate = container.resolve(RoleCreate);
+  roleUpdate = container.resolve(RoleUpdate);
+  roleDelete = container.resolve(RoleDelete);
+  ensureAuthenticated = container.resolve(EnsureAuthenticated);
+  ensureHasRole = container.resolve(EnsureHasRole);
 
-  constructor(
-    ensureAuthenticated: EnsureAuthenticated,
-    ensureHasRole: EnsureHasRole
-  ) {
+  constructor() {
     this.router.get(
       "/",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("WEBEDITOR_ROLE_VIEW"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("WEBEDITOR_ROLE_VIEW"),
       this.getAllAsync
     );
     this.router.get(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("WEBEDITOR_ROLE_VIEW"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("WEBEDITOR_ROLE_VIEW"),
       this.getByIdAsync
     );
     this.router.post(
       "",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("WEBEDITOR_ROLE_UPDATE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("WEBEDITOR_ROLE_UPDATE"),
       this.createAsync
     );
     this.router.put(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("WEBEDITOR_ROLE_UPDATE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("WEBEDITOR_ROLE_UPDATE"),
       this.updateAsync
     );
     this.router.delete(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("WEBEDITOR_ROLE_DELETE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("WEBEDITOR_ROLE_DELETE"),
       this.deleteAsync
     );
   }
@@ -67,7 +54,7 @@ export class RoleController {
   private getAllAsync = async (req: Request, res: Response) => {
     try {
       const getAllRoleFilterModel = new GetAllRoleFilterModel(req.query);
-      const roles = await this.roleGetAll?.executeAsync(getAllRoleFilterModel);
+      const roles = await this.roleGetAll.executeAsync(getAllRoleFilterModel);
       return res.json(roles);
     } catch (e: any) {
       return res.status(400).json(e.message);
@@ -77,7 +64,7 @@ export class RoleController {
   private getByIdAsync = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const role = await this.roleGetById?.executeAsync(id);
+      const role = await this.roleGetById.executeAsync(id);
       return res.json(role);
     } catch (e: any) {
       return res.status(400).json(e.message);
@@ -93,7 +80,7 @@ export class RoleController {
         order,
         moduleId
       );
-      const role = await this.roleCreate?.executeAsync(roleCreateDataModel);
+      const role = await this.roleCreate.executeAsync(roleCreateDataModel);
       return res.status(201).json(role);
     } catch (e: any) {
       return res.status(400).json(e.message);
@@ -110,7 +97,7 @@ export class RoleController {
         order,
         moduleId
       );
-      const role = await this.roleUpdate?.executeAsync(roleUpdateDataModel);
+      const role = await this.roleUpdate.executeAsync(roleUpdateDataModel);
       return res.json(role);
     } catch (e: any) {
       return res.status(400).json(e.message);
@@ -120,7 +107,7 @@ export class RoleController {
   private deleteAsync = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const role = await this.roleDelete?.executeAsync(id);
+      const role = await this.roleDelete.executeAsync(id);
       return res.json(role);
     } catch (e: any) {
       return res.status(400).json(e.message);

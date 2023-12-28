@@ -3,11 +3,14 @@ import { ICategoryUpdate } from "@application/interface/usecase/culinary/categor
 import { Messages } from "@application/messages/Messages";
 import { CategoryUpdateDataModel } from "@application/model/culinary/category";
 import { CategoryDto } from "@domain/dto/culinary";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class CategoryUpdate implements ICategoryUpdate {
-  @inject("ICategoryRepository")
-  _categoryRepository?: ICategoryRepository;
+  constructor(
+    @inject("ICategoryRepository")
+    readonly _categoryRepository?: ICategoryRepository,
+  ) {}
 
   async executeAsync(categoryData: CategoryUpdateDataModel, company: string) {
     const category = await this._categoryRepository?.getByIdAsync(

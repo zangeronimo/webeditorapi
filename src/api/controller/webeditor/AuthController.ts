@@ -1,18 +1,12 @@
-import {
-  IMakeLogin,
-  IRefreshToken,
-} from "@application/interface/usecase/webeditor";
 import { Messages } from "@application/messages/Messages";
-import { inject } from "@infra/di/Inject";
+import { MakeLogin, RefreshToken } from "@application/usecase/webeditor";
 import { Request, Response, Router } from "express";
+import { container } from "tsyringe";
 
 export class AuthController {
-  @inject("IMakeLogin")
-  makeLogin?: IMakeLogin;
-  @inject("IRefreshToken")
-  refreshToken?: IRefreshToken;
-
   router = Router();
+  makeLogin = container.resolve(MakeLogin)
+  refreshToken = container.resolve(RefreshToken)
 
   constructor() {
     this.router.post("/", this.auth);
@@ -32,7 +26,7 @@ export class AuthController {
   private loginAsync = async (req: Request, res: Response) => {
     try {
       const { username, password } = req.body;
-      const { token, refreshToken } = await this.makeLogin?.executeAsync(
+      const { token, refreshToken } = await this.makeLogin.executeAsync(
         username,
         password
       )!;
@@ -57,7 +51,7 @@ export class AuthController {
       if (!refresh) {
         throw new Error(Messages.invalidJwtToken);
       }
-      const { token, refreshToken } = await this.refreshToken?.executeAsync(
+      const { token, refreshToken } = await this.refreshToken.executeAsync(
         refresh
       )!;
       res.cookie("refreshToken", refreshToken, {

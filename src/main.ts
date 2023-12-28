@@ -1,18 +1,17 @@
+import 'reflect-metadata';
 import cors from "cors";
 import express from "express";
 import dotenv from "dotenv";
 import path from "path";
 import { MainController } from "@api/controller/MainController";
 import { Extensions } from "@application/extension";
-import { PgPromiseContext } from "@infra/context";
 import { ExtensionDI } from "@infra/extensions";
 
 const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : ".env";
 dotenv.config({ path: envFile });
 
 Extensions.init();
-const dbContext = new PgPromiseContext();
-ExtensionDI.init(dbContext);
+ExtensionDI.init();
 
 const app = express();
 app.use(
@@ -28,6 +27,7 @@ app.use("/files", express.static(path.resolve(__dirname, "..", "upload")));
 const mainController = new MainController();
 app.use(mainController.router);
 
-app.listen(4000, () => {
-  console.log("Server running on port 4000");
+const port = process.env.EXPRESS_PORT
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });

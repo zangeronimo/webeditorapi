@@ -1,65 +1,52 @@
 import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
 import {
-  IProjectGetAll,
-  IProjectGetById,
-  IProjectCreate,
-  IProjectUpdate,
-  IProjectDelete,
-} from "@application/interface/usecase/timesheet/project";
-import {
+  GetAllProjectFilterModel,
   ProjectCreateDataModel,
   ProjectUpdateDataModel,
-  GetAllProjectFilterModel,
 } from "@application/model/timesheet/project";
-import { inject } from "@infra/di/Inject";
+import { ProjectCreate, ProjectDelete, ProjectGetAll, ProjectGetById, ProjectUpdate } from "@application/usecase/timesheet/project";
 import { Request, Response, Router } from "express";
+import { container } from "tsyringe";
 
 export class ProjectController {
-  @inject("IProjectGetAll")
-  projectGetAll?: IProjectGetAll;
-  @inject("IProjectGetById")
-  projectGetById?: IProjectGetById;
-  @inject("IProjectCreate")
-  projectCreate?: IProjectCreate;
-  @inject("IProjectUpdate")
-  projectUpdate?: IProjectUpdate;
-  @inject("IProjectDelete")
-  projectDelete?: IProjectDelete;
-
   router = Router();
+  projectGetAll = container.resolve(ProjectGetAll);
+  projectGetById = container.resolve(ProjectGetById);
+  projectCreate = container.resolve(ProjectCreate);
+  projectUpdate = container.resolve(ProjectUpdate);
+  projectDelete = container.resolve(ProjectDelete);
+  ensureAuthenticated = container.resolve(EnsureAuthenticated);
+  ensureHasRole = container.resolve(EnsureHasRole);
 
-  constructor(
-    ensureAuthenticated: EnsureAuthenticated,
-    ensureHasRole: EnsureHasRole
-  ) {
+  constructor() {
     this.router.get(
       "/",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("TIMESHEET_PROJECT_VIEW"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("TIMESHEET_PROJECT_VIEW"),
       this.getAllAsync
     );
     this.router.get(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("TIMESHEET_PROJECT_VIEW"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("TIMESHEET_PROJECT_VIEW"),
       this.getByIdAsync
     );
     this.router.post(
       "",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("TIMESHEET_PROJECT_UPDATE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("TIMESHEET_PROJECT_UPDATE"),
       this.createAsync
     );
     this.router.put(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("TIMESHEET_PROJECT_UPDATE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("TIMESHEET_PROJECT_UPDATE"),
       this.updateAsync
     );
     this.router.delete(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("TIMESHEET_PROJECT_DELETE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("TIMESHEET_PROJECT_DELETE"),
       this.deleteAsync
     );
   }
@@ -68,7 +55,7 @@ export class ProjectController {
     try {
       const { company } = req.user;
       const getAllProjectFilterModel = new GetAllProjectFilterModel(req.query);
-      const projects = await this.projectGetAll?.executeAsync(
+      const projects = await this.projectGetAll.executeAsync(
         getAllProjectFilterModel,
         company
       );
@@ -82,7 +69,7 @@ export class ProjectController {
     try {
       const { company } = req.user;
       const { id } = req.params;
-      const project = await this.projectGetById?.executeAsync(id, company);
+      const project = await this.projectGetById.executeAsync(id, company);
       return res.json(project);
     } catch (e: any) {
       return res.status(400).json(e.message);
@@ -99,7 +86,7 @@ export class ProjectController {
         status,
         clientId
       );
-      const project = await this.projectCreate?.executeAsync(
+      const project = await this.projectCreate.executeAsync(
         projectCreateDataModel,
         company
       );
@@ -120,7 +107,7 @@ export class ProjectController {
         status,
         clientId
       );
-      const project = await this.projectUpdate?.executeAsync(
+      const project = await this.projectUpdate.executeAsync(
         projectUpdateDataModel,
         company
       );
@@ -134,7 +121,7 @@ export class ProjectController {
     try {
       const { company } = req.user;
       const { id } = req.params;
-      await this.projectDelete?.executeAsync(id, company);
+      await this.projectDelete.executeAsync(id, company);
       return res.status(204).json();
     } catch (e: any) {
       return res.status(400).json(e.message);

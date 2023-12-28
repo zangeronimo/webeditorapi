@@ -4,15 +4,18 @@ import { GetAllCategoryFilterModel } from "@application/model/culinary/category"
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 import { CategoryDto } from "@domain/dto/culinary";
 import { Category } from "@domain/entity/culinary";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class CategoryGetAll implements ICategoryGetAll {
-  @inject("ICategoryRepository")
-  _categoryRepository?: ICategoryRepository;
+  constructor(
+    @inject("ICategoryRepository")
+    readonly _categoryRepository: ICategoryRepository,
+  ) {}
 
   async executeAsync(model: GetAllCategoryFilterModel, company: string) {
     const { itens: categorys, total } =
-      await this._categoryRepository?.getAllAsync(model, company)!;
+      await this._categoryRepository.getAllAsync(model, company)!;
     const categorysDto = categorys.map(
       (category: Category) => new CategoryDto(category)
     );

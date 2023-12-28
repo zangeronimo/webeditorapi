@@ -4,14 +4,17 @@ import { Messages } from "@application/messages/Messages";
 import { ClientCreateDataModel } from "@application/model/timesheet/client";
 import { ClientDto } from "@domain/dto/timesheet";
 import { Client } from "@domain/entity/timesheet";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class ClientCreate implements IClientCreate {
-  @inject("IClientRepository")
-  _clientRepository?: IClientRepository;
+  constructor(
+    @inject("IClientRepository")
+    readonly _clientRepository: IClientRepository,
+  ) {}
 
   async executeAsync(clientData: ClientCreateDataModel, company: string) {
-    const nameExists = await this._clientRepository?.getByNameAsync(
+    const nameExists = await this._clientRepository.getByNameAsync(
       clientData.name,
       company
     );
@@ -19,7 +22,7 @@ export class ClientCreate implements IClientCreate {
       throw new Error(Messages.alreadyInUse("Name"));
     }
     const client = Client.create(clientData, company);
-    await this._clientRepository?.saveAsync(client);
+    await this._clientRepository.saveAsync(client);
     return new ClientDto(client);
   }
 }

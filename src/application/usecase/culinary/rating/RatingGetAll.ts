@@ -4,14 +4,17 @@ import { GetAllRatingFilterModel } from "@application/model/culinary/rating";
 import { PaginatorResultDto } from "@domain/dto/PaginatorResultDto";
 import { RatingDto } from "@domain/dto/culinary";
 import { Rating } from "@domain/entity/culinary";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class RatingGetAll implements IRatingGetAll {
-  @inject("IRatingRepository")
-  _ratingRepository?: IRatingRepository;
+  constructor(
+    @inject("IRatingRepository")
+    readonly _ratingRepository: IRatingRepository,
+  ) {}
 
   async executeAsync(model: GetAllRatingFilterModel, company: string) {
-    const { itens: ratings, total } = await this._ratingRepository?.getAllAsync(
+    const { itens: ratings, total } = await this._ratingRepository.getAllAsync(
       model,
       company
     )!;

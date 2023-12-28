@@ -1,65 +1,52 @@
 import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
 import {
-  ICompanyCreate,
-  ICompanyDelete,
-  ICompanyGetAll,
-  ICompanyGetById,
-  ICompanyUpdate,
-} from "@application/interface/usecase/webeditor/company";
-import {
   CompanyCreateDataModel,
   CompanyUpdateDataModel,
   GetAllCompanyFilterModel,
 } from "@application/model/webeditor/company";
-import { inject } from "@infra/di/Inject";
+import { CompanyCreate, CompanyDelete, CompanyGetAll, CompanyGetById, CompanyUpdate } from "@application/usecase/webeditor/company";
 import { Request, Response, Router } from "express";
+import { container } from "tsyringe";
 
 export class CompanyController {
-  @inject("ICompanyGetAll")
-  companyGetAll?: ICompanyGetAll;
-  @inject("ICompanyGetById")
-  companyGetById?: ICompanyGetById;
-  @inject("ICompanyCreate")
-  companyCreate?: ICompanyCreate;
-  @inject("ICompanyUpdate")
-  companyUpdate?: ICompanyUpdate;
-  @inject("ICompanyDelete")
-  companyDelete?: ICompanyDelete;
-
   router = Router();
+  companyGetAll = container.resolve(CompanyGetAll);
+  companyGetById = container.resolve(CompanyGetById);
+  companyCreate = container.resolve(CompanyCreate);
+  companyUpdate = container.resolve(CompanyUpdate);
+  companyDelete = container.resolve(CompanyDelete);
+  ensureAuthenticated = container.resolve(EnsureAuthenticated);
+  ensureHasRole = container.resolve(EnsureHasRole);
 
-  constructor(
-    ensureAuthenticated: EnsureAuthenticated,
-    ensureHasRole: EnsureHasRole
-  ) {
+  constructor() {
     this.router.get(
       "/",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("WEBEDITOR_COMPANY_VIEW"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("WEBEDITOR_COMPANY_VIEW"),
       this.getAllAsync
     );
     this.router.get(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("WEBEDITOR_COMPANY_VIEW"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("WEBEDITOR_COMPANY_VIEW"),
       this.getByIdAsync
     );
     this.router.post(
       "",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("WEBEDITOR_COMPANY_UPDATE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("WEBEDITOR_COMPANY_UPDATE"),
       this.createAsync
     );
     this.router.put(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("WEBEDITOR_COMPANY_UPDATE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("WEBEDITOR_COMPANY_UPDATE"),
       this.updateAsync
     );
     this.router.delete(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("WEBEDITOR_COMPANY_DELETE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("WEBEDITOR_COMPANY_DELETE"),
       this.deleteAsync
     );
   }
@@ -67,7 +54,7 @@ export class CompanyController {
   private getAllAsync = async (req: Request, res: Response) => {
     try {
       const getAllCompanyFilterModel = new GetAllCompanyFilterModel(req.query);
-      const companies = await this.companyGetAll?.executeAsync(
+      const companies = await this.companyGetAll.executeAsync(
         getAllCompanyFilterModel
       );
       return res.json(companies);
@@ -79,7 +66,7 @@ export class CompanyController {
   private getByIdAsync = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const company = await this.companyGetById?.executeAsync(id);
+      const company = await this.companyGetById.executeAsync(id);
       return res.json(company);
     } catch (e: any) {
       return res.status(400).json(e.message);
@@ -90,7 +77,7 @@ export class CompanyController {
     try {
       const { name, modules } = req.body;
       const companyCreateDataModel = new CompanyCreateDataModel(name, modules);
-      const company = await this.companyCreate?.executeAsync(
+      const company = await this.companyCreate.executeAsync(
         companyCreateDataModel
       );
       return res.status(201).json(company);
@@ -107,7 +94,7 @@ export class CompanyController {
         name,
         modules
       );
-      const company = await this.companyUpdate?.executeAsync(
+      const company = await this.companyUpdate.executeAsync(
         companyUpdateDataModel
       );
       return res.json(company);
@@ -119,7 +106,7 @@ export class CompanyController {
   private deleteAsync = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const company = await this.companyDelete?.executeAsync(id);
+      const company = await this.companyDelete.executeAsync(id);
       return res.json(company);
     } catch (e: any) {
       return res.status(400).json(e.message);

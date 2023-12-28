@@ -1,65 +1,52 @@
 import { EnsureAuthenticated, EnsureHasRole } from "@api/midleware";
 import {
-  IEpicGetAll,
-  IEpicGetById,
-  IEpicCreate,
-  IEpicUpdate,
-  IEpicDelete,
-} from "@application/interface/usecase/timesheet/epic";
-import {
   EpicCreateDataModel,
   EpicUpdateDataModel,
   GetAllEpicFilterModel,
 } from "@application/model/timesheet/epic";
-import { inject } from "@infra/di/Inject";
+import { EpicCreate, EpicDelete, EpicGetAll, EpicGetById, EpicUpdate } from "@application/usecase/timesheet/epic";
 import { Request, Response, Router } from "express";
+import { container } from "tsyringe";
 
 export class EpicController {
-  @inject("IEpicGetAll")
-  epicGetAll?: IEpicGetAll;
-  @inject("IEpicGetById")
-  epicGetById?: IEpicGetById;
-  @inject("IEpicCreate")
-  epicCreate?: IEpicCreate;
-  @inject("IEpicUpdate")
-  epicUpdate?: IEpicUpdate;
-  @inject("IEpicDelete")
-  epicDelete?: IEpicDelete;
-
   router = Router();
+  epicGetAll = container.resolve(EpicGetAll);
+  epicGetById = container.resolve(EpicGetById);
+  epicCreate = container.resolve(EpicCreate);
+  epicUpdate = container.resolve(EpicUpdate);
+  epicDelete = container.resolve(EpicDelete);
+  ensureAuthenticated = container.resolve(EnsureAuthenticated);
+  ensureHasRole = container.resolve(EnsureHasRole);
 
-  constructor(
-    ensureAuthenticated: EnsureAuthenticated,
-    ensureHasRole: EnsureHasRole
-  ) {
+  constructor() {
     this.router.get(
       "/",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("TIMESHEET_EPIC_VIEW"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("TIMESHEET_EPIC_VIEW"),
       this.getAllAsync
     );
     this.router.get(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("TIMESHEET_EPIC_VIEW"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("TIMESHEET_EPIC_VIEW"),
       this.getByIdAsync
     );
     this.router.post(
       "",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("TIMESHEET_EPIC_UPDATE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("TIMESHEET_EPIC_UPDATE"),
       this.createAsync
     );
     this.router.put(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("TIMESHEET_EPIC_UPDATE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("TIMESHEET_EPIC_UPDATE"),
       this.updateAsync
     );
     this.router.delete(
       "/:id",
-      ensureAuthenticated.execute,
-      ensureHasRole.executeAsync("TIMESHEET_EPIC_DELETE"),
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("TIMESHEET_EPIC_DELETE"),
       this.deleteAsync
     );
   }
@@ -68,7 +55,7 @@ export class EpicController {
     try {
       const { company } = req.user;
       const getAllEpicFilterModel = new GetAllEpicFilterModel(req.query);
-      const epics = await this.epicGetAll?.executeAsync(
+      const epics = await this.epicGetAll.executeAsync(
         getAllEpicFilterModel,
         company
       );
@@ -82,7 +69,7 @@ export class EpicController {
     try {
       const { company } = req.user;
       const { id } = req.params;
-      const epic = await this.epicGetById?.executeAsync(id, company);
+      const epic = await this.epicGetById.executeAsync(id, company);
       return res.json(epic);
     } catch (e: any) {
       return res.status(400).json(e.message);
@@ -99,7 +86,7 @@ export class EpicController {
         status,
         projectId
       );
-      const epic = await this.epicCreate?.executeAsync(
+      const epic = await this.epicCreate.executeAsync(
         epicCreateDataModel,
         company
       );
@@ -120,7 +107,7 @@ export class EpicController {
         status,
         projectId
       );
-      const epic = await this.epicUpdate?.executeAsync(
+      const epic = await this.epicUpdate.executeAsync(
         epicUpdateDataModel,
         company
       );
@@ -134,7 +121,7 @@ export class EpicController {
     try {
       const { company } = req.user;
       const { id } = req.params;
-      await this.epicDelete?.executeAsync(id, company);
+      await this.epicDelete.executeAsync(id, company);
       return res.status(204).json();
     } catch (e: any) {
       return res.status(400).json(e.message);

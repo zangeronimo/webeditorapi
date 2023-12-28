@@ -2,9 +2,14 @@ import { IEpicRepository } from "@application/interface/repository/timesheet";
 import { GetAllEpicFilterModel } from "@application/model/timesheet/epic";
 import { Epic } from "@domain/entity/timesheet";
 import { DbContext } from "@infra/context";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class EpicRepository implements IEpicRepository {
-  constructor(readonly db: DbContext) {}
+  constructor(
+    @inject('DbContext')
+    readonly db: DbContext
+  ) {}
 
   async getByIdAsync(id: string, company: string): Promise<Epic | null> {
     const [epicData] = await this.db.queryAsync(

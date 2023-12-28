@@ -4,9 +4,14 @@ import { Pbi } from "@domain/entity/timesheet";
 import { EntryTypeEnum } from "@domain/enum";
 import { Entry } from "@domain/valueObject/timesheet";
 import { DbContext } from "@infra/context";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class PbiRepository implements IPbiRepository {
-  constructor(readonly db: DbContext) {}
+  constructor(
+    @inject('DbContext')
+    readonly db: DbContext
+  ) {}
 
   async getByIdAsync(id: string, company: string): Promise<Pbi | null> {
     const [pbiData] = await this.db.queryAsync(

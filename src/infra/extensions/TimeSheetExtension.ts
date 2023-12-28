@@ -1,3 +1,9 @@
+import { IClientRepository, IEpicRepository, IPbiRepository, IPbiStatusRepository, IProjectRepository } from "@application/interface/repository/timesheet";
+import { IClientCreate, IClientDelete, IClientGetAll, IClientGetById, IClientUpdate } from "@application/interface/usecase/timesheet/client";
+import { IEpicCreate, IEpicDelete, IEpicGetAll, IEpicGetById, IEpicUpdate } from "@application/interface/usecase/timesheet/epic";
+import { IPbiCreate, IPbiDelete, IPbiGetAll, IPbiGetById, IPbiRegisterWork, IPbiUpdate } from "@application/interface/usecase/timesheet/pbi";
+import { IPbiStatusCreate, IPbiStatusDelete, IPbiStatusGetAll, IPbiStatusGetById, IPbiStatusUpdate } from "@application/interface/usecase/timesheet/pbiStatus";
+import { IProjectCreate, IProjectDelete, IProjectGetAll, IProjectGetById, IProjectUpdate } from "@application/interface/usecase/timesheet/project";
 import {
   ClientCreate,
   ClientDelete,
@@ -34,7 +40,6 @@ import {
   ProjectGetById,
   ProjectUpdate,
 } from "@application/usecase/timesheet/project";
-import { DbContext } from "@infra/context";
 import {
   ClientRepository,
   EpicRepository,
@@ -42,66 +47,66 @@ import {
   PbiStatusRepository,
   ProjectRepository,
 } from "@infra/repository/timesheet";
-import { Registry } from "../di/Registry";
+import { container } from "tsyringe";
 
 export class TimeSheetExtension {
-  static init(dbContext: DbContext) {
+  static init() {
     // Registry Repositories
-    Registry.getInstance().provide(
+    container.registerSingleton<IClientRepository>(
       "IClientRepository",
-      new ClientRepository(dbContext)
+      ClientRepository
     );
-    Registry.getInstance().provide(
+    container.registerSingleton<IProjectRepository>(
       "IProjectRepository",
-      new ProjectRepository(dbContext)
+      ProjectRepository
     );
-    Registry.getInstance().provide(
+    container.registerSingleton<IEpicRepository>(
       "IEpicRepository",
-      new EpicRepository(dbContext)
+      EpicRepository
     );
-    Registry.getInstance().provide(
+    container.registerSingleton<IPbiRepository>(
       "IPbiRepository",
-      new PbiRepository(dbContext)
+      PbiRepository
     );
-    Registry.getInstance().provide(
+    container.registerSingleton<IPbiStatusRepository>(
       "IPbiStatusRepository",
-      new PbiStatusRepository(dbContext)
+      PbiStatusRepository
     );
 
     // Registry Client useCases
-    Registry.getInstance().provide("IClientGetAll", new ClientGetAll());
-    Registry.getInstance().provide("IClientGetById", new ClientGetById());
-    Registry.getInstance().provide("IClientCreate", new ClientCreate());
-    Registry.getInstance().provide("IClientUpdate", new ClientUpdate());
-    Registry.getInstance().provide("IClientDelete", new ClientDelete());
+    container.registerSingleton<IClientGetAll>("IClientGetAll", ClientGetAll);
+    container.registerSingleton<IClientGetById>("IClientGetById", ClientGetById);
+    container.registerSingleton<IClientCreate>("IClientCreate", ClientCreate);
+    container.registerSingleton<IClientUpdate>("IClientUpdate", ClientUpdate);
+    container.registerSingleton<IClientDelete>("IClientDelete", ClientDelete);
 
     // Registry Project useCases
-    Registry.getInstance().provide("IProjectGetAll", new ProjectGetAll());
-    Registry.getInstance().provide("IProjectGetById", new ProjectGetById());
-    Registry.getInstance().provide("IProjectCreate", new ProjectCreate());
-    Registry.getInstance().provide("IProjectUpdate", new ProjectUpdate());
-    Registry.getInstance().provide("IProjectDelete", new ProjectDelete());
+    container.registerSingleton<IProjectGetAll>("IProjectGetAll", ProjectGetAll);
+    container.registerSingleton<IProjectGetById>("IProjectGetById", ProjectGetById);
+    container.registerSingleton<IProjectCreate>("IProjectCreate", ProjectCreate);
+    container.registerSingleton<IProjectUpdate>("IProjectUpdate", ProjectUpdate);
+    container.registerSingleton<IProjectDelete>("IProjectDelete", ProjectDelete);
 
     // Registry Epic useCases
-    Registry.getInstance().provide("IEpicGetAll", new EpicGetAll());
-    Registry.getInstance().provide("IEpicGetById", new EpicGetById());
-    Registry.getInstance().provide("IEpicCreate", new EpicCreate());
-    Registry.getInstance().provide("IEpicUpdate", new EpicUpdate());
-    Registry.getInstance().provide("IEpicDelete", new EpicDelete());
+    container.registerSingleton<IEpicGetAll>("IEpicGetAll", EpicGetAll);
+    container.registerSingleton<IEpicGetById>("IEpicGetById", EpicGetById);
+    container.registerSingleton<IEpicCreate>("IEpicCreate", EpicCreate);
+    container.registerSingleton<IEpicUpdate>("IEpicUpdate", EpicUpdate);
+    container.registerSingleton<IEpicDelete>("IEpicDelete", EpicDelete);
 
     // Registry Pbi useCases
-    Registry.getInstance().provide("IPbiGetAll", new PbiGetAll());
-    Registry.getInstance().provide("IPbiGetById", new PbiGetById());
-    Registry.getInstance().provide("IPbiCreate", new PbiCreate());
-    Registry.getInstance().provide("IPbiUpdate", new PbiUpdate());
-    Registry.getInstance().provide("IPbiRegisterWork", new PbiRegisterWork());
-    Registry.getInstance().provide("IPbiDelete", new PbiDelete());
+    container.registerSingleton<IPbiGetAll>("IPbiGetAll", PbiGetAll);
+    container.registerSingleton<IPbiGetById>("IPbiGetById", PbiGetById);
+    container.registerSingleton<IPbiCreate>("IPbiCreate", PbiCreate);
+    container.registerSingleton<IPbiUpdate>("IPbiUpdate", PbiUpdate);
+    container.registerSingleton<IPbiRegisterWork>("IPbiRegisterWork", PbiRegisterWork);
+    container.registerSingleton<IPbiDelete>("IPbiDelete", PbiDelete);
 
     // Registry PbiStatus useCases
-    Registry.getInstance().provide("IPbiStatusGetAll", new PbiStatusGetAll());
-    Registry.getInstance().provide("IPbiStatusGetById", new PbiStatusGetById());
-    Registry.getInstance().provide("IPbiStatusCreate", new PbiStatusCreate());
-    Registry.getInstance().provide("IPbiStatusUpdate", new PbiStatusUpdate());
-    Registry.getInstance().provide("IPbiStatusDelete", new PbiStatusDelete());
+    container.registerSingleton<IPbiStatusGetAll>("IPbiStatusGetAll", PbiStatusGetAll);
+    container.registerSingleton<IPbiStatusGetById>("IPbiStatusGetById", PbiStatusGetById);
+    container.registerSingleton<IPbiStatusCreate>("IPbiStatusCreate", PbiStatusCreate);
+    container.registerSingleton<IPbiStatusUpdate>("IPbiStatusUpdate", PbiStatusUpdate);
+    container.registerSingleton<IPbiStatusDelete>("IPbiStatusDelete", PbiStatusDelete);
   }
 }

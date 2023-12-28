@@ -2,15 +2,18 @@ import { IPbiRepository } from "@application/interface/repository/timesheet/IPbi
 import { IPbiRegisterWork } from "@application/interface/usecase/timesheet/pbi";
 import { Messages } from "@application/messages/Messages";
 import { EntryTypeEnum } from "@domain/enum";
-import { inject } from "@infra/di/Inject";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class PbiRegisterWork implements IPbiRegisterWork {
-  @inject("IPbiRepository")
-  _pbiRepository?: IPbiRepository;
+  constructor(
+    @inject("IPbiRepository")
+    readonly _pbiRepository: IPbiRepository,
+  ) {}
 
   async executeAsync(id: string, userId: string, company: string) {
     const checkUserHasOtherPbiOpenedAsync =
-      await this._pbiRepository?.checkUserHasOtherPbiOpenedAsync(
+      await this._pbiRepository.checkUserHasOtherPbiOpenedAsync(
         userId,
         id,
         company
@@ -18,7 +21,7 @@ export class PbiRegisterWork implements IPbiRegisterWork {
     if (checkUserHasOtherPbiOpenedAsync) {
       throw new Error(Messages.timesheet.EntryOpened);
     }
-    const pbi = await this._pbiRepository?.getByIdAsync(id, company)!;
+    const pbi = await this._pbiRepository.getByIdAsync(id, company)!;
     if (pbi === null) {
       throw new Error(Messages.notFound("Pbi"));
     }
@@ -32,7 +35,7 @@ export class PbiRegisterWork implements IPbiRegisterWork {
     } else {
       pbi.stopsWork(userId);
     }
-    await this._pbiRepository?.updateAsync(pbi);
+    await this._pbiRepository.updateAsync(pbi);
     return Promise.resolve();
   }
 }

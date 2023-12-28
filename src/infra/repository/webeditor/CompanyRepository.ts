@@ -2,9 +2,14 @@ import { ICompanyRepository } from "@application/interface/repository/webeditor"
 import { GetAllCompanyFilterModel } from "@application/model/webeditor/company";
 import { Company, Module } from "@domain/entity/webeditor";
 import { DbContext } from "@infra/context";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class CompanyRepository implements ICompanyRepository {
-  constructor(readonly db: DbContext) {}
+  constructor(
+    @inject('DbContext')
+    readonly db: DbContext
+  ) {}
   async getByIdAsync(id: string): Promise<Company | null> {
     const [companyData] = await this.db.queryAsync(
       `select

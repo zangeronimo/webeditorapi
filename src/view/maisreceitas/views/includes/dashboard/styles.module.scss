@@ -1,0 +1,35 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  margin: 24px 0;
+}
+
+.label {
+  font-size: 2rem;
+  border-bottom: 1px solid;
+  color: var(--primary_dark);
+}
+
+.table {
+  width: 100%;
+}
+
+.line {
+  height: 2.8rem;
+  transition: background-color 0.2s;
+  cursor: pointer;
+
+  & td a {
+    display: block;
+    text-decoration: none;
+    color: var(--secondary_dary);
+  }
+
+  & td:hover {
+    background: var(--primary_dark);
+  }
+
+  & td:hover a {
+    color: var(--primary_light);
+  }
+}

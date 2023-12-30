@@ -1,0 +1,22 @@
+.header {
+  grid-column: 1/-1;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  padding: 1rem 1.6rem;
+  background-color: var(--primary_dark);
+  color: var(--primary_light);
+}
+
+.logo {
+  width: 25rem;
+}
+
+.show_menu {
+  display: block;
+  @media (min-width: 43.75em) {
+    display: none;
+  }
+}

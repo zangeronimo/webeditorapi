@@ -20,6 +20,7 @@ app.set('view engine', 'pug');
 app.locals.basedir = path.join(__dirname, 'views');
 
 app.use(express.json({ limit: "1mb" }));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 const mainController = new Controller();
 app.use(mainController.router);

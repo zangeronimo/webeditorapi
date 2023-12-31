@@ -8,10 +8,7 @@
   "scripts": {
     "test": "jest",
     "start": "cross-env NODE_ENV=development node dist/main.js",
-    "dev:agrovr": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/view/agrovr/main.ts",
-    "dev:maisreceitas": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/view/maisreceitas/main.ts",
-    "dev:portoreserva": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/view/portoreserva/main.ts",
-    "dev:tudolinux": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/view/tudolinux/main.ts",
+    "dev:maisreceitas": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/web/maisreceitas/main.ts",
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
     "dev": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/main.ts"
   },

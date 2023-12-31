@@ -1,8 +1,39 @@
-import { ICategoryRepository, ILevelRepository, IRatingRepository, IRecipeRepository } from "@application/interface/repository/culinary";
-import { ICategoryCreate, ICategoryDelete, ICategoryGetAll, ICategoryGetById, ICategoryUpdate } from "@application/interface/usecase/culinary/category";
-import { ILevelCreate, ILevelDelete, ILevelGetAll, ILevelGetById, ILevelUpdate } from "@application/interface/usecase/culinary/level";
-import { IRatingCreate, IRatingDelete, IRatingGetAll, IRatingGetById, IRatingUpdate } from "@application/interface/usecase/culinary/rating";
-import { IRecipeCreate, IRecipeDelete, IRecipeGetAll, IRecipeGetById, IRecipeUpdate } from "@application/interface/usecase/culinary/recipe";
+import {
+  ICategoryRepository,
+  ILevelRepository,
+  IRatingRepository,
+  IRecipeRepository,
+} from "@application/interface/repository/culinary";
+import { IRecipeService } from "@application/interface/service/culinary/IRecipeService";
+import {
+  ICategoryCreate,
+  ICategoryDelete,
+  ICategoryGetAll,
+  ICategoryGetById,
+  ICategoryUpdate,
+} from "@application/interface/usecase/culinary/category";
+import {
+  ILevelCreate,
+  ILevelDelete,
+  ILevelGetAll,
+  ILevelGetById,
+  ILevelUpdate,
+} from "@application/interface/usecase/culinary/level";
+import {
+  IRatingCreate,
+  IRatingDelete,
+  IRatingGetAll,
+  IRatingGetById,
+  IRatingUpdate,
+} from "@application/interface/usecase/culinary/rating";
+import {
+  IRecipeCreate,
+  IRecipeDelete,
+  IRecipeGetAll,
+  IRecipeGetById,
+  IRecipeUpdate,
+} from "@application/interface/usecase/culinary/recipe";
+import { RecipeService } from "@application/service/culinary/RecipeService";
 import {
   CategoryCreate,
   CategoryDelete,
@@ -59,6 +90,12 @@ export class CulinaryExtension {
       RatingRepository
     );
 
+    // Registry Services
+    container.registerSingleton<IRecipeService>(
+      "IRecipeService",
+      RecipeService
+    );
+
     // Registry Level useCases
     container.registerSingleton<ILevelGetAll>("ILevelGetAll", LevelGetAll);
     container.registerSingleton<ILevelGetById>("ILevelGetById", LevelGetById);
@@ -67,22 +104,43 @@ export class CulinaryExtension {
     container.registerSingleton<ILevelDelete>("ILevelDelete", LevelDelete);
 
     // Registry Category useCases
-    container.registerSingleton<ICategoryGetAll>("ICategoryGetAll", CategoryGetAll);
-    container.registerSingleton<ICategoryGetById>("ICategoryGetById", CategoryGetById);
-    container.registerSingleton<ICategoryCreate>("ICategoryCreate", CategoryCreate);
-    container.registerSingleton<ICategoryUpdate>("ICategoryUpdate", CategoryUpdate);
-    container.registerSingleton<ICategoryDelete>("ICategoryDelete", CategoryDelete);
+    container.registerSingleton<ICategoryGetAll>(
+      "ICategoryGetAll",
+      CategoryGetAll
+    );
+    container.registerSingleton<ICategoryGetById>(
+      "ICategoryGetById",
+      CategoryGetById
+    );
+    container.registerSingleton<ICategoryCreate>(
+      "ICategoryCreate",
+      CategoryCreate
+    );
+    container.registerSingleton<ICategoryUpdate>(
+      "ICategoryUpdate",
+      CategoryUpdate
+    );
+    container.registerSingleton<ICategoryDelete>(
+      "ICategoryDelete",
+      CategoryDelete
+    );
 
     // Registry Recipe useCases
     container.registerSingleton<IRecipeGetAll>("IRecipeGetAll", RecipeGetAll);
-    container.registerSingleton<IRecipeGetById>("IRecipeGetById", RecipeGetById);
+    container.registerSingleton<IRecipeGetById>(
+      "IRecipeGetById",
+      RecipeGetById
+    );
     container.registerSingleton<IRecipeCreate>("IRecipeCreate", RecipeCreate);
     container.registerSingleton<IRecipeUpdate>("IRecipeUpdate", RecipeUpdate);
     container.registerSingleton<IRecipeDelete>("IRecipeDelete", RecipeDelete);
 
     // Registry Rating useCases
     container.registerSingleton<IRatingGetAll>("IRatingGetAll", RatingGetAll);
-    container.registerSingleton<IRatingGetById>("IRatingGetById", RatingGetById);
+    container.registerSingleton<IRatingGetById>(
+      "IRatingGetById",
+      RatingGetById
+    );
     container.registerSingleton<IRatingCreate>("IRatingCreate", RatingCreate);
     container.registerSingleton<IRatingUpdate>("IRatingUpdate", RatingUpdate);
     container.registerSingleton<IRatingDelete>("IRatingDelete", RatingDelete);

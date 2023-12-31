@@ -11,4 +11,8 @@ export interface IRecipeRepository {
   updateAsync(recipe: Recipe): Promise<Recipe>;
   saveAsync(recipe: Recipe): Promise<Recipe>;
   deleteAsync(recipe: Recipe, date: Date): Promise<Recipe>;
+
+  getNewsAsync(total: number, company: string): Promise<Recipe[]>;
+  getWithImageAsync(total: number, company: string): Promise<Recipe[]>;
+  getAllImagesByRecipeId(recipeId: string, company: string): Promise<string[]>;
 }

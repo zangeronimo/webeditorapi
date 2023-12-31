@@ -1,15 +1,91 @@
 import { IRecipeRepository } from "@application/interface/repository/culinary";
 import { GetAllRecipeFilterModel } from "@application/model/culinary/recipe";
 import { Recipe } from "@domain/entity/culinary";
+import { ActiveEnum } from "@domain/enum";
 import { DbContext } from "@infra/context";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class RecipeRepository implements IRecipeRepository {
   constructor(
-    @inject('DbContext')
+    @inject("DbContext")
     readonly db: DbContext
   ) {}
+
+  async getNewsAsync(total: number, company: string): Promise<Recipe[]> {
+    const recipesData: any[] = await this.db.queryAsync(
+      `select
+        id, slug, name, ingredients, preparation, active, recipe_categories_id, webeditor_companies_id
+      from recipes
+      where webeditor_companies_id = $1 and deleted_at is null and active = $2
+      order by created_at desc
+      limit $3`,
+      [company, ActiveEnum.ACTIVE, total]
+    );
+    const recipes: Recipe[] = [];
+    for (let i = 0; i < recipesData.length; i++) {
+      const recipe = Recipe.restore(
+        recipesData[i].id,
+        recipesData[i].slug,
+        recipesData[i].name,
+        recipesData[i].ingredients,
+        recipesData[i].preparation,
+        recipesData[i].active,
+        recipesData[i].recipe_categories_id,
+        recipesData[i].webeditor_companies_id
+      );
+      recipes.push(recipe);
+    }
+    return recipes;
+  }
+
+  async getWithImageAsync(total: number, company: string): Promise<Recipe[]> {
+    const recipesData: any[] = await this.db.queryAsync(
+      `select
+        r.id, r.slug, r.name, r.ingredients, r.preparation, r.active, r.recipe_categories_id, r.webeditor_companies_id
+      from recipes r
+      inner join recipe_images ri on ri.recipes_id=r.id and ri.active=$2 and ri.deleted_at is null and ri.webeditor_companies_id = $1
+      where r.webeditor_companies_id = $1 and r.deleted_at is null and r.active = $2
+      group by r.id
+      order by r.created_at desc
+      limit $3`,
+      [company, ActiveEnum.ACTIVE, total]
+    );
+    const recipes: Recipe[] = [];
+    for (let i = 0; i < recipesData.length; i++) {
+      const recipe = Recipe.restore(
+        recipesData[i].id,
+        recipesData[i].slug,
+        recipesData[i].name,
+        recipesData[i].ingredients,
+        recipesData[i].preparation,
+        recipesData[i].active,
+        recipesData[i].recipe_categories_id,
+        recipesData[i].webeditor_companies_id
+      );
+      recipes.push(recipe);
+    }
+    return recipes;
+  }
+
+  async getAllImagesByRecipeId(
+    recipeId: string,
+    company: string
+  ): Promise<string[]> {
+    const imagesData: any[] = await this.db.queryAsync(
+      `select
+        url
+      from recipe_images
+      where webeditor_companies_id = $1 and deleted_at is null and active = $2 and recipes_id = $3
+      order by created_at desc`,
+      [company, ActiveEnum.ACTIVE, recipeId]
+    );
+    const images: string[] = [];
+    for (let i = 0; i < imagesData.length; i++) {
+      images.push(imagesData[i].url);
+    }
+    return images;
+  }
 
   async getByIdAsync(id: string, company: string): Promise<Recipe | null> {
     const [recipeData] = await this.db.queryAsync(

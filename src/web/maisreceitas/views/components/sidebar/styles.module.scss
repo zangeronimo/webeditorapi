@@ -65,9 +65,10 @@
 
 .sub_items {
   display: none;
-  gap: 0.5rem;
+  gap: 1rem;
   height: auto;
   background: var(--white);
+  padding: 0.5rem 0;
 
   li {
     width: 100%;

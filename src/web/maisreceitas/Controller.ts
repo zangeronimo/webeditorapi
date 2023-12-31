@@ -1,8 +1,8 @@
 import { Request, Response, Router } from "express";
 import path from "path";
 import pug from "pug";
-import { SideBar } from "./SideBar";
-import { Dashboard } from "./Dashboard";
+import { SideBar } from "./views/components/sidebar";
+import { Dashboard } from "./views/dashboard";
 
 export class Controller {
   router = Router();
@@ -37,12 +37,16 @@ export class Controller {
 
   private baseRender = async () => {
     const sideBar = new SideBar();
-    const header = () => pug.renderFile(this.pugFile("header/index.pug"));
-    const footer = () => pug.renderFile(this.pugFile("footer/index.pug"));
-    const sidebar = await sideBar.render(this.pugFile("sidebar/index.pug"));
+    const header = () =>
+      pug.renderFile(this.pugFile("components/header/index.pug"));
+    const footer = () =>
+      pug.renderFile(this.pugFile("components/footer/index.pug"));
+    const sidebar = await sideBar.render(
+      this.pugFile("components/sidebar/index.pug")
+    );
     return { header, footer, sidebar };
   };
 
   private pugFile = (pathFile: string) =>
-    path.join(__dirname, "views", "includes", pathFile);
+    path.join(__dirname, "views", pathFile);
 }

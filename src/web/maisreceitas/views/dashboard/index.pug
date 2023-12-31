@@ -1,0 +1,22 @@
+style
+  include styles.module.scss
+
+div.dashboard
+  div
+    h2.label Novidades
+    table.table
+      tbody
+        each recipe in news
+          tr.line
+            td
+              a(href=`/receita/${recipe.slug}` title=`Receita de ${recipe.name}`) #{recipe.name}
+
+  div
+    h2.label Receitas em Destaque
+    div.recipe_image_item
+      each recipe in withPicture
+        a(href=`/receita/${recipe.slug}` title=`Receita de ${recipe.name}`)
+          div.recipe_image_card
+            img(src=`http://localhost:4000${recipe.images[0]}`, alt=`Receita de ${recipe.name}`)
+            p.recipe_image_card_label #{recipe.name}
+

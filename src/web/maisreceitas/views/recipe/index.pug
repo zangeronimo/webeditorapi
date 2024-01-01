@@ -1,0 +1,19 @@
+style
+  include styles.module.scss
+
+div.recipe
+  h1.title #{recipe.name}
+
+  if recipe.images.length > 0
+    div.photo_galery
+      img.photo_galery_current(id="_recipe_photo_galery" src=`${apiUrl}${recipe.images[0]}`, alt=recipe.name)
+      if recipe.images.length > 1
+        div.photo_galery_thumb_container
+          each img in recipe.images
+            img.photo_galery_thumb(src=`${apiUrl}${img}` alt=recipe.name)
+
+  h2.sub_title Ingredientes
+  |!{recipe.ingredients}
+
+  h2.sub_title Modo de Preparo
+  |!{recipe.preparation}

@@ -3,7 +3,11 @@ import { Category } from "@domain/entity/culinary";
 
 export interface ICategoryRepository {
   getByIdAsync(id: string, company: string): Promise<Category | null>;
-  getBySlugAsync(slug: string, company: string): Promise<Category | null>;
+  getBySlugAsync(
+    slug: string,
+    levelId: string,
+    company: string
+  ): Promise<Category | null>;
   getAllAsync(
     model: GetAllCategoryFilterModel,
     company: string

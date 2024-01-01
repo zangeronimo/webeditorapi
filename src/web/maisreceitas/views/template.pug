@@ -14,7 +14,7 @@ html
     div.container
       |!{header(dynamicPugFilePathFromVariable)}
       |!{sidebar(dynamicPugFilePathFromVariable)}
-      article.content.
-        !{root(dynamicPugFilePathFromVariable)}
-        !{footer(dynamicPugFilePathFromVariable)}
+      article.content
+        |!{root(dynamicPugFilePathFromVariable)}
+        |!{footer(dynamicPugFilePathFromVariable)}
     script(type='text/javascript', src='/public/js/sidebar.js')

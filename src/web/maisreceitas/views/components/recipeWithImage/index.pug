@@ -1,0 +1,11 @@
+style
+  include styles.module.scss
+
+div
+  h2.recipe_image_label Receitas em Destaque
+  div.recipe_image_item
+    each recipe in withPicture
+      a(href=`/receita/${recipe.slug}` title=`Receita de ${recipe.name}`)
+        div.recipe_image_card
+          img(src=`${apiUrl}${recipe.images[0]}`, alt=`Receita de ${recipe.name}`)
+          p.recipe_image_card_label #{recipe.name}

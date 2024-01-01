@@ -7,7 +7,7 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export class CategoryRepository implements ICategoryRepository {
   constructor(
-    @inject('DbContext')
+    @inject("DbContext")
     readonly db: DbContext
   ) {}
 
@@ -33,11 +33,12 @@ export class CategoryRepository implements ICategoryRepository {
 
   async getBySlugAsync(
     slug: string,
+    levelId: string,
     company: string
   ): Promise<Category | null> {
     const [categoryData] = await this.db.queryAsync(
-      "select id, slug, name, active, recipe_levels_id, webeditor_companies_id from recipe_categories where slug = $1 and webeditor_companies_id = $2 and deleted_at is null",
-      [slug, company]
+      "select id, slug, name, active, recipe_levels_id, webeditor_companies_id from recipe_categories where slug = $1 and recipe_levels_id = $2 and webeditor_companies_id = $3 and deleted_at is null",
+      [slug, levelId, company]
     );
     return categoryData
       ? Category.restore(

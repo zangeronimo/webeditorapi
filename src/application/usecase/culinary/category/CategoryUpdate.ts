@@ -9,7 +9,7 @@ import { inject, injectable } from "tsyringe";
 export class CategoryUpdate implements ICategoryUpdate {
   constructor(
     @inject("ICategoryRepository")
-    readonly _categoryRepository?: ICategoryRepository,
+    readonly _categoryRepository?: ICategoryRepository
   ) {}
 
   async executeAsync(categoryData: CategoryUpdateDataModel, company: string) {
@@ -23,6 +23,7 @@ export class CategoryUpdate implements ICategoryUpdate {
     if (categoryData.slug !== category.slug) {
       const existSlug = await this._categoryRepository?.getBySlugAsync(
         categoryData.slug,
+        categoryData.levelId,
         company
       );
       if (existSlug !== null) {

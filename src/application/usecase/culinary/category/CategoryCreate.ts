@@ -10,7 +10,7 @@ import { inject, injectable } from "tsyringe";
 export class CategoryCreate implements ICategoryCreate {
   constructor(
     @inject("ICategoryRepository")
-    readonly _categoryRepository: ICategoryRepository,
+    readonly _categoryRepository: ICategoryRepository
   ) {}
 
   async executeAsync(categoryData: CategoryCreateDataModel, company: string) {
@@ -20,6 +20,7 @@ export class CategoryCreate implements ICategoryCreate {
     }
     const slugExists = await this._categoryRepository.getBySlugAsync(
       category.slug!,
+      categoryData.levelId,
       company
     );
     if (slugExists !== null) {

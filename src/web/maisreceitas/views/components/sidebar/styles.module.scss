@@ -74,6 +74,7 @@
     width: 100%;
     transition: all 0.1s;
     & a {
+      display: block;
       font-size: 1.4rem;
       width: 100%;
       color: var(--black);

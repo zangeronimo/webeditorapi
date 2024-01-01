@@ -1,5 +1,6 @@
 import { IRecipeRepository } from "@application/interface/repository/culinary";
 import { IRecipeService } from "@application/interface/service/culinary/IRecipeService";
+import { GetAllWithImageFilterModel } from "@application/model/culinary/recipe/GetAllWithImageFilterModel";
 import { RecipeDto } from "@domain/dto/culinary";
 import { Recipe } from "@domain/entity/culinary";
 import { inject, injectable } from "tsyringe";
@@ -19,11 +20,11 @@ export class RecipeService implements IRecipeService {
   }
 
   async getWithImageAsync(
-    total: number,
+    model: GetAllWithImageFilterModel,
     company: string
   ): Promise<RecipeDto[]> {
     const recipes = await this._recipeRepository.getWithImageAsync(
-      total,
+      model,
       company
     );
     const recipesDto = [];
@@ -38,7 +39,15 @@ export class RecipeService implements IRecipeService {
     return recipesDto;
   }
 
-  async getByIdAsync(id: string, company: string): Promise<RecipeDto> {
-    throw new Error("Method not implemented.");
+  async getBySlugAsync(slug: string, company: string): Promise<RecipeDto> {
+    const recipe = await this._recipeRepository.getBySlugAsync(slug, company);
+    if (!recipe) {
+      throw new Error("Recipe not found.");
+    }
+    const images = await this._recipeRepository.getAllImagesByRecipeId(
+      recipe.id,
+      recipe.companyId
+    );
+    return new RecipeDto(recipe, images);
   }
 }

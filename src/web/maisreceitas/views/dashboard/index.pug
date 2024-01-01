@@ -17,6 +17,6 @@ div.dashboard
       each recipe in withPicture
         a(href=`/receita/${recipe.slug}` title=`Receita de ${recipe.name}`)
           div.recipe_image_card
-            img(src=`http://localhost:4000${recipe.images[0]}`, alt=`Receita de ${recipe.name}`)
+            img(src=`${apiUrl}${recipe.images[0]}`, alt=`Receita de ${recipe.name}`)
             p.recipe_image_card_label #{recipe.name}
 

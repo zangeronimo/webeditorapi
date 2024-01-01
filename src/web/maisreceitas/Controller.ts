@@ -3,6 +3,8 @@ import path from "path";
 import pug from "pug";
 import { SideBar } from "./views/components/sidebar";
 import { Dashboard } from "./views/dashboard";
+import { Recipe } from "./views/recipe";
+import { Category } from "./views/category";
 
 export class Controller {
   router = Router();
@@ -10,6 +12,7 @@ export class Controller {
   constructor() {
     this.router.get("/", this.dashboard);
     this.router.get("/categoria/:level/:category", this.categories);
+    this.router.get("/receita/:recipe", this.recipe);
   }
 
   private dashboard = async (req: Request, res: Response) => {
@@ -26,9 +29,36 @@ export class Controller {
 
   private categories = async (req: Request, res: Response) => {
     try {
-      const { category } = req.params;
+      const { level, category } = req.params;
       const { header, sidebar, footer } = await this.baseRender();
-      const page = { header, sidebar, footer, root: `Category ${category}` };
+      const categoryService = new Category();
+      const root = await categoryService.render(
+        this.pugFile("category/index.pug"),
+        level,
+        category
+      );
+      const page = {
+        header,
+        sidebar,
+        footer,
+        root,
+      };
+      return res.render("template", page);
+    } catch (e: any) {
+      return res.status(400).json(e.message);
+    }
+  };
+
+  private recipe = async (req: Request, res: Response) => {
+    try {
+      const { recipe } = req.params;
+      const { header, sidebar, footer } = await this.baseRender();
+      const recipeService = new Recipe();
+      const root = await recipeService.render(
+        this.pugFile("recipe/index.pug"),
+        recipe
+      );
+      const page = { header, sidebar, footer, root };
       return res.render("template", page);
     } catch (e: any) {
       return res.status(400).json(e.message);

@@ -4,6 +4,7 @@ import {
   IRatingRepository,
   IRecipeRepository,
 } from "@application/interface/repository/culinary";
+import { ICategoryService } from "@application/interface/service/culinary/ICategoryService";
 import { IRecipeService } from "@application/interface/service/culinary/IRecipeService";
 import {
   ICategoryCreate,
@@ -33,6 +34,7 @@ import {
   IRecipeGetById,
   IRecipeUpdate,
 } from "@application/interface/usecase/culinary/recipe";
+import { CategoryService } from "@application/service/culinary/CategoryService";
 import { RecipeService } from "@application/service/culinary/RecipeService";
 import {
   CategoryCreate,
@@ -94,6 +96,10 @@ export class CulinaryExtension {
     container.registerSingleton<IRecipeService>(
       "IRecipeService",
       RecipeService
+    );
+    container.registerSingleton<ICategoryService>(
+      "ICategoryService",
+      CategoryService
     );
 
     // Registry Level useCases

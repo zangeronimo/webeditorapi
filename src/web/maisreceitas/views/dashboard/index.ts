@@ -1,6 +1,7 @@
 import { container } from "tsyringe";
 import pug from "pug";
 import { RecipeService } from "@application/service/culinary/RecipeService";
+import { GetAllWithImageFilterModel } from "@application/model/culinary/recipe/GetAllWithImageFilterModel";
 
 export class Dashboard {
   readonly recipeService = container.resolve(RecipeService);
@@ -13,6 +14,7 @@ export class Dashboard {
       pug.renderFile(pugFile, {
         news,
         withPicture,
+        apiUrl: process.env.API_URL,
       });
   };
 
@@ -22,8 +24,11 @@ export class Dashboard {
   };
 
   private getWithPicture = async (total: number) => {
+    const model = new GetAllWithImageFilterModel();
+    model.random = true;
+    model.total = total;
     const recipes = await this.recipeService.getWithImageAsync(
-      total,
+      model,
       this.company
     );
     return recipes;

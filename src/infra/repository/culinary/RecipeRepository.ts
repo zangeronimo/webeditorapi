@@ -1,5 +1,6 @@
 import { IRecipeRepository } from "@application/interface/repository/culinary";
 import { GetAllRecipeFilterModel } from "@application/model/culinary/recipe";
+import { GetAllRecipesFilterModel } from "@application/model/culinary/recipe/GetAllRecipesFilterModel";
 import { GetAllWithImageFilterModel } from "@application/model/culinary/recipe/GetAllWithImageFilterModel";
 import { Recipe } from "@domain/entity/culinary";
 import { ActiveEnum } from "@domain/enum";
@@ -42,15 +43,23 @@ export class RecipeRepository implements IRecipeRepository {
     return recipes;
   }
 
-  async getNewsAsync(total: number, company: string): Promise<Recipe[]> {
+  async getRecipesAsync(
+    model: GetAllRecipesFilterModel,
+    company: string
+  ): Promise<Recipe[]> {
+    let where =
+      "webeditor_companies_id = $1 and deleted_at is null and active = $2";
+    if (model.categoryId) {
+      where += " and recipe_categories_id = $3";
+    }
     const recipesData: any[] = await this.db.queryAsync(
       `select
         id, slug, name, ingredients, preparation, active, recipe_categories_id, webeditor_companies_id
       from recipes
-      where webeditor_companies_id = $1 and deleted_at is null and active = $2
-      order by created_at desc
-      limit $3`,
-      [company, ActiveEnum.ACTIVE, total]
+      where ${where}
+      order by ${model.orderBy}
+      limit $4`,
+      [company, ActiveEnum.ACTIVE, model.categoryId, model.total]
     );
     const recipes: Recipe[] = [];
     for (let i = 0; i < recipesData.length; i++) {

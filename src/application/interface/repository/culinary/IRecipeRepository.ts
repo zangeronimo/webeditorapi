@@ -1,4 +1,5 @@
 import { GetAllRecipeFilterModel } from "@application/model/culinary/recipe";
+import { GetAllRecipesFilterModel } from "@application/model/culinary/recipe/GetAllRecipesFilterModel";
 import { GetAllWithImageFilterModel } from "@application/model/culinary/recipe/GetAllWithImageFilterModel";
 import { Recipe } from "@domain/entity/culinary";
 
@@ -13,7 +14,10 @@ export interface IRecipeRepository {
   saveAsync(recipe: Recipe): Promise<Recipe>;
   deleteAsync(recipe: Recipe, date: Date): Promise<Recipe>;
 
-  getNewsAsync(total: number, company: string): Promise<Recipe[]>;
+  getRecipesAsync(
+    model: GetAllRecipesFilterModel,
+    company: string
+  ): Promise<Recipe[]>;
   getWithImageAsync(
     model: GetAllWithImageFilterModel,
     company: string

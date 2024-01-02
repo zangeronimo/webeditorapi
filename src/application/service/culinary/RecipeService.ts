@@ -1,5 +1,6 @@
 import { IRecipeRepository } from "@application/interface/repository/culinary";
 import { IRecipeService } from "@application/interface/service/culinary/IRecipeService";
+import { GetAllRecipesFilterModel } from "@application/model/culinary/recipe/GetAllRecipesFilterModel";
 import { GetAllWithImageFilterModel } from "@application/model/culinary/recipe/GetAllWithImageFilterModel";
 import { RecipeDto } from "@domain/dto/culinary";
 import { Recipe } from "@domain/entity/culinary";
@@ -12,8 +13,14 @@ export class RecipeService implements IRecipeService {
     readonly _recipeRepository: IRecipeRepository
   ) {}
 
-  async getNewsAsync(total: number, company: string): Promise<RecipeDto[]> {
-    const recipes = await this._recipeRepository.getNewsAsync(total, company);
+  async getRecipesAsync(
+    model: GetAllRecipesFilterModel,
+    company: string
+  ): Promise<RecipeDto[]> {
+    const recipes = await this._recipeRepository.getRecipesAsync(
+      model,
+      company
+    );
     return recipes.map((recipe: Recipe) => {
       return new RecipeDto(recipe);
     });

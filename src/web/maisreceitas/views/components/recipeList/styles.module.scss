@@ -1,0 +1,33 @@
+.recipe_list_label {
+  font-size: 2rem;
+  border-bottom: 1px solid;
+  color: var(--primary_dark);
+}
+
+.recipe_list_table {
+  width: 100%;
+}
+
+.recipe_list_line {
+  height: 2.8rem;
+  transition: background-color 0.2s;
+  cursor: pointer;
+
+  &:nth-child(even) {
+    background-color: var(--gray_100);
+  }
+
+  & td a {
+    display: block;
+    text-decoration: none;
+    color: var(--secondary_dark);
+  }
+
+  & td:hover {
+    background: var(--primary_dark);
+  }
+
+  & td:hover a {
+    color: var(--primary_light);
+  }
+}

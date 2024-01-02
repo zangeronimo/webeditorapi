@@ -1,7 +1,7 @@
 .recipe {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  // display: flex;
+  // flex-direction: column;
+  // gap: 2rem;
   padding-bottom: 2rem;
   color: var(--secondary_dark);
 
@@ -22,10 +22,21 @@
     font-size: 2.4rem;
     color: var(--primary_dark);
     font-family: "Dancing Script", sans-serif;
+    margin: 2rem 0 1rem 0;
   }
 
   a {
     text-decoration: none;
+  }
+}
+
+.galery {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (min-width: 600px) {
+    float: right;
   }
 }
 
@@ -60,12 +71,17 @@
 }
 
 .photo_galery_thumb {
-  width: 10rem;
+  max-width: 10rem;
   margin: 8px 0;
   border-radius: 0 10% 0 10%;
   cursor: pointer;
+  border: 1px solid transparent;
 
   & + img {
     margin-left: 8px;
   }
+}
+
+.photo_galery_thumb:hover {
+  border: 1px solid var(--primary_dark);
 }

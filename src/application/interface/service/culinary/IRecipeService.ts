@@ -1,8 +1,12 @@
+import { GetAllRecipesFilterModel } from "@application/model/culinary/recipe/GetAllRecipesFilterModel";
 import { GetAllWithImageFilterModel } from "@application/model/culinary/recipe/GetAllWithImageFilterModel";
 import { RecipeDto } from "@domain/dto/culinary";
 
 export interface IRecipeService {
-  getNewsAsync(total: number, company: string): Promise<RecipeDto[]>;
+  getRecipesAsync(
+    model: GetAllRecipesFilterModel,
+    company: string
+  ): Promise<RecipeDto[]>;
   getWithImageAsync(
     model: GetAllWithImageFilterModel,
     company: string

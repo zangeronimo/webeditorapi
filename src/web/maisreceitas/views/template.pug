@@ -20,6 +20,14 @@ html
       title #{seo.title}
     style
       include ../styles/global.scss
+    //- <!-- Google tag (gtag.js) -->
+    script(async src="https://www.googletagmanager.com/gtag/js?id=G-ZWLHB9JZBQ")
+    script.
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-ZWLHB9JZBQ');
   body
     div.container
       |!{header(dynamicPugFilePathFromVariable)}

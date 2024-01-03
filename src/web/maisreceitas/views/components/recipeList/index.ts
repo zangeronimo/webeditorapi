@@ -17,7 +17,7 @@ export class RecipeList {
       pug.renderFile(path.join(__dirname, "index.pug"), {
         title,
         recipes,
-        apiUrl: process.env.API_URL,
+        apiUrl: process.env.MAISRECEITAS_URL,
       });
   };
 }

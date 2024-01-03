@@ -16,12 +16,13 @@ export class Recipe {
     seo.setRecipeTitle(recipe.name);
     seo.setCanonical(`receita/${recipeSlug}`);
     seo.setDescription(recipe.preparation);
-    if (recipe.images.length > 0) seo.setImage(recipe.images[0]);
+    if (recipe.images.length > 0)
+      seo.setImage(process.env.MAISRECEITAS_URL!, recipe.images[0]);
     return {
       root: () =>
         pug.renderFile(pugFile, {
           recipe,
-          apiUrl: process.env.API_URL,
+          apiUrl: process.env.MAISRECEITAS_URL,
         }),
       seo,
     };

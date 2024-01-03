@@ -21,6 +21,10 @@ app.locals.basedir = path.join(__dirname, "views");
 
 app.use(express.json({ limit: "1mb" }));
 app.use("/public", express.static(path.join(__dirname, "public")));
+app.use(
+  "/files",
+  express.static(path.resolve(__dirname, "..", "..", "..", "upload"))
+);
 
 const mainController = new Controller();
 app.use(mainController.router);

@@ -28,8 +28,8 @@ export class SeoService {
     this.description = value.replace(regex, "").substring(0, 250);
   };
 
-  setImage = (url: string) => {
+  setImage = (baseUrl: string, url: string) => {
     url = url.startsWith("/") ? url : `/${url}`;
-    this.image = `${process.env.API_URL}${url}`;
+    this.image = `${baseUrl}${url}`;
   };
 }

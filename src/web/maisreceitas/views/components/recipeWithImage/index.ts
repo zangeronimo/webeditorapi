@@ -17,7 +17,7 @@ export class RecipeWithImage {
       pug.renderFile(path.join(__dirname, "index.pug"), {
         title,
         withPicture,
-        apiUrl: process.env.API_URL,
+        apiUrl: process.env.MAISRECEITAS_URL,
       });
   };
 }

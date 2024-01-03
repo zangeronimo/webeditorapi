@@ -23,7 +23,7 @@ export class Dashboard {
         pug.renderFile(pugFile, {
           news,
           recipeWithImage,
-          apiUrl: process.env.API_URL,
+          apiUrl: process.env.MAISRECEITAS_URL,
         }),
       seo,
     };

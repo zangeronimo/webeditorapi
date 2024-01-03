@@ -39,7 +39,6 @@ export class Pesquisar {
           title: search,
           recipeWithImage,
           recipeList: recipes,
-          notFound: recipeWithImage.length === 0 && recipes.length === 0,
         }),
       seo,
     };

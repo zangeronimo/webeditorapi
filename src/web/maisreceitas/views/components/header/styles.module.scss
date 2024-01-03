@@ -16,6 +16,7 @@
 
 .show_menu {
   display: block;
+  cursor: pointer;
   @media (min-width: 43.75em) {
     display: none;
   }

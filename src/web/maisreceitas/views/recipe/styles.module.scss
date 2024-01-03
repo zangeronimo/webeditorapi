@@ -1,9 +1,7 @@
 .recipe {
-  // display: flex;
-  // flex-direction: column;
-  // gap: 2rem;
   padding-bottom: 2rem;
-  color: var(--secondary_dark);
+  color: var(--black);
+  line-height: 1.6;
 
   .title {
     display: flex;

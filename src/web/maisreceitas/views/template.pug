@@ -16,8 +16,9 @@ html(lang="pt-BR")
       if seo.image
         meta(name="image", content=seo.image)
       title #{seo.title}
-    link(async rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap")
-    link(async rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap")
+    link(defer rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap")
+    link(defer rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap")
+    script(async src="https://kit.fontawesome.com/984926c998.js" crossorigin="anonymous")
     style
       include ../styles/global.scss
     //- <!-- Google tag (gtag.js) -->

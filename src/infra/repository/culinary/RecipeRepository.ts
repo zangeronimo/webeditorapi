@@ -53,14 +53,23 @@ export class RecipeRepository implements IRecipeRepository {
     if (model.categoryId) {
       where += " and recipe_categories_id = $3";
     }
+    if (model.search) {
+      where += ` and (LOWER(UNACCENT(name)) like $4 or LOWER(UNACCENT(ingredients)) like $4 or LOWER(UNACCENT(preparation)) like $4)`;
+    }
     const recipesData: any[] = await this.db.queryAsync(
       `select
         id, slug, name, ingredients, preparation, active, recipe_categories_id, webeditor_companies_id, updated_at
       from recipes
       where ${where}
       order by ${model.orderBy}
-      limit $4`,
-      [company, ActiveEnum.ACTIVE, model.categoryId, model.total]
+      limit $5`,
+      [
+        company,
+        ActiveEnum.ACTIVE,
+        model.categoryId,
+        `%${model.search?.toLowerCase().noAccents()}%`,
+        model.total,
+      ]
     );
     const recipes: Recipe[] = [];
     for (let i = 0; i < recipesData.length; i++) {
@@ -90,6 +99,9 @@ export class RecipeRepository implements IRecipeRepository {
     if (model.categoryId) {
       where += " and recipe_categories_id = $3";
     }
+    if (model.search) {
+      where += ` and (LOWER(UNACCENT(r.name)) like $4 or LOWER(UNACCENT(r.ingredients)) like $4 or LOWER(UNACCENT(r.preparation)) like $4)`;
+    }
     const recipesData: any[] = await this.db.queryAsync(
       `select
         r.id, r.slug, r.name, r.ingredients, r.preparation, r.active, r.recipe_categories_id, r.webeditor_companies_id, r.updated_at
@@ -98,8 +110,14 @@ export class RecipeRepository implements IRecipeRepository {
       where ${where}
       group by r.id
       order by ${orderBy}
-      limit $4`,
-      [company, ActiveEnum.ACTIVE, model.categoryId, model.total]
+      limit $5`,
+      [
+        company,
+        ActiveEnum.ACTIVE,
+        model.categoryId,
+        `%${model.search?.toLowerCase().noAccents()}%`,
+        model.total,
+      ]
     );
     const recipes: Recipe[] = [];
     for (let i = 0; i < recipesData.length; i++) {

@@ -1,0 +1,11 @@
+style
+  include styles.module.scss
+
+div.search_result
+  h1.search_result_title Pesquisando por:&nbsp;
+    span #{title}
+  |!{recipeWithImage(dynamicPugFilePathFromVariable)}
+  |!{recipeList(dynamicPugFilePathFromVariable)}
+
+  if notFound
+    p Nenhum registro encontrado, tente pesquisar apenas uma palavra.

@@ -6,6 +6,7 @@ import { Dashboard } from "./views/dashboard";
 import { Recipe } from "./views/recipe";
 import { Category } from "./views/category";
 import { Sitemap } from "./views/sitemap";
+import { Pesquisar } from "./views/pesquisar";
 
 export class Controller {
   router = Router();
@@ -14,10 +15,12 @@ export class Controller {
     this.router.get("/robots.txt", (req: Request, res: Response) =>
       res.send(`
         User-agent: *<br />
-        Allow: /`)
+        Allow: /<br />
+        Disallow: /pesquisar`)
     );
     this.router.get("/sitemap.xml", this.generateSitemap);
     this.router.get("/", this.dashboard);
+    this.router.get("/pesquisar", this.pesquisar);
     this.router.get("/categoria/:level/:category", this.categories);
     this.router.get("/receita/:recipe", this.recipe);
   }
@@ -30,6 +33,31 @@ export class Controller {
         this.pugFile("dashboard/index.pug")
       );
       const page = { header, sidebar, footer, root, seo };
+      return res.render("template", page);
+    } catch (e: any) {
+      return res.status(400).json(e.message);
+    }
+  };
+
+  private pesquisar = async (req: Request, res: Response) => {
+    try {
+      const { search } = req.query;
+      if (!search) throw new Error("Nothing to search");
+      const { header, sidebar, footer } = await this.baseRender(
+        search!.toString()
+      );
+      const pesquisarService = new Pesquisar();
+      const { root, seo } = await pesquisarService.render(
+        this.pugFile("pesquisar/index.pug"),
+        search!.toString()
+      );
+      const page = {
+        header,
+        sidebar,
+        footer,
+        root,
+        seo,
+      };
       return res.render("template", page);
     } catch (e: any) {
       return res.status(400).json(e.message);
@@ -89,10 +117,10 @@ export class Controller {
     }
   };
 
-  private baseRender = async () => {
+  private baseRender = async (query?: string) => {
     const sideBar = new SideBar();
     const header = () =>
-      pug.renderFile(this.pugFile("components/header/index.pug"));
+      pug.renderFile(this.pugFile("components/header/index.pug"), { query });
     const footer = () =>
       pug.renderFile(this.pugFile("components/footer/index.pug"));
     const sidebar = await sideBar.render(

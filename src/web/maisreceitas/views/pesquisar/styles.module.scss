@@ -1,0 +1,17 @@
+.search_result {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.search_result_title {
+  font-size: 2rem;
+  border-bottom: 1px solid;
+  color: var(--primary_dark);
+
+  span {
+    font-family: "Dancing Script", sans-serif;
+    font-size: 3rem;
+    font-weight: 300;
+  }
+}

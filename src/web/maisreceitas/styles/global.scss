@@ -80,6 +80,7 @@ strong {
   flex-direction: column;
   background-color: var(--white);
   padding: 1rem;
+  padding-right: 2rem;
   flex: 1;
 }
 
@@ -96,5 +97,6 @@ strong {
     position: relative;
     border-radius: 10px 10px 0 0;
     border: 1px solid var(--white);
+    padding-right: 3rem;
   }
 }

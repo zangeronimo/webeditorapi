@@ -48,7 +48,8 @@ export class Recipe {
     preparation: string,
     active: ActiveEnum,
     categoryId: string,
-    readonly companyId: string
+    readonly companyId: string,
+    updatedAt?: Date
   ) {
     this._id = id;
     this._slug = slug;
@@ -57,6 +58,7 @@ export class Recipe {
     this._preparation = preparation;
     this._active = active;
     this._categoryId = categoryId;
+    this._updatedAt = updatedAt;
   }
 
   static restore(
@@ -67,7 +69,8 @@ export class Recipe {
     preparation: string,
     active: ActiveEnum,
     categoryId: string,
-    companyId: string
+    companyId: string,
+    updatedAt: Date
   ): Recipe {
     return new Recipe(
       id,
@@ -77,7 +80,8 @@ export class Recipe {
       preparation,
       active,
       categoryId,
-      companyId
+      companyId,
+      updatedAt
     );
   }
 

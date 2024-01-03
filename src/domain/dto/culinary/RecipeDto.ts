@@ -9,6 +9,7 @@ export class RecipeDto {
   active: number;
   categoryId: string;
   images: string[];
+  updatedAt?: Date;
 
   constructor(recipe: Recipe, images: string[] = []) {
     this.id = recipe?.id;
@@ -18,6 +19,7 @@ export class RecipeDto {
     this.preparation = recipe?.preparation;
     this.active = recipe?.active.valueOf();
     this.categoryId = recipe?.categoryId;
+    this.updatedAt = recipe?.updatedAt;
     this.images = images;
   }
 }

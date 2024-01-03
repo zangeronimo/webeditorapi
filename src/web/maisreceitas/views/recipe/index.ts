@@ -1,6 +1,7 @@
 import { RecipeService } from "@application/service/culinary/RecipeService";
 import { container } from "tsyringe";
 import pug from "pug";
+import { SeoService } from "@application/service/SeoService";
 
 export class Recipe {
   readonly recipeService = container.resolve(RecipeService);
@@ -11,10 +12,18 @@ export class Recipe {
       recipeSlug,
       this.company
     );
-    return () =>
-      pug.renderFile(pugFile, {
-        recipe,
-        apiUrl: process.env.API_URL,
-      });
+    const seo = new SeoService();
+    seo.setRecipeTitle(recipe.name);
+    seo.setCanonical(`receita/${recipeSlug}`);
+    seo.setDescription(recipe.preparation);
+    if (recipe.images.length > 0) seo.setImage(recipe.images[0]);
+    return {
+      root: () =>
+        pug.renderFile(pugFile, {
+          recipe,
+          apiUrl: process.env.API_URL,
+        }),
+      seo,
+    };
   };
 }

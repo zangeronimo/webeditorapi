@@ -3,7 +3,7 @@ import {
   ILevelRepository,
 } from "@application/interface/repository/culinary";
 import { ICategoryService } from "@application/interface/service/culinary/ICategoryService";
-import { CategoryDto } from "@domain/dto/culinary";
+import { CategoryDto, LevelDto } from "@domain/dto/culinary";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -35,6 +35,6 @@ export class CategoryService implements ICategoryService {
     if (!category) {
       throw new Error("Category not found.");
     }
-    return new CategoryDto(category);
+    return new CategoryDto(category, new LevelDto(level));
   }
 }

@@ -6,6 +6,7 @@ import { container } from "tsyringe";
 import { RecipeWithImage } from "../components/recipeWithImage";
 import { RecipeList } from "../components/recipeList";
 import { GetAllRecipesFilterModel } from "@application/model/culinary/recipe/GetAllRecipesFilterModel";
+import { SeoService } from "@application/service/SeoService";
 
 export class Category {
   readonly recipeService = container.resolve(RecipeService);
@@ -33,11 +34,21 @@ export class Category {
     const recipeList = new RecipeList();
     const recipes = await recipeList.render("", modelList);
 
-    return () =>
-      pug.renderFile(pugFile, {
-        title: `Receitas de ${category.name}`,
-        recipeWithImage,
-        recipeList: recipes,
-      });
+    const seo = new SeoService();
+    seo.setCategoryTitle(category.level?.name ?? "", category.name);
+    seo.setCanonical(`categoria/${levelSlug}/${categorySlug}`);
+    seo.setDescription(
+      `Curta e aproveite as mais deliciosas receitas em ${category.level?.name} / ${category.name}, isso e muito mais você encontra aqui, confira.`
+    );
+
+    return {
+      root: () =>
+        pug.renderFile(pugFile, {
+          title: `Receitas de ${category.level?.name} / ${category.name}`,
+          recipeWithImage,
+          recipeList: recipes,
+        }),
+      seo,
+    };
   };
 }

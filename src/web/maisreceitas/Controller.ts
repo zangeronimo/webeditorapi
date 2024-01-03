@@ -5,11 +5,18 @@ import { SideBar } from "./views/components/sidebar";
 import { Dashboard } from "./views/dashboard";
 import { Recipe } from "./views/recipe";
 import { Category } from "./views/category";
+import { Sitemap } from "./views/sitemap";
 
 export class Controller {
   router = Router();
 
   constructor() {
+    this.router.get("/robots.txt", (req: Request, res: Response) =>
+      res.send(`
+        User-agent: *<br />
+        Allow: /`)
+    );
+    this.router.get("/sitemap.xml", this.generateSitemap);
     this.router.get("/", this.dashboard);
     this.router.get("/categoria/:level/:category", this.categories);
     this.router.get("/receita/:recipe", this.recipe);
@@ -19,8 +26,10 @@ export class Controller {
     try {
       const { header, sidebar, footer } = await this.baseRender();
       const dashboard = new Dashboard();
-      const root = await dashboard.render(this.pugFile("dashboard/index.pug"));
-      const page = { header, sidebar, footer, root };
+      const { root, seo } = await dashboard.render(
+        this.pugFile("dashboard/index.pug")
+      );
+      const page = { header, sidebar, footer, root, seo };
       return res.render("template", page);
     } catch (e: any) {
       return res.status(400).json(e.message);
@@ -32,7 +41,7 @@ export class Controller {
       const { level, category } = req.params;
       const { header, sidebar, footer } = await this.baseRender();
       const categoryService = new Category();
-      const root = await categoryService.render(
+      const { root, seo } = await categoryService.render(
         this.pugFile("category/index.pug"),
         level,
         category
@@ -42,6 +51,7 @@ export class Controller {
         sidebar,
         footer,
         root,
+        seo,
       };
       return res.render("template", page);
     } catch (e: any) {
@@ -54,12 +64,26 @@ export class Controller {
       const { recipe } = req.params;
       const { header, sidebar, footer } = await this.baseRender();
       const recipeService = new Recipe();
-      const root = await recipeService.render(
+      const { root, seo } = await recipeService.render(
         this.pugFile("recipe/index.pug"),
         recipe
       );
-      const page = { header, sidebar, footer, root };
+      const page = { header, sidebar, footer, root, seo };
       return res.render("template", page);
+    } catch (e: any) {
+      return res.status(400).json(e.message);
+    }
+  };
+
+  private generateSitemap = async (req: Request, res: Response) => {
+    try {
+      const sitemap = new Sitemap();
+      const recipes = await sitemap.getSitemap();
+      res.setHeader("Content-Type", "application/xml");
+      return res.render(this.pugFile("sitemap/index.pug"), {
+        recipes,
+        baseUrl: process.env.MAISRECEITAS_URL!,
+      });
     } catch (e: any) {
       return res.status(400).json(e.message);
     }

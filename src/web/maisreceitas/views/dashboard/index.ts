@@ -5,6 +5,7 @@ import { GetAllWithImageFilterModel } from "@application/model/culinary/recipe/G
 import { RecipeWithImage } from "../components/recipeWithImage";
 import { RecipeList } from "../components/recipeList";
 import { GetAllRecipesFilterModel } from "@application/model/culinary/recipe/GetAllRecipesFilterModel";
+import { SeoService } from "@application/service/SeoService";
 
 export class Dashboard {
   readonly recipeService = container.resolve(RecipeService);
@@ -12,12 +13,20 @@ export class Dashboard {
   render = async (pugFile: string) => {
     const news = await this.getNews(10);
     const recipeWithImage = await this.getWithPicture(12);
-    return () =>
-      pug.renderFile(pugFile, {
-        news,
-        recipeWithImage,
-        apiUrl: process.env.API_URL,
-      });
+    const seo = new SeoService();
+    seo.setTitle("MaisReceitas - Os segredos da culinária ao seu alcance!");
+    seo.setDescription(
+      "Curta e aproveite as mais deliciosas receitas da internet, isso e muito mais você encontra aqui, confira."
+    );
+    return {
+      root: () =>
+        pug.renderFile(pugFile, {
+          news,
+          recipeWithImage,
+          apiUrl: process.env.API_URL,
+        }),
+      seo,
+    };
   };
 
   private getNews = async (total: number) => {

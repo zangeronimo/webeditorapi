@@ -2,6 +2,7 @@
   padding-bottom: 2rem;
   color: var(--black);
   line-height: 1.6;
+  font-size: 1.8rem;
 
   .title {
     display: flex;
@@ -17,7 +18,7 @@
   }
 
   .sub_title {
-    font-size: 2.4rem;
+    font-size: 3rem;
     color: var(--primary_dark);
     font-family: "Dancing Script", sans-serif;
     margin: 2rem 0 1rem 0;
@@ -82,4 +83,39 @@
 
 .photo_galery_thumb:hover {
   border: 1px solid var(--primary_dark);
+}
+
+.rating {
+  margin-top: 3rem;
+
+  .rating_container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 0 1rem 0;
+  }
+
+  .rating_item {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--primary_dark);
+    background-color: var(--primary_light);
+    border-radius: 4px;
+
+    .rating_header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .rating_name {
+        font-size: 2.8rem;
+        font-weight: 700;
+        font-family: "Dancing Script", sans-serif;
+      }
+    }
+
+    .rating_comment {
+      font-size: 2.4rem;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+  }
 }

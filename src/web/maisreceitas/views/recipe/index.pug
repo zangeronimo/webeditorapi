@@ -3,6 +3,8 @@ style
 
 div.recipe
   h1.title #{recipe.name}
+    if recipe.category
+      small #{recipe.category.level.name} / #{recipe.category.name}
 
   if recipe.images.length > 0
     div.galery
@@ -18,5 +20,17 @@ div.recipe
 
   h2.sub_title Modo de Preparo
   |!{recipe.preparation}
+
+  div.rating
+    h2.title Comentários
+    if recipe.ratings.length > 0
+      div.rating_container
+        each rating in recipe.ratings
+          div.rating_item
+            div.rating_header
+              p #{recipe.updatedAt.toString('dd/MM/yyyy')}
+              p.rating_name #{rating.name}
+              p starts
+            p.rating_comment #{rating.comment}
 
 script(type='text/javascript', src='/public/js/recipe.js')

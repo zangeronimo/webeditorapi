@@ -7,6 +7,7 @@ export class RatingDto {
   active: number;
   recipeId: string;
   name?: string;
+  updatedAt?: Date;
 
   constructor(rating: Rating) {
     this.id = rating?.id;
@@ -15,5 +16,6 @@ export class RatingDto {
     this.active = rating?.active.valueOf();
     this.recipeId = rating?.recipeId;
     this.name = rating?.name;
+    this.updatedAt = rating?.updatedAt;
   }
 }

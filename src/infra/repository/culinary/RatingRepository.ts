@@ -1,13 +1,14 @@
 import { IRatingRepository } from "@application/interface/repository/culinary";
 import { GetAllRatingFilterModel } from "@application/model/culinary/rating";
 import { Rating } from "@domain/entity/culinary";
+import { ActiveEnum } from "@domain/enum";
 import { DbContext } from "@infra/context";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class RatingRepository implements IRatingRepository {
   constructor(
-    @inject('DbContext')
+    @inject("DbContext")
     readonly db: DbContext
   ) {}
 
@@ -147,5 +148,35 @@ export class RatingRepository implements IRatingRepository {
       ]
     );
     return rating;
+  }
+
+  async getAllByRecipeAsync(
+    recipeid: string,
+    company: string
+  ): Promise<Rating[]> {
+    let where =
+      "webeditor_companies_id = $1 and recipes_id = $2 and active = $3 and deleted_at is null";
+    const ratingsData: any[] = await this.db.queryAsync(
+      `select
+        id, rate, comment, name, active, recipes_id, webeditor_companies_id
+      from recipe_ratings
+      where ${where}
+      order by updated_at desc`,
+      [company, recipeid, ActiveEnum.ACTIVE]
+    );
+    const ratings: Rating[] = [];
+    for (let i = 0; i < ratingsData.length; i++) {
+      const rating = Rating.restore(
+        ratingsData[i].id,
+        ratingsData[i].rate,
+        ratingsData[i].comment,
+        ratingsData[i].active,
+        ratingsData[i].recipes_id,
+        ratingsData[i].webeditor_companies_id,
+        ratingsData[i].name
+      );
+      ratings.push(rating);
+    }
+    return ratings;
   }
 }

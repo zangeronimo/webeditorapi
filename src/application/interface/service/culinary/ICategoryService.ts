@@ -6,4 +6,5 @@ export interface ICategoryService {
     categorySlug: string,
     company: string
   ): Promise<CategoryDto>;
+  getByIdAsync(categoryId: string, company: string): Promise<CategoryDto>;
 }

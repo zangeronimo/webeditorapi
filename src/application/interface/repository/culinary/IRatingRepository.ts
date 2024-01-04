@@ -10,4 +10,5 @@ export interface IRatingRepository {
   updateAsync(rating: Rating): Promise<Rating>;
   saveAsync(rating: Rating): Promise<Rating>;
   deleteAsync(rating: Rating, date: Date): Promise<Rating>;
+  getAllByRecipeAsync(recipeId: string, company: string): Promise<Rating[]>;
 }

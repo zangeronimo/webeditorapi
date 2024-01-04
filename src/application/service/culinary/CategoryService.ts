@@ -4,6 +4,7 @@ import {
 } from "@application/interface/repository/culinary";
 import { ICategoryService } from "@application/interface/service/culinary/ICategoryService";
 import { CategoryDto, LevelDto } from "@domain/dto/culinary";
+import { ActiveEnum } from "@domain/enum";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -34,6 +35,27 @@ export class CategoryService implements ICategoryService {
     );
     if (!category) {
       throw new Error("Category not found.");
+    }
+    return new CategoryDto(category, new LevelDto(level));
+  }
+
+  async getByIdAsync(
+    categoryId: string,
+    company: string
+  ): Promise<CategoryDto> {
+    const category = await this._categoryRepository.getByIdAsync(
+      categoryId,
+      company
+    );
+    if (!category || category.active !== ActiveEnum.ACTIVE) {
+      throw new Error("Category not found.");
+    }
+    const level = await this._levelRepository.getByIdAsync(
+      category.levelId,
+      company
+    );
+    if (!level || level.active !== ActiveEnum.ACTIVE) {
+      throw new Error("Level not found.");
     }
     return new CategoryDto(category, new LevelDto(level));
   }

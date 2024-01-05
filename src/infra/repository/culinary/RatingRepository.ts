@@ -158,7 +158,7 @@ export class RatingRepository implements IRatingRepository {
       "webeditor_companies_id = $1 and recipes_id = $2 and active = $3 and deleted_at is null";
     const ratingsData: any[] = await this.db.queryAsync(
       `select
-        id, rate, comment, name, active, recipes_id, webeditor_companies_id
+        id, rate, comment, name, active, recipes_id, webeditor_companies_id,updated_at
       from recipe_ratings
       where ${where}
       order by updated_at desc`,
@@ -173,7 +173,8 @@ export class RatingRepository implements IRatingRepository {
         ratingsData[i].active,
         ratingsData[i].recipes_id,
         ratingsData[i].webeditor_companies_id,
-        ratingsData[i].name
+        ratingsData[i].name,
+        ratingsData[i].updated_at
       );
       ratings.push(rating);
     }

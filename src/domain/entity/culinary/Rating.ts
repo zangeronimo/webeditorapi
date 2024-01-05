@@ -42,7 +42,8 @@ export class Rating {
     active: ActiveEnum,
     recipeId: string,
     readonly companyId: string,
-    name?: string
+    name?: string,
+    updatedAte?: Date
   ) {
     this._id = id;
     this._rate = rate;
@@ -50,6 +51,7 @@ export class Rating {
     this._recipeId = recipeId;
     this._name = name;
     this._active = active;
+    this._updatedAt = updatedAte;
   }
 
   static restore(
@@ -59,9 +61,19 @@ export class Rating {
     active: ActiveEnum,
     recipeId: string,
     companyId: string,
-    name?: string
+    name?: string,
+    updatedAt?: Date
   ): Rating {
-    return new Rating(id, rate, comment, active, recipeId, companyId, name);
+    return new Rating(
+      id,
+      rate,
+      comment,
+      active,
+      recipeId,
+      companyId,
+      name,
+      updatedAt
+    );
   }
 
   static create(model: RatingCreateDataModel, companyId: string): Rating {

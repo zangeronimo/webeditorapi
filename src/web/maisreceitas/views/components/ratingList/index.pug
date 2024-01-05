@@ -1,0 +1,13 @@
+style
+  include styles.module.scss
+
+if ratings.length > 0
+  div.rating_container
+    each rating in ratings
+      div.rating_item
+        div.rating_header
+          if (rating.updatedAt)
+            p #{rating.updatedAt.toString('dd/MM/yyyy')}
+          p.rating_name #{rating.name}
+          p.rating_stars #{rating.rate.toStarts()}
+        p.rating_comment #{rating.comment}

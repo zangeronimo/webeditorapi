@@ -2,15 +2,25 @@ import { RecipeService } from "@application/service/culinary/RecipeService";
 import { container } from "tsyringe";
 import pug from "pug";
 import { SeoService } from "@application/service/SeoService";
+import { RatingList } from "../components/ratingList";
 
 export class Recipe {
   readonly recipeService = container.resolve(RecipeService);
   readonly company = process.env.MAISRECEITAS!;
 
-  render = async (pugFile: string, recipeSlug: string) => {
+  render = async (
+    pugFile: string,
+    ratingListPugFile: string,
+    recipeSlug: string
+  ) => {
     const recipe = await this.recipeService.getBySlugAsync(
       recipeSlug,
       this.company
+    );
+    const ratingListComponet = new RatingList();
+    const ratingList = ratingListComponet.render(
+      ratingListPugFile,
+      recipe.ratings
     );
     const seo = new SeoService();
     seo.setRecipeTitle(recipe.name);
@@ -22,6 +32,7 @@ export class Recipe {
       root: () =>
         pug.renderFile(pugFile, {
           recipe,
+          ratingList,
           apiUrl: process.env.MAISRECEITAS_URL,
         }),
       seo,

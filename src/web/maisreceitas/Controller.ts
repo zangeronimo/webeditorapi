@@ -94,6 +94,7 @@ export class Controller {
       const recipeService = new Recipe();
       const { root, seo } = await recipeService.render(
         this.pugFile("recipe/index.pug"),
+        this.pugFile("components/ratingList/index.pug"),
         recipe
       );
       const page = { header, sidebar, footer, root, seo };

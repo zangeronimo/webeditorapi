@@ -23,14 +23,7 @@ div.recipe
 
   div.rating
     h2.title Comentários
-    if recipe.ratings.length > 0
-      div.rating_container
-        each rating in recipe.ratings
-          div.rating_item
-            div.rating_header
-              p #{recipe.updatedAt.toString('dd/MM/yyyy')}
-              p.rating_name #{rating.name}
-              p starts
-            p.rating_comment #{rating.comment}
+    //- |!{ratingForm(dynamicPugFilePathFromVariable)}
+    |!{ratingList(dynamicPugFilePathFromVariable)}
 
 script(type='text/javascript', src='/public/js/recipe.js')

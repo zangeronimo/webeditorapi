@@ -1,5 +1,6 @@
 import { IRatingRepository } from "@application/interface/repository/culinary";
 import { IRatingService } from "@application/interface/service/culinary/IRatingService";
+import { RatingCreateDataModel } from "@application/model/culinary/rating";
 import { RatingDto } from "@domain/dto/culinary";
 import { Rating } from "@domain/entity/culinary";
 import { inject, injectable } from "tsyringe";
@@ -22,5 +23,13 @@ export class RatingService implements IRatingService {
     return ratings.map((rating: Rating) => {
       return new RatingDto(rating);
     });
+  }
+
+  async createAsync(
+    model: RatingCreateDataModel,
+    company: string
+  ): Promise<void> {
+    const rating = Rating.create(model, company);
+    await this._ratingRepository.saveAsync(rating);
   }
 }

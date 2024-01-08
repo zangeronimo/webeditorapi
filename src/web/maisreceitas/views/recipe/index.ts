@@ -4,6 +4,7 @@ import pug from "pug";
 import { SeoService } from "@application/service/SeoService";
 import { RatingList } from "../components/ratingList";
 import { RatingForm } from "../components/ratingForm";
+import { RatingCreateDataModel } from "@application/model/culinary/rating";
 
 export class Recipe {
   readonly recipeService = container.resolve(RecipeService);
@@ -42,5 +43,20 @@ export class Recipe {
         }),
       seo,
     };
+  };
+
+  rate = async (
+    recipeSlug: string,
+    rate: number,
+    name: string,
+    comment: string
+  ) => {
+    await this.recipeService.createRatingAsync(
+      recipeSlug,
+      rate,
+      name,
+      comment,
+      this.company
+    );
   };
 }

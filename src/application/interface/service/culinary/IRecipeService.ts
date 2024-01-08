@@ -12,4 +12,11 @@ export interface IRecipeService {
     company: string
   ): Promise<RecipeDto[]>;
   getBySlugAsync(slug: string, company: string): Promise<RecipeDto>;
+  createRatingAsync(
+    slug: string,
+    rate: number,
+    name: string,
+    comment: string,
+    company: string
+  ): Promise<void>;
 }

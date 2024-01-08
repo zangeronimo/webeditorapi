@@ -4,3 +4,7 @@ const photoGaleryChangePicture = (url) => {
     element.src = url;
   }
 };
+
+const ratingSubmit = () => {
+  alert("Comentário enviado para avaliação.");
+};

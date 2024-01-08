@@ -2,10 +2,12 @@ import { IRecipeRepository } from "@application/interface/repository/culinary";
 import { ICategoryService } from "@application/interface/service/culinary/ICategoryService";
 import { IRatingService } from "@application/interface/service/culinary/IRatingService";
 import { IRecipeService } from "@application/interface/service/culinary/IRecipeService";
+import { RatingCreateDataModel } from "@application/model/culinary/rating";
 import { GetAllRecipesFilterModel } from "@application/model/culinary/recipe/GetAllRecipesFilterModel";
 import { GetAllWithImageFilterModel } from "@application/model/culinary/recipe/GetAllWithImageFilterModel";
 import { RatingDto, RecipeDto } from "@domain/dto/culinary";
 import { Recipe } from "@domain/entity/culinary";
+import { ActiveEnum } from "@domain/enum";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -70,5 +72,26 @@ export class RecipeService implements IRecipeService {
       recipe.companyId
     );
     return new RecipeDto(recipe, images, ratings, category);
+  }
+
+  async createRatingAsync(
+    slug: string,
+    rate: number,
+    name: string,
+    comment: string,
+    company: string
+  ): Promise<void> {
+    const recipe = await this._recipeRepository.getBySlugAsync(slug, company);
+    if (!recipe) {
+      throw new Error("Recipe not found.");
+    }
+    const model = new RatingCreateDataModel(
+      rate,
+      comment,
+      ActiveEnum.INACTIVE,
+      recipe.id,
+      name
+    );
+    await this._ratingService.createAsync(model, company);
   }
 }

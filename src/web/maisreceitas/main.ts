@@ -1,5 +1,7 @@
 import "reflect-metadata";
 import express from "express";
+
+import bodyParser from "body-parser";
 import path from "path";
 import dotenv from "dotenv";
 import { Extensions } from "@application/extension";
@@ -19,7 +21,8 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.locals.basedir = path.join(__dirname, "views");
 
-app.use(express.json({ limit: "1mb" }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ limit: "1mb" }));
 app.use("/public", express.static(path.join(__dirname, "public")));
 app.use(
   "/files",

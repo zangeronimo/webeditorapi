@@ -23,6 +23,7 @@ export class Controller {
     this.router.get("/pesquisar", this.pesquisar);
     this.router.get("/categoria/:level/:category", this.categories);
     this.router.get("/receita/:recipe", this.recipe);
+    this.router.post("/receita/:recipe", this.recipeRating);
   }
 
   private dashboard = async (req: Request, res: Response) => {
@@ -100,6 +101,18 @@ export class Controller {
       );
       const page = { header, sidebar, footer, root, seo };
       return res.render("template", page);
+    } catch (e: any) {
+      return res.status(400).json(e.message);
+    }
+  };
+
+  private recipeRating = async (req: Request, res: Response) => {
+    try {
+      const { recipe } = req.params;
+      const { rate, name, comment } = req.body;
+      const recipeService = new Recipe();
+      await recipeService.rate(recipe, rate, name, comment);
+      return this.recipe(req, res);
     } catch (e: any) {
       return res.status(400).json(e.message);
     }

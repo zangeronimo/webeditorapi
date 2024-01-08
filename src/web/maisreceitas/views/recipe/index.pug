@@ -5,6 +5,7 @@ div.recipe
   h1.title #{recipe.name}
     if recipe.category
       small #{recipe.category.level.name} / #{recipe.category.name}
+        a(href="#avaliacao" title="ver comentários") &nbsp;(comentários)
 
   if recipe.images.length > 0
     div.galery
@@ -22,7 +23,7 @@ div.recipe
   |!{recipe.preparation}
 
   div.rating
-    h2.title Comentários
+    h2(id="avaliacao").title Comentários
     |!{ratingList(dynamicPugFilePathFromVariable)}
     |!{ratingForm(dynamicPugFilePathFromVariable)}
 

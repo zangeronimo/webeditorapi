@@ -23,7 +23,7 @@ div.recipe
 
   div.rating
     h2.title Comentários
-    //- |!{ratingForm(dynamicPugFilePathFromVariable)}
     |!{ratingList(dynamicPugFilePathFromVariable)}
+    |!{ratingForm(dynamicPugFilePathFromVariable)}
 
 script(type='text/javascript', src='/public/js/recipe.js')

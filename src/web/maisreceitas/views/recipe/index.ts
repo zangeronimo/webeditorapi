@@ -3,6 +3,7 @@ import { container } from "tsyringe";
 import pug from "pug";
 import { SeoService } from "@application/service/SeoService";
 import { RatingList } from "../components/ratingList";
+import { RatingForm } from "../components/ratingForm";
 
 export class Recipe {
   readonly recipeService = container.resolve(RecipeService);
@@ -11,6 +12,7 @@ export class Recipe {
   render = async (
     pugFile: string,
     ratingListPugFile: string,
+    ratingFormPugFile: string,
     recipeSlug: string
   ) => {
     const recipe = await this.recipeService.getBySlugAsync(
@@ -22,6 +24,8 @@ export class Recipe {
       ratingListPugFile,
       recipe.ratings
     );
+    const ratingFormComponent = new RatingForm();
+    const ratingForm = ratingFormComponent.render(ratingFormPugFile);
     const seo = new SeoService();
     seo.setRecipeTitle(recipe.name);
     seo.setCanonical(`receita/${recipeSlug}`);
@@ -33,6 +37,7 @@ export class Recipe {
         pug.renderFile(pugFile, {
           recipe,
           ratingList,
+          ratingForm,
           apiUrl: process.env.MAISRECEITAS_URL,
         }),
       seo,

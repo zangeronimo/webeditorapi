@@ -1,0 +1,15 @@
+style
+  include styles.module.scss
+
+div.rating_form
+  form
+    div.input
+      label(for="_rating_name") Seu nome:
+      input(name="-rating_name" type="text" id="_rating_name")
+
+    div.textarea
+      label(for="_rating_comment") Deixe seu comentário:
+      textarea(name="_rating_comment", cols="30", rows="10" id="_rating_comment")
+
+    .submit
+      button(type="submit") Enviar

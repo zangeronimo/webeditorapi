@@ -1,6 +1,6 @@
 export class SeoService {
   private title = "MaisReceitas";
-  private canonical = process.env.MAISRECEITAS_URL;
+  private canonical = process.env.MAISRECEITAS_CANONICAL_URL;
   private description = "";
   private keywords =
     "receitas, culinária, modo de preparo, ingredientes, acompanhamentos, bebidas, carnes, dietas, doces, molhos, peixes, sopas, sem glúten, vegetariana, pães, bolos, tortas, sobremesas";

@@ -1,8 +1,27 @@
 .footer {
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: var(--secondary_dark);
-  padding-top: 1.6rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: var(--secondary_light);
+  color: var(--black);
+  padding: 1rem;
+  padding-right: 2rem;
   margin-top: auto;
+
+  & span.heart {
+    flex: 1;
+    color: red;
+  }
+
+  & p.left {
+    text-align: left;
+    min-width: fit-content;
+  }
+
+  & p.right {
+    min-width: fit-content;
+    text-align: right;
+  }
 }

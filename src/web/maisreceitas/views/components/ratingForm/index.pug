@@ -3,13 +3,22 @@ style
 
 div.rating_form
   form
+    div.select
+      label(for="_rating_rate") Sua avaliação:
+      select(id="_rating_rate" name="_rating_rate")
+        option(value="2") Nota 2
+        option(value="4") Nota 4
+        option(value="6") Nota 6
+        option(value="8") Nota 8
+        option(value="10" selected) Nota 10
+
     div.input
       label(for="_rating_name") Seu nome:
-      input(name="-rating_name" type="text" id="_rating_name")
+      input(name="_rating_name" type="text" id="_rating_name")
 
     div.textarea
       label(for="_rating_comment") Deixe seu comentário:
       textarea(name="_rating_comment", cols="30", rows="10" id="_rating_comment")
 
     .submit
-      button(type="submit") Enviar
+      button(type="submit" title="Enviar meu comentário para avaliação.") Enviar

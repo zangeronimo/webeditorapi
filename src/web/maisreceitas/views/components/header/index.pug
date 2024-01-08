@@ -11,5 +11,5 @@ div.header
     form(method="get" action="/pesquisar")
       div.search
         input(type="text" name="search" placeholder="O que está procurando?" required value=query)
-        button(type="submit")
+        button(type="submit"  aria-labelledby="Pesquisar" title="Pesquisar")
           i.fa-solid.fa-search

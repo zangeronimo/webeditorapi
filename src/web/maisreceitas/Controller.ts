@@ -18,6 +18,10 @@ export class Controller {
         Allow: /<br />
         Disallow: /pesquisar`)
     );
+    this.router.get("/Ads.txt", (req: Request, res: Response) =>
+      res.send("google.com, pub-9066340169838562, DIRECT, f08c47fec0942fa0")
+    );
+
     this.router.get("/sitemap.xml", this.generateSitemap);
     this.router.get("/", this.dashboard);
     this.router.get("/pesquisar", this.pesquisar);

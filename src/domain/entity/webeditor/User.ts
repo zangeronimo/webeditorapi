@@ -1,12 +1,9 @@
-import { IHashProvider } from "@application/interface/provider";
 import {
   UserCreateDataModel,
   UserUpdateDataModel,
 } from "@application/model/webeditor/user";
-import { inject } from "@infra/di/Inject";
 import { Role } from "./Role";
 import { Password } from "@domain/valueObject/Password";
-import { BPKDF2Provider } from "@infra/provider";
 
 export class User {
   private _id: string;

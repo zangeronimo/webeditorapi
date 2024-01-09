@@ -85,10 +85,11 @@ export class RecipeService implements IRecipeService {
     if (!recipe) {
       throw new Error("Recipe not found.");
     }
+    const active = !name && !comment ? ActiveEnum.ACTIVE : ActiveEnum.INACTIVE;
     const model = new RatingCreateDataModel(
       rate,
       comment,
-      ActiveEnum.INACTIVE,
+      active,
       recipe.id,
       name
     );

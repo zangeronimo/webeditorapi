@@ -1,8 +1,15 @@
 style
   include styles.module.scss
 
-div.rating_form
-  form(method="post" onsubmit="ratingSubmit()")
+div(id="_rating_form_msg").hidden._rating_msg_item
+  div._rating_msg_item_header
+    p(id="_rating_form_msg_name")._rating_msg_item_name Nome Completo
+    p Comentário enviado para avaliação.
+    p(id="_rating_form_msg_rate")._rating_msg_item_rate 10
+  p(id="_rating_form_msg_comment")._rating_msg_item_comment Comentário enviado, espero que seja muito comentado.
+
+div(id="_rating_form_div").rating_form
+  form(id="_rating_form")
     div.select
       label(for="_rating_rate") Sua avaliação:
       select(name="rate" id="_rating_rate")

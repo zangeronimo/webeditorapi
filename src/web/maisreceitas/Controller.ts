@@ -115,8 +115,8 @@ export class Controller {
       const { recipe } = req.params;
       const { rate, name, comment } = req.body;
       const recipeService = new Recipe();
-      await recipeService.rate(recipe, rate, name, comment);
-      return this.recipe(req, res);
+      const rating = await recipeService.rate(recipe, rate, name, comment);
+      return res.status(201).json(rating);
     } catch (e: any) {
       return res.status(400).json(e.message);
     }

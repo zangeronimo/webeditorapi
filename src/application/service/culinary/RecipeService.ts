@@ -29,9 +29,16 @@ export class RecipeService implements IRecipeService {
       model,
       company
     );
-    return recipes.map((recipe: Recipe) => {
-      return new RecipeDto(recipe);
-    });
+    const recipesDto = [];
+    for (let i = 0; i < recipes.length; i++) {
+      const ratings = await this._ratingService.getAllByRecipeAsync(
+        recipes[i].id,
+        recipes[i].companyId
+      );
+      const recipeDto = new RecipeDto(recipes[i], [], ratings);
+      recipesDto.push(recipeDto);
+    }
+    return recipesDto;
   }
 
   async getWithImageAsync(
@@ -48,7 +55,11 @@ export class RecipeService implements IRecipeService {
         recipes[i].id,
         recipes[i].companyId
       );
-      const recipeDto = new RecipeDto(recipes[i], images);
+      const ratings = await this._ratingService.getAllByRecipeAsync(
+        recipes[i].id,
+        recipes[i].companyId
+      );
+      const recipeDto = new RecipeDto(recipes[i], images, ratings);
       recipesDto.push(recipeDto);
     }
     return recipesDto;

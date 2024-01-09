@@ -6,6 +6,6 @@ export class Extensions {
   static init = () => {
     StringExtensions.noAccents;
     DateExtensions.toString;
-    NumberExtensions.toStarts;
+    NumberExtensions.toStars;
   };
 }

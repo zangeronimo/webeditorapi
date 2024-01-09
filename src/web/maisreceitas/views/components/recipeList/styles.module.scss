@@ -17,6 +17,23 @@
     background-color: var(--gray_100);
   }
 
+  & td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    & span._rating_stars {
+      color: var(--primary_dark);
+      font-weight: 500;
+
+      @media (max-width: 43.75em) {
+        display: none;
+      }
+    }
+  }
+
   & td a {
     display: block;
     text-decoration: none;

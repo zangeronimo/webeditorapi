@@ -33,4 +33,13 @@ export class RecipeDto {
     this.ratings = ratings;
     this.category = category;
   }
+
+  getRate = (): number | null => {
+    if (!this.ratings.length) return null;
+    const sumOfRates = this.ratings
+      .map((rating) => rating.rate)
+      .reduce((rate, total) => total + rate);
+
+    return Math.ceil(sumOfRates / this.ratings.length);
+  };
 }

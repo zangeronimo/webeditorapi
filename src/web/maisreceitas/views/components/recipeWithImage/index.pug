@@ -11,3 +11,5 @@ if withPicture.length > 0
           div.recipe_image_card
             img(src=`${apiUrl}${recipe.images[0]}`, alt=`Receita de ${recipe.name}`)
             p.recipe_image_card_label #{recipe.name}
+              if recipe.getRate()
+                span._rating_stars #{recipe.getRate().toStars()}

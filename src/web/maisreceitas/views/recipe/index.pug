@@ -4,8 +4,12 @@ style
 div.recipe
   h1.title #{recipe.name}
     if recipe.category
-      small #{recipe.category.level.name} / #{recipe.category.name}
-        a(href="#avaliacao" title="ver comentários") &nbsp;(comentários)
+      small
+        a(href=`/categoria/${recipe.category.level.slug}/${recipe.category.slug}` title=recipe.category.name) #{recipe.category.level.name} / #{recipe.category.name}
+
+  if (rate)
+    span.rating_stars #{rate.toStars()}
+  a(href="#avaliacao" title="ver comentários") &nbsp;(comentários)
 
   if recipe.images.length > 0
     div.galery

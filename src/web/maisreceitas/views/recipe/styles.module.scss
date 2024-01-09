@@ -10,9 +10,11 @@
     font-size: 2.6rem;
     color: var(--primary_dark);
 
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 
     small {
+      display: flex;
+      align-items: center;
       font-size: 1.8rem;
     }
   }
@@ -83,6 +85,12 @@
 
 .photo_galery_thumb:hover {
   border: 1px solid var(--primary_dark);
+}
+
+.rating_stars {
+  color: var(--primary_dark);
+  font-weight: 500;
+  font-size: 2rem;
 }
 
 .rating {

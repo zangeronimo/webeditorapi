@@ -39,6 +39,7 @@ export class Recipe {
           recipe,
           ratingList,
           ratingForm,
+          rate: recipe.getRate(),
           apiUrl: process.env.MAISRECEITAS_URL,
         }),
       seo,

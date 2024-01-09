@@ -2,8 +2,8 @@ const STAR_FULL = "★";
 const STAR_HALF = "✮";
 const STAR_EMPTY = "✰";
 export class NumberExtensions {
-  static toStarts = Object.defineProperty(Number.prototype, "toStarts", {
-    value: function toStarts() {
+  static toStars = Object.defineProperty(Number.prototype, "toStars", {
+    value: function toStars() {
       return numberToStar(this / 2);
     },
     writable: true,

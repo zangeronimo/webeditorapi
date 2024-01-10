@@ -22,8 +22,8 @@ export class NewsletterRepository implements INewsletterRepository {
     return newsletterData
       ? Newsletter.restore(
           newsletterData.id,
-          newsletterData.email,
           newsletterData.name,
+          newsletterData.email,
           newsletterData.active,
           newsletterData.webeditor_companies_id
         )
@@ -41,8 +41,8 @@ export class NewsletterRepository implements INewsletterRepository {
     return newsletterData
       ? Newsletter.restore(
           newsletterData.id,
-          newsletterData.email,
           newsletterData.name,
+          newsletterData.email,
           newsletterData.active,
           newsletterData.webeditor_companies_id
         )
@@ -85,7 +85,7 @@ export class NewsletterRepository implements INewsletterRepository {
       [
         company,
         `%${model.name?.toLowerCase().noAccents()}%`,
-        `%${model.name?.toLowerCase()}%`,
+        `%${model.email?.toLowerCase()}%`,
         model.active,
         model.pageSize,
         offset,
@@ -95,8 +95,8 @@ export class NewsletterRepository implements INewsletterRepository {
     for (let i = 0; i < newslettersData.length; i++) {
       const newsletter = Newsletter.restore(
         newslettersData[i].id,
-        newslettersData[i].email,
         newslettersData[i].name,
+        newslettersData[i].email,
         newslettersData[i].active,
         newslettersData[i].webeditor_companies_id
       );
@@ -119,8 +119,8 @@ export class NewsletterRepository implements INewsletterRepository {
       [
         newsletter.id,
         newsletter.companyId,
-        newsletter.email,
         newsletter.name,
+        newsletter.email,
         newsletter.active,
         newsletter.updatedAt,
       ]
@@ -133,8 +133,8 @@ export class NewsletterRepository implements INewsletterRepository {
       "insert into institutional_newsletters (id, email, name, active, webeditor_companies_id) values ($1, $2, $3, $4, $5)",
       [
         newsletter.id,
-        newsletter.email,
         newsletter.name,
+        newsletter.email,
         newsletter.active,
         newsletter.companyId,
       ]

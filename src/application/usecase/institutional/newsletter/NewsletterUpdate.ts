@@ -28,7 +28,7 @@ export class NewsletterUpdate implements INewsletterUpdate {
         newsletterData.email,
         company
       );
-      if (existEmail !== null) {
+      if (existEmail !== null && existEmail.id !== newsletterData.id) {
         throw new Error(Messages.alreadyInUse("EMail"));
       }
     }

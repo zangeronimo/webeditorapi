@@ -5,8 +5,7 @@ import { IRecipeService } from "@application/interface/service/culinary/IRecipeS
 import { RatingCreateDataModel } from "@application/model/culinary/rating";
 import { GetAllRecipesFilterModel } from "@application/model/culinary/recipe/GetAllRecipesFilterModel";
 import { GetAllWithImageFilterModel } from "@application/model/culinary/recipe/GetAllWithImageFilterModel";
-import { RatingDto, RecipeDto } from "@domain/dto/culinary";
-import { Recipe } from "@domain/entity/culinary";
+import { RecipeDto } from "@domain/dto/culinary";
 import { ActiveEnum } from "@domain/enum";
 import { inject, injectable } from "tsyringe";
 

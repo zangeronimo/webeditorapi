@@ -7,6 +7,8 @@ import { Recipe } from "./views/recipe";
 import { Category } from "./views/category";
 import { Sitemap } from "./views/sitemap";
 import { Pesquisar } from "./views/pesquisar";
+import { Footer } from "./views/components/footer";
+import { NewsletterForm } from "./views/components/newsletterForm";
 
 export class Controller {
   router = Router();
@@ -28,6 +30,7 @@ export class Controller {
     this.router.get("/categoria/:level/:category", this.categories);
     this.router.get("/receita/:recipe", this.recipe);
     this.router.post("/receita/:recipe", this.recipeRating);
+    this.router.post("/newsletter", this.newsletter);
   }
 
   private dashboard = async (req: Request, res: Response) => {
@@ -122,6 +125,17 @@ export class Controller {
     }
   };
 
+  private newsletter = async (req: Request, res: Response) => {
+    try {
+      const { name, email } = req.body;
+      const newsletterForm = new NewsletterForm();
+      const newsletter = await newsletterForm.createAsync(name, email);
+      return res.status(201).json(newsletter);
+    } catch (e: any) {
+      return res.status(400).json(e.message);
+    }
+  };
+
   private generateSitemap = async (req: Request, res: Response) => {
     try {
       const sitemap = new Sitemap();
@@ -137,11 +151,16 @@ export class Controller {
   };
 
   private baseRender = async (query?: string) => {
-    const sideBar = new SideBar();
     const header = () =>
       pug.renderFile(this.pugFile("components/header/index.pug"), { query });
-    const footer = () =>
-      pug.renderFile(this.pugFile("components/footer/index.pug"));
+
+    const footerService = new Footer();
+    const footer = await footerService.render(
+      this.pugFile("components/footer/index.pug"),
+      this.pugFile("components/newsletterForm/index.pug")
+    );
+
+    const sideBar = new SideBar();
     const sidebar = await sideBar.render(
       this.pugFile("components/sidebar/index.pug")
     );

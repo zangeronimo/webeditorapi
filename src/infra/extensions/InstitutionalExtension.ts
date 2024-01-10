@@ -1,4 +1,5 @@
 import { INewsletterRepository } from "@application/interface/repository/institutional";
+import { INewsletterService } from "@application/interface/service/institutional/INewsletterService";
 import {
   INewsletterGetAll,
   INewsletterGetById,
@@ -6,6 +7,7 @@ import {
   INewsletterUpdate,
   INewsletterDelete,
 } from "@application/interface/usecase/institutional/newsletter";
+import { NewsletterService } from "@application/service/institutional/NewsletterService";
 import {
   NewsletterGetAll,
   NewsletterGetById,
@@ -25,6 +27,10 @@ export class InstitutionalExtension {
     );
 
     // Registry Services
+    container.registerSingleton<INewsletterService>(
+      "INewsletterService",
+      NewsletterService
+    );
 
     // Registry Level useCases
     container.registerSingleton<INewsletterGetAll>(

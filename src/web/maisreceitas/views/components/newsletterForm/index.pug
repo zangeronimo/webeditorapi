@@ -1,0 +1,21 @@
+style
+  include styles.module.scss
+
+div(id="_newsletter_form_msg").hidden._newsletter_msg_item
+  div._newsletter_msg_item_header
+    p Obrigado pelo seu cadastro.
+
+div(id="_newsletter_form_div").newsletter_form
+  h3 Cadastre-se e receba nossas novidades em seu e-mail:
+  form(id="_newsletter_form")
+    div.group
+      div.input
+        label(for="_newsletter_name") Seu nome:
+        input(name="name" type="text" id="_newsletter_name" required)
+
+      div.input
+        label(for="_newsletter_email") Seu e-mail:
+        input(name="email" type="email" id="_newsletter_email" required)
+
+    .submit
+      button(type="submit" title="Registrar para receber novidades por e-mail.") Enviar

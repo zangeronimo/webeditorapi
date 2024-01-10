@@ -4,7 +4,6 @@ import pug from "pug";
 import { SeoService } from "@application/service/SeoService";
 import { RatingList } from "../components/ratingList";
 import { RatingForm } from "../components/ratingForm";
-import { RatingCreateDataModel } from "@application/model/culinary/rating";
 
 export class Recipe {
   readonly recipeService = container.resolve(RecipeService);

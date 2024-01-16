@@ -1,3 +1,5 @@
+import { RecipeDto } from "@domain/dto/culinary";
+
 export class SeoService {
   private title = "MaisReceitas";
   private canonical = process.env.MAISRECEITAS_CANONICAL_URL;
@@ -5,6 +7,12 @@ export class SeoService {
   private keywords =
     "receitas, culinária, modo de preparo, ingredientes, acompanhamentos, bebidas, carnes, dietas, doces, molhos, peixes, sopas, sem glúten, vegetariana, pães, bolos, tortas, sobremesas";
   private image = "";
+  private recipe?: {
+    rate: number;
+    rateSize: number;
+    recipe: RecipeDto;
+    baseUrl: string;
+  };
 
   setTitle = (title: string): void => {
     this.title = title;
@@ -32,4 +40,12 @@ export class SeoService {
     url = url.startsWith("/") ? url : `/${url}`;
     this.image = `${baseUrl}${url}`;
   };
+
+  setRecipe = (recipe: RecipeDto) =>
+    (this.recipe = {
+      rate: recipe.getRate() ?? 10,
+      rateSize: recipe.ratings.length ?? 1,
+      recipe: recipe,
+      baseUrl: process.env.API_URL!,
+    });
 }

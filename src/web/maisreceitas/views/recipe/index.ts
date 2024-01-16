@@ -24,12 +24,14 @@ export class Recipe {
       ratingListPugFile,
       recipe.ratings
     );
+    const rate = recipe.getRate();
     const ratingFormComponent = new RatingForm();
     const ratingForm = ratingFormComponent.render(ratingFormPugFile);
     const seo = new SeoService();
     seo.setRecipeTitle(recipe.name);
     seo.setCanonical(`receita/${recipeSlug}`);
     seo.setDescription(recipe.preparation);
+    seo.setRecipe(recipe);
     if (recipe.images.length > 0)
       seo.setImage(process.env.MAISRECEITAS_URL!, recipe.images[0]);
     return {
@@ -38,7 +40,7 @@ export class Recipe {
           recipe,
           ratingList,
           ratingForm,
-          rate: recipe.getRate(),
+          rate,
           apiUrl: process.env.MAISRECEITAS_URL,
         }),
       seo,

@@ -16,6 +16,77 @@ html(lang="pt-BR")
       if seo.image
         meta(name="image", content=seo.image)
       title #{seo.title}
+      if seo.recipe
+        script.
+          {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "FAQPage",
+                "mainEntity": {
+                  "@type": "Question",
+                  "acceptedAnswer": {
+                    "@type": "Answer"
+                  }
+                }
+              },
+              {
+                "@type": "Recipe",
+                "name": #{seo.recipe.recipe.name},
+                "description": #{seo.description},
+                "keywords": #{seo.keywords},
+                "recipeCuisine": #{seo.recipe.recipe.category.name},
+                "recipeYield": #{seo.recipe.rate},
+                //- "datePublished": "2022-10-07T06:59:35-0300",
+                //- "prepTime": "PT5M",
+                //- "cookTime": "PT5M",
+                //- "totalTime": "PT5M",
+                "recipeInstructions": [
+                  {
+                    "@type": "HowToSection",
+                    "name": "Modo de Preparo",
+                    "itemListElement": [
+                      {
+                        "@type": "HowToStep",
+                        "text": #{seo.recipe.recipe.preparation},
+                      },
+                    ]
+                  },
+                ],
+                "recipeIngredient": [
+                    #{seo.recipe.recipe.ingredients}
+                ],
+                "recipeCategory": #{seo.recipe.recipe.category.name},
+                "author": {
+                  "@type": "Person",
+                  "name": "Receitas MaisReceitas"
+                },
+                "image": {
+                  "@type": "ImageObject",
+                  "representativeOfPage": "True",
+                  "url": '#{seo.image}'
+                },
+                "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "ratingValue": #{seo.recipe.rate},
+                  "ratingCount": #{seo.recipe.rateSize}
+                }
+              },
+              {
+                "@type": "WebSite",
+                "name": "Receitas MaisReceitas",
+                "url": "https://maisreceitas.com.br",
+                "potentialAction": {
+                  "@type": "SearchAction",
+                  "target": {
+                    "@type": "EntryPoint",
+                    "urlTemplate": "https://maisreceitas.com.br/pesquisar?search={search_term_string}"
+                  },
+                  "query-input": "required name=search_term_string"
+                }
+              }
+            ]
+          }
     link(defer rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap")
     link(defer rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap")
     script(async src="https://kit.fontawesome.com/984926c998.js" crossorigin="anonymous")

@@ -10,6 +10,8 @@
     "start": "cross-env NODE_ENV=development node dist/main.js",
     "start:maisreceitas": "cross-env NODE_ENV=development node dist/web/maisreceitas/main.js",
     "dev:maisreceitas": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/web/maisreceitas/main.ts",
+    "start:webeditor": "cross-env NODE_ENV=development node dist/web/webeditor/main.js",
+    "dev:webeditor": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/web/webeditor/main.ts",
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
     "dev": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/main.ts"
   },

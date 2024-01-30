@@ -1,0 +1,73 @@
+:root {
+  font-size: 75%;
+
+  --white: #f8f8f8;
+  --black: #181818;
+
+  --primary_dark: #823f15;
+  --primary_light: #fff1cc;
+  --secondary_dark: #999591;
+  --secondary_light: #eaeaea;
+  
+  --success: #198754;
+  --danger: #dc3545;
+  --info: #39848b;
+  --warning: #f0a607;
+
+  --background: #a7af7e;
+
+  --grey50: #e0e0e0;
+  --grey100: #c8c8c9;
+  --grey900: #2e2e2e;
+
+  --blue50: #e9f7ff;
+  --blue100: #98c7e4;
+  --blue200: #6da6c9;
+  --blue500: #0a5d8d;
+  --blue800: #043552;
+  --blue900: #022a41;
+
+  --small_devices: 43.75em;
+  --medium_devices: 56.25rem;
+  --normal_devices: 75rem;
+  --big_devices: 93.75rem;
+}
+
+* {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  padding: 0;
+  font-size: 1.25rem;
+  margin: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  color: var(--black);
+}
+
+body {
+  max-width: 100vw;
+  height: 100vh;
+  background-color: var(--blue900);
+  overflow: auto;
+  &[modal] {
+    overflow: hidden;
+    padding-right: 1.1rem;
+  }
+}
+
+strong {
+  font-family: inherit;
+  font-weight: 700;
+}
+a {
+  &:link,
+  &:active {
+    color: $black;
+  }
+  &:visited {
+    color: $grey900;
+  }
+}
+button {
+  cursor: pointer;
+}

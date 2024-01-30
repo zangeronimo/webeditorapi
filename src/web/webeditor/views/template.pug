@@ -1,0 +1,33 @@
+doctype html
+html(lang="pt-BR")
+  head
+    meta(charset="utf-8")    
+    meta(http-equiv="cache-control" content="no-cache")
+    meta(http-equiv="expires" content="0")
+    meta(http-equiv="pragma" content="no-cache")
+    meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    link(rel="icon" type="image/x-icon" href="/public/favicon.png")
+    link(rel="preconnect" href="https://fonts.googleapis.com")
+    link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+    meta(name="robots" content="index, follow")
+    meta(name="author" content="Luciano Zangeronimo")
+    meta(name="language" content="pt-br")
+    if seo
+      title #{seo.title}      
+    link(defer rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap")
+    script(async src="https://kit.fontawesome.com/984926c998.js" crossorigin="anonymous")
+    style
+      include ../styles/global.scss
+  body
+    div.container
+      if header
+        |!{header(dynamicPugFilePathFromVariable)}
+      if sidebar
+        |!{sidebar(dynamicPugFilePathFromVariable)}
+      div.content_wrap
+        article.content
+          |!{root(dynamicPugFilePathFromVariable)}
+        if footer
+          |!{footer(dynamicPugFilePathFromVariable)}
+    script(type='text/javascript', src='/public/js/sidebar.js')
+    script(type='text/javascript', src='/public/js/global.js')

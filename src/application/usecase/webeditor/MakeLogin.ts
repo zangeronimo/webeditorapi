@@ -2,17 +2,16 @@ import { ITokenProvider } from "@application/interface/provider";
 import { IUserRepository } from "@application/interface/repository/webeditor";
 import { IMakeLogin } from "@application/interface/usecase/webeditor";
 import { Messages } from "@application/messages/Messages";
-import { AuthDto } from "@domain/dto/webeditor";
+import { AuthDto, UserDto } from "@domain/dto/webeditor";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class MakeLogin implements IMakeLogin {
-
   constructor(
     @inject("ITokenProvider")
     readonly _tokenProvider: ITokenProvider,
     @inject("IUserRepository")
-    readonly _userRepository: IUserRepository,
+    readonly _userRepository: IUserRepository
   ) {}
 
   async executeAsync(email: string, password: string) {
@@ -34,6 +33,10 @@ export class MakeLogin implements IMakeLogin {
       dateNow,
       dateNow.getTime() + +process.env.REFRESH_EXP!
     );
-    return { token: new AuthDto(token!), refreshToken: refreshToken! };
+    return {
+      user: new UserDto(user),
+      token: new AuthDto(token!),
+      refreshToken,
+    };
   }
 }

@@ -1,15 +1,10 @@
 style
-  include styles.module.scss
+  include styles.scss
 
 div.header
   div.left
-    a(href="/" title="Ir para a página inicial")
-      img.logo(src="/public/webeditor.svg", alt="webeditor2.tudolinux.com.br")
     span.show_menu
-      i.fa-solid.fa-bars(onclick="showSideBar()")
+      i.fa-solid.fa-bars(onclick="showSideBar()" title="Abrir o menu")
   div.right
-    form(method="get" action="/pesquisar")
-      div.search
-        input(type="text" name="search" placeholder="O que está procurando?" required value=query)
-        button(type="submit"  aria-labelledby="Pesquisar" title="Pesquisar")
-          i.fa-solid.fa-search
+    a(href="/sign-in" title="Sair do sistema")
+      i(class="fa-solid fa-arrow-right-from-bracket")

@@ -33,5 +33,5 @@ export class EnsureAuthenticated implements IEnsureAuthenticated {
 }
 
 export interface IEnsureAuthenticated {
-  execute: any
+  execute: any;
 }

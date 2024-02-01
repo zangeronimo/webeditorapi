@@ -1,15 +1,44 @@
 style
-  include styles.module.scss
+  include styles.scss
 
-div(id="_maisreceitas_sidebar").sidebar.item
+div(id="_webeditor_sidebar").sidebar.item
   div.title
-    h2 Categorias
-    button(onclick="showSideBar()") &times;
-  each level in levels
-    ul(onclick=`showSubMenu('${level.id}')`)
+    img(src="/public/webeditor.png" alt="WEBEditor Logo")
+    span &nbsp;
+    button(onclick="showSideBar()" title="Fechar o menu") &times;
+  each item in items
+    ul(onclick=`showSubMenu('${item.id}')`)
       li.sidebar_item
-        div #{level.name}
-        ul(id=level.id).sub_items
-          each category in level.categories
+        div
+          if item.icon
+           i(class=`fa fa-${item.icon}`)
+          span #{item.name}
+        ul(id=item.id).sub_items
+          each subItem in item.subItems
             li
-              a(href=`/categoria/${level.slug}/${category.slug}` title=category.name) #{category.name}
+              a(href=subItem.url title=subItem.name) #{subItem.name}
+
+script.
+  const showSubMenu = (id) => {
+    const element = document.getElementById(id);
+
+    if (element) {
+      if (element.classList.contains("show_submenu")) {
+        element.classList.remove("show_submenu");
+      } else {
+        element.classList.add("show_submenu");
+      }
+    }
+  };
+
+  const showSideBar = () => {
+    const element = document.getElementById("_webeditor_sidebar");
+
+    if (element) {
+      if (element.classList.contains("show_sidebar")) {
+        element.classList.remove("show_sidebar");
+      } else {
+        element.classList.add("show_sidebar");
+      }
+    }
+  };

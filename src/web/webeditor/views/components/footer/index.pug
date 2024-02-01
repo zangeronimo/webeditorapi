@@ -1,12 +1,7 @@
 style
-    include styles.module.scss
+    include styles.scss
 
-footer.footer
-  div.left
-    |!{newsletterForm(dynamicPugFilePathFromVariable)}
-
-  div.right
-    p Desde 2006 pensando em você&nbsp;
-      span.heart ❤️
-    p powered by&nbsp;
-      a(href="https://www.linkedin.com/in/zangeronimo" target="_blank" title="Ir para página do autor") /in/zangeronimo
+mixin Footer()
+  footer.footer_container
+      p powered by&nbsp;
+        a(href="https://www.linkedin.com/in/zangeronimo" target="_blank" title="Ir para página do autor") /in/zangeronimo

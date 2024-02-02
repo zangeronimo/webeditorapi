@@ -1,19 +1,14 @@
 import { Pug } from "web/webeditor/models/Pug";
 
 export class SideBar extends Pug {
-  render = async (pugFile: string) => {
+  render = async () => {
     const items: any[] = [
       {
         id: 1,
-        name: "Dashboard",
+        name: "Página Inicial",
         icon: "home",
-        subItems: [
-          {
-            id: 1.1,
-            name: "Página Inicial",
-            url: "/",
-          },
-        ],
+        url: "/",
+        subItems: [],
       },
       {
         id: 2,

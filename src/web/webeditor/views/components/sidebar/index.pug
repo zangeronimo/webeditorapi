@@ -7,12 +7,15 @@ div(id="_webeditor_sidebar").sidebar.item
     span &nbsp;
     button(onclick="showSideBar()" title="Fechar o menu") &times;
   each item in items
-    ul(onclick=`showSubMenu('${item.id}')`)
+    ul(onclick=`${item.subItems.length ? `showSubMenu('${item.id}')` : ''}`)
       li.sidebar_item
         div
           if item.icon
            i(class=`fa fa-${item.icon}`)
-          span #{item.name}
+          if item.url
+            a(href=item.url title=item.name) #{item.name}
+          else
+            span #{item.name}
         ul(id=item.id).sub_items
           each subItem in item.subItems
             li

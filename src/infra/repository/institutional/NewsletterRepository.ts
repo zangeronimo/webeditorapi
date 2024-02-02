@@ -130,7 +130,7 @@ export class NewsletterRepository implements INewsletterRepository {
 
   async saveAsync(newsletter: Newsletter): Promise<Newsletter> {
     await this.db.queryAsync(
-      "insert into institutional_newsletters (id, email, name, active, webeditor_companies_id) values ($1, $2, $3, $4, $5)",
+      "insert into institutional_newsletters (id, name, email, active, webeditor_companies_id) values ($1, $2, $3, $4, $5)",
       [
         newsletter.id,
         newsletter.name,

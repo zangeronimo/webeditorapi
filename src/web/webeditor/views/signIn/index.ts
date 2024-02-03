@@ -1,5 +1,5 @@
-import { Pug } from "web/webeditor/models/Pug";
-import { SEO } from "web/webeditor/models/Seo";
+import { Pug } from "@web/webeditor/models/Pug";
+import { SEO } from "@web/webeditor/models/Seo";
 
 export class SignIn extends Pug {
   render = async () => {

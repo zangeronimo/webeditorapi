@@ -1,7 +1,7 @@
+import { Authorize } from "@web/webeditor/authorize";
+import { Pug } from "@web/webeditor/models/Pug";
+import { Dashboard } from "@web/webeditor/views/dashboard";
 import { Request, Response, Router } from "express";
-import { Authorize } from "web/webeditor/Authorize";
-import { Pug } from "web/webeditor/models/Pug";
-import { Dashboard } from "web/webeditor/views/dashboard";
 
 export class DashboardRoutes extends Pug {
   router = Router();

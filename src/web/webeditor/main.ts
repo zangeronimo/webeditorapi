@@ -6,7 +6,7 @@ import path from "path";
 import dotenv from "dotenv";
 import { Extensions } from "@application/extension";
 import { ExtensionDI } from "@infra/extensions";
-import { Controller } from "./Controller";
+import { Controller } from "./controller";
 
 const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : ".env";
 dotenv.config({ path: envFile });

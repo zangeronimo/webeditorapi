@@ -1,8 +1,8 @@
 import { GetAllNewsletterFilterModel } from "@application/model/institutional/newsletter";
+import { Authorize } from "@web/webeditor/authorize";
+import { Pug } from "@web/webeditor/models/Pug";
+import { Newsletter } from "@web/webeditor/views/newsletter";
 import { Request, Response, Router } from "express";
-import { Authorize } from "web/webeditor/Authorize";
-import { Pug } from "web/webeditor/models/Pug";
-import { Newsletter } from "web/webeditor/views/newsletter";
 
 export class NewslettersRoutes extends Pug {
   router = Router();

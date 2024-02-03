@@ -1,5 +1,5 @@
+import { Pug } from "@web/webeditor/models/Pug";
 import { Request, Response, Router } from "express";
-import { Pug } from "web/webeditor/models/Pug";
 
 export class SignOutRoutes extends Pug {
   router = Router();

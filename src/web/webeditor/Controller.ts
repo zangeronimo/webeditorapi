@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Authorize } from "./Authorize";
+import { Authorize } from "./authorize";
 import { Pug } from "./models/Pug";
 import { Routes } from "./routes";
 import { SideBar } from "./views/components/sidebar";

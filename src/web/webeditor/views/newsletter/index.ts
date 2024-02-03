@@ -1,9 +1,9 @@
 import { GetAllNewsletterFilterModel } from "@application/model/institutional/newsletter";
 import { NewsletterGetAll } from "@application/usecase/institutional/newsletter";
 import { container } from "tsyringe";
-import { Pug } from "web/webeditor/models/Pug";
-import { SEO } from "web/webeditor/models/Seo";
 import { Pagination } from "../components/pagination";
+import { Pug } from "@web/webeditor/models/Pug";
+import { SEO } from "@web/webeditor/models/Seo";
 
 export class Newsletter extends Pug {
   readonly getAll = container.resolve(NewsletterGetAll);

@@ -1,8 +1,8 @@
 import { MakeLogin } from "@application/usecase/webeditor";
+import { Pug } from "@web/webeditor/models/Pug";
+import { SignIn } from "@web/webeditor/views/signIn";
 import { Request, Response, Router } from "express";
 import { container } from "tsyringe";
-import { Pug } from "web/webeditor/models/Pug";
-import { SignIn } from "web/webeditor/views/signIn";
 
 export class SignInRoutes extends Pug {
   router = Router();

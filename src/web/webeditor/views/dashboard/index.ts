@@ -1,7 +1,7 @@
 import { RecipeService } from "@application/service/culinary/RecipeService";
+import { Pug } from "@web/webeditor/models/Pug";
+import { SEO } from "@web/webeditor/models/Seo";
 import { container } from "tsyringe";
-import { Pug } from "web/webeditor/models/Pug";
-import { SEO } from "web/webeditor/models/Seo";
 
 export class Dashboard extends Pug {
   readonly recipeService = container.resolve(RecipeService);

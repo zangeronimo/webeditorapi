@@ -1,13 +1,15 @@
 import { Request, Response, Router } from "express";
+import { Authorize } from "web/webeditor/Authorize";
 import { Pug } from "web/webeditor/models/Pug";
 import { Dashboard } from "web/webeditor/views/dashboard";
 
 export class DashboardRoutes extends Pug {
   router = Router();
+  authorize = new Authorize();
 
   constructor(readonly baseRender: any) {
     super();
-    this.router.get("/", this.show);
+    this.router.get("/", this.authorize.isAutenticated, this.show);
   }
 
   private show = async (req: Request, res: Response) => {

@@ -30,6 +30,7 @@ script.
       },
   }).then(() => {
     localStorage.removeItem("WEBEditor:User");
+    localStorage.removeItem("WEBEditor:Token");
   })
 
   function handleSubmit(e) {
@@ -54,6 +55,7 @@ script.
       })
       .then(json => {
         localStorage.setItem("WEBEditor:User", JSON.stringify(json.user))
+        localStorage.setItem("WEBEditor:Token", JSON.stringify(json.token))
         document.location.href="/";
       })
       .catch((err) => {

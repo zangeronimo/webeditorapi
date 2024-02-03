@@ -130,3 +130,42 @@ p {
     padding-right: 3rem;
   }
 }
+
+table {
+  padding-bottom: 0.3rem;
+  border-bottom: 3px solid var(--blue500);
+
+  thead tr {
+    background-color: var(--blue800);
+  }
+
+  th {
+    text-transform: uppercase;
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: var(--blue800);
+  }
+
+  td {
+    padding: 0.5rem;
+  }
+
+  .datagrid_left {
+    text-align: left;
+  }
+  .datagrid_center {
+    text-align: center;
+  }
+  .datagrid_right {
+    text-align: right;
+  }
+  .datagrid_tools {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+}

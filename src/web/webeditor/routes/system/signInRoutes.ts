@@ -28,7 +28,7 @@ export class SignInRoutes extends Pug {
   private loginAsync = async (req: Request, res: Response) => {
     try {
       const { username, password } = req.body;
-      const { user, refreshToken } = await this.makeLogin.executeAsync(
+      const { user, token, refreshToken } = await this.makeLogin.executeAsync(
         username,
         password
       )!;
@@ -38,7 +38,7 @@ export class SignInRoutes extends Pug {
         expires: new Date(new Date().getTime() + +process.env.REFRESH_EXP!),
         secure: true,
       });
-      return res.json({ user });
+      return res.json({ user, token });
     } catch (e: any) {
       return res.status(400).json(e.message);
     }

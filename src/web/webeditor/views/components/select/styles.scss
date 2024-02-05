@@ -1,15 +1,19 @@
-.form_input_container {
+.form_select_container {
   display: flex;
   flex: 1;
   flex-direction: column;
   margin-bottom: 0.5rem;
 
-  & input {
+  & select {
     height: 2.5rem;
     color: var(--black) !important;
     font-size: 1.25rem;
     padding: 0.5rem;
     border: none;
     border-radius: 4px;
+
+    & option {
+      color: var(--black) !important;
+    }
   }
 }

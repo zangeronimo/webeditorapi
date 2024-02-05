@@ -1,6 +1,5 @@
 .datagrid {
-  border: 1px solid var(--blue700);
-  padding: 0.5rem;
+  padding: 1rem 0 0 0.05rem;
   .table_container {
     overflow-x: auto;
     width: auto;
@@ -15,9 +14,19 @@
       }
 
       th {
-        text-transform: uppercase;
-        padding: 0.5rem;
-        font-size: 1rem;
+        span {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          text-transform: uppercase;
+          text-wrap: nowrap;
+          padding: 0.5rem;
+          font-size: 1rem;
+
+          i {
+            cursor: pointer;
+          }
+        }
       }
 
       tbody tr:nth-child(even) {

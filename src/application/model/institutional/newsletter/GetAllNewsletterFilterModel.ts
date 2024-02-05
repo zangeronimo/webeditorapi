@@ -14,7 +14,7 @@ export class GetAllNewsletterFilterModel implements IPagination, IOrdenation {
     this.page = query.page;
     this.pageSize = query.pageSize;
     this.orderBy = query.orderBy ?? "updated_at";
-    this.desc = query.desc === "true";
+    this.desc = query.desc ?? "true";
     this.name = query.name;
     this.email = query.email;
     this.active = query.active;

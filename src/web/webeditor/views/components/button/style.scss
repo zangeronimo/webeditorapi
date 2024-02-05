@@ -9,3 +9,22 @@
   border-radius: 4px;
   text-transform: uppercase;
 }
+
+.form_button_clear {
+  i {
+    color: var(--grey900) !important;
+  }
+}
+
+.form_button_search {
+  span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--grey900) !important;
+    flex-wrap: nowrap;
+    i {
+      color: var(--grey900) !important;
+    }
+  }
+}

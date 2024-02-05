@@ -1,29 +1,48 @@
+include ../components/input/index.pug
+include ../components/select/index.pug
+include ../components/button/search.pug
+include ../components/button/clear.pug
+include ../components/orderBy/index.pug
+
 style
   include ../../styles/datagrid.scss
   include  styles.scss
 
 div.newsletter
-  div.datagrid
-    div.table_container
-      table
-        thead
-          tr
-            th.datagrid_left Nome
-            th.datagrid_left E-mail
-            th Ativo
-            th Confirmado em
-            th Confirmado IP
-            th.datagrid_right Ações
-        tbody
-          each newsletter in newsletters
+  div.box
+    form
+      div.group
+        +Input({ name: "name", value: model.name, title: "Nome", type: "text", })
+        +Input({ name: "email", value: model.email, title: "E-mail", type: "text", })
+        +Select({ name: "active", value: `${model.active}`, title: "Ativo", datas:[{value:"", label:"Todos"}, {value:"1", label:"Sim"}, {value:"0", label:"Não"}] })
+      div.group.right
+        +ButtonSearch()
+        +ButtonClear()
+  div.box
+    div.datagrid
+      div.table_container
+        table
+          thead
             tr
-              td(data-label="Nome") #{newsletter.name}
-              td(data-label="E-mail") #{newsletter.email}
-              td(data-label="Ativo").datagrid_center #{newsletter.active ? 'Sim' : 'Não'}
-              td(data-label="Confirmado em").datagrid_center #{newsletter.confirmedAt}
-              td(data-label="Confirmado IP").datagrid_center #{newsletter.confirmedIP}
-              td(data-label="Ações").datagrid_right
-                div.datagrid_tools
-                  i(class="fa fa-pencil")
-                  i(class="fa fa-trash")
-    |!{pagination(dynamicPugFilePathFromVariable)} 
+              th.datagrid_left 
+                +OrderBy('Nome','name')
+              th.datagrid_left
+                +OrderBy('E-mail', 'email')
+              th
+                +OrderBy('Ativo', 'active', true)
+              th Confirmado em
+              th Confirmado IP
+              th.datagrid_right Ações
+          tbody
+            each newsletter in newsletters
+              tr
+                td(data-label="Nome") #{newsletter.name}
+                td(data-label="E-mail") #{newsletter.email}
+                td(data-label="Ativo").datagrid_center #{newsletter.active ? 'Sim' : 'Não'}
+                td(data-label="Confirmado em").datagrid_center #{newsletter.confirmedAt}
+                td(data-label="Confirmado IP").datagrid_center #{newsletter.confirmedIP}
+                td(data-label="Ações").datagrid_right
+                  div.datagrid_tools
+                    i(class="fa fa-pencil")
+                    i(class="fa fa-trash")
+      |!{pagination(dynamicPugFilePathFromVariable)} 

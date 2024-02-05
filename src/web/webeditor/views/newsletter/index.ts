@@ -20,6 +20,7 @@ export class Newsletter extends Pug {
     return {
       root: () =>
         this.renderFile("newsletter", {
+          model,
           newsletters: newsletters.itens,
           pagination,
         }),

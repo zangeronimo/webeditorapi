@@ -135,3 +135,28 @@ p {
     padding-right: 3rem;
   }
 }
+
+.box {
+  background-color: var(--blue950);
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.left {
+  justify-content: flex-start;
+}
+
+.center {
+  justify-content: center;
+}
+
+.right {
+  justify-content: flex-end;
+}

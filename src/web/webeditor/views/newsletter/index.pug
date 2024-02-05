@@ -1,25 +1,29 @@
 style
+  include ../../styles/datagrid.scss
   include  styles.scss
 
 div.newsletter
-  table
-    thead
-      tr
-        th.datagrid_left Nome
-        th.datagrid_left E-mail
-        th Ativo
-        th Confirmado em
-        th Confirmado IP
-        th.datagrid_right Ações
-    tbody
-      each newsletter in newsletters
-        tr
-          td #{newsletter.name}
-          td #{newsletter.email}
-          td.datagrid_center #{newsletter.active ? 'Sim' : 'Não'}
-          td.datagrid_center #{newsletter.confirmedAt}
-          td.datagrid_center #{newsletter.confirmedIP}
-          td.datagrid_right.datagrid_tools
-            i(class="fa fa-pencil")
-            i(class="fa fa-trash")
-  |!{pagination(dynamicPugFilePathFromVariable)} 
+  div.datagrid
+    div.table_container
+      table
+        thead
+          tr
+            th.datagrid_left Nome
+            th.datagrid_left E-mail
+            th Ativo
+            th Confirmado em
+            th Confirmado IP
+            th.datagrid_right Ações
+        tbody
+          each newsletter in newsletters
+            tr
+              td(data-label="Nome") #{newsletter.name}
+              td(data-label="E-mail") #{newsletter.email}
+              td(data-label="Ativo").datagrid_center #{newsletter.active ? 'Sim' : 'Não'}
+              td(data-label="Confirmado em").datagrid_center #{newsletter.confirmedAt}
+              td(data-label="Confirmado IP").datagrid_center #{newsletter.confirmedIP}
+              td(data-label="Ações").datagrid_right
+                div.datagrid_tools
+                  i(class="fa fa-pencil")
+                  i(class="fa fa-trash")
+    |!{pagination(dynamicPugFilePathFromVariable)} 

@@ -1,8 +1,40 @@
 style
-    include styles.scss
+  include styles.scss
 
 div.pagination_container
-    div.pagination_total
-        p total #{total}
-    div.pagination_buttons
-        p buttons
+  div
+    strong #{from}
+    span &nbsp;-&nbsp;
+    strong #{to < total ? to : total}
+    span &nbsp;de&nbsp;
+    strong #{total}
+  div.pagination_buttons
+    if currentPage > 1 + siblingsCount
+      button(onclick="_handlePaginationButtonClick(1)") 1
+      if currentPage > 2 + siblingsCount
+        span.space ...
+    each page in previousPages
+      button(onclick=`_handlePaginationButtonClick(${page})`) #{page}
+    button(disabled) #{currentPage}
+    each page in nextPages
+      button(onclick=`_handlePaginationButtonClick(${page})`) #{page}
+    if currentPage + siblingsCount < lastPage
+      if currentPage + 1 + siblingsCount < lastPage
+        span.space ...
+      button(onclick=`_handlePaginationButtonClick(${lastPage})`) #{lastPage}
+
+script.
+  const _handlePaginationButtonClick = (page) => {
+    let init = '?'
+    const searchParams = new URLSearchParams(window.location.search);
+
+    for (const entry of searchParams) {
+        if (entry[0] !== 'page')
+        init === '?'
+            ? (init = `?${entry[0]}=${entry[1]}`)
+            : (init += `&${entry[0]}=${entry[1]}`)
+    }
+
+    init = init !== '?' ? `${init}&` : init
+    document.location.href=`${init}page=${page}`
+  }

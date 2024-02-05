@@ -12,7 +12,11 @@ export class Newsletter extends Pug {
     const seo = new SEO("WEBEditor - Institucional - Newsletters");
     const newsletters = await this.getAll.executeAsync(model, company);
     const paginationComponent = new Pagination();
-    const pagination = await paginationComponent.render(newsletters.total);
+    const pagination = await paginationComponent.render(
+      newsletters.total,
+      model.pageSize,
+      model.page
+    );
     return {
       root: () =>
         this.renderFile("newsletter", {

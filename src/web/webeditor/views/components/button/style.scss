@@ -28,3 +28,29 @@
     }
   }
 }
+
+.form_button_save {
+  span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--grey900) !important;
+    flex-wrap: nowrap;
+    i {
+      color: var(--grey900) !important;
+    }
+  }
+}
+
+.form_button_cancel {
+  span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--grey900) !important;
+    flex-wrap: nowrap;
+    i {
+      color: var(--grey900) !important;
+    }
+  }
+}

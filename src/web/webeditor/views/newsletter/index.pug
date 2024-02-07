@@ -43,6 +43,8 @@ div.newsletter
                 td(data-label="Confirmado IP").datagrid_center #{newsletter.confirmedIP}
                 td(data-label="Ações").datagrid_right
                   div.datagrid_tools
-                    i(class="fa fa-pencil")
+                    i(title="Editar registro" onclick=`handleOpenFormModal('${modalId}', '${newsletter.id}')` class="fa fa-pencil")
                     i(class="fa fa-trash")
       |!{pagination(dynamicPugFilePathFromVariable)} 
+
+|!{modal(dynamicPugFilePathFromVariable)}

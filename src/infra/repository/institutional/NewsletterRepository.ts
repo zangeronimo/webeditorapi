@@ -115,7 +115,7 @@ export class NewsletterRepository implements INewsletterRepository {
 
   async updateAsync(newsletter: Newsletter): Promise<Newsletter> {
     await this.db.queryAsync(
-      "update institutional_newsletters set email=$3, name=$4, active=$5, updated_at=$6 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      "update institutional_newsletters set name=$3, email=$4, active=$5, updated_at=$6 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [
         newsletter.id,
         newsletter.companyId,

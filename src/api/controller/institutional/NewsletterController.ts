@@ -109,8 +109,8 @@ export class NewsletterController {
       const { id, name, email, active } = req.body;
       const newsletterUpdateDataModel = new NewsletterUpdateDataModel(
         id,
-        email,
         name,
+        email,
         active
       );
       const newsletter = await this.newsletterUpdate.executeAsync(

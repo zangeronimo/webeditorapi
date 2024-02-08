@@ -1,0 +1,56 @@
+.confirm_container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  &[show] {
+    display: flex !important;
+    z-index: 9998;
+  }
+
+  .confirm_overlay {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff80;
+  }
+
+  .confirm_modal {
+    background-color: var(--blue800);
+    min-width: 40%;
+    max-width: 90%;
+    max-height: 90%;
+    overflow: auto;
+    border-radius: 4px;
+    z-index: 9999;
+  }
+
+  .confirm_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--blue700);
+    padding: 0.5rem 1rem;
+    border-radius: 4px 4px 0 0;
+
+    .confirm_header_title {
+      font-weight: 700;
+    }
+
+    button {
+      border: none;
+      background-color: transparent;
+      color: var(--blue200) !important;
+      font-size: 2rem;
+    }
+  }
+
+  .confirm_content {
+    padding: 1rem;
+  }
+}

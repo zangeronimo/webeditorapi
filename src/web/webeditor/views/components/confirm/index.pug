@@ -1,0 +1,39 @@
+include ../button/confirm.pug
+include ../button/cancel.pug
+
+style
+    include styles.scss 
+
+div(id=`${id}`).confirm_container
+    div(onclick=closeOnOverlay ? `toggleConfirm('${id}')` : '').confirm_overlay
+    div.confirm_modal
+        div.confirm_header
+            h5.confirm_header_title #{title}
+            button(title="Fechar" onclick=`toggleConfirm('${id}')`) &times;
+        div.confirm_content #{content}
+            div.group.right
+                +ButtonConfirm({ id: "_confirm_success_button_id", title: "Confirmar", label: "Remover o registro" })
+                +ButtonCancel({ callback: `toggleConfirm('${id}')`, title: "Não confirmar", label:"Não" })
+                
+
+script.
+    const toggleConfirm = (id, callback) => {
+        const modal = document.getElementById(id)
+        if (modal) {
+            const confirmButton = document.getElementById("_confirm_success_button_id")
+            if (confirmButton) {
+                confirmButton.setAttribute('onclick', callback);
+            }
+            modal.hasAttribute('show') ? _hideConfirm(modal) : _showConfirm(modal)
+        }
+    }
+
+    const _showConfirm = (modal) => {
+        document.body.setAttribute('modal', true)
+        modal.setAttribute('show', true)
+    }
+
+    const _hideConfirm = (modal) => {
+        document.body.removeAttribute('modal')
+        modal.removeAttribute('show')
+    }

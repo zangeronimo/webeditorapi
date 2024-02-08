@@ -1,7 +1,7 @@
 style
     include style.scss
 
-mixin ButtonCancel({ callback })
-    button.form_button.form_button_cancel(onclick=callback, type='button', title="Cancelar")
-        span Cancelar
+mixin ButtonCancel({ callback, title='Cancelar', label='Cancelar' })
+    button.form_button.form_button_cancel(onclick=callback, type='button', title=title)
+        span #{label}
             i(class="fa fa-xmark")

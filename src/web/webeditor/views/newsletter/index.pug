@@ -44,7 +44,36 @@ div.newsletter
                 td(data-label="Ações").datagrid_right
                   div.datagrid_tools
                     i(title="Editar registro" onclick=`handleOpenFormModal('${modalId}', '${newsletter.id}')` class="fa fa-pencil")
-                    i(class="fa fa-trash")
+                    i(title="Remover registro" onclick=`handleOpenDeleteConfirm('${confirmId}', '${newsletter.id}')` class="fa fa-trash")
       |!{pagination(dynamicPugFilePathFromVariable)} 
 
 |!{modal(dynamicPugFilePathFromVariable)}
+|!{confirm(dynamicPugFilePathFromVariable)}
+
+script.
+    const handleOpenDeleteConfirm = (confirmId, id) => {
+        if (id) {
+          toggleConfirm(confirmId, `handleDeleteNewsletter('${id}')`);
+        }
+    }
+
+    const handleDeleteNewsletter = (id) => {
+      fetch(`/institutional/newsletters/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+      .then((res) => {
+        if (!res.ok) throw new Error('Algo de errado aconteceu.');
+        return res.json()
+      })
+      .then(json => {
+        alert('Removido com sucesso');
+        document.location.reload();
+      })
+      .catch((err) => {
+        console.error(err);
+        alert(err.message);
+      });
+    }

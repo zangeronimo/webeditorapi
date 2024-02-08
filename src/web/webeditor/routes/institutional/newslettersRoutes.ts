@@ -4,6 +4,7 @@ import {
   NewsletterUpdateDataModel,
 } from "@application/model/institutional/newsletter";
 import {
+  NewsletterDelete,
   NewsletterGetById,
   NewsletterUpdate,
 } from "@application/usecase/institutional/newsletter";
@@ -18,12 +19,14 @@ export class NewslettersRoutes extends Pug {
   authorize = new Authorize();
   newsletterGetById = container.resolve(NewsletterGetById);
   newsletterUpdate = container.resolve(NewsletterUpdate);
+  newsletterDelete = container.resolve(NewsletterDelete);
 
   constructor(readonly baseRender: any) {
     super();
     this.router.get("/", this.authorize.isAutenticated, this.show);
     this.router.get("/:id", this.authorize.isAutenticated, this.getById);
     this.router.put("/:id", this.authorize.isAutenticated, this.update);
+    this.router.delete("/:id", this.authorize.isAutenticated, this.delete);
   }
 
   private show = async (req: Request, res: Response) => {
@@ -53,6 +56,13 @@ export class NewslettersRoutes extends Pug {
     const { company } = req.user;
     const model = new NewsletterUpdateDataModel(id, name, email, active);
     const newsletter = await this.newsletterUpdate.executeAsync(model, company);
+    return res.json(newsletter);
+  };
+
+  private delete = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { company } = req.user;
+    const newsletter = await this.newsletterDelete.executeAsync(id, company);
     return res.json(newsletter);
   };
 }

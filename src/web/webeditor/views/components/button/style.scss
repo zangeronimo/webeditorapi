@@ -30,27 +30,43 @@
 }
 
 .form_button_save {
+  background-color: var(--success);
   span {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: var(--grey900) !important;
+    color: var(--white) !important;
     flex-wrap: nowrap;
     i {
-      color: var(--grey900) !important;
+      color: var(--white) !important;
     }
   }
 }
 
 .form_button_cancel {
+  background-color: var(--danger);
   span {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: var(--grey900) !important;
+    color: var(--grey100) !important;
     flex-wrap: nowrap;
     i {
-      color: var(--grey900) !important;
+      color: var(--grey100) !important;
+    }
+  }
+}
+
+.form_button_confirm {
+  background-color: var(--success);
+  span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--white) !important;
+    flex-wrap: nowrap;
+    i {
+      color: var(--white) !important;
     }
   }
 }

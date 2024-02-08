@@ -8,6 +8,7 @@ import { SEO } from "@web/webeditor/models/Seo";
 export class Newsletter extends Pug {
   readonly getAll = container.resolve(NewsletterGetAll);
   readonly modalId = "_modal_newsletter_edit";
+  readonly confirmId = "_confirm_delete_id";
 
   render = async (model: GetAllNewsletterFilterModel, company: string) => {
     const seo = new SEO("WEBEditor - Institucional - Newsletters");
@@ -20,6 +21,12 @@ export class Newsletter extends Pug {
         title: "test",
         children: formEdit,
       });
+    const confirm = () =>
+      this.renderFile("components/confirm", {
+        id: this.confirmId,
+        title: "Confirme sua ação",
+        content: "Deseja realmente remover o registro?",
+      });
     const paginationComponent = new Pagination();
     const pagination = await paginationComponent.render(
       newsletters.total,
@@ -31,9 +38,11 @@ export class Newsletter extends Pug {
         this.renderFile("newsletter", {
           model,
           modalId: this.modalId,
+          confirmId: this.confirmId,
           newsletters: newsletters.itens,
           pagination,
           modal,
+          confirm,
         }),
       seo,
     };

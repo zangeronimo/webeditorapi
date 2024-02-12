@@ -1,4 +1,5 @@
 import { Messages } from "@application/messages/Messages";
+import { Roles } from "@application/messages/Roles";
 import {
   GetAllNewsletterFilterModel,
   NewsletterUpdateDataModel,
@@ -23,10 +24,30 @@ export class NewslettersRoutes extends Pug {
 
   constructor(readonly baseRender: any) {
     super();
-    this.router.get("/", this.authorize.isAutenticated, this.show);
-    this.router.get("/:id", this.authorize.isAutenticated, this.getById);
-    this.router.put("/:id", this.authorize.isAutenticated, this.update);
-    this.router.delete("/:id", this.authorize.isAutenticated, this.delete);
+    this.router.get(
+      "/",
+      this.authorize.isAutenticated,
+      this.authorize.userHasRole(Roles.institutional.newsletters.view, true),
+      this.show
+    );
+    this.router.get(
+      "/:id",
+      this.authorize.isAutenticated,
+      this.authorize.userHasRole(Roles.institutional.newsletters.update),
+      this.getById
+    );
+    this.router.put(
+      "/:id",
+      this.authorize.isAutenticated,
+      this.authorize.userHasRole(Roles.institutional.newsletters.update),
+      this.update
+    );
+    this.router.delete(
+      "/:id",
+      this.authorize.isAutenticated,
+      this.authorize.userHasRole(Roles.institutional.newsletters.delete),
+      this.delete
+    );
   }
 
   private show = async (req: Request, res: Response) => {

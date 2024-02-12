@@ -1,7 +1,7 @@
 import { Newsletter } from "@domain/entity/institutional";
+import { DtoBase } from "../DtoBase";
 
-export class NewsletterDto {
-  id: string;
+export class NewsletterDto extends DtoBase {
   name: string;
   email: string;
   active: number;
@@ -9,7 +9,7 @@ export class NewsletterDto {
   confirmedIP?: string;
 
   constructor(newsletter: Newsletter) {
-    this.id = newsletter.id;
+    super(newsletter.id, newsletter.createdAt, newsletter.updatedAt);
     this.name = newsletter.name;
     this.email = newsletter.email;
     this.active = newsletter.active.valueOf();

@@ -5,7 +5,7 @@ import { StringExtensions } from "./string";
 export class Extensions {
   static init = () => {
     StringExtensions.noAccents;
-    DateExtensions.toString;
+    DateExtensions.toFormat;
     NumberExtensions.toStars;
   };
 }

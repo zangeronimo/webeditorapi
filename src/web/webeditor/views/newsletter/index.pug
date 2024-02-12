@@ -30,8 +30,14 @@ div.newsletter
                 +OrderBy('E-mail', 'email')
               th
                 +OrderBy('Ativo', 'active', true)
-              th Confirmado em
-              th Confirmado IP
+              th
+                +OrderBy('Confirmado', 'confirmed_at', true)
+              th
+                +OrderBy('IP', 'confirmed_ip', true)
+              th
+                +OrderBy('Criado', 'created_at', true)
+              th
+                +OrderBy('Atualizado', 'updated_at', true)
               th.datagrid_right Ações
           tbody
             each newsletter in newsletters
@@ -39,8 +45,12 @@ div.newsletter
                 td(data-label="Nome") #{newsletter.name}
                 td(data-label="E-mail") #{newsletter.email}
                 td(data-label="Ativo").datagrid_center #{newsletter.active ? 'Sim' : 'Não'}
-                td(data-label="Confirmado em").datagrid_center #{newsletter.confirmedAt}
-                td(data-label="Confirmado IP").datagrid_center #{newsletter.confirmedIP}
+                td(data-label="Confirmado").datagrid_center 
+                  if newsletter.confirmedAt
+                    span #{newsletter.confirmedAt.toFormat('dd/MM/yyyy')}
+                td(data-label="IP").datagrid_center #{newsletter.confirmedIP}
+                td(data-label="Criado").datagrid_center #{newsletter.createdAt.toFormat('dd/MM/yyyy')}
+                td(data-label="Atualizado").datagrid_center #{newsletter.updatedAt.toFormat('dd/MM/yyyy')}
                 td(data-label="Ações").datagrid_right
                   div.datagrid_tools
                     i(title="Editar registro" onclick=`handleOpenFormModal('${modalId}', '${newsletter.id}')` class="fa fa-pencil")

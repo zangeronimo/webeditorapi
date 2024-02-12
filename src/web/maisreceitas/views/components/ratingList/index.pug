@@ -7,7 +7,7 @@ if ratings.length > 0
       div.rating_item
         div.rating_header
           if (rating.updatedAt)
-            p #{rating.updatedAt.toString('dd/MM/yyyy')}
+            p #{rating.updatedAt.toFormat('dd/MM/yyyy')}
           p.rating_name #{rating.name}
           p.rating_stars #{rating.rate.toStars()}
         p.rating_comment #{rating.comment}

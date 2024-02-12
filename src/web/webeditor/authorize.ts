@@ -1,4 +1,5 @@
-import { RefreshToken } from "@application/usecase/webeditor";
+import { Messages } from "@application/messages/Messages";
+import { HasRole, RefreshToken } from "@application/usecase/webeditor";
 import { JwtWebTokenProvider } from "@infra/provider";
 import { NextFunction, Request, Response } from "express";
 import { container } from "tsyringe";
@@ -6,6 +7,7 @@ import { container } from "tsyringe";
 export class Authorize {
   refreshToken = container.resolve(RefreshToken);
   tokenProvider = container.resolve(JwtWebTokenProvider);
+  hasRole = container.resolve(HasRole);
 
   isAutenticated = async (req: Request, res: Response, next: NextFunction) => {
     const refresh = req.headers.cookie
@@ -19,5 +21,18 @@ export class Authorize {
     const { sub, company } = tokenPayloadModel!;
     req.user = { id: sub, company };
     return next();
+  };
+
+  userHasRole = (role: string, redirect = false) => {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      const { id, company } = req.user;
+      const hasPermission = await this.hasRole.executeAsync(id, company, role);
+      if (!hasPermission) {
+        return redirect
+          ? res.redirect("/access-denied")
+          : res.status(403).json(Messages.accessDenied);
+      }
+      return next();
+    };
   };
 }

@@ -14,7 +14,7 @@ export class NewsletterRepository implements INewsletterRepository {
   async getByIdAsync(id: string, company: string): Promise<Newsletter | null> {
     const [newsletterData] = await this.db.queryAsync(
       `select
-        id, email, name, active, webeditor_companies_id
+        id, email, name, active, confirmed_at, confirmed_ip, webeditor_companies_id, created_at, updated_at
        from institutional_newsletters
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
@@ -25,7 +25,11 @@ export class NewsletterRepository implements INewsletterRepository {
           newsletterData.name,
           newsletterData.email,
           newsletterData.active,
-          newsletterData.webeditor_companies_id
+          newsletterData.webeditor_companies_id,
+          newsletterData.confirmed_at,
+          newsletterData.confirmed_ip,
+          newsletterData.created_at,
+          newsletterData.updated_at
         )
       : null;
   }
@@ -35,7 +39,7 @@ export class NewsletterRepository implements INewsletterRepository {
     company: string
   ): Promise<Newsletter | null> {
     const [newsletterData] = await this.db.queryAsync(
-      "select id, email, name, active, webeditor_companies_id from institutional_newsletters where email = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      "select id, email, name, active, confirmed_at, confirmed_ip, webeditor_companies_id, created_at, updated_at from institutional_newsletters where email = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [email, company]
     );
     return newsletterData
@@ -44,7 +48,11 @@ export class NewsletterRepository implements INewsletterRepository {
           newsletterData.name,
           newsletterData.email,
           newsletterData.active,
-          newsletterData.webeditor_companies_id
+          newsletterData.webeditor_companies_id,
+          newsletterData.confirmed_at,
+          newsletterData.confirmed_ip,
+          newsletterData.created_at,
+          newsletterData.updated_at
         )
       : null;
   }
@@ -76,7 +84,7 @@ export class NewsletterRepository implements INewsletterRepository {
     );
     const newslettersData: any[] = await this.db.queryAsync(
       `select
-        id, email, name, active, webeditor_companies_id
+        id, email, name, active, confirmed_at, confirmed_ip, webeditor_companies_id, created_at, updated_at
       from institutional_newsletters
       where ${where}
       order by ${ordenation}
@@ -98,7 +106,11 @@ export class NewsletterRepository implements INewsletterRepository {
         newslettersData[i].name,
         newslettersData[i].email,
         newslettersData[i].active,
-        newslettersData[i].webeditor_companies_id
+        newslettersData[i].webeditor_companies_id,
+        newslettersData[i].confirmed_at,
+        newslettersData[i].confirmed_ip,
+        newslettersData[i].created_at,
+        newslettersData[i].updated_at
       );
       newsletters.push(newsletter);
     }

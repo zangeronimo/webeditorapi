@@ -3,19 +3,15 @@ import {
   NewsletterUpdateDataModel,
 } from "@application/model/institutional/newsletter";
 import { ActiveEnum } from "@domain/enum";
+import { EntityBase } from "../EntityBase";
 
-export class Newsletter {
-  private _id: string;
+export class Newsletter extends EntityBase {
   private _name: string;
   private _email: string;
   private _active: ActiveEnum;
-  private _updatedAt?: Date;
   private _confirmedAt?: Date;
   private _confirmedIP?: string;
 
-  get id() {
-    return this._id;
-  }
   get name() {
     return this._name;
   }
@@ -25,9 +21,6 @@ export class Newsletter {
   get active() {
     return this._active;
   }
-  get updatedAt() {
-    return this._updatedAt;
-  }
   get confirmedAt() {
     return this._confirmedAt;
   }
@@ -36,16 +29,21 @@ export class Newsletter {
   }
 
   private constructor(
-    id: string,
     name: string,
     email: string,
     active: ActiveEnum,
-    readonly companyId: string
+    companyId: string,
+    confirmedAt?: Date,
+    confirmedIP?: string,
+    id?: string,
+    createdAt?: Date,
+    updatedAt?: Date
   ) {
-    this._id = id;
+    super(companyId, id, createdAt, updatedAt);
     this._name = name;
     this._email = email;
     this._active = active;
+    (this._confirmedAt = confirmedAt), (this._confirmedIP = confirmedIP);
   }
 
   static restore(
@@ -53,9 +51,23 @@ export class Newsletter {
     name: string,
     email: string,
     active: ActiveEnum,
-    companyId: string
+    companyId: string,
+    confirmedAt: Date,
+    confirmedIP: string,
+    createdAt: Date,
+    updatedAt: Date
   ): Newsletter {
-    return new Newsletter(id, name, email, active, companyId);
+    return new Newsletter(
+      name,
+      email,
+      active,
+      companyId,
+      confirmedAt,
+      confirmedIP,
+      id,
+      createdAt,
+      updatedAt
+    );
   }
 
   static create(
@@ -63,7 +75,6 @@ export class Newsletter {
     companyId: string
   ): Newsletter {
     const newsletter = new Newsletter(
-      crypto.randomUUID(),
       newsletterData.name,
       newsletterData.email,
       newsletterData.active,
@@ -73,7 +84,7 @@ export class Newsletter {
   }
 
   update(newsletterData: NewsletterUpdateDataModel) {
-    this._updatedAt = new Date();
+    this.updateBase();
     this._name = newsletterData.name;
     this._email = newsletterData.email;
     this._active = newsletterData.active;

@@ -5,4 +5,4 @@ urlset(xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
     url
       loc #{baseUrl}/receita/#{recipe.slug}
       if (recipe.updatedAt)
-        lastmod #{recipe.updatedAt.toString('yyyy-MM-dd')}
+        lastmod #{recipe.updatedAt.toFormat('yyyy-MM-dd')}

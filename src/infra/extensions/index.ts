@@ -1,6 +1,7 @@
 import { CulinaryExtension } from "./CulinaryExtension";
 import { InstitutionalExtension } from "./InstitutionalExtension";
 import { ProviderExtesion } from "./ProviderExtension";
+import { PublicityExtension } from "./PublicityExtension";
 import { TimeSheetExtension } from "./TimeSheetExtension";
 import { WEBEditorExtension } from "./WEBEditorExtension";
 
@@ -11,5 +12,6 @@ export class ExtensionDI {
     TimeSheetExtension.init();
     CulinaryExtension.init();
     InstitutionalExtension.init();
+    PublicityExtension.init();
   };
 }

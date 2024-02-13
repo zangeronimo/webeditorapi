@@ -57,6 +57,20 @@
   }
 }
 
+.form_button_new {
+  background-color: var(--success);
+  span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--white) !important;
+    flex-wrap: nowrap;
+    i {
+      color: var(--white) !important;
+    }
+  }
+}
+
 .form_button_confirm {
   background-color: var(--success);
   span {

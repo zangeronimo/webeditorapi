@@ -17,7 +17,7 @@ export class BannerGetAll implements IBannerGetAll {
     const { itens: banners, total } = await this._bannerRepository.getAllAsync(
       model,
       company
-    )!;
+    );
     const bannersDto = banners.map((banner: Banner) => new BannerDto(banner));
     return new PaginatorResultDto(bannersDto, total);
   }

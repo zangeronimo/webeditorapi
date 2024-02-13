@@ -6,4 +6,16 @@ export class Roles {
       delete: "INSTITUTIONAL_NEWSLETTER_DELETE",
     },
   };
+  static publicity = {
+    banners: {
+      view: "PUBLICITY_BANNER_VIEW",
+      update: "PUBLICITY_BANNER_UPDATE",
+      delete: "PUBLICITY_BANNER_DELETE",
+    },
+    categories: {
+      view: "PUBLICITY_CATEGORY_VIEW",
+      update: "PUBLICITY_CATEGORY_UPDATE",
+      delete: "PUBLICITY_CATEGORY_DELETE",
+    },
+  };
 }

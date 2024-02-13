@@ -9,7 +9,6 @@ export class Banner extends EntityBase {
   private _title: string;
   private _url: string;
   private _image: string;
-  private _order: number;
   private _active: ActiveEnum;
   private _bannerCategory: string;
 
@@ -22,9 +21,6 @@ export class Banner extends EntityBase {
   get image() {
     return this._image;
   }
-  get order() {
-    return this._order;
-  }
   get active() {
     return this._active;
   }
@@ -36,7 +32,6 @@ export class Banner extends EntityBase {
     title: string,
     url: string,
     image: string,
-    order: number,
     active: ActiveEnum,
     bannerCategory: string,
     companyId: string,
@@ -50,7 +45,6 @@ export class Banner extends EntityBase {
     this._title = title;
     this._url = url;
     this._image = image;
-    this._order = order;
     this._active = active;
     this._bannerCategory = bannerCategory;
   }
@@ -60,7 +54,6 @@ export class Banner extends EntityBase {
     title: string,
     url: string,
     image: string,
-    order: number,
     active: ActiveEnum,
     companyId: string,
     bannerCategory: string,
@@ -73,7 +66,6 @@ export class Banner extends EntityBase {
       title,
       url,
       image,
-      order,
       active,
       bannerCategory,
       companyId,
@@ -94,7 +86,6 @@ export class Banner extends EntityBase {
       bannerData.title,
       bannerData.url,
       image,
-      bannerData.order,
       bannerData.active,
       bannerData.bannerCategory,
       companyId
@@ -107,7 +98,6 @@ export class Banner extends EntityBase {
     this._title = bannerData.title;
     this._url = bannerData.url;
     this._image = image;
-    this._order = bannerData.order;
     this._active = bannerData.active;
     this._bannerCategory = bannerData.bannerCategory;
   }

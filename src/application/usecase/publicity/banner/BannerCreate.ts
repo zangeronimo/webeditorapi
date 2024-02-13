@@ -12,7 +12,7 @@ export class BannerCreate implements IBannerCreate {
   constructor(
     @inject("IBannerRepository")
     readonly _bannerRepository: IBannerRepository,
-    @inject("StorageProvider")
+    @inject("IStorageProvider")
     private storageProvider: IStorageProvider
   ) {}
 
@@ -27,8 +27,10 @@ export class BannerCreate implements IBannerCreate {
     if (banner === null) {
       throw new Error(Messages.notCreated("Banner"));
     }
+
     const titleExists = await this._bannerRepository.getByTitleAsync(
       banner.title,
+      banner.bannerCategory,
       company
     );
     if (titleExists !== null) {

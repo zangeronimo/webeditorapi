@@ -11,7 +11,7 @@ import {
 } from "@application/usecase/institutional/newsletter";
 import { Authorize } from "@web/webeditor/authorize";
 import { Pug } from "@web/webeditor/models/Pug";
-import { Newsletter } from "@web/webeditor/views/newsletter";
+import { Newsletter } from "@web/webeditor/views/institutional/newsletter";
 import { Request, Response, Router } from "express";
 import { container } from "tsyringe";
 

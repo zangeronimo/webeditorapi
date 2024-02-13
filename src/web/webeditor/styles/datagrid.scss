@@ -87,14 +87,29 @@
     }
     .datagrid_left {
       text-align: left;
+      & span {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      }
     }
 
     .datagrid_center {
       text-align: center;
+      & span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     }
 
     .datagrid_right {
       text-align: right;
+      & span {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
     }
 
     .datagrid_tools {

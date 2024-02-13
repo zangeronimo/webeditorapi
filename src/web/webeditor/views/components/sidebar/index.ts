@@ -82,6 +82,23 @@ export class SideBar extends Pug {
         ],
       },
       {
+        id: 5,
+        name: "Publicidade",
+        icon: "rectangle-ad",
+        subItems: [
+          {
+            id: 5.1,
+            name: "Banners",
+            url: "/publicity/banners",
+          },
+          {
+            id: 5.2,
+            name: "Categorias",
+            url: "/publicity/categories",
+          },
+        ],
+      },
+      {
         id: 90,
         name: "WEBEditor",
         icon: "linux",

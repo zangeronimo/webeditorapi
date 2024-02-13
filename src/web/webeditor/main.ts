@@ -22,7 +22,7 @@ app.set("view engine", "pug");
 app.locals.basedir = path.join(__dirname, "views");
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json({ limit: "1mb" }));
+app.use(bodyParser.json({ limit: "50mb" }));
 app.use("/public", express.static(path.join(__dirname, "public")));
 app.use(
   "/files",

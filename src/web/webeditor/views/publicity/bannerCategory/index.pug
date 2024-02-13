@@ -1,23 +1,25 @@
-include ../components/input/index.pug
-include ../components/select/index.pug
-include ../components/button/search.pug
-include ../components/button/clear.pug
-include ../components/orderBy/index.pug
+include ../../components/input/index.pug
+include ../../components/select/index.pug
+include ../../components/button/search.pug
+include ../../components/button/clear.pug
+include ../../components/button/new.pug
+include ../../components/orderBy/index.pug
 
 style
-  include ../../styles/datagrid.scss
+  include ../../../styles/datagrid.scss
   include  styles.scss
 
-div.newsletter
+div.category
   div.box
     form
       div.group
         +Input({ name: "name", value: model.name, title: "Nome", type: "text", })
-        +Input({ name: "email", value: model.email, title: "E-mail", type: "text", })
         +Select({ name: "active", value: `${model.active}`, title: "Ativo", datas:[{value:"", label:"Todos"}, {value:"1", label:"Sim"}, {value:"0", label:"Não"}] })
       div.group.right
         +ButtonSearch()
         +ButtonClear()
+  div.group.right
+    +ButtonNew({ callback: `handleOpenFormModal('${modalId}')`, label: 'Nova Categoria'})
   div.box
     div.datagrid
       div.table_container
@@ -26,35 +28,24 @@ div.newsletter
             tr
               th.datagrid_left 
                 +OrderBy('Nome','name')
-              th.datagrid_left
-                +OrderBy('E-mail', 'email')
               th
                 +OrderBy('Ativo', 'active', true)
-              th
-                +OrderBy('Confirmado', 'confirmed_at', true)
-              th
-                +OrderBy('IP', 'confirmed_ip', true)
               th
                 +OrderBy('Criado', 'created_at', true)
               th
                 +OrderBy('Atualizado', 'updated_at', true)
               th.datagrid_right Ações
           tbody
-            each newsletter in newsletters
+            each category in categories
               tr
-                td(data-label="Nome") #{newsletter.name}
-                td(data-label="E-mail") #{newsletter.email}
-                td(data-label="Ativo").datagrid_center #{newsletter.active ? 'Sim' : 'Não'}
-                td(data-label="Confirmado").datagrid_center 
-                  if newsletter.confirmedAt
-                    span #{newsletter.confirmedAt.toFormat('dd/MM/yyyy')}
-                td(data-label="IP").datagrid_center #{newsletter.confirmedIP}
-                td(data-label="Criado").datagrid_center #{newsletter.createdAt.toFormat('dd/MM/yyyy')}
-                td(data-label="Atualizado").datagrid_center #{newsletter.updatedAt.toFormat('dd/MM/yyyy')}
+                td(data-label="Nome") #{category.name}
+                td(data-label="Ativo").datagrid_center #{category.active ? 'Sim' : 'Não'}
+                td(data-label="Criado").datagrid_center #{category.createdAt.toFormat('dd/MM/yyyy')}
+                td(data-label="Atualizado").datagrid_center #{category.updatedAt.toFormat('dd/MM/yyyy')}
                 td(data-label="Ações").datagrid_right
                   div.datagrid_tools
-                    i(title="Editar registro" onclick=`handleOpenFormModal('${modalId}', '${newsletter.id}')` class="fa fa-pencil")
-                    i(title="Remover registro" onclick=`handleOpenDeleteConfirm('${confirmId}', '${newsletter.id}')` class="fa fa-trash")
+                    i(title="Editar registro" onclick=`handleOpenFormModal('${modalId}', '${category.id}')` class="fa fa-pencil")
+                    i(title="Remover registro" onclick=`handleOpenDeleteConfirm('${confirmId}', '${category.id}')` class="fa fa-trash")
       |!{pagination(dynamicPugFilePathFromVariable)} 
 
 |!{modal(dynamicPugFilePathFromVariable)}
@@ -68,7 +59,7 @@ script.
     }
 
     const handleDeleteNewsletter = (id) => {
-      fetch(`/institutional/newsletters/${id}`, {
+      fetch(`/publicity/categories/${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",

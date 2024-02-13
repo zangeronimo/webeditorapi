@@ -10,7 +10,7 @@ export class BannerDelete implements IBannerDelete {
   constructor(
     @inject("IBannerRepository")
     readonly _bannerRepository: IBannerRepository,
-    @inject("StorageProvider")
+    @inject("IStorageProvider")
     private storageProvider: IStorageProvider
   ) {}
 

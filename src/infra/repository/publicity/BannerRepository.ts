@@ -14,7 +14,7 @@ export class BannerRepository implements IBannerRepository {
   async getByIdAsync(id: string, company: string): Promise<Banner | null> {
     const [bannerData] = await this.db.queryAsync(
       `select
-        id, title, url, image, order, views, clicks, active, publicity_banner_category_id, webeditor_companies_id, created_at, updated_at
+        id, title, url, image, total_views, total_clicks, active, publicity_banner_category_id, webeditor_companies_id, created_at, updated_at
        from publicity_banner
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
@@ -25,14 +25,13 @@ export class BannerRepository implements IBannerRepository {
           bannerData.title,
           bannerData.url,
           bannerData.image,
-          bannerData.order,
           bannerData.active,
           bannerData.webeditor_companies_id,
           bannerData.publicity_banner_category_id,
           bannerData.created_at,
           bannerData.updated_at,
-          bannerData.views,
-          bannerData.clicks
+          bannerData.total_views,
+          bannerData.total_clicks
         )
       : null;
   }
@@ -43,7 +42,7 @@ export class BannerRepository implements IBannerRepository {
     company: string
   ): Promise<Banner | null> {
     const [bannerData] = await this.db.queryAsync(
-      "select id, title, url, image, order, views, clicks, active, publicity_banner_category_id, webeditor_companies_id, created_at, updated_at from publicity_banner where title = $1 and publicity_banner_category_id = $2 and webeditor_companies_id = $3 and deleted_at is null",
+      "select id, title, url, image, total_views, total_clicks, active, publicity_banner_category_id, webeditor_companies_id, created_at, updated_at from publicity_banner where title = $1 and publicity_banner_category_id = $2 and webeditor_companies_id = $3 and deleted_at is null",
       [title, category, company]
     );
     return bannerData
@@ -52,14 +51,13 @@ export class BannerRepository implements IBannerRepository {
           bannerData.title,
           bannerData.url,
           bannerData.image,
-          bannerData.order,
           bannerData.active,
           bannerData.webeditor_companies_id,
           bannerData.publicity_banner_category_id,
           bannerData.created_at,
           bannerData.updated_at,
-          bannerData.views,
-          bannerData.clicks
+          bannerData.total_views,
+          bannerData.total_clicks
         )
       : null;
   }
@@ -91,7 +89,7 @@ export class BannerRepository implements IBannerRepository {
     );
     const bannersData: any[] = await this.db.queryAsync(
       `select 
-        id, title, url, image, order, views, clicks, active, publicity_banner_category_id, webeditor_companies_id, created_at, updated_at
+        id, title, url, image, total_views, total_clicks, active, publicity_banner_category_id, webeditor_companies_id, created_at, updated_at
       from publicity_banner
       where ${where}
       order by ${ordenation}
@@ -113,14 +111,13 @@ export class BannerRepository implements IBannerRepository {
         bannersData[i].title,
         bannersData[i].url,
         bannersData[i].image,
-        bannersData[i].order,
         bannersData[i].active,
         bannersData[i].webeditor_companies_id,
         bannersData[i].publicity_banner_category_id,
         bannersData[i].created_at,
         bannersData[i].updated_at,
-        bannersData[i].views,
-        bannersData[i].clicks
+        bannersData[i].total_views,
+        bannersData[i].total_clicks
       );
       banners.push(banner);
     }
@@ -129,24 +126,23 @@ export class BannerRepository implements IBannerRepository {
 
   async deleteAsync(banner: Banner, date: Date): Promise<Banner> {
     await this.db.queryAsync(
-      "update publicity_banner set deleted_at=$3, updated_at=$3 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
-      [banner.id, banner.companyId, date]
+      "update publicity_banner set deleted_at=$3, updated_at=$3, image=$4 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      [banner.id, banner.companyId, date, ""]
     );
     return banner;
   }
 
   async updateAsync(banner: Banner): Promise<Banner> {
     await this.db.queryAsync(
-      "update publicity_banner set title=$3, url=$4, image=$5, order=$6, views=$7, clicks=$8, active=$9, publicity_banner_category_id=$10, updated_at=$11 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      "update publicity_banner set title=$3, url=$4, image=$5, total_views=$6, total_clicks=$7, active=$8, publicity_banner_category_id=$9, updated_at=$10 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [
         banner.id,
         banner.companyId,
         banner.title,
         banner.url,
         banner.image,
-        banner.order,
-        banner.views,
-        banner.clicks,
+        banner.views ?? 0,
+        banner.clicks ?? 0,
         banner.active,
         banner.bannerCategory,
         banner.updatedAt,
@@ -157,18 +153,17 @@ export class BannerRepository implements IBannerRepository {
 
   async saveAsync(banner: Banner): Promise<Banner> {
     await this.db.queryAsync(
-      "insert into publicity_banner (id, title, url, image, order, views, clicks, active, publicity_banner_category_id, webeditor_companies_id) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
+      "insert into publicity_banner (id, title, url, image, total_views, total_clicks, active, publicity_banner_category_id, webeditor_companies_id) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
       [
         banner.id,
-        banner.companyId,
         banner.title,
         banner.url,
         banner.image,
-        banner.order,
-        banner.views,
-        banner.clicks,
+        banner.views ?? 0,
+        banner.clicks ?? 0,
         banner.active,
         banner.bannerCategory,
+        banner.companyId,
         banner.updatedAt,
       ]
     );

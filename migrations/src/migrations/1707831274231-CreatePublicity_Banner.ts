@@ -29,22 +29,17 @@ export class CreatePublicityBanner1707831274231 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: "order",
-            type: "int",
-            default: 0,
-          },
-          {
             name: "active",
             type: "int",
             default: 1,
           },
           {
-            name: "views",
+            name: "total_views",
             type: "int",
             default: 0,
           },
           {
-            name: "clicks",
+            name: "total_clicks",
             type: "int",
             default: 0,
           },

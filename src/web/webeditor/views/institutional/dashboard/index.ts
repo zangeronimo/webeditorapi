@@ -9,7 +9,7 @@ export class Dashboard extends Pug {
   render = async () => {
     const seo = new SEO("WEBEditor");
     return {
-      root: () => this.renderFile("dashboard", {}),
+      root: () => this.renderFile("institutional/dashboard", {}),
       seo,
     };
   };

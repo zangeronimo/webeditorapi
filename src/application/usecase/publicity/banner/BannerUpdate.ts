@@ -26,6 +26,7 @@ export class BannerUpdate implements IBannerUpdate {
     if (bannerData.title !== banner.title) {
       const existTitle = await this._bannerRepository.getByTitleAsync(
         bannerData.title,
+        bannerData.bannerCategory,
         company
       );
       if (existTitle !== null) {

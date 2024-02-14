@@ -10,6 +10,8 @@ export class Banner extends EntityBase {
   private _url: string;
   private _image: string;
   private _active: ActiveEnum;
+  private _views?: number;
+  private _clicks?: number;
   private _bannerCategory: string;
 
   get title() {
@@ -23,6 +25,12 @@ export class Banner extends EntityBase {
   }
   get active() {
     return this._active;
+  }
+  get views() {
+    return this._views;
+  }
+  get clicks() {
+    return this._clicks;
   }
   get bannerCategory() {
     return this._bannerCategory;
@@ -38,14 +46,16 @@ export class Banner extends EntityBase {
     id?: string,
     createdAt?: Date,
     updatedAt?: Date,
-    readonly views?: number,
-    readonly clicks?: number
+    views?: number,
+    clicks?: number
   ) {
     super(companyId, id, createdAt, updatedAt);
     this._title = title;
     this._url = url;
     this._image = image;
     this._active = active;
+    this._views = views;
+    this._clicks = clicks;
     this._bannerCategory = bannerCategory;
   }
 
@@ -100,5 +110,15 @@ export class Banner extends EntityBase {
     this._image = image;
     this._active = bannerData.active;
     this._bannerCategory = bannerData.bannerCategory;
+  }
+
+  setView() {
+    if (!this._views) this._views = 0;
+    ++this._views;
+  }
+
+  setClick() {
+    if (!this._clicks) this._clicks = 0;
+    ++this._clicks;
   }
 }

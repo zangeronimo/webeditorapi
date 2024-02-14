@@ -1,12 +1,15 @@
-import { RecipeService } from "@application/service/culinary/RecipeService";
-import { container } from "tsyringe";
-import pug from "pug";
 import { SeoService } from "@application/service/SeoService";
-import { RatingList } from "../components/ratingList";
+import { RecipeService } from "@application/service/culinary/RecipeService";
+import { BannerService } from "@application/service/publicity/BannerService";
+import pug from "pug";
+import { container } from "tsyringe";
 import { RatingForm } from "../components/ratingForm";
+import { RatingList } from "../components/ratingList";
+import { BannerDto } from "@domain/dto/publicity";
 
 export class Recipe {
   readonly recipeService = container.resolve(RecipeService);
+  readonly bannerService = container.resolve(BannerService);
   readonly company = process.env.MAISRECEITAS!;
 
   render = async (
@@ -32,8 +35,10 @@ export class Recipe {
     seo.setCanonical(`receita/${recipeSlug}`);
     seo.setDescription(recipe.preparation);
     seo.setRecipe(recipe);
+    let banners: BannerDto[] = [];
     if (recipe.images.length > 0)
       seo.setImage(process.env.MAISRECEITAS_URL!, recipe.images[0]);
+    else banners = await this.bannerService.getRandAsync(1, this.company);
     return {
       root: () =>
         pug.renderFile(pugFile, {
@@ -41,6 +46,7 @@ export class Recipe {
           ratingList,
           ratingForm,
           rate,
+          banners,
           apiUrl: process.env.MAISRECEITAS_URL,
         }),
       seo,

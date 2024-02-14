@@ -9,6 +9,8 @@ import { Sitemap } from "./views/sitemap";
 import { Pesquisar } from "./views/pesquisar";
 import { Footer } from "./views/components/footer";
 import { NewsletterForm } from "./views/components/newsletterForm";
+import { BannerService } from "@application/service/publicity/BannerService";
+import { Banner } from "./views/banner";
 
 export class Controller {
   router = Router();
@@ -31,6 +33,7 @@ export class Controller {
     this.router.get("/receita/:recipe", this.recipe);
     this.router.post("/receita/:recipe", this.recipeRating);
     this.router.post("/newsletter", this.newsletter);
+    this.router.get("/banner/:id", this.bannerClick);
   }
 
   private dashboard = async (req: Request, res: Response) => {
@@ -131,6 +134,18 @@ export class Controller {
       const newsletterForm = new NewsletterForm();
       const newsletter = await newsletterForm.createAsync(name, email);
       return res.status(201).json(newsletter);
+    } catch (e: any) {
+      return res.status(400).json(e.message);
+    }
+  };
+
+  private bannerClick = async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const bannerService = new Banner();
+      const url = await bannerService.setClickAsync(id);
+      if (!url) return res.json();
+      return res.redirect(url);
     } catch (e: any) {
       return res.status(400).json(e.message);
     }

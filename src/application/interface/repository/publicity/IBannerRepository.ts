@@ -15,4 +15,5 @@ export interface IBannerRepository {
   updateAsync(banner: Banner): Promise<Banner>;
   saveAsync(banner: Banner): Promise<Banner>;
   deleteAsync(banner: Banner, date: Date): Promise<Banner>;
+  getRandAsync(total: number, company: string): Promise<Banner[]>;
 }

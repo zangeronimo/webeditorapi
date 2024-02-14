@@ -8,7 +8,7 @@ export class DiskStorageProvider implements IStorageProvider {
     const [header, base64Data] = file.split(",");
     const [, type] = header.replace(";base64", "").split("/");
     const name = `${new Date().getTime()}.${type}`;
-    const dir = path.resolve("upload", company);
+    const dir = path.resolve(__dirname, "..", "..", "..", "upload", company);
     this.createDir(dir);
     fs.writeFile(`${dir}/${name}`, base64Data, "base64", (err) =>
       console.log(err)
@@ -20,9 +20,9 @@ export class DiskStorageProvider implements IStorageProvider {
     if (!file) return;
     try {
       const removeFile = file.replace("/files/", "upload/");
-      const dir = path.resolve(removeFile);
-      await fs.promises.stat(dir);
-      await fs.promises.unlink(dir);
+      const filePath = path.resolve(__dirname, "..", "..", "..", removeFile);
+      await fs.promises.stat(filePath);
+      await fs.promises.unlink(filePath);
     } catch {
       return;
     }

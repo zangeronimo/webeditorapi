@@ -86,7 +86,7 @@ script.
         const bannerCategory = categoryField.value;
         const imageUploadField = document.getElementById('banner_form_imageUpload');
         let imageUpload = '';
-        if (imageUploadField) imageUpload = await toBase64(imageUploadField.files[0])
+        if (imageUploadField?.files?.length) imageUpload = await toBase64(imageUploadField.files[0])
         const method = id ? 'PUT' : 'POST'
         payload = { id, title, url, bannerCategory, active, imageUpload }
         fetch(`/publicity/banners/${id}`, {

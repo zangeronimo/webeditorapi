@@ -92,6 +92,18 @@ strong {
   flex: 1;
 }
 
+.group {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  @media (min-width: 800px) {
+    flex-direction: row;
+  }
+}
+
 .left {
   align-items: flex-start;
 }

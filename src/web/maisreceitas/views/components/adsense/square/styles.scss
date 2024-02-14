@@ -1,4 +1,7 @@
 .ads_square_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-width: 20rem;
   min-height: 20rem;
 }

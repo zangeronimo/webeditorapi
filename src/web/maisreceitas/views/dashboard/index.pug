@@ -4,7 +4,11 @@ style
 div.dashboard
   div
     |!{news(dynamicPugFilePathFromVariable)}
-
+  div.group.space_around
+    each banner in banners
+      a(href=`/banner/${banner.id}` title=banner.title target="_blank")
+        img.photo_galery_current(id=`_recipe_photo_galery_${banner.id}` src=`${apiUrl}${banner.image}` alt=banner.title)
+    
   div
     |!{recipeWithImage(dynamicPugFilePathFromVariable)}
 

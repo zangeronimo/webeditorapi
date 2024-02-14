@@ -92,6 +92,26 @@ strong {
   flex: 1;
 }
 
+.left {
+  align-items: flex-start;
+}
+
+.center {
+  align-items: center;
+}
+
+.right {
+  align-items: right;
+}
+
+.space_between {
+  justify-content: space-between;
+}
+
+.space_around {
+  justify-content: space-around;
+}
+
 @media (min-width: 650px) {
   :root {
     font-size: 62.5%;

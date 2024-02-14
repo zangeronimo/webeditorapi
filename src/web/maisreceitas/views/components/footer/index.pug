@@ -1,9 +1,13 @@
+include ../adsense/square/index.pug
+
 style
     include styles.module.scss
 
 footer.footer
-  div.left
-    |!{newsletterForm(dynamicPugFilePathFromVariable)}
+  div.group.space_between
+      +AdsSquare()
+      |!{newsletterForm(dynamicPugFilePathFromVariable)}
+      +AdsSquare()
 
   div.right
     p Desde 2006 pensando em você&nbsp;

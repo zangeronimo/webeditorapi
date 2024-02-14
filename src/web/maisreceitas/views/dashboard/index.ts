@@ -6,9 +6,12 @@ import { RecipeWithImage } from "../components/recipeWithImage";
 import { RecipeList } from "../components/recipeList";
 import { GetAllRecipesFilterModel } from "@application/model/culinary/recipe/GetAllRecipesFilterModel";
 import { SeoService } from "@application/service/SeoService";
+import { BannerService } from "@application/service/publicity/BannerService";
 
 export class Dashboard {
   readonly recipeService = container.resolve(RecipeService);
+  readonly bannerService = container.resolve(BannerService);
+  readonly company = process.env.MAISRECEITAS!;
 
   render = async (pugFile: string) => {
     const news = await this.getNews(10);
@@ -18,11 +21,13 @@ export class Dashboard {
     seo.setDescription(
       "Curta e aproveite as mais deliciosas receitas da internet, isso e muito mais você encontra aqui, confira."
     );
+    const banners = await this.bannerService.getRandAsync(3, this.company);
     return {
       root: () =>
         pug.renderFile(pugFile, {
           news,
           recipeWithImage,
+          banners,
           apiUrl: process.env.MAISRECEITAS_URL,
         }),
       seo,

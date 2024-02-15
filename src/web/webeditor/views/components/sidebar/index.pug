@@ -6,20 +6,7 @@ div(id="_webeditor_sidebar").sidebar.item
     img(src="/public/webeditor.png" alt="WEBEditor Logo")
     span &nbsp;
     button(onclick="showSideBar()" title="Fechar o menu") &times;
-  each item in items
-    ul(onclick=`${item.subItems.length ? `showSubMenu('${item.id}')` : ''}`)
-      li.sidebar_item
-        div
-          if item.icon
-           i(class=`fa fa-${item.icon}`)
-          if item.url
-            a(href=item.url title=item.name) #{item.name}
-          else
-            span #{item.name}
-        ul(id=item.id).sub_items
-          each subItem in item.subItems
-            li
-              a(href=subItem.url title=subItem.name) #{subItem.name}
+  span(id="_sidebar_content_menu")
 
 script.
   const showSubMenu = (id) => {
@@ -45,3 +32,62 @@ script.
       }
     }
   };
+
+  const getSidebarItemsAsync = async () => {
+    return fetch("/sidebar", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((res) => res.json())
+    .then(json => {
+      const menuElement = document.getElementById('_sidebar_content_menu')
+      let menuHtml = "";
+      if (menuElement) {
+        json.map(item => {
+          const menuUl = document.createElement('ul')
+          menuUl.onclick = item.subItems.length ? () => showSubMenu(item.id) : ''
+          const menuLi = document.createElement('li')
+          menuLi.classList.add('sidebar_item')
+          const menuDiv = document.createElement('div')
+          const menuLabel = document.createTextNode(item.name)
+          if (item.icon) {
+            const menuIcon = document.createElement('i')
+            menuIcon.classList.add('fa')
+            menuIcon.classList.add(`fa-${item.icon}`)
+            menuDiv.appendChild(menuIcon)
+          }
+          if (item.url) {
+            const menuLink = document.createElement('a')
+            menuLink.href=item.url
+            menuLink.title=item.name
+            menuLink.appendChild(menuLabel)
+            menuDiv.appendChild(menuLink);
+          } else {
+            const menuSpanLabel = document.createElement('span')
+            menuSpanLabel.appendChild(menuLabel)
+            menuDiv.appendChild(menuSpanLabel)
+          }
+          menuLi.appendChild(menuDiv)
+          const submenuUl = document.createElement('ul')
+          submenuUl.id = item.id
+          submenuUl.classList.add('sub_items')
+          item.subItems.map(subItem => {
+            const submenuLi = document.createElement('li')
+            const submenuLink = document.createElement('a')
+            submenuLink.href = subItem.url
+            submenuLink.title = subItem.name
+            const submenuLabel = document.createTextNode(subItem.name)
+            submenuLink.appendChild(submenuLabel)
+            submenuLi.appendChild(submenuLink)
+            submenuUl.appendChild(submenuLi)
+          })
+          menuLi.appendChild(submenuUl)
+          menuUl.appendChild(menuLi)
+          menuElement.appendChild(menuUl)
+        })
+      }
+    })
+  }
+  getSidebarItemsAsync();

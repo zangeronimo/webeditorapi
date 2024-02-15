@@ -6,7 +6,7 @@ import { inject, injectable } from "tsyringe";
 export class HasRole implements IHasRole {
   constructor(
     @inject("IUserRepository")
-    readonly _userRepository: IUserRepository,
+    readonly _userRepository: IUserRepository
   ) {}
 
   async executeAsync(userId: string, companyId: string, role: string) {

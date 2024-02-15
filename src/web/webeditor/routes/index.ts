@@ -5,9 +5,11 @@ import { SignInRoutes } from "./system/signInRoutes";
 import { AccessDeniedRoutes } from "./institutional/accessDeniedRoutes";
 import { BannersCategoriesRoutes } from "./publicity/bannersCategoriesRoutes";
 import { BannersRoutes } from "./publicity/bannersRoutes";
+import { SidebarRoutes } from "./system/sidebarRoutes";
 
 export class Routes {
   static init = (router: Router, baseRender: any) => {
+    const sidebarRoutes = new SidebarRoutes();
     const signInRoutes = new SignInRoutes(baseRender);
     const accessDeniedRoutes = new AccessDeniedRoutes(baseRender);
     const dashboardRoutes = new DashboardRoutes(baseRender);
@@ -15,6 +17,7 @@ export class Routes {
     const bannersRoutes = new BannersRoutes(baseRender);
     const bannersCategoriesRoutes = new BannersCategoriesRoutes(baseRender);
 
+    router.use("/sidebar", sidebarRoutes.router);
     router.use("/sign-in", signInRoutes.router);
     router.use("/access-denied", accessDeniedRoutes.router);
     router.use("/", dashboardRoutes.router);

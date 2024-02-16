@@ -19,7 +19,8 @@ html(lang="pt-BR")
     link(defer rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap")
     script(async src="https://kit.fontawesome.com/984926c998.js" crossorigin="anonymous")
     style
-      include ../styles/global.scss
+      include ../styles/global.scss      
+    script(type='text/javascript', src='/public/js/global.js')
   body
     div.container
       if sidebar
@@ -30,4 +31,3 @@ html(lang="pt-BR")
         article.content
           |!{root(dynamicPugFilePathFromVariable)}
         +Footer()
-    script(type='text/javascript', src='/public/js/global.js')

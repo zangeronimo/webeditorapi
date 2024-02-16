@@ -1,7 +1,7 @@
 style
     include style.scss
 
-mixin ButtonNew({ callback, title='Novo Registro', label='Novo Registro' })
-    button.form_button.form_button_new(onclick=callback, type='button', title=title)
+mixin ButtonNew({ callback, title='Novo Registro', label='Novo Registro', name='_new_button', disabled=false })
+    button.form_button.form_button_new(onclick=callback, type='button', title=title, disabled=disabled, name=name)
         span #{label}
             i(class="fa fa-plus")

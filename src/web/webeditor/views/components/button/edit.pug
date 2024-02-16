@@ -1,0 +1,6 @@
+style
+    include style.scss
+
+mixin ButtonEdit({ callback, name = '_edit_button', title = 'Editar registro', disabled = true })
+    button.form_button.form_button_edit(type='button' name=name onclick=callback title=title disabled=disabled)
+        i(class="fa fa-pencil")

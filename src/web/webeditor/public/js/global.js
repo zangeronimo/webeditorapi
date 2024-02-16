@@ -18,3 +18,26 @@ const _handleSort = (field, desc = false) => {
     currentOrderBy === field ? newDesc : desc
   }`;
 };
+
+const _userHasPermissionAsync = async (role) => {
+  return fetch("/has-permission", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ role }),
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      return json.hasPermission;
+    });
+};
+
+const _showButtonsWithPermission = (role, name) => {
+  _userHasPermissionAsync(role).then((res) => {
+    const elements = document.getElementsByName(name);
+    elements.forEach((element) => {
+      element.disabled = !res;
+    });
+  });
+};

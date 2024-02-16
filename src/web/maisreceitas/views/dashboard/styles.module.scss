@@ -4,3 +4,11 @@
   margin: 24px 0;
   gap: 2rem;
 }
+
+.banner_galery_image {
+  max-width: 100%;
+
+  @media (min-width: 43.75em) {
+    max-width: 30rem;
+  }
+}

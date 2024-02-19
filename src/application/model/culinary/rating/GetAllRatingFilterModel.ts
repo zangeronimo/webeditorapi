@@ -13,8 +13,8 @@ export class GetAllRatingFilterModel implements IPagination, IOrdenation {
   constructor(query: any) {
     this.page = query.page;
     this.pageSize = query.pageSize;
-    this.orderBy = query.orderBy ?? "name";
-    this.desc = query.desc === "true";
+    this.orderBy = query.orderBy ?? "active";
+    this.desc = query.desc === "true" ? true : !query.desc ? true : false;
     this.name = query.name;
     this.active = query.active;
     this.recipeId = query.recipeId;

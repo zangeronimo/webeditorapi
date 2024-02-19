@@ -1,20 +1,25 @@
-import { GetAllNewsletterFilterModel } from "@application/model/institutional/newsletter";
-import { NewsletterGetAll } from "@application/usecase/institutional/newsletter";
+import { GetAllRatingFilterModel } from "@application/model/culinary/rating";
 import { container } from "tsyringe";
 import { Pagination } from "../../components/pagination";
 import { Pug } from "@web/webeditor/models/Pug";
 import { SEO } from "@web/webeditor/models/Seo";
+import { RatingGetAll } from "@application/usecase/culinary/rating";
+import { RecipeDto } from "@domain/dto/culinary";
 
-export class Newsletter extends Pug {
-  readonly getAll = container.resolve(NewsletterGetAll);
-  readonly modalId = "_modal_newsletter_edit";
+export class Rating extends Pug {
+  readonly getAll = container.resolve(RatingGetAll);
+  readonly modalId = "_modal_rating_edit";
   readonly confirmId = "_confirm_delete_id";
 
-  render = async (model: GetAllNewsletterFilterModel, company: string) => {
-    const seo = new SEO("WEBEditor - Institucional - Newsletters");
-    const newsletters = await this.getAll.executeAsync(model, company);
+  render = async (
+    model: GetAllRatingFilterModel,
+    recipes: RecipeDto[],
+    company: string
+  ) => {
+    const seo = new SEO("WEBEditor - Culinária - Avaliações");
+    const ratings = await this.getAll.executeAsync(model, company);
     const formEdit = () =>
-      this.renderFile("institutional/newsletter/form", {
+      this.renderFile("culinary/rating/form", {
         modalId: this.modalId,
       });
     const modal = () =>
@@ -31,20 +36,25 @@ export class Newsletter extends Pug {
       });
     const paginationComponent = new Pagination();
     const pagination = await paginationComponent.render(
-      newsletters.total,
+      ratings.total,
       model.pageSize,
       model.page
     );
+    const recipesSelectData = recipes.map((recipe) => ({
+      value: recipe.id,
+      label: recipe.name,
+    }));
     return {
       root: () =>
-        this.renderFile("institutional/newsletter", {
+        this.renderFile("culinary/rating", {
           model,
           modalId: this.modalId,
           confirmId: this.confirmId,
-          newsletters: newsletters.itens,
+          ratings: ratings.itens,
           pagination,
           modal,
           confirm,
+          recipesSelectData,
         }),
       seo,
     };

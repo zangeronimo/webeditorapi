@@ -7,6 +7,7 @@ import { BannersCategoriesRoutes } from "./publicity/bannersCategoriesRoutes";
 import { BannersRoutes } from "./publicity/bannersRoutes";
 import { SidebarRoutes } from "./system/sidebarRoutes";
 import { UserHasPermissionRoutes } from "./system/userHasPermission";
+import { RatesRoutes } from "./culinary/ratesRoutes";
 
 export class Routes {
   static init = (router: Router, baseRender: any) => {
@@ -18,6 +19,7 @@ export class Routes {
     const newsletterRoutes = new NewslettersRoutes(baseRender);
     const bannersRoutes = new BannersRoutes(baseRender);
     const bannersCategoriesRoutes = new BannersCategoriesRoutes(baseRender);
+    const ratesRoutes = new RatesRoutes(baseRender);
 
     router.use("/sidebar", sidebarRoutes.router);
     router.use("/has-permission", userHasPermissionRoutes.router);
@@ -27,5 +29,6 @@ export class Routes {
     router.use("/institutional/newsletters", newsletterRoutes.router);
     router.use("/publicity/categories", bannersCategoriesRoutes.router);
     router.use("/publicity/banners", bannersRoutes.router);
+    router.use("/culinary/ratings", ratesRoutes.router);
   };
 }

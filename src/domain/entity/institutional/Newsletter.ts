@@ -43,7 +43,8 @@ export class Newsletter extends EntityBase {
     this._name = name;
     this._email = email;
     this._active = active;
-    (this._confirmedAt = confirmedAt), (this._confirmedIP = confirmedIP);
+    this._confirmedAt = confirmedAt;
+    this._confirmedIP = confirmedIP;
   }
 
   static restore(

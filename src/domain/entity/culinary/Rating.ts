@@ -3,19 +3,15 @@ import {
   RatingUpdateDataModel,
 } from "@application/model/culinary/rating";
 import { ActiveEnum } from "@domain/enum";
+import { EntityBase } from "../EntityBase";
 
-export class Rating {
-  private _id: string;
+export class Rating extends EntityBase {
   private _rate: number;
   private _comment: string;
   private _name?: string;
   private _active: ActiveEnum;
   private _recipeId: string;
-  private _updatedAt?: Date;
 
-  get id() {
-    return this._id;
-  }
   get rate() {
     return this._rate;
   }
@@ -31,27 +27,24 @@ export class Rating {
   get recipeId() {
     return this._recipeId;
   }
-  get updatedAt() {
-    return this._updatedAt;
-  }
 
   private constructor(
-    id: string,
     rate: number,
     comment: string,
     active: ActiveEnum,
     recipeId: string,
-    readonly companyId: string,
+    companyId: string,
     name?: string,
-    updatedAte?: Date
+    id?: string,
+    createdAt?: Date,
+    updatedAt?: Date
   ) {
-    this._id = id;
+    super(companyId, id, createdAt, updatedAt);
     this._rate = rate;
     this._comment = comment;
     this._recipeId = recipeId;
     this._name = name;
     this._active = active;
-    this._updatedAt = updatedAte;
   }
 
   static restore(
@@ -61,24 +54,25 @@ export class Rating {
     active: ActiveEnum,
     recipeId: string,
     companyId: string,
-    name?: string,
-    updatedAt?: Date
+    createdAt: Date,
+    updatedAt: Date,
+    name?: string
   ): Rating {
     return new Rating(
-      id,
       rate,
       comment,
       active,
       recipeId,
       companyId,
       name,
+      id,
+      createdAt,
       updatedAt
     );
   }
 
   static create(model: RatingCreateDataModel, companyId: string): Rating {
     const rating = new Rating(
-      crypto.randomUUID(),
       model.rate,
       model.comment,
       model.active,
@@ -90,7 +84,7 @@ export class Rating {
   }
 
   update(model: RatingUpdateDataModel) {
-    this._updatedAt = new Date();
+    this.updateBase();
     this._rate = model.rate;
     this._comment = model.comment;
     this._name = model.name;

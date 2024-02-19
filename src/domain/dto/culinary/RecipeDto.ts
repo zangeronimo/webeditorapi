@@ -1,9 +1,9 @@
 import { Recipe } from "@domain/entity/culinary";
 import { RatingDto } from "./RatingDto";
 import { CategoryDto } from "./CategoryDto";
+import { DtoBase } from "../DtoBase";
 
-export class RecipeDto {
-  id: string;
+export class RecipeDto extends DtoBase {
   slug: string;
   name: string;
   ingredients: string;
@@ -12,7 +12,6 @@ export class RecipeDto {
   categoryId: string;
   images: string[];
   ratings: RatingDto[];
-  updatedAt?: Date;
   category?: CategoryDto;
 
   constructor(
@@ -21,14 +20,13 @@ export class RecipeDto {
     ratings: RatingDto[] = [],
     category?: CategoryDto
   ) {
-    this.id = recipe?.id;
+    super(recipe?.id, recipe?.createdAt, recipe?.updatedAt);
     this.slug = recipe?.slug!;
     this.name = recipe?.name;
     this.ingredients = recipe?.ingredients;
     this.preparation = recipe?.preparation;
     this.active = recipe?.active.valueOf();
     this.categoryId = recipe?.categoryId;
-    this.updatedAt = recipe?.updatedAt;
     this.images = images;
     this.ratings = ratings;
     this.category = category;

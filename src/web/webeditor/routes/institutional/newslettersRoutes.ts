@@ -53,6 +53,7 @@ export class NewslettersRoutes extends Pug {
   private show = async (req: Request, res: Response) => {
     req.query.page = req.query.page ?? "1";
     req.query.pageSize = req.query.pageSize ?? "20";
+    req.query.orderBy = req.query.orderBy ?? "active, created_at";
     const { header, sidebar } = await this.baseRender();
     const { company } = req.user;
     const newsletter = new Newsletter();

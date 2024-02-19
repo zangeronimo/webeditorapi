@@ -1,0 +1,100 @@
+include ../../../components/input/index.pug
+include ../../../components/select/index.pug
+include ../../../components/textarea/index.pug
+include ../../../components/button/save.pug
+include ../../../components/button/cancel.pug
+
+div
+    form(id="_rating_form")
+        div.group
+            input(hidden=true id="rating_form_id" name="id" value= "")
+            input(hidden=true id="rating_form_recipe_id" name="recipe_id" value= "")
+            span(id="rating_form_recipe_name") Recipe Name
+        div.group
+            +Input({ name: "rating_form_name", value: "", title: "Nome", type: "text", })
+        div.group
+            +Textarea({ name: "rating_form_comment", value: "", title: "Comentário", })
+        div.group
+            +Select({ name: "rating_form_rate", value: "", title: "Nota", datas:[{value:"2", label:"2"}, {value:"4", label:"4"}, {value:"6", label:"6"}, {value:"8", label:"8"}, {value:"10", label:"10"}] })
+            +Select({ name: "rating_form_active", value: "", title: "Ativo", datas:[{value:"", label:"Selecione"}, {value:"1", label:"Sim"}, {value:"0", label:"Não"}] })
+        div.group.right
+            +ButtonSave()
+            +ButtonCancel({ callback: `toggleModal('${modalId}')` })
+
+script.
+    const idField = document.getElementById('rating_form_id');
+    const recipeIdField = document.getElementById('rating_form_recipe_id');
+    const recipeNameField = document.getElementById('rating_form_recipe_name');
+    const nameField = document.getElementById('rating_form_name');
+    const commentField = document.getElementById('rating_form_comment');
+    const rateField = document.getElementById('rating_form_rate');
+    const activeField = document.getElementById('rating_form_active');
+
+    const handleOpenFormModal = (modalId, id = '') => {
+        if (id) {
+            fetch(`/culinary/ratings/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            .then((res) => {
+                if (!res.ok) throw new Error('Algo de errado aconteceu.');
+                return res.json()
+            })
+            .then(json => {
+                if (idField) idField.value = json.id;
+                if (recipeNameField) recipeNameField.innerHTML = json.recipe?.name;
+                if (recipeIdField) recipeIdField.value = json.recipeId;
+                if (nameField) nameField.value = json.name;
+                if (commentField) commentField.value = json.comment;
+                if (rateField) rateField.value = json.rate;
+                if (activeField) activeField.value = json.active;
+                toggleModal(modalId);
+            })
+            .catch((err) => {
+                console.error(err);
+                alert(err.message);
+            });
+        } else {
+            toggleModal(modalId);
+        }
+    }
+
+    const handleSubmiteRatingForm = (e) => {
+        e.preventDefault();
+        const id = idField.value;
+        const recipeId = recipeIdField.value;
+        const name = nameField.value;
+        const comment = commentField.value;
+        const rate = rateField.value;
+        const active = activeField.value;
+        payload = { id, recipeId, name, comment, rate, active }
+        fetch(`/culinary/ratings/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+        })
+      .then((res) => {
+        if (!res.ok) throw new Error('Algo de errado aconteceu.');
+        return res.json()
+      })
+      .then(json => {
+        alert('Atualizado com sucesso');
+        document.location.reload();
+      })
+      .catch((err) => {
+        console.error(err);
+        alert(err.message);
+      });
+    }
+    
+
+    const form = document.getElementById("_rating_form");
+    if (form) {
+    form.addEventListener("submit", async function (e) {
+        handleSubmiteRatingForm(e);
+    });
+    }

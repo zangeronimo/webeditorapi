@@ -62,6 +62,7 @@ export class Banner extends Pug {
           modal,
           confirm,
           baseUrl: process.env.WEBEDITOR_URL,
+          categoriesSelectData,
         }),
       seo,
     };

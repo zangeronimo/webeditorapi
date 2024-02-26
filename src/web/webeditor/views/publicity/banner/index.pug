@@ -16,7 +16,7 @@ div.banner
     form
       div.group
         +Input({ name: "title", value: model.title, title: "Título", type: "text", })
-        +Input({ name: "url", value: model.url, title: "URL", type: "text", })
+        +Select({ name: "categoryId", value: model.categoryId, title: "Categoria", datas: [{value: "", label: "Todas"}, ...categoriesSelectData] })
         +Select({ name: "active", value: `${model.active}`, title: "Ativo", datas:[{value:"", label:"Todos"}, {value:"1", label:"Sim"}, {value:"0", label:"Não"}] })
       div.group.right
         +ButtonSearch()

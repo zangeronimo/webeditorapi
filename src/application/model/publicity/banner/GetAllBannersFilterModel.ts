@@ -7,7 +7,7 @@ export class GetAllBannersFilterModel implements IPagination, IOrdenation {
   public orderBy: string;
   public desc: boolean;
   public title: string;
-  public url: string;
+  public categoryId: string;
   public active: number;
 
   constructor(query: any) {
@@ -16,7 +16,7 @@ export class GetAllBannersFilterModel implements IPagination, IOrdenation {
     this.orderBy = query.orderBy ?? "updated_at";
     this.desc = query.desc === "true" ? true : !query.desc ? true : false;
     this.title = query.title;
-    this.url = query.url;
+    this.categoryId = query.categoryId;
     this.active = query.active;
   }
 }

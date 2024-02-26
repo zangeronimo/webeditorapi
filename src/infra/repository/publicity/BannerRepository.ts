@@ -70,8 +70,8 @@ export class BannerRepository implements IBannerRepository {
     if (!!model.title) {
       where += ` and LOWER(UNACCENT(title)) like $2`;
     }
-    if (!!model.url) {
-      where += ` and url = $3`;
+    if (!!model.categoryId) {
+      where += ` and publicity_banner_category_id = $3`;
     }
     if (!!model.active) {
       where += ` and active = $4`;
@@ -83,7 +83,7 @@ export class BannerRepository implements IBannerRepository {
       [
         company,
         `%${model.title?.toLowerCase().noAccents()}%`,
-        model.url,
+        model.categoryId,
         model.active,
       ]
     );
@@ -98,7 +98,7 @@ export class BannerRepository implements IBannerRepository {
       [
         company,
         `%${model.title?.toLowerCase().noAccents()}%`,
-        model.url,
+        model.categoryId,
         model.active,
         model.pageSize,
         offset,

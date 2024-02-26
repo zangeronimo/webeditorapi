@@ -7,34 +7,46 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export class CompanyRepository implements ICompanyRepository {
   constructor(
-    @inject('DbContext')
+    @inject("DbContext")
     readonly db: DbContext
   ) {}
   async getByIdAsync(id: string): Promise<Company | null> {
     const [companyData] = await this.db.queryAsync(
       `select
-        id, name
+        id, name, created_at, updated_at
        from webeditor_companies
        where id = $1 and deleted_at is null`,
       [id]
     );
     const modulesData = await this.getModulesFromCompanyAsync(companyData?.id);
     return companyData
-      ? Company.restore(companyData.id, companyData.name, modulesData)
+      ? Company.restore(
+          companyData.id,
+          companyData.name,
+          modulesData,
+          companyData.created_at,
+          companyData.updated_at
+        )
       : null;
   }
 
   async getByNameAsync(name: string): Promise<Company | null> {
     const [companyData] = await this.db.queryAsync(
       `select
-        id, name
+        id, name, created_at, updated_at
        from webeditor_companies
        where name = $1 and deleted_at is null`,
       [name]
     );
     const modulesData = await this.getModulesFromCompanyAsync(companyData?.id);
     return companyData
-      ? Company.restore(companyData.id, companyData.name, modulesData)
+      ? Company.restore(
+          companyData.id,
+          companyData.name,
+          modulesData,
+          companyData.created_at,
+          companyData.updated_at
+        )
       : null;
   }
 
@@ -53,7 +65,7 @@ export class CompanyRepository implements ICompanyRepository {
     );
     const companiesData: any[] = await this.db.queryAsync(
       `select
-        id, name
+        id, name, created_at, updated_at
       from webeditor_companies
       where ${where}
       order by ${ordenation}
@@ -69,7 +81,9 @@ export class CompanyRepository implements ICompanyRepository {
       const company = Company.restore(
         companiesData[i].id,
         companiesData[i].name,
-        modulesData
+        modulesData,
+        companiesData[i].created_at,
+        companiesData[i].updated_at
       );
       companies.push(company);
     }

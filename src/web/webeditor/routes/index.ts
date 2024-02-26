@@ -8,6 +8,7 @@ import { BannersRoutes } from "./publicity/bannersRoutes";
 import { SidebarRoutes } from "./system/sidebarRoutes";
 import { UserHasPermissionRoutes } from "./system/userHasPermission";
 import { RatesRoutes } from "./culinary/ratesRoutes";
+import { CompanyRoutes } from "./system/companyRoutes";
 
 export class Routes {
   static init = (router: Router, baseRender: any) => {
@@ -15,6 +16,7 @@ export class Routes {
     const userHasPermissionRoutes = new UserHasPermissionRoutes();
     const signInRoutes = new SignInRoutes(baseRender);
     const accessDeniedRoutes = new AccessDeniedRoutes(baseRender);
+    const companyRoutes = new CompanyRoutes(baseRender);
     const dashboardRoutes = new DashboardRoutes(baseRender);
     const newsletterRoutes = new NewslettersRoutes(baseRender);
     const bannersRoutes = new BannersRoutes(baseRender);
@@ -25,6 +27,7 @@ export class Routes {
     router.use("/has-permission", userHasPermissionRoutes.router);
     router.use("/sign-in", signInRoutes.router);
     router.use("/access-denied", accessDeniedRoutes.router);
+    router.use("/administrator/companies", companyRoutes.router);
     router.use("/", dashboardRoutes.router);
     router.use("/institutional/newsletters", newsletterRoutes.router);
     router.use("/publicity/categories", bannersCategoriesRoutes.router);

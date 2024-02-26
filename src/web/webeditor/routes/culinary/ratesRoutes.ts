@@ -4,13 +4,11 @@ import {
   GetAllRatingFilterModel,
   RatingUpdateDataModel,
 } from "@application/model/culinary/rating";
-import { GetAllRecipeFilterModel } from "@application/model/culinary/recipe";
 import {
   RatingDelete,
   RatingGetById,
   RatingUpdate,
 } from "@application/usecase/culinary/rating";
-import { RecipeGetAll } from "@application/usecase/culinary/recipe";
 import { Authorize } from "@web/webeditor/authorize";
 import { Pug } from "@web/webeditor/models/Pug";
 import { Rating } from "@web/webeditor/views/culinary/rating";
@@ -23,7 +21,6 @@ export class RatesRoutes extends Pug {
   ratingsGetById = container.resolve(RatingGetById);
   ratingUpdate = container.resolve(RatingUpdate);
   ratingDelete = container.resolve(RatingDelete);
-  recipesGetAll = container.resolve(RecipeGetAll);
 
   constructor(readonly baseRender: any) {
     super();
@@ -61,8 +58,7 @@ export class RatesRoutes extends Pug {
     const { company } = req.user;
     const rating = new Rating();
     const model = new GetAllRatingFilterModel(req.query);
-    const recipesResult = await this.getAllRecipes(company);
-    const { root, seo } = await rating.render(model, recipesResult, company);
+    const { root, seo } = await rating.render(model, company);
     return res.render("template", { root, seo, header, sidebar });
   };
 
@@ -97,17 +93,5 @@ export class RatesRoutes extends Pug {
     const { company } = req.user;
     const rating = await this.ratingDelete.executeAsync(id, company);
     return res.json(rating);
-  };
-
-  private getAllRecipes = async (company: string) => {
-    const recipeModel = new GetAllRecipeFilterModel("");
-    recipeModel.page = 1;
-    recipeModel.pageSize = 999999;
-    recipeModel.orderBy = "name";
-    const recipesResult = await this.recipesGetAll.executeAsync(
-      recipeModel,
-      company
-    );
-    return recipesResult.itens;
   };
 }

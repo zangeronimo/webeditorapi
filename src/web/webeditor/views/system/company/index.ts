@@ -1,27 +1,26 @@
-import { GetAllRatingFilterModel } from "@application/model/culinary/rating";
 import { container } from "tsyringe";
 import { Pagination } from "../../components/pagination";
 import { Pug } from "@web/webeditor/models/Pug";
 import { SEO } from "@web/webeditor/models/Seo";
-import { RatingGetAll } from "@application/usecase/culinary/rating";
-import { RecipeDto } from "@domain/dto/culinary";
+import { CompanyGetAll } from "@application/usecase/webeditor/company";
+import { GetAllCompanyFilterModel } from "@application/model/webeditor/company";
 
-export class Rating extends Pug {
-  readonly getAll = container.resolve(RatingGetAll);
-  readonly modalId = "_modal_rating_edit";
+export class Company extends Pug {
+  readonly getAll = container.resolve(CompanyGetAll);
+  readonly modalId = "_modal_company_edit";
   readonly confirmId = "_confirm_delete_id";
 
-  render = async (model: GetAllRatingFilterModel, company: string) => {
-    const seo = new SEO("WEBEditor - Culinária - Avaliações");
-    const ratings = await this.getAll.executeAsync(model, company);
+  render = async (model: GetAllCompanyFilterModel) => {
+    const seo = new SEO("WEBEditor - Administrador - Empresas");
+    const companies = await this.getAll.executeAsync(model);
     const formEdit = () =>
-      this.renderFile("culinary/rating/form", {
+      this.renderFile("system/company/form", {
         modalId: this.modalId,
       });
     const modal = () =>
       this.renderFile("components/modal", {
         id: this.modalId,
-        title: "Editar registro",
+        title: "Empresas",
         children: formEdit,
       });
     const confirm = () =>
@@ -32,17 +31,17 @@ export class Rating extends Pug {
       });
     const paginationComponent = new Pagination();
     const pagination = await paginationComponent.render(
-      ratings.total,
+      companies.total,
       model.pageSize,
       model.page
     );
     return {
       root: () =>
-        this.renderFile("culinary/rating", {
+        this.renderFile("system/company", {
           model,
           modalId: this.modalId,
           confirmId: this.confirmId,
-          ratings: ratings.itens,
+          companies: companies.itens,
           pagination,
           modal,
           confirm,

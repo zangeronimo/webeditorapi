@@ -15,7 +15,6 @@ div.rating
     form
       div.group
         +Input({ name: "name", value: model.name, title: "Nome", type: "text", })
-        +Select({ name: "recipeId", value: `${model.recipeId}`, title: "Receita", datas:[{value: "", label: "Todas"}, ...recipesSelectData]})
         +Select({ name: "active", value: `${model.active}`, title: "Ativo", datas:[{value:"", label:"Todos"}, {value:"1", label:"Sim"}, {value:"0", label:"Não"}] })
       div.group.right
         +ButtonSearch()

@@ -2,44 +2,49 @@ import {
   CompanyCreateDataModel,
   CompanyUpdateDataModel,
 } from "@application/model/webeditor/company";
+import { EntityBase } from "../EntityBase";
 import { Module } from "./Module";
 
-export class Company {
-  private _id: string;
+export class Company extends EntityBase {
   private _name: string;
-  private _updatedAt?: Date;
   private _modules: Module[];
 
-  get id() {
-    return this._id;
-  }
   get name() {
     return this._name;
-  }
-  get updatedAt() {
-    return this._updatedAt;
   }
   get modules() {
     return this._modules;
   }
 
-  private constructor(id: string, name: string, modules: Module[]) {
-    this._id = id;
+  private constructor(
+    name: string,
+    modules: Module[],
+    id?: string,
+    createdAt?: Date,
+    updatedAt?: Date
+  ) {
+    super("", id, createdAt, updatedAt);
     this._name = name;
     this._modules = modules;
   }
 
-  static restore(id: string, name: string, modules: Module[]): Company {
-    return new Company(id, name, modules);
+  static restore(
+    id: string,
+    name: string,
+    modules: Module[],
+    createdAt: Date,
+    updatedAt: Date
+  ): Company {
+    return new Company(name, modules, id, createdAt, updatedAt);
   }
 
   static create(model: CompanyCreateDataModel): Company {
-    const company = new Company(crypto.randomUUID(), model.name, model.modules);
+    const company = new Company(model.name, model.modules);
     return company;
   }
 
   update(model: CompanyUpdateDataModel) {
-    this._updatedAt = new Date();
+    this.updateBase();
     this._name = model.name;
     this._modules = model.modules;
   }

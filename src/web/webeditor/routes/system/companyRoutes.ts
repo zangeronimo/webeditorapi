@@ -82,19 +82,19 @@ export class CompanyRoutes extends Pug {
   };
 
   private create = async (req: Request, res: Response) => {
-    const { name } = req.body;
-    const model = new CompanyCreateDataModel(name, []);
+    const { name, modules } = req.body;
+    const model = new CompanyCreateDataModel(name, modules);
     const company = await this.companyCreate.executeAsync(model);
     return res.json(company);
   };
 
   private update = async (req: Request, res: Response) => {
     const { id: paramId } = req.params;
-    const { id, name } = req.body;
+    const { id, name, modules } = req.body;
     if (id !== paramId) {
       throw new Error(Messages.invalidId);
     }
-    const model = new CompanyUpdateDataModel(id, name, []);
+    const model = new CompanyUpdateDataModel(id, name, modules);
     const company = await this.companyUpdate.executeAsync(model);
     return res.json(company);
   };

@@ -1,10 +1,10 @@
 style
   include styles.scss
 
-mixin Select({name, value, title, datas = [], error, required = false})
+mixin Select({name, id = name, value, title, datas = [], error, required = false})
     div.form_select_container
         label(for=name)= title
-        select(id=name name=name required=required)
+        select(id=id name=name required=required)
           each data in datas
             option(value=data.value selected=value===data.value) #{data.label}
         if error

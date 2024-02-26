@@ -1,9 +1,9 @@
 style
   include styles.scss
 
-mixin FileUpload({name, title, placeholder, error, required = false})
+mixin FileUpload({name, id = name, title, placeholder, error, required = false})
     div.form_fileupload_container
         label(for=name)= title
-        input(type="file" id=name name=name placeholder=placeholder required=required)
+        input(type="file" id=id name=name placeholder=placeholder required=required)
         if error
             p.form_fileupload_error #{error}

@@ -1,9 +1,9 @@
 style
   include styles.scss
 
-mixin Textarea({name, value, title, placeholder, error, required = false})
+mixin Textarea({name, id = name, value, title, placeholder, error, required = false})
     div.form_textarea_container
         label(for=name)= title
-        textarea(id=name name=name value=value placeholder=placeholder required=required)
+        textarea(id=id name=name value=value placeholder=placeholder required=required)
         if error
             p.form_textarea_error #{error}

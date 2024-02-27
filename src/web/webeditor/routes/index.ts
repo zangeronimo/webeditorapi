@@ -12,6 +12,7 @@ import { SignInRoutes } from "./system/signInRoutes";
 import { UserHasPermissionRoutes } from "./system/userHasPermission";
 import { RoleRoutes } from "./system/roleRoutes";
 import { UserRoutes } from "./system/userRoutes";
+import { LevelsRoutes } from "./culinary/levelsRoutes";
 
 export class Routes {
   static init = (router: Router, baseRender: any) => {
@@ -28,6 +29,7 @@ export class Routes {
     const bannersRoutes = new BannersRoutes(baseRender);
     const bannersCategoriesRoutes = new BannersCategoriesRoutes(baseRender);
     const ratesRoutes = new RatesRoutes(baseRender);
+    const levelsRoutes = new LevelsRoutes(baseRender);
 
     router.use("/sidebar", sidebarRoutes.router);
     router.use("/has-permission", userHasPermissionRoutes.router);
@@ -42,5 +44,6 @@ export class Routes {
     router.use("/publicity/categories", bannersCategoriesRoutes.router);
     router.use("/publicity/banners", bannersRoutes.router);
     router.use("/culinary/ratings", ratesRoutes.router);
+    router.use("/culinary/levels", levelsRoutes.router);
   };
 }

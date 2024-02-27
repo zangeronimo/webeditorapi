@@ -11,7 +11,7 @@ style
   include ../../../styles/datagrid.scss
   include  styles.scss
 
-div.category
+div.level
   div.box
     form
       div.group
@@ -21,13 +21,15 @@ div.category
         +ButtonSearch()
         +ButtonClear()
   div.group.right
-    +ButtonNew({ callback: `handleOpenFormModal('${modalId}')`, label: 'Nova Categoria', name: '_publicity_category_edit_button', disabled: true})
+    +ButtonNew({ callback: `handleOpenFormModal('${modalId}')`, label: 'Novo Level', name: '_culinary_level_edit_button', disabled: true})
   div.box
     div.datagrid
       div.table_container
         table
           thead
             tr
+              th.datagrid_left 
+                +OrderBy('Slug','slug')
               th.datagrid_left 
                 +OrderBy('Nome','name')
               th
@@ -38,16 +40,17 @@ div.category
                 +OrderBy('Atualizado', 'updated_at', true)
               th.datagrid_right Ações
           tbody
-            each category in categories
+            each level in levels
               tr
-                td(data-label="Nome") #{category.name}
-                td(data-label="Ativo").datagrid_center #{category.active ? 'Sim' : 'Não'}
-                td(data-label="Criado").datagrid_center #{category.createdAt.toFormat('dd/MM/yyyy')}
-                td(data-label="Atualizado").datagrid_center #{category.updatedAt.toFormat('dd/MM/yyyy')}
+                td(data-label="Slug") #{level.slug}
+                td(data-label="Nome") #{level.name}
+                td(data-label="Ativo").datagrid_center #{level.active ? 'Sim' : 'Não'}
+                td(data-label="Criado").datagrid_center #{level.createdAt.toFormat('dd/MM/yyyy')}
+                td(data-label="Atualizado").datagrid_center #{level.updatedAt.toFormat('dd/MM/yyyy')}
                 td(data-label="Ações").datagrid_right
                   div.datagrid_tools
-                    +ButtonEdit({ callback:`handleOpenFormModal('${modalId}', '${category.id}')`, name: '_publicity_category_edit_button' })
-                    +ButtonDelete({ callback:`handleOpenDeleteConfirm('${confirmId}', '${category.id}')` , name: '_publicity_category_delete_button' })
+                    +ButtonEdit({ callback:`handleOpenFormModal('${modalId}', '${level.id}')`, name: '_culinary_level_edit_button' })
+                    +ButtonDelete({ callback:`handleOpenDeleteConfirm('${confirmId}', '${level.id}')` , name: '_culinary_level_delete_button' })
       |!{pagination(dynamicPugFilePathFromVariable)} 
 
 |!{modal(dynamicPugFilePathFromVariable)}
@@ -56,12 +59,12 @@ div.category
 script.
   const handleOpenDeleteConfirm = (confirmId, id) => {
     if (id) {
-      toggleConfirm(confirmId, `handleDeleteNewsletter('${id}')`);
+      toggleConfirm(confirmId, `handleDeleteLevel('${id}')`);
     }
   }
 
-  const handleDeleteNewsletter = (id) => {
-    fetch(`/publicity/categories/${id}`, {
+  const handleDeleteLevel = (id) => {
+    fetch(`/culinary/levels/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -81,5 +84,5 @@ script.
     });
   }
 
-  _showButtonsWithPermission('PUBLICITY_CATEGORY_UPDATE', '_publicity_category_edit_button')
-  _showButtonsWithPermission('PUBLICITY_CATEGORY_DELETE', '_publicity_category_delete_button')
+  _showButtonsWithPermission('CULINARY_LEVEL_UPDATE', '_culinary_level_edit_button')
+  _showButtonsWithPermission('CULINARY_LEVEL_DELETE', '_culinary_level_delete_button')

@@ -4,18 +4,14 @@ import {
 } from "@application/model/webeditor/user";
 import { Role } from "./Role";
 import { Password } from "@domain/valueObject/Password";
+import { EntityBase } from "../EntityBase";
 
-export class User {
-  private _id: string;
+export class User extends EntityBase {
   private _name: string;
   private _email: string;
   private _password: Password;
-  private _updatedAt?: Date;
   private _roles: Role[];
 
-  get id() {
-    return this._id;
-  }
   get name() {
     return this._name;
   }
@@ -25,22 +21,21 @@ export class User {
   get password() {
     return this._password;
   }
-  get updatedAt() {
-    return this._updatedAt;
-  }
   get roles() {
     return this._roles;
   }
 
   private constructor(
-    id: string,
     name: string,
     email: string,
     password: Password,
     roles: Role[],
-    readonly companyId: string
+    companyId: string,
+    id?: string,
+    createdAt?: Date,
+    updatedAt?: Date
   ) {
-    this._id = id;
+    super(companyId, id, createdAt, updatedAt);
     this._name = name;
     this._email = email;
     this._password = password;
@@ -54,15 +49,19 @@ export class User {
     password: string,
     salt: string,
     companyId: string,
-    roles: Role[]
+    roles: Role[],
+    createdAt: Date,
+    updatedAt: Date
   ): User {
     return new User(
-      id,
       name,
       email,
       Password.restore(password, salt),
       roles,
-      companyId
+      companyId,
+      id,
+      createdAt,
+      updatedAt
     );
   }
 
@@ -71,7 +70,6 @@ export class User {
     companyId: string
   ): Promise<User> {
     const user = new User(
-      crypto.randomUUID(),
       userData.name,
       userData.email,
       Password.create(userData.password),
@@ -82,7 +80,7 @@ export class User {
   }
 
   async updateAsync(userData: UserUpdateDataModel) {
-    this._updatedAt = new Date();
+    this.updateBase();
     this._name = userData.name;
     this._email = userData.email;
     this._roles = userData.roles;

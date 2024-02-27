@@ -1,0 +1,84 @@
+include ../../components/input/index.pug
+include ../../components/button/search.pug
+include ../../components/button/clear.pug
+include ../../components/button/new.pug
+include ../../components/button/edit.pug
+include ../../components/button/delete.pug
+include ../../components/orderBy/index.pug
+
+style
+  include ../../../styles/datagrid.scss
+  include  styles.scss
+
+div.user
+  div.box
+    form
+      div.group
+        +Input({ name: "name", value: model.name, title: "Nome", type: "text", })
+        +Input({ name: "email", value: model.email, title: "E-mail", type: "text", })
+      div.group.right
+        +ButtonSearch()
+        +ButtonClear()
+  div.group.right
+    +ButtonNew({ callback: `handleOpenFormModal('${modalId}')`, label: 'Novo Usuário', name: '_system_user_edit_button', disabled: true})
+  div.box
+    div.datagrid
+      div.table_container
+        table
+          thead
+            tr
+              th.datagrid_left 
+                +OrderBy('Nome','name')
+              th.datagrid_left 
+                +OrderBy('E-mail','email')
+              th
+                +OrderBy('Criado', 'created_at', true)
+              th
+                +OrderBy('Atualizado', 'updated_at', true)
+              th.datagrid_right Ações
+          tbody
+            each user in users
+              tr
+                td(data-label="Nome") #{user.name}
+                td(data-label="E-mail") #{user.email}
+                td(data-label="Criado").datagrid_center #{user.createdAt.toFormat('dd/MM/yyyy')}
+                td(data-label="Atualizado").datagrid_center #{user.updatedAt.toFormat('dd/MM/yyyy')}
+                td(data-label="Ações").datagrid_right
+                  div.datagrid_tools
+                    +ButtonEdit({ callback: `handleOpenFormModal('${modalId}', '${user.id}')`, name: '_system_user_edit_button' })
+                    +ButtonDelete({ callback: `handleOpenDeleteConfirm('${confirmId}', '${user.id}')`, name: '_system_user_delete_button' })
+      |!{pagination(dynamicPugFilePathFromVariable)} 
+
+|!{modal(dynamicPugFilePathFromVariable)}
+|!{confirm(dynamicPugFilePathFromVariable)}
+
+script.
+  const handleOpenDeleteConfirm = (confirmId, id) => {
+    if (id) {
+      toggleConfirm(confirmId, `handleDeleteCompany('${id}')`);
+    }
+  }
+
+  const handleDeleteCompany = (id) => {
+    fetch(`/webeditor/users/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((res) => {
+      if (!res.ok) throw new Error('Algo de errado aconteceu.');
+      return res.json()
+    })
+    .then(json => {
+      alert('Removido com sucesso');
+      document.location.reload();
+    })
+    .catch((err) => {
+      console.error(err);
+      alert(err.message);
+    });
+  }
+
+  _showButtonsWithPermission('WEBEDITOR_USER_UPDATE', '_system_user_edit_button')
+  _showButtonsWithPermission('WEBEDITOR_USER_DELETE', '_system_user_delete_button')

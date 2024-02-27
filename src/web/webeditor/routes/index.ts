@@ -11,6 +11,7 @@ import { SidebarRoutes } from "./system/sidebarRoutes";
 import { SignInRoutes } from "./system/signInRoutes";
 import { UserHasPermissionRoutes } from "./system/userHasPermission";
 import { RoleRoutes } from "./system/roleRoutes";
+import { UserRoutes } from "./system/userRoutes";
 
 export class Routes {
   static init = (router: Router, baseRender: any) => {
@@ -21,6 +22,7 @@ export class Routes {
     const companyRoutes = new CompanyRoutes(baseRender);
     const moduleRoutes = new ModuleRoutes(baseRender);
     const roleRoutes = new RoleRoutes(baseRender);
+    const userRoutes = new UserRoutes(baseRender);
     const dashboardRoutes = new DashboardRoutes(baseRender);
     const newsletterRoutes = new NewslettersRoutes(baseRender);
     const bannersRoutes = new BannersRoutes(baseRender);
@@ -34,6 +36,7 @@ export class Routes {
     router.use("/administrator/companies", companyRoutes.router);
     router.use("/administrator/modules", moduleRoutes.router);
     router.use("/administrator/roles", roleRoutes.router);
+    router.use("/webeditor/users", userRoutes.router);
     router.use("/", dashboardRoutes.router);
     router.use("/institutional/newsletters", newsletterRoutes.router);
     router.use("/publicity/categories", bannersCategoriesRoutes.router);

@@ -1,0 +1,134 @@
+include ../../../components/input/index.pug
+include ../../../components/button/save.pug
+include ../../../components/button/cancel.pug
+
+script.
+    let rolesField = [];
+
+    const rolesIncludes = (roleId) => {
+        const role = rolesField.find(role => role.id === roleId);
+        return !!role;
+    }
+
+div
+    form(id="_user_form")
+        div.group
+            input(hidden=true id="user_form_id" name="id" value= "")
+            +Input({ name: "user_form_name", value: "", title: "Nome", type: "text", })
+            +Input({ name: "user_form_email", value: "", title: "E-mail", type: "email", })
+            +Input({ name: "user_form_password", value: "", title: "Senha", type: "password", })
+        div
+            p Regras
+            each module in modules
+                div
+                    p #{module.name}
+                    div.group
+                        each role in module.roles
+                            div
+                                input(checked=false onclick=`handleSetRole('${role.id}')` type="checkbox" id=role.id, name="user_form_roles")
+                                span &nbsp; #{role.label}
+        div.group.right
+            +ButtonSave()
+            +ButtonCancel({ callback: `toggleModal('${modalId}')` })
+
+script.
+    const idField = document.getElementById('user_form_id');
+    const nameField = document.getElementById('user_form_name');
+    const emailField = document.getElementById('user_form_email');
+    const passwordField = document.getElementById('user_form_password');
+
+    const handleSetRole = (roleId) => {
+        const includes = rolesIncludes(roleId);
+        rolesField = rolesField.filter(role => role.id !== roleId);
+        if (!includes) rolesField.push({ id: roleId });
+    }
+
+    const emptyRolesCheckbox = () => {
+        const rolesElements = document.getElementsByName('user_form_roles');
+        if (rolesElements.length) {
+            rolesElements.forEach(role => role.checked = false)
+        }
+    }
+
+    const handleOpenFormModal = (modalId, id = '') => {
+        emptyRolesCheckbox()
+        if (id) {
+            fetch(`/webeditor/users/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            .then((res) => {
+                if (!res.ok) throw new Error('Algo de errado aconteceu.');
+                return res.json()
+            })
+            .then(json => {
+                console.log(json)
+                if (idField) idField.value = json.id;
+                if (nameField) nameField.value = json.name;
+                if (emailField) emailField.value = json.email;
+                if (passwordField) passwordField.value = '';
+                rolesField = [];
+                if (json.roles) {
+                    json.roles.forEach(role => {
+                        rolesField.push({ id: role.id })
+                        const elementCheckRole = document.getElementById(`${role.id}`)
+                        if (elementCheckRole) {
+                            elementCheckRole.checked = rolesIncludes(role.id) ? true : false 
+                        }
+                    })
+                }
+                toggleModal(modalId);
+            })
+            .catch((err) => {
+                console.error(err);
+                alert(err.message);
+            });
+        } else {
+            if (idField) idField.value = '';
+            if (nameField) nameField.value = '';
+            if (emailField) emailField.value = '';
+            if (passwordField) passwordField.value = '';
+            rolesField = [];
+            toggleModal(modalId);
+        }
+    }
+
+    const handleSubmiteCategoryForm = (e) => {
+        e.preventDefault();
+        const id = idField.value;
+        const name = nameField.value;
+        const email = emailField.value;
+        const password = passwordField.value;
+        const method = id ? 'PUT' : 'POST'
+        payload = { id, name, email, password, roles: rolesField }
+        fetch(`/webeditor/users/${id}`, {
+            method,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+        })
+      .then((res) => {
+        if (!res.ok) throw new Error('Algo de errado aconteceu.');
+        return res.json()
+      })
+      .then(json => {
+        alert('Atualizado com sucesso');
+        document.location.reload();
+      })
+      .catch((err) => {
+        console.error(err);
+        alert(err.message);
+      });
+    }
+    
+
+    const form = document.getElementById("_user_form");
+    if (form) {
+        form.addEventListener("submit", async function (e) {
+            handleSubmiteCategoryForm(e);
+        });
+    }
+    

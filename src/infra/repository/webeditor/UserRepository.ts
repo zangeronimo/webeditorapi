@@ -7,14 +7,14 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export class UserRepository implements IUserRepository {
   constructor(
-    @inject('DbContext')
+    @inject("DbContext")
     readonly db: DbContext
   ) {}
 
   async getByIdAsync(id: string, company: string): Promise<User | null> {
     const [userData] = await this.db.queryAsync(
       `select
-        id, name, email, password, salt, webeditor_companies_id
+        id, name, email, password, salt, webeditor_companies_id, created_at, updated_at
        from webeditor_users
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
@@ -28,14 +28,16 @@ export class UserRepository implements IUserRepository {
           userData.password,
           userData.salt,
           userData.webeditor_companies_id,
-          rolesData
+          rolesData,
+          userData.created_at,
+          userData.updated_at
         )
       : null;
   }
 
   async getByEmailAsync(email: string): Promise<User | null> {
     const [userData] = await this.db.queryAsync(
-      "select id, name, email, password, salt, webeditor_companies_id from webeditor_users where email = $1 and deleted_at is null",
+      "select id, name, email, password, salt, webeditor_companies_id, created_at, updated_at from webeditor_users where email = $1 and deleted_at is null",
       [email]
     );
     const rolesData = await this.getRolesFromUserAsync(userData?.id);
@@ -47,7 +49,9 @@ export class UserRepository implements IUserRepository {
           userData.password,
           userData.salt,
           userData.webeditor_companies_id,
-          rolesData
+          rolesData,
+          userData.created_at,
+          userData.updated_at
         )
       : null;
   }
@@ -75,7 +79,7 @@ export class UserRepository implements IUserRepository {
     );
     const usersData: any[] = await this.db.queryAsync(
       `select
-        id, name, email, password,salt, webeditor_companies_id
+        id, name, email, password,salt, webeditor_companies_id, created_at, updated_at
       from webeditor_users
       where ${where}
       order by ${ordenation}
@@ -99,7 +103,9 @@ export class UserRepository implements IUserRepository {
         usersData[i].password,
         usersData[i].salt,
         usersData[i].webeditor_companies_id,
-        rolesData
+        rolesData,
+        usersData[i].created_at,
+        usersData[i].updated_at
       );
       users.push(user);
     }
@@ -113,7 +119,9 @@ export class UserRepository implements IUserRepository {
         r.name,
         r.label,
         r.sort_order,
-        r.webeditor_modules_id
+        r.webeditor_modules_id,
+        r.created_at,
+        r.updated_at
       from
         webeditor_users_has_webeditor_roles ur
       inner join webeditor_users u on u.id=ur.webeditor_users_id and u.deleted_at is null
@@ -131,7 +139,9 @@ export class UserRepository implements IUserRepository {
         role.name,
         role.label,
         role.sort_order,
-        role.webeditor_modules_id
+        role.webeditor_modules_id,
+        role.created_at,
+        role.update_at
       )
     );
   }

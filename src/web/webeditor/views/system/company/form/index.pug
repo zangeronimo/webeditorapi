@@ -60,7 +60,7 @@ script.
                 if (idField) idField.value = json.id;
                 if (nameField) nameField.value = json.name;
                 modulesField = [];
-                if (json.modules) {}
+                if (json.modules) {
                     json.modules.forEach(module => {
                         modulesField.push({ id: module.id })
                         const elementCheckModule = document.getElementById(`${module.id}`)
@@ -68,6 +68,7 @@ script.
                             elementCheckModule.checked = modulesIncludes(module.id) ? true : false 
                         }
                     })
+                }
                 toggleModal(modalId);
             })
             .catch((err) => {

@@ -7,14 +7,14 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export class ModuleRepository implements IModuleRepository {
   constructor(
-    @inject('DbContext')
+    @inject("DbContext")
     readonly db: DbContext
   ) {}
 
   async getAllByCompanyAsync(companyId: string): Promise<Module[]> {
     const modulesData = await this.db.queryAsync(
       `select
-        m.id, m.name
+        m.id, m.name, m.created_at, m.updated_at
       from webeditor_modules m
       inner join webeditor_companies_has_webeditor_modules cm ON cm.webeditor_modules_id = m.id and cm.webeditor_companies_id = $1
       where m.deleted_at is null
@@ -23,7 +23,12 @@ export class ModuleRepository implements IModuleRepository {
     );
     const modules: Module[] = [];
     for (let i = 0; i < modulesData.length; i++) {
-      const module = Module.restore(modulesData[i].id, modulesData[i].name);
+      const module = Module.restore(
+        modulesData[i].id,
+        modulesData[i].name,
+        modulesData[i].created_at,
+        modulesData[i].updated_at
+      );
       modules.push(module);
     }
     return modules;
@@ -32,23 +37,37 @@ export class ModuleRepository implements IModuleRepository {
   async getByIdAsync(id: string): Promise<Module | null> {
     const [moduleData] = await this.db.queryAsync(
       `select
-        id, name
+        id, name, created_at, updated_at
        from webeditor_modules
        where id = $1 and deleted_at is null`,
       [id]
     );
-    return moduleData ? Module.restore(moduleData.id, moduleData.name) : null;
+    return moduleData
+      ? Module.restore(
+          moduleData.id,
+          moduleData.name,
+          moduleData.created_at,
+          moduleData.updated_at
+        )
+      : null;
   }
 
   async getByNameAsync(name: string): Promise<Module | null> {
     const [moduleData] = await this.db.queryAsync(
       `select
-        id, name
+        id, name, created_at, updated_at
        from webeditor_modules
        where name = $1 and deleted_at is null`,
       [name]
     );
-    return moduleData ? Module.restore(moduleData.id, moduleData.name) : null;
+    return moduleData
+      ? Module.restore(
+          moduleData.id,
+          moduleData.name,
+          moduleData.created_at,
+          moduleData.updated_at
+        )
+      : null;
   }
 
   async getAllAsync(
@@ -66,7 +85,7 @@ export class ModuleRepository implements IModuleRepository {
     );
     const modulesData: any[] = await this.db.queryAsync(
       `select
-        id, name
+        id, name, created_at, updated_at
       from webeditor_modules
       where ${where}
       order by ${ordenation}
@@ -76,7 +95,12 @@ export class ModuleRepository implements IModuleRepository {
     );
     const modules: Module[] = [];
     for (let i = 0; i < modulesData.length; i++) {
-      const module = Module.restore(modulesData[i].id, modulesData[i].name);
+      const module = Module.restore(
+        modulesData[i].id,
+        modulesData[i].name,
+        modulesData[i].created_at,
+        modulesData[i].updated_at
+      );
       modules.push(module);
     }
     return { itens: modules, total: total.count };

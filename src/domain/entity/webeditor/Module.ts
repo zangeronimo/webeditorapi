@@ -2,38 +2,41 @@ import {
   ModuleCreateDataModel,
   ModuleUpdateDataModel,
 } from "@application/model/webeditor/module";
+import { EntityBase } from "../EntityBase";
 
-export class Module {
-  private _id: string;
+export class Module extends EntityBase {
   private _name: string;
-  private _updatedAt?: Date;
 
-  get id() {
-    return this._id;
-  }
   get name() {
     return this._name;
   }
-  get updatedAt() {
-    return this._updatedAt;
-  }
 
-  private constructor(id: string, name: string) {
-    this._id = id;
+  private constructor(
+    name: string,
+    id?: string,
+    createdAt?: Date,
+    updatedAt?: Date
+  ) {
+    super("", id, createdAt, updatedAt);
     this._name = name;
   }
 
-  static restore(id: string, name: string): Module {
-    return new Module(id, name);
+  static restore(
+    id: string,
+    name: string,
+    createdAt: Date,
+    updatedAt: Date
+  ): Module {
+    return new Module(name, id, createdAt, updatedAt);
   }
 
   static create(model: ModuleCreateDataModel): Module {
-    const module = new Module(crypto.randomUUID(), model.name);
+    const module = new Module(model.name);
     return module;
   }
 
   update(model: ModuleUpdateDataModel) {
-    this._updatedAt = new Date();
+    this.updateBase();
     this._name = model.name;
   }
 }

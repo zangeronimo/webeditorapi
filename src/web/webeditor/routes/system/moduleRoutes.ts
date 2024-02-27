@@ -1,54 +1,54 @@
 import { Messages } from "@application/messages/Messages";
 import { Roles } from "@application/messages/Roles";
 import {
-  CompanyCreateDataModel,
-  CompanyUpdateDataModel,
-  GetAllCompanyFilterModel,
-} from "@application/model/webeditor/company";
+  ModuleCreateDataModel,
+  ModuleUpdateDataModel,
+  GetAllModuleFilterModel,
+} from "@application/model/webeditor/module";
 import {
-  CompanyCreate,
-  CompanyDelete,
-  CompanyGetById,
-  CompanyUpdate,
-} from "@application/usecase/webeditor/company";
+  ModuleCreate,
+  ModuleDelete,
+  ModuleGetById,
+  ModuleUpdate,
+} from "@application/usecase/webeditor/module";
 import { Authorize } from "@web/webeditor/authorize";
 import { Pug } from "@web/webeditor/models/Pug";
-import { Company } from "@web/webeditor/views/system/company";
+import { Module } from "@web/webeditor/views/system/module";
 import { Request, Response, Router } from "express";
 import { container } from "tsyringe";
 
-export class CompanyRoutes extends Pug {
+export class ModuleRoutes extends Pug {
   router = Router();
   authorize = new Authorize();
-  companyGetById = container.resolve(CompanyGetById);
-  companyCreate = container.resolve(CompanyCreate);
-  companyUpdate = container.resolve(CompanyUpdate);
-  companyDelete = container.resolve(CompanyDelete);
+  moduleGetById = container.resolve(ModuleGetById);
+  moduleCreate = container.resolve(ModuleCreate);
+  moduleUpdate = container.resolve(ModuleUpdate);
+  moduleDelete = container.resolve(ModuleDelete);
 
   constructor(readonly baseRender: any) {
     super();
     this.router.get(
       "/",
       this.authorize.isAutenticated,
-      this.authorize.userHasRole(Roles.webeditor.companies.view, true),
+      this.authorize.userHasRole(Roles.webeditor.modules.view, true),
       this.show
     );
     this.router.get(
       "/:id",
       this.authorize.isAutenticated,
-      this.authorize.userHasRole(Roles.webeditor.companies.update),
+      this.authorize.userHasRole(Roles.webeditor.modules.update),
       this.getById
     );
     this.router.post(
       "/",
       this.authorize.isAutenticated,
-      this.authorize.userHasRole(Roles.webeditor.companies.update),
+      this.authorize.userHasRole(Roles.webeditor.modules.update),
       this.create
     );
     this.router.put(
       "/:id",
       this.authorize.isAutenticated,
-      this.authorize.userHasRole(Roles.webeditor.companies.update),
+      this.authorize.userHasRole(Roles.webeditor.modules.update),
       this.update
     );
     this.router.delete(
@@ -63,39 +63,39 @@ export class CompanyRoutes extends Pug {
     req.query.page = req.query.page ?? "1";
     req.query.pageSize = req.query.pageSize ?? "20";
     const { header, sidebar } = await this.baseRender();
-    const company = new Company();
-    const model = new GetAllCompanyFilterModel(req.query);
-    const { root, seo } = await company.render(model);
+    const module = new Module();
+    const model = new GetAllModuleFilterModel(req.query);
+    const { root, seo } = await module.render(model);
     return res.render("template", { root, seo, header, sidebar });
   };
 
   private getById = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const company = await this.companyGetById.executeAsync(id);
-    return res.json(company);
+    const module = await this.moduleGetById.executeAsync(id);
+    return res.json(module);
   };
 
   private create = async (req: Request, res: Response) => {
-    const { name, modules } = req.body;
-    const model = new CompanyCreateDataModel(name, modules);
-    const company = await this.companyCreate.executeAsync(model);
-    return res.json(company);
+    const { name } = req.body;
+    const model = new ModuleCreateDataModel(name);
+    const module = await this.moduleCreate.executeAsync(model);
+    return res.json(module);
   };
 
   private update = async (req: Request, res: Response) => {
     const { id: paramId } = req.params;
-    const { id, name, modules } = req.body;
+    const { id, name } = req.body;
     if (id !== paramId) {
       throw new Error(Messages.invalidId);
     }
-    const model = new CompanyUpdateDataModel(id, name, modules);
-    const company = await this.companyUpdate.executeAsync(model);
-    return res.json(company);
+    const model = new ModuleUpdateDataModel(id, name);
+    const module = await this.moduleUpdate.executeAsync(model);
+    return res.json(module);
   };
 
   private delete = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const company = await this.companyDelete.executeAsync(id);
-    return res.json(company);
+    const module = await this.moduleDelete.executeAsync(id);
+    return res.json(module);
   };
 }

@@ -22,6 +22,7 @@ div
                     div
                         input(checked=false onclick=`handleSetModule('${module.id}')` type="checkbox" id=module.id, name="company_form_modules")
                         span &nbsp; #{module.name}
+        div.group.right
             +ButtonSave()
             +ButtonCancel({ callback: `toggleModal('${modalId}')` })
 

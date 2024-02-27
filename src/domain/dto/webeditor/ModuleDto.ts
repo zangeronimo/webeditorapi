@@ -1,11 +1,11 @@
 import { Module } from "@domain/entity/webeditor";
+import { DtoBase } from "../DtoBase";
 
-export class ModuleDto {
-  id: string;
+export class ModuleDto extends DtoBase {
   name: string;
 
   constructor(module: Module) {
-    this.id = module?.id;
+    super(module.id, module.createdAt, module.updatedAt);
     this.name = module?.name;
   }
 }

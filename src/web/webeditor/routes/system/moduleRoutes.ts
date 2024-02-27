@@ -54,7 +54,7 @@ export class ModuleRoutes extends Pug {
     this.router.delete(
       "/:id",
       this.authorize.isAutenticated,
-      this.authorize.userHasRole(Roles.institutional.newsletters.delete),
+      this.authorize.userHasRole(Roles.webeditor.modules.delete),
       this.delete
     );
   }

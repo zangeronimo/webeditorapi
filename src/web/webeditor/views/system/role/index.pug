@@ -10,16 +10,17 @@ style
   include ../../../styles/datagrid.scss
   include  styles.scss
 
-div.module
+div.role
   div.box
     form
       div.group
         +Input({ name: "name", value: model.name, title: "Nome", type: "text", })
+        +Input({ name: "label", value: model.label, title: "Legenda", type: "text", })
       div.group.right
         +ButtonSearch()
         +ButtonClear()
   div.group.right
-    +ButtonNew({ callback: `handleOpenFormModal('${modalId}')`, label: 'Novo Módulo', name: '_system_module_edit_button', disabled: true})
+    +ButtonNew({ callback: `handleOpenFormModal('${modalId}')`, label: 'Nova Regra', name: '_system_role_edit_button', disabled: true})
   div.box
     div.datagrid
       div.table_container
@@ -28,21 +29,27 @@ div.module
             tr
               th.datagrid_left 
                 +OrderBy('Nome','name')
+              th.datagrid_left 
+                +OrderBy('Legenda','label')
+              th.datagrid_right 
+                +OrderBy('Ordem','sort_order')
               th
                 +OrderBy('Criado', 'created_at', true)
               th
                 +OrderBy('Atualizado', 'updated_at', true)
               th.datagrid_right Ações
           tbody
-            each module in modules
+            each role in roles
               tr
-                td(data-label="Nome") #{module.name}
-                td(data-label="Criado").datagrid_center #{module.createdAt.toFormat('dd/MM/yyyy')}
-                td(data-label="Atualizado").datagrid_center #{module.updatedAt.toFormat('dd/MM/yyyy')}
+                td(data-label="Nome") #{role.name}
+                td(data-label="Legenda") #{role.label}
+                td(data-label="Ordem") #{role.order}
+                td(data-label="Criado").datagrid_center #{role.createdAt.toFormat('dd/MM/yyyy')}
+                td(data-label="Atualizado").datagrid_center #{role.updatedAt.toFormat('dd/MM/yyyy')}
                 td(data-label="Ações").datagrid_right
                   div.datagrid_tools
-                    +ButtonEdit({ callback: `handleOpenFormModal('${modalId}', '${module.id}')`, name: '_system_module_edit_button' })
-                    +ButtonDelete({ callback: `handleOpenDeleteConfirm('${confirmId}', '${module.id}')`, name: '_system_module_delete_button' })
+                    +ButtonEdit({ callback: `handleOpenFormModal('${modalId}', '${role.id}')`, name: '_system_role_edit_button' })
+                    +ButtonDelete({ callback: `handleOpenDeleteConfirm('${confirmId}', '${role.id}')`, name: '_system_role_delete_button' })
       |!{pagination(dynamicPugFilePathFromVariable)} 
 
 |!{modal(dynamicPugFilePathFromVariable)}
@@ -51,12 +58,12 @@ div.module
 script.
   const handleOpenDeleteConfirm = (confirmId, id) => {
     if (id) {
-      toggleConfirm(confirmId, `handleDeleteModule('${id}')`);
+      toggleConfirm(confirmId, `handleDeleteRole('${id}')`);
     }
   }
 
-  const handleDeleteModule = (id) => {
-    fetch(`/administrator/modules/${id}`, {
+  const handleDeleteRole = (id) => {
+    fetch(`/administrator/roles/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -76,5 +83,5 @@ script.
     });
   }
 
-  _showButtonsWithPermission('WEBEDITOR_MODULE_UPDATE', '_system_module_edit_button')
-  _showButtonsWithPermission('WEBEDITOR_MODULE_DELETE', '_system_module_delete_button')
+  _showButtonsWithPermission('WEBEDITOR_ROLE_UPDATE', '_system_role_edit_button')
+  _showButtonsWithPermission('WEBEDITOR_ROLE_DELETE', '_system_role_delete_button')

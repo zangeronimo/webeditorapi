@@ -1,0 +1,104 @@
+include ../../../components/input/index.pug
+include ../../../components/select/index.pug
+include ../../../components/button/save.pug
+include ../../../components/button/cancel.pug
+
+div
+    form(id="_role_form")
+        div.group
+            input(hidden=true id="role_form_id" name="id" value= "")
+            +Input({ name: "role_form_name", value: "", title: "Nome", type: "text", })
+            +Input({ name: "role_form_label", value: "", title: "Legenda", type: "text", })
+        div.group
+            p #{id} 
+            +Input({ name: "role_form_order", value: "", title: "Ordem", type: "number", })
+            +Select({ name: "role_form_module", value: "", title: "Módulo", datas:[{value:"", label:"Selecione"}, ...modulesSelectData] })
+        div.group.right
+            +ButtonSave()
+            +ButtonCancel({ callback: `toggleModal('${modalId}')` })
+
+script.
+    const idField = document.getElementById('role_form_id');
+    const nameField = document.getElementById('role_form_name');
+    const labelField = document.getElementById('role_form_label');
+    const orderField = document.getElementById('role_form_order');
+    const moduleField = document.getElementById('role_form_module');
+
+    const handleOpenFormModal = (modalId, id = '') => {
+        if (id) {
+            fetch(`/administrator/roles/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            .then((res) => {
+                if (!res.ok) throw new Error('Algo de errado aconteceu.');
+                return res.json()
+            })
+            .then(json => {
+                if (idField) idField.value = json.id;
+                if (nameField) nameField.value = json.name;
+                if (labelField) labelField.value = json.label;
+                if (orderField) orderField.value = json.order;
+                if (moduleField) {
+                    moduleField.value = json.module?.id;
+                    moduleField.disabled = true;
+                }
+                toggleModal(modalId);
+            })
+            .catch((err) => {
+                console.error(err);
+                alert(err.message);
+            });
+        } else {
+            if (idField) idField.value = '';
+            if (nameField) nameField.value = '';
+            if (labelField) labelField.value = '';
+            if (orderField) orderField.value = '';
+            if (moduleField) {
+                moduleField.value = '';
+                moduleField.disabled = false;
+            }
+            toggleModal(modalId);
+        }
+    }
+
+    const handleSubmiteCategoryForm = (e) => {
+        e.preventDefault();
+        const id = idField.value;
+        const name = nameField.value;
+        const label = labelField.value;
+        const order = orderField.value;
+        const moduleId = moduleField.value;
+        const method = id ? 'PUT' : 'POST'
+        payload = { id, name, label, order, moduleId }
+        fetch(`/administrator/roles/${id}`, {
+            method,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+        })
+      .then((res) => {
+        if (!res.ok) throw new Error('Algo de errado aconteceu.');
+        return res.json()
+      })
+      .then(json => {
+        alert('Atualizado com sucesso');
+        document.location.reload();
+      })
+      .catch((err) => {
+        console.error(err);
+        alert(err.message);
+      });
+    }
+    
+
+    const form = document.getElementById("_role_form");
+    if (form) {
+        form.addEventListener("submit", async function (e) {
+            handleSubmiteCategoryForm(e);
+        });
+    }
+    

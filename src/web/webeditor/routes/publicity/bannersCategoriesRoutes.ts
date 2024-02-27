@@ -54,7 +54,7 @@ export class BannersCategoriesRoutes extends Pug {
     this.router.delete(
       "/:id",
       this.authorize.isAutenticated,
-      this.authorize.userHasRole(Roles.institutional.newsletters.delete),
+      this.authorize.userHasRole(Roles.publicity.categories.delete),
       this.delete
     );
   }

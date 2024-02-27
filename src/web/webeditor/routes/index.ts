@@ -10,6 +10,7 @@ import { ModuleRoutes } from "./system/moduleRoutes";
 import { SidebarRoutes } from "./system/sidebarRoutes";
 import { SignInRoutes } from "./system/signInRoutes";
 import { UserHasPermissionRoutes } from "./system/userHasPermission";
+import { RoleRoutes } from "./system/roleRoutes";
 
 export class Routes {
   static init = (router: Router, baseRender: any) => {
@@ -19,6 +20,7 @@ export class Routes {
     const accessDeniedRoutes = new AccessDeniedRoutes(baseRender);
     const companyRoutes = new CompanyRoutes(baseRender);
     const moduleRoutes = new ModuleRoutes(baseRender);
+    const roleRoutes = new RoleRoutes(baseRender);
     const dashboardRoutes = new DashboardRoutes(baseRender);
     const newsletterRoutes = new NewslettersRoutes(baseRender);
     const bannersRoutes = new BannersRoutes(baseRender);
@@ -31,6 +33,7 @@ export class Routes {
     router.use("/access-denied", accessDeniedRoutes.router);
     router.use("/administrator/companies", companyRoutes.router);
     router.use("/administrator/modules", moduleRoutes.router);
+    router.use("/administrator/roles", roleRoutes.router);
     router.use("/", dashboardRoutes.router);
     router.use("/institutional/newsletters", newsletterRoutes.router);
     router.use("/publicity/categories", bannersCategoriesRoutes.router);

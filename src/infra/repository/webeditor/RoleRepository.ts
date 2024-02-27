@@ -2,19 +2,19 @@ import { IRoleRepository } from "@application/interface/repository/webeditor";
 import { GetAllRoleFilterModel } from "@application/model/webeditor/role";
 import { Role } from "@domain/entity/webeditor";
 import { DbContext } from "@infra/context";
-import {  inject, injectable } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class RoleRepository implements IRoleRepository {
   constructor(
-    @inject('DbContext')
+    @inject("DbContext")
     readonly db: DbContext
   ) {}
 
   async getAllByModuleAsync(moduleId: string): Promise<Role[]> {
     const rolesData = await this.db.queryAsync(
       `select
-        id, name, label, sort_order, webeditor_modules_id
+        id, name, label, sort_order, webeditor_modules_id, created_at, updated_at
       from webeditor_roles
       where webeditor_modules_id = $1 and deleted_at is null
       order by name desc, sort_order`,
@@ -27,7 +27,9 @@ export class RoleRepository implements IRoleRepository {
         rolesData[i].name,
         rolesData[i].label,
         +rolesData[i].sort_order,
-        rolesData[i].webeditor_modules_id
+        rolesData[i].webeditor_modules_id,
+        rolesData[i].created_at,
+        rolesData[i].updated_at
       );
       roles.push(role);
     }
@@ -37,7 +39,7 @@ export class RoleRepository implements IRoleRepository {
   async getByIdAsync(id: string): Promise<Role | null> {
     const [roleData] = await this.db.queryAsync(
       `select
-        id, name, label, sort_order, webeditor_modules_id
+        id, name, label, sort_order, webeditor_modules_id, created_at, updated_at
        from webeditor_roles
        where id = $1 and deleted_at is null`,
       [id]
@@ -48,7 +50,9 @@ export class RoleRepository implements IRoleRepository {
           roleData.name,
           roleData.label,
           roleData.sort_order,
-          roleData.webeditor_modules_id
+          roleData.webeditor_modules_id,
+          roleData.created_at,
+          roleData.updated_at
         )
       : null;
   }
@@ -56,7 +60,7 @@ export class RoleRepository implements IRoleRepository {
   async getByNameAsync(name: string): Promise<Role | null> {
     const [roleData] = await this.db.queryAsync(
       `select
-        id, name, label, sort_order, webeditor_modules_id
+        id, name, label, sort_order, webeditor_modules_id, created_at, updated_at
        from webeditor_roles
        where name = $1 and deleted_at is null`,
       [name]
@@ -67,7 +71,9 @@ export class RoleRepository implements IRoleRepository {
           roleData.name,
           roleData.label,
           +roleData.sort_order,
-          roleData.webeditor_modules_id
+          roleData.webeditor_modules_id,
+          roleData.created_at,
+          roleData.updated_at
         )
       : null;
   }
@@ -97,7 +103,7 @@ export class RoleRepository implements IRoleRepository {
     );
     const rolesData: any[] = await this.db.queryAsync(
       `select
-        id, name, label, sort_order, webeditor_modules_id
+        id, name, label, sort_order, webeditor_modules_id, created_at, updated_at
       from webeditor_roles
       where ${where}
       order by ${ordenation}
@@ -118,7 +124,9 @@ export class RoleRepository implements IRoleRepository {
         rolesData[i].name,
         rolesData[i].label,
         +rolesData[i].sort_order,
-        rolesData[i].webeditor_modules_id
+        rolesData[i].webeditor_modules_id,
+        rolesData[i].created_at,
+        rolesData[i].updated_at
       );
       roles.push(role);
     }

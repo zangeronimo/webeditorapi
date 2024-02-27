@@ -1,8 +1,8 @@
 import { Category } from "@domain/entity/culinary";
+import { DtoBase } from "../DtoBase";
 import { LevelDto } from "./LevelDto";
 
-export class CategoryDto {
-  id: string;
+export class CategoryDto extends DtoBase {
   slug: string;
   name: string;
   active: number;
@@ -10,7 +10,7 @@ export class CategoryDto {
   level?: LevelDto;
 
   constructor(category: Category, level?: LevelDto) {
-    this.id = category?.id;
+    super(category.id, category.createdAt, category.updatedAt);
     this.slug = category?.slug!;
     this.name = category?.name;
     this.active = category?.active.valueOf();

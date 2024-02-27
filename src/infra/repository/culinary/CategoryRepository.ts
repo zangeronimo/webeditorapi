@@ -14,7 +14,7 @@ export class CategoryRepository implements ICategoryRepository {
   async getByIdAsync(id: string, company: string): Promise<Category | null> {
     const [categoryData] = await this.db.queryAsync(
       `select
-        id, slug, name, active, recipe_levels_id, webeditor_companies_id
+        id, slug, name, active, recipe_levels_id, webeditor_companies_id, created_at, updated_at
        from recipe_categories
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
@@ -26,7 +26,9 @@ export class CategoryRepository implements ICategoryRepository {
           categoryData.name,
           categoryData.active,
           categoryData.recipe_levels_id,
-          categoryData.webeditor_companies_id
+          categoryData.webeditor_companies_id,
+          categoryData.created_at,
+          categoryData.updated_at
         )
       : null;
   }
@@ -37,7 +39,7 @@ export class CategoryRepository implements ICategoryRepository {
     company: string
   ): Promise<Category | null> {
     const [categoryData] = await this.db.queryAsync(
-      "select id, slug, name, active, recipe_levels_id, webeditor_companies_id from recipe_categories where slug = $1 and recipe_levels_id = $2 and webeditor_companies_id = $3 and deleted_at is null",
+      "select id, slug, name, active, recipe_levels_id, webeditor_companies_id, created_at, updated_at from recipe_categories where slug = $1 and recipe_levels_id = $2 and webeditor_companies_id = $3 and deleted_at is null",
       [slug, levelId, company]
     );
     return categoryData
@@ -47,7 +49,9 @@ export class CategoryRepository implements ICategoryRepository {
           categoryData.name,
           categoryData.active,
           categoryData.recipe_levels_id,
-          categoryData.webeditor_companies_id
+          categoryData.webeditor_companies_id,
+          categoryData.created_at,
+          categoryData.updated_at
         )
       : null;
   }
@@ -83,7 +87,7 @@ export class CategoryRepository implements ICategoryRepository {
     );
     const categoriesData: any[] = await this.db.queryAsync(
       `select
-        id, slug, name, active, recipe_levels_id, webeditor_companies_id
+        id, slug, name, active, recipe_levels_id, webeditor_companies_id, created_at, updated_at
       from recipe_categories
       where ${where}
       order by ${ordenation}
@@ -107,7 +111,9 @@ export class CategoryRepository implements ICategoryRepository {
         categoriesData[i].name,
         categoriesData[i].active,
         categoriesData[i].recipe_levels_id,
-        categoriesData[i].webeditor_companies_id
+        categoriesData[i].webeditor_companies_id,
+        categoriesData[i].created_at,
+        categoriesData[i].updated_at
       );
       categories.push(category);
     }

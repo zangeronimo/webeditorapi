@@ -4,18 +4,14 @@ import {
 } from "@application/model/culinary/category";
 import { ActiveEnum } from "@domain/enum";
 import { Slug } from "@domain/valueObject/Slug";
+import { EntityBase } from "../EntityBase";
 
-export class Category {
-  private _id: string;
+export class Category extends EntityBase {
   private _slug: Slug;
   private _name: string;
   private _active: ActiveEnum;
   private _levelId: string;
-  private _updatedAt?: Date;
 
-  get id() {
-    return this._id;
-  }
   get slug() {
     return this._slug.value;
   }
@@ -28,19 +24,18 @@ export class Category {
   get levelId() {
     return this._levelId;
   }
-  get updatedAt() {
-    return this._updatedAt;
-  }
 
   private constructor(
-    id: string,
     slug: Slug,
     name: string,
     active: ActiveEnum,
     levelId: string,
-    readonly companyId: string
+    companyId: string,
+    id?: string,
+    createdAt?: Date,
+    updatedAt?: Date
   ) {
-    this._id = id;
+    super(companyId, id, createdAt, updatedAt);
     this._slug = slug;
     this._name = name;
     this._active = active;
@@ -53,21 +48,24 @@ export class Category {
     name: string,
     active: ActiveEnum,
     levelId: string,
-    companyId: string
+    companyId: string,
+    createdAt: Date,
+    updatedAt: Date
   ): Category {
     return new Category(
-      id,
       Slug.restore(slug),
       name,
       active,
       levelId,
-      companyId
+      companyId,
+      id,
+      createdAt,
+      updatedAt
     );
   }
 
   static create(model: CategoryCreateDataModel, companyId: string): Category {
     const category = new Category(
-      crypto.randomUUID(),
       Slug.create(model.name),
       model.name,
       model.active,
@@ -78,7 +76,7 @@ export class Category {
   }
 
   update(model: CategoryUpdateDataModel) {
-    this._updatedAt = new Date();
+    this.updateBase();
     this._slug = Slug.restore(model.slug);
     this._name = model.name;
     this._active = model.active;

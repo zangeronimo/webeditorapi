@@ -7,14 +7,14 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export class LevelRepository implements ILevelRepository {
   constructor(
-    @inject('DbContext')
+    @inject("DbContext")
     readonly db: DbContext
   ) {}
 
   async getByIdAsync(id: string, company: string): Promise<Level | null> {
     const [levelData] = await this.db.queryAsync(
       `select
-        id, slug, name, active, webeditor_companies_id
+        id, slug, name, active, webeditor_companies_id, created_at, updated_at
        from recipe_levels
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
@@ -25,14 +25,16 @@ export class LevelRepository implements ILevelRepository {
           levelData.slug,
           levelData.name,
           levelData.active,
-          levelData.webeditor_companies_id
+          levelData.webeditor_companies_id,
+          levelData.created_at,
+          levelData.updated_at
         )
       : null;
   }
 
   async getBySlugAsync(slug: string, company: string): Promise<Level | null> {
     const [levelData] = await this.db.queryAsync(
-      "select id, slug, name, active, webeditor_companies_id from recipe_levels where slug = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      "select id, slug, name, active, webeditor_companies_id, created_at, updated_at from recipe_levels where slug = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [slug, company]
     );
     return levelData
@@ -41,7 +43,9 @@ export class LevelRepository implements ILevelRepository {
           levelData.slug,
           levelData.name,
           levelData.active,
-          levelData.webeditor_companies_id
+          levelData.webeditor_companies_id,
+          levelData.created_at,
+          levelData.updated_at
         )
       : null;
   }
@@ -73,7 +77,7 @@ export class LevelRepository implements ILevelRepository {
     );
     const levelsData: any[] = await this.db.queryAsync(
       `select
-        id, slug, name, active, webeditor_companies_id
+        id, slug, name, active, webeditor_companies_id, created_at, updated_at
       from recipe_levels
       where ${where}
       order by ${ordenation}
@@ -95,7 +99,9 @@ export class LevelRepository implements ILevelRepository {
         levelsData[i].slug,
         levelsData[i].name,
         levelsData[i].active,
-        levelsData[i].webeditor_companies_id
+        levelsData[i].webeditor_companies_id,
+        levelsData[i].created_at,
+        levelsData[i].updated_at
       );
       levels.push(level);
     }

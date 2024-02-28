@@ -1,0 +1,9 @@
+mixin Editor()
+    div(id='_editor')
+
+    script.
+        ClassicEditor
+        .create( document.querySelector('#_editor') )
+        .catch( error => {
+            console.error( error );
+        } );

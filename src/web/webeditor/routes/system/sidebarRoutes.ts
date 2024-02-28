@@ -21,14 +21,14 @@ export class SidebarRoutes extends Pug {
       {
         id: 1,
         name: "Página Inicial",
-        icon: "home",
+        icon: "fa fa-home",
         url: "/",
         subItems: [],
       },
       {
         id: 2,
         name: "TimeSheet",
-        icon: "list-check",
+        icon: "fa fa-list-check",
         subItems: [
           {
             id: 2.1,
@@ -65,7 +65,7 @@ export class SidebarRoutes extends Pug {
       {
         id: 3,
         name: "Culinária",
-        icon: "mortar-pestle",
+        icon: "fa fa-mortar-pestle",
         subItems: [
           {
             id: 3.1,
@@ -96,7 +96,7 @@ export class SidebarRoutes extends Pug {
       {
         id: 4,
         name: "Institucional",
-        icon: "building-columns",
+        icon: "fa fa-building-columns",
         subItems: [
           {
             id: 4.1,
@@ -109,7 +109,7 @@ export class SidebarRoutes extends Pug {
       {
         id: 5,
         name: "Publicidade",
-        icon: "rectangle-ad",
+        icon: "fa fa-rectangle-ad",
         subItems: [
           {
             id: 5.1,
@@ -128,7 +128,7 @@ export class SidebarRoutes extends Pug {
       {
         id: 90,
         name: "WEBEditor",
-        icon: "linux",
+        icon: "fa-brands fa-linux",
         subItems: [
           {
             id: 90.1,
@@ -141,7 +141,7 @@ export class SidebarRoutes extends Pug {
       {
         id: 91,
         name: "Administrador",
-        icon: "gear",
+        icon: "fa fa-gear",
         subItems: [
           {
             id: 91.1,

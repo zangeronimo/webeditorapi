@@ -54,8 +54,7 @@ script.
           const menuLabel = document.createTextNode(item.name)
           if (item.icon) {
             const menuIcon = document.createElement('i')
-            menuIcon.classList.add('fa')
-            menuIcon.classList.add(`fa-${item.icon}`)
+            item.icon.split(' ').forEach(icon => menuIcon.classList.add(icon))            
             menuDiv.appendChild(menuIcon)
           }
           if (item.url) {

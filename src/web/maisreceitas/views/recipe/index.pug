@@ -27,10 +27,11 @@ div.recipe
   h2.sub_title Ingredientes
   |!{recipe.ingredients}
 
-  div.group.space_around
-    +AdsSquare()
-    +AdsSquare()
-    +AdsSquare()
+  if recipe.images.length > 0
+    div.group.space_around
+      +AdsSquare()
+      +AdsSquare()
+      +AdsSquare()
 
   h2.sub_title Modo de Preparo
   |!{recipe.preparation}

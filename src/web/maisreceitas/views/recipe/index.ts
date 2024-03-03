@@ -38,7 +38,7 @@ export class Recipe {
     let banners: BannerDto[] = [];
     if (recipe.images.length > 0)
       seo.setImage(process.env.MAISRECEITAS_URL!, recipe.images[0]);
-    else banners = await this.bannerService.getRandAsync(1, this.company);
+    else banners = await this.bannerService.getRandAsync(3, this.company);
     return {
       root: () =>
         pug.renderFile(pugFile, {

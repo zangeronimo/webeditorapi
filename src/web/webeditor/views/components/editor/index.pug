@@ -1,9 +1,16 @@
+style
+    include styles.scss
+
 mixin Editor()
     div(id='_editor')
 
     script.
         ClassicEditor
         .create( document.querySelector('#_editor') )
+        .then(editor => console.log(editor))
+   
         .catch( error => {
             console.error( error );
         } );
+
+        //- ckEditor.addCss('.cke_editable { background-color: black; color: white }')

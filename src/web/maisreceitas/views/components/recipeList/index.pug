@@ -11,5 +11,5 @@ if recipes.length > 0
           tr.recipe_list_line
             td
               a(href=`/receita/${recipe.slug}` title=`Receita de ${recipe.name}`) #{recipe.name}
-              if (recipe.getRate())
-                span._rating_stars #{recipe.getRate().toStars()}
+                if (recipe.getRate())
+                  span._rating_stars #{recipe.getRate().toStars()}

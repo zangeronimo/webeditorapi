@@ -18,12 +18,6 @@
   }
 
   & td {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-
     & span._rating_stars {
       color: var(--primary_dark);
       font-weight: 500;
@@ -35,7 +29,11 @@
   }
 
   & td a {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
     text-decoration: none;
     color: var(--black);
   }

@@ -4,7 +4,13 @@ import {
   CompanyUpdateDataModel,
   GetAllCompanyFilterModel,
 } from "@application/model/webeditor/company";
-import { CompanyCreate, CompanyDelete, CompanyGetAll, CompanyGetById, CompanyUpdate } from "@application/usecase/webeditor/company";
+import {
+  CompanyCreate,
+  CompanyDelete,
+  CompanyGetAll,
+  CompanyGetById,
+  CompanyUpdate,
+} from "@application/usecase/webeditor/company";
 import { Request, Response, Router } from "express";
 import { container } from "tsyringe";
 
@@ -51,42 +57,42 @@ export class CompanyController {
     );
   }
 
-  private getAllAsync = async (req: Request, res: Response) => {
+  private getAllAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const getAllCompanyFilterModel = new GetAllCompanyFilterModel(req.query);
       const companies = await this.companyGetAll.executeAsync(
         getAllCompanyFilterModel
       );
-      return res.json(companies);
+      res.json(companies);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private getByIdAsync = async (req: Request, res: Response) => {
+  private getByIdAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       const company = await this.companyGetById.executeAsync(id);
-      return res.json(company);
+      res.json(company);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private createAsync = async (req: Request, res: Response) => {
+  private createAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const { name, modules } = req.body;
       const companyCreateDataModel = new CompanyCreateDataModel(name, modules);
       const company = await this.companyCreate.executeAsync(
         companyCreateDataModel
       );
-      return res.status(201).json(company);
+      res.status(201).json(company);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private updateAsync = async (req: Request, res: Response) => {
+  private updateAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id, name, modules } = req.body;
       const companyUpdateDataModel = new CompanyUpdateDataModel(
@@ -97,19 +103,19 @@ export class CompanyController {
       const company = await this.companyUpdate.executeAsync(
         companyUpdateDataModel
       );
-      return res.json(company);
+      res.json(company);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private deleteAsync = async (req: Request, res: Response) => {
+  private deleteAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       const company = await this.companyDelete.executeAsync(id);
-      return res.json(company);
+      res.json(company);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 }

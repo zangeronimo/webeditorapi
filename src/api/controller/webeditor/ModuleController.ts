@@ -4,7 +4,14 @@ import {
   ModuleCreateDataModel,
   ModuleUpdateDataModel,
 } from "@application/model/webeditor/module";
-import { ModuleGetAllByCompany, ModuleGetAll, ModuleGetById, ModuleCreate, ModuleUpdate, ModuleDelete } from "@application/usecase/webeditor/module";
+import {
+  ModuleGetAllByCompany,
+  ModuleGetAll,
+  ModuleGetById,
+  ModuleCreate,
+  ModuleUpdate,
+  ModuleDelete,
+} from "@application/usecase/webeditor/module";
 import { Request, Response, Router } from "express";
 import { container } from "tsyringe";
 
@@ -19,7 +26,7 @@ export class ModuleController {
   ensureAuthenticated = container.resolve(EnsureAuthenticated);
   ensureHasRole = container.resolve(EnsureHasRole);
 
-  constructor( ) {
+  constructor() {
     this.router.get(
       "/get-all-by-company",
       this.ensureAuthenticated.execute,
@@ -58,71 +65,74 @@ export class ModuleController {
     );
   }
 
-  private getAllByCompanyAsync = async (req: Request, res: Response) => {
+  private getAllByCompanyAsync = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
     try {
       const { company } = req.user;
       const modules = await this.moduleGetAllByCompany.executeAsync(company);
-      return res.json(modules);
+      res.json(modules);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private getAllAsync = async (req: Request, res: Response) => {
+  private getAllAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const getAllModuleFilterModel = new GetAllModuleFilterModel(req.query);
       const modules = await this.moduleGetAll.executeAsync(
         getAllModuleFilterModel
       );
-      return res.json(modules);
+      res.json(modules);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private getByIdAsync = async (req: Request, res: Response) => {
+  private getByIdAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       const module = await this.moduleGetById.executeAsync(id);
-      return res.json(module);
+      res.json(module);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private createAsync = async (req: Request, res: Response) => {
+  private createAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const { name, label, order, moduleId } = req.body;
       const moduleCreateDataModel = new ModuleCreateDataModel(name);
       const module = await this.moduleCreate.executeAsync(
         moduleCreateDataModel
       );
-      return res.status(201).json(module);
+      res.status(201).json(module);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private updateAsync = async (req: Request, res: Response) => {
+  private updateAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id, name, label, order, moduleId } = req.body;
       const moduleUpdateDataModel = new ModuleUpdateDataModel(id, name);
       const module = await this.moduleUpdate.executeAsync(
         moduleUpdateDataModel
       );
-      return res.json(module);
+      res.json(module);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private deleteAsync = async (req: Request, res: Response) => {
+  private deleteAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       const module = await this.moduleDelete.executeAsync(id);
-      return res.json(module);
+      res.json(module);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 }

@@ -1,23 +1,33 @@
-import { EnsureAuthenticated, EnsureHasRole, IEnsureAuthenticated, IEnsureHasRole } from "@api/midleware";
+import {
+  EnsureAuthenticated,
+  EnsureHasRole,
+  IEnsureAuthenticated,
+  IEnsureHasRole,
+} from "@api/midleware";
 import {
   GetAllUserFilterModel,
   UserCreateDataModel,
   UserUpdateDataModel,
 } from "@application/model/webeditor/user";
-import { UserCreate, UserDelete, UserGetAll, UserGetById, UserUpdate } from "@application/usecase/webeditor/user";
+import {
+  UserCreate,
+  UserDelete,
+  UserGetAll,
+  UserGetById,
+  UserUpdate,
+} from "@application/usecase/webeditor/user";
 import { Request, Response, Router } from "express";
 import { container } from "tsyringe";
 
 export class UserController {
   router = Router();
-  userGetAll = container.resolve(UserGetAll)
-  userGetById = container.resolve(UserGetById)
-  userCreate = container.resolve(UserCreate)
-  userUpdate = container.resolve(UserUpdate)
-  userDelete = container.resolve(UserDelete)
-  ensureAuthenticated = container.resolve(EnsureAuthenticated)
-  ensureHasRole = container.resolve(EnsureHasRole)
-
+  userGetAll = container.resolve(UserGetAll);
+  userGetById = container.resolve(UserGetById);
+  userCreate = container.resolve(UserCreate);
+  userUpdate = container.resolve(UserUpdate);
+  userDelete = container.resolve(UserDelete);
+  ensureAuthenticated = container.resolve(EnsureAuthenticated);
+  ensureHasRole = container.resolve(EnsureHasRole);
 
   constructor() {
     this.router.get(
@@ -52,7 +62,7 @@ export class UserController {
     );
   }
 
-  private getAllAsync = async (req: Request, res: Response) => {
+  private getAllAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const { company } = req.user;
       const getAllUserFilterModel = new GetAllUserFilterModel(req.query);
@@ -60,24 +70,24 @@ export class UserController {
         getAllUserFilterModel,
         company
       );
-      return res.json(users);
+      res.json(users);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private getByIdAsync = async (req: Request, res: Response) => {
+  private getByIdAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const { company } = req.user;
       const { id } = req.params;
       const user = await this.userGetById.executeAsync(id, company);
-      return res.json(user);
+      res.json(user);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private createAsync = async (req: Request, res: Response) => {
+  private createAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const { company } = req.user;
       const { name, email, password, roles } = req.body;
@@ -91,13 +101,13 @@ export class UserController {
         userCreateDataModel,
         company
       );
-      return res.status(201).json(user);
+      res.status(201).json(user);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private updateAsync = async (req: Request, res: Response) => {
+  private updateAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const { company } = req.user;
       const { id, name, email, password, roles } = req.body;
@@ -112,20 +122,20 @@ export class UserController {
         userUpdateDataModel,
         company
       );
-      return res.json(user);
+      res.json(user);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private deleteAsync = async (req: Request, res: Response) => {
+  private deleteAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const { company } = req.user;
       const { id } = req.params;
       const user = await this.userDelete.executeAsync(id, company);
-      return res.json(user);
+      res.json(user);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 }

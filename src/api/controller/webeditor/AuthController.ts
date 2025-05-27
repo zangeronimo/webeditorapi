@@ -5,25 +5,25 @@ import { container } from "tsyringe";
 
 export class AuthController {
   router = Router();
-  makeLogin = container.resolve(MakeLogin)
-  refreshToken = container.resolve(RefreshToken)
+  makeLogin = container.resolve(MakeLogin);
+  refreshToken = container.resolve(RefreshToken);
 
   constructor() {
     this.router.post("/", this.auth);
   }
 
-  private auth = (req: Request, res: Response) => {
+  private auth = (req: Request, res: Response): void => {
     try {
       const { grant_type } = req.body;
-      if (grant_type === "password") return this.loginAsync(req, res);
-      if (grant_type === "refresh_token") return this.refreshAsync(req, res);
-      throw new Error(Messages.invalidGrantType);
+      if (grant_type === "password") this.loginAsync(req, res);
+      else if (grant_type === "refresh_token") this.refreshAsync(req, res);
+      else throw new Error(Messages.invalidGrantType);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private loginAsync = async (req: Request, res: Response) => {
+  private loginAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const { username, password } = req.body;
       const { token, refreshToken } = await this.makeLogin.executeAsync(
@@ -36,13 +36,13 @@ export class AuthController {
         expires: new Date(new Date().getTime() + +process.env.REFRESH_EXP!),
         secure: true,
       });
-      return res.json(token);
+      res.json(token);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private refreshAsync = async (req: Request, res: Response) => {
+  private refreshAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const refresh = req.headers.cookie
         ?.split("; ")
@@ -60,9 +60,9 @@ export class AuthController {
         expires: new Date(new Date().getTime() + +process.env.REFRESH_EXP!),
         secure: true,
       });
-      return res.json(token);
+      res.json(token);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 }

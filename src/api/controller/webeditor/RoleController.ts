@@ -4,7 +4,13 @@ import {
   RoleCreateDataModel,
   RoleUpdateDataModel,
 } from "@application/model/webeditor/role";
-import { RoleGetAll, RoleGetById, RoleCreate, RoleUpdate, RoleDelete } from "@application/usecase/webeditor/role";
+import {
+  RoleGetAll,
+  RoleGetById,
+  RoleCreate,
+  RoleUpdate,
+  RoleDelete,
+} from "@application/usecase/webeditor/role";
 import { Request, Response, Router } from "express";
 import { container } from "tsyringe";
 
@@ -51,27 +57,27 @@ export class RoleController {
     );
   }
 
-  private getAllAsync = async (req: Request, res: Response) => {
+  private getAllAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const getAllRoleFilterModel = new GetAllRoleFilterModel(req.query);
       const roles = await this.roleGetAll.executeAsync(getAllRoleFilterModel);
-      return res.json(roles);
+      res.json(roles);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private getByIdAsync = async (req: Request, res: Response) => {
+  private getByIdAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       const role = await this.roleGetById.executeAsync(id);
-      return res.json(role);
+      res.json(role);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private createAsync = async (req: Request, res: Response) => {
+  private createAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const { name, label, order, moduleId } = req.body;
       const roleCreateDataModel = new RoleCreateDataModel(
@@ -81,13 +87,13 @@ export class RoleController {
         moduleId
       );
       const role = await this.roleCreate.executeAsync(roleCreateDataModel);
-      return res.status(201).json(role);
+      res.status(201).json(role);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private updateAsync = async (req: Request, res: Response) => {
+  private updateAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id, name, label, order, moduleId } = req.body;
       const roleUpdateDataModel = new RoleUpdateDataModel(
@@ -98,19 +104,19 @@ export class RoleController {
         moduleId
       );
       const role = await this.roleUpdate.executeAsync(roleUpdateDataModel);
-      return res.json(role);
+      res.json(role);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
-  private deleteAsync = async (req: Request, res: Response) => {
+  private deleteAsync = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
       const role = await this.roleDelete.executeAsync(id);
-      return res.json(role);
+      res.json(role);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 }

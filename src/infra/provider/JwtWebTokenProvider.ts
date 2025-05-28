@@ -21,7 +21,7 @@ export class JwtWebTokenProvider implements ITokenProvider {
   verify(token: string) {
     const payload: any = verify(token, process.env.SECRET_KEY!);
     const dateNow = new Date().getTime();
-    if (dateNow - payload.exp <= 0) {
+    if (payload.exp - dateNow <= 0) {
       throw new Error(Messages.invalidJwtToken);
     }
     return new TokenPayloadModel(

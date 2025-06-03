@@ -11,6 +11,7 @@ export class Recipe extends EntityBase {
   private _name: string;
   private _ingredients: string;
   private _preparation: string;
+  private _moreInformation: string;
   private _active: ActiveEnum;
   private _categoryId: string;
 
@@ -26,6 +27,9 @@ export class Recipe extends EntityBase {
   get preparation() {
     return this._preparation;
   }
+  get moreInformation() {
+    return this._moreInformation;
+  }
   get active() {
     return this._active;
   }
@@ -38,6 +42,7 @@ export class Recipe extends EntityBase {
     name: string,
     ingredients: string,
     preparation: string,
+    moreInformation: string,
     active: ActiveEnum,
     categoryId: string,
     companyId: string,
@@ -50,6 +55,7 @@ export class Recipe extends EntityBase {
     this._name = name;
     this._ingredients = ingredients;
     this._preparation = preparation;
+    this._moreInformation = moreInformation;
     this._active = active;
     this._categoryId = categoryId;
   }
@@ -60,6 +66,7 @@ export class Recipe extends EntityBase {
     name: string,
     ingredients: string,
     preparation: string,
+    moreInformation: string,
     active: ActiveEnum,
     categoryId: string,
     companyId: string,
@@ -71,6 +78,7 @@ export class Recipe extends EntityBase {
       name,
       ingredients,
       preparation,
+      moreInformation,
       active,
       categoryId,
       companyId,
@@ -86,6 +94,7 @@ export class Recipe extends EntityBase {
       model.name,
       model.ingredients,
       model.preparation,
+      model.moreInformation,
       model.active,
       model.categoryId,
       companyId
@@ -99,6 +108,7 @@ export class Recipe extends EntityBase {
     this._name = model.name;
     this._ingredients = model.ingredients;
     this._preparation = model.preparation;
+    this._moreInformation = model.moreInformation;
     this._active = model.active;
     this._categoryId = model.categoryId;
   }

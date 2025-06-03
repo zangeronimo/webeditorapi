@@ -4,7 +4,13 @@ import {
   RecipeCreateDataModel,
   RecipeUpdateDataModel,
 } from "@application/model/culinary/recipe";
-import { RecipeGetAll, RecipeGetById, RecipeCreate, RecipeUpdate, RecipeDelete } from "@application/usecase/culinary/recipe";
+import {
+  RecipeGetAll,
+  RecipeGetById,
+  RecipeCreate,
+  RecipeUpdate,
+  RecipeDelete,
+} from "@application/usecase/culinary/recipe";
 import { Request, Response, Router } from "express";
 import { container } from "tsyringe";
 
@@ -59,9 +65,9 @@ export class RecipeController {
         getAllRecipeFilterModel,
         company
       );
-      return res.json(recipes);
+      res.json(recipes);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
@@ -70,9 +76,9 @@ export class RecipeController {
       const { company } = req.user;
       const { id } = req.params;
       const recipe = await this.recipeGetById.executeAsync(id, company);
-      return res.json(recipe);
+      res.json(recipe);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
@@ -83,6 +89,7 @@ export class RecipeController {
         name,
         ingredients,
         preparation,
+        moreInformation,
         active,
         categoryId,
         imageUpload,
@@ -91,6 +98,7 @@ export class RecipeController {
         name,
         ingredients,
         preparation,
+        moreInformation,
         active,
         categoryId,
         imageUpload
@@ -99,9 +107,9 @@ export class RecipeController {
         recipeCreateDataModel,
         company
       );
-      return res.status(201).json(recipe);
+      res.status(201).json(recipe);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
@@ -114,6 +122,7 @@ export class RecipeController {
         name,
         ingredients,
         preparation,
+        moreInformation,
         active,
         categoryId,
         imageUpload,
@@ -124,6 +133,7 @@ export class RecipeController {
         name,
         ingredients,
         preparation,
+        moreInformation,
         active,
         categoryId,
         imageUpload
@@ -132,9 +142,9 @@ export class RecipeController {
         recipeUpdateDataModel,
         company
       );
-      return res.json(recipe);
+      res.json(recipe);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
@@ -143,9 +153,9 @@ export class RecipeController {
       const { company } = req.user;
       const { id } = req.params;
       const recipe = await this.recipeDelete.executeAsync(id, company);
-      return res.json(recipe);
+      res.json(recipe);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 }

@@ -8,6 +8,7 @@ export class RecipeDto extends DtoBase {
   name: string;
   ingredients: string;
   preparation: string;
+  moreInformation: string;
   active: number;
   categoryId: string;
   images: string[];
@@ -25,6 +26,7 @@ export class RecipeDto extends DtoBase {
     this.name = recipe?.name;
     this.ingredients = recipe?.ingredients;
     this.preparation = recipe?.preparation;
+    this.moreInformation = recipe?.moreInformation;
     this.active = recipe?.active.valueOf();
     this.categoryId = recipe?.categoryId;
     this.images = images;

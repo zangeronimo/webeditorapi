@@ -12,7 +12,7 @@ export class RecipeUpdate implements IRecipeUpdate {
     @inject("IRecipeRepository")
     readonly _recipeRepository: IRecipeRepository,
     @inject("IStorageProvider")
-    readonly _storageProvider: IStorageProvider,
+    readonly _storageProvider: IStorageProvider
   ) {}
 
   async executeAsync(recipeData: RecipeUpdateDataModel, company: string) {

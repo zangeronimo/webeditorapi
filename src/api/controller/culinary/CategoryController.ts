@@ -4,7 +4,13 @@ import {
   CategoryUpdateDataModel,
   GetAllCategoryFilterModel,
 } from "@application/model/culinary/category";
-import { CategoryCreate, CategoryDelete, CategoryGetAll, CategoryGetById, CategoryUpdate } from "@application/usecase/culinary/category";
+import {
+  CategoryCreate,
+  CategoryDelete,
+  CategoryGetAll,
+  CategoryGetById,
+  CategoryUpdate,
+} from "@application/usecase/culinary/category";
 import { Request, Response, Router } from "express";
 import { container } from "tsyringe";
 
@@ -61,9 +67,9 @@ export class CategoryController {
         getAllCategoryFilterModel,
         company
       );
-      return res.json(categories);
+      res.json(categories);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
@@ -72,9 +78,9 @@ export class CategoryController {
       const { company } = req.user;
       const { id } = req.params;
       const category = await this.categoryGetById.executeAsync(id, company);
-      return res.json(category);
+      res.json(category);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
@@ -91,9 +97,9 @@ export class CategoryController {
         categoryCreateDataModel,
         company
       );
-      return res.status(201).json(category);
+      res.status(201).json(category);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
@@ -112,9 +118,9 @@ export class CategoryController {
         categoryUpdateDataModel,
         company
       );
-      return res.json(category);
+      res.json(category);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
@@ -123,9 +129,9 @@ export class CategoryController {
       const { company } = req.user;
       const { id } = req.params;
       const category = await this.categoryDelete.executeAsync(id, company);
-      return res.json(category);
+      res.json(category);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 }

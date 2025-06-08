@@ -4,7 +4,13 @@ import {
   RatingCreateDataModel,
   RatingUpdateDataModel,
 } from "@application/model/culinary/rating";
-import { RatingCreate, RatingDelete, RatingGetAll, RatingGetById, RatingUpdate } from "@application/usecase/culinary/rating";
+import {
+  RatingCreate,
+  RatingDelete,
+  RatingGetAll,
+  RatingGetById,
+  RatingUpdate,
+} from "@application/usecase/culinary/rating";
 import { Request, Response, Router } from "express";
 import { container } from "tsyringe";
 
@@ -59,9 +65,9 @@ export class RatingController {
         getAllRatingFilterModel,
         company
       );
-      return res.json(ratings);
+      res.json(ratings);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
@@ -70,9 +76,9 @@ export class RatingController {
       const { company } = req.user;
       const { id } = req.params;
       const rating = await this.ratingGetById.executeAsync(id, company);
-      return res.json(rating);
+      res.json(rating);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
@@ -91,9 +97,9 @@ export class RatingController {
         ratingCreateDataModel,
         company
       );
-      return res.status(201).json(rating);
+      res.status(201).json(rating);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
@@ -113,9 +119,9 @@ export class RatingController {
         ratingUpdateDataModel,
         company
       );
-      return res.json(rating);
+      res.json(rating);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
@@ -124,9 +130,9 @@ export class RatingController {
       const { company } = req.user;
       const { id } = req.params;
       const rating = await this.ratingDelete.executeAsync(id, company);
-      return res.json(rating);
+      res.json(rating);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 }

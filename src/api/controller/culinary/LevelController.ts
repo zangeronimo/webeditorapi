@@ -4,7 +4,13 @@ import {
   LevelCreateDataModel,
   LevelUpdateDataModel,
 } from "@application/model/culinary/level";
-import { LevelCreate, LevelDelete, LevelGetAll, LevelGetById, LevelUpdate } from "@application/usecase/culinary/level";
+import {
+  LevelCreate,
+  LevelDelete,
+  LevelGetAll,
+  LevelGetById,
+  LevelUpdate,
+} from "@application/usecase/culinary/level";
 import { Request, Response, Router } from "express";
 import { container } from "tsyringe";
 
@@ -59,9 +65,9 @@ export class LevelController {
         getAllLevelFilterModel,
         company
       );
-      return res.json(levels);
+      res.json(levels);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
@@ -70,9 +76,9 @@ export class LevelController {
       const { company } = req.user;
       const { id } = req.params;
       const level = await this.levelGetById.executeAsync(id, company);
-      return res.json(level);
+      res.json(level);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
@@ -85,9 +91,9 @@ export class LevelController {
         levelCreateDataModel,
         company
       );
-      return res.status(201).json(level);
+      res.status(201).json(level);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
@@ -105,9 +111,9 @@ export class LevelController {
         levelUpdateDataModel,
         company
       );
-      return res.json(level);
+      res.json(level);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 
@@ -116,9 +122,9 @@ export class LevelController {
       const { company } = req.user;
       const { id } = req.params;
       const level = await this.levelDelete.executeAsync(id, company);
-      return res.json(level);
+      res.json(level);
     } catch (e: any) {
-      return res.status(400).json(e.message);
+      res.status(400).json(e.message);
     }
   };
 }

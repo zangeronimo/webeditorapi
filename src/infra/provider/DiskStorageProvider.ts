@@ -3,17 +3,29 @@ import path from "path";
 import { IStorageProvider } from "@application/interface/provider/IStorageProvider";
 
 export class DiskStorageProvider implements IStorageProvider {
-  async saveFile(file: string, company: string): Promise<string> {
+  async saveFile(
+    file: string,
+    company: string,
+    prefix?: string
+  ): Promise<string> {
     if (!file) return "";
     const [header, base64Data] = file.split(",");
     const [, type] = header.replace(";base64", "").split("/");
     const name = `${new Date().getTime()}.${type}`;
-    const dir = path.resolve(__dirname, "..", "..", "..", "upload", company);
+    const folder = prefix ? `${company}/${prefix}` : company;
+    const dir = path.resolve(
+      __dirname,
+      "..",
+      "..",
+      "..",
+      "upload",
+      ...(folder.split("/") ?? [])
+    );
     this.createDir(dir);
     fs.writeFile(`${dir}/${name}`, base64Data, "base64", (err) =>
       console.log(err)
     );
-    return `/files/${company}/${name}`;
+    return `/files/${folder}/${name}`;
   }
 
   async deleteFile(file: string): Promise<void> {

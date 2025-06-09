@@ -4,6 +4,7 @@ import { IRecipeUpdate } from "@application/interface/usecase/culinary/recipe";
 import { Messages } from "@application/messages/Messages";
 import { RecipeUpdateDataModel } from "@application/model/culinary/recipe";
 import { RecipeDto } from "@domain/dto/culinary";
+import { Image } from "@domain/entity/culinary";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -32,11 +33,17 @@ export class RecipeUpdate implements IRecipeUpdate {
         throw new Error(Messages.alreadyInUse("Slug"));
       }
     }
+    if (recipeData.images) {
+      recipeData.images.map((image: Image) => image.update(image.active));
+    }
     if (recipeData.imageUpload) {
       const filePath = await this._storageProvider.saveFile(
         recipeData.imageUpload,
-        company
+        company,
+        "recipes"
       );
+      const image = Image.create(filePath, recipeData.id, company, "");
+      recipeData.images?.push(image);
     }
     recipe.update(recipeData);
     await this._recipeRepository.updateAsync(recipe);

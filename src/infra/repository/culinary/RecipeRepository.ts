@@ -3,6 +3,7 @@ import { GetAllRecipeFilterModel } from "@application/model/culinary/recipe";
 import { GetAllRecipesFilterModel } from "@application/model/culinary/recipe/GetAllRecipesFilterModel";
 import { GetAllWithImageFilterModel } from "@application/model/culinary/recipe/GetAllWithImageFilterModel";
 import { Recipe } from "@domain/entity/culinary";
+import { Image } from "@domain/entity/culinary/Image";
 import { ActiveEnum } from "@domain/enum";
 import { DbContext } from "@infra/context";
 import { inject, injectable } from "tsyringe";
@@ -28,6 +29,7 @@ export class RecipeRepository implements IRecipeRepository {
     );
     const recipes: Recipe[] = [];
     for (let i = 0; i < recipesData.length; i++) {
+      const images = await this.getAllImages(recipesData[i].id, company);
       const recipe = Recipe.restore(
         recipesData[i].id,
         recipesData[i].slug,
@@ -35,6 +37,7 @@ export class RecipeRepository implements IRecipeRepository {
         recipesData[i].ingredients,
         recipesData[i].preparation,
         recipesData[i].more_information,
+        images,
         recipesData[i].active,
         recipesData[i].recipe_categories_id,
         recipesData[i].webeditor_companies_id,
@@ -75,6 +78,7 @@ export class RecipeRepository implements IRecipeRepository {
     );
     const recipes: Recipe[] = [];
     for (let i = 0; i < recipesData.length; i++) {
+      const images = await this.getAllImages(recipesData[i].id, company);
       const recipe = Recipe.restore(
         recipesData[i].id,
         recipesData[i].slug,
@@ -82,6 +86,7 @@ export class RecipeRepository implements IRecipeRepository {
         recipesData[i].ingredients,
         recipesData[i].preparation,
         recipesData[i].more_information,
+        images,
         recipesData[i].active,
         recipesData[i].recipe_categories_id,
         recipesData[i].webeditor_companies_id,
@@ -125,6 +130,7 @@ export class RecipeRepository implements IRecipeRepository {
     );
     const recipes: Recipe[] = [];
     for (let i = 0; i < recipesData.length; i++) {
+      const images = await this.getAllImages(recipesData[i].id, company);
       const recipe = Recipe.restore(
         recipesData[i].id,
         recipesData[i].slug,
@@ -132,6 +138,7 @@ export class RecipeRepository implements IRecipeRepository {
         recipesData[i].ingredients,
         recipesData[i].preparation,
         recipesData[i].more_information,
+        images,
         recipesData[i].active,
         recipesData[i].recipe_categories_id,
         recipesData[i].webeditor_companies_id,
@@ -143,7 +150,35 @@ export class RecipeRepository implements IRecipeRepository {
     return recipes;
   }
 
-  async getAllImagesByRecipeId(
+  private async getAllImages(
+    recipeId: string,
+    company: string
+  ): Promise<Image[]> {
+    const imagesData: any[] = await this.db.queryAsync(
+      `select
+        id, url, recipes_id, active, webeditor_companies_id, created_at, updated_at
+      from recipe_images
+      where webeditor_companies_id = $1 and deleted_at is null and recipes_id = $2
+      order by id DESC`,
+      [company, recipeId]
+    );
+    const images: Image[] = [];
+    for (let i = 0; i < imagesData.length; i++) {
+      const image = Image.restore(
+        imagesData[i].id,
+        imagesData[i].url,
+        imagesData[i].recipes_id,
+        imagesData[i].active,
+        imagesData[i].webeditor_companies_id,
+        imagesData[i].created_at,
+        imagesData[i].updated_at
+      );
+      images.push(image);
+    }
+    return images;
+  }
+
+  async getAllActiveImagesByRecipeId(
     recipeId: string,
     company: string
   ): Promise<string[]> {
@@ -170,6 +205,7 @@ export class RecipeRepository implements IRecipeRepository {
        where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [id, company]
     );
+    const images = await this.getAllImages(id, company);
     return recipeData
       ? Recipe.restore(
           recipeData.id,
@@ -178,6 +214,7 @@ export class RecipeRepository implements IRecipeRepository {
           recipeData.ingredients,
           recipeData.preparation,
           recipeData.more_information,
+          images,
           recipeData.active,
           recipeData.recipe_categories_id,
           recipeData.webeditor_companies_id,
@@ -192,6 +229,7 @@ export class RecipeRepository implements IRecipeRepository {
       "select id, slug, name, ingredients, preparation, more_information, active, recipe_categories_id, webeditor_companies_id, created_at, updated_at from recipes where slug = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [slug, company]
     );
+    const images = await this.getAllImages(recipeData.id, company);
     return recipeData
       ? Recipe.restore(
           recipeData.id,
@@ -200,6 +238,7 @@ export class RecipeRepository implements IRecipeRepository {
           recipeData.ingredients,
           recipeData.preparation,
           recipeData.more_information,
+          images,
           recipeData.active,
           recipeData.recipe_categories_id,
           recipeData.webeditor_companies_id,
@@ -258,6 +297,7 @@ export class RecipeRepository implements IRecipeRepository {
     );
     const recipes: Recipe[] = [];
     for (let i = 0; i < recipesData.length; i++) {
+      const images = await this.getAllImages(recipesData[i].id, company);
       const recipe = Recipe.restore(
         recipesData[i].id,
         recipesData[i].slug,
@@ -265,6 +305,7 @@ export class RecipeRepository implements IRecipeRepository {
         recipesData[i].ingredients,
         recipesData[i].preparation,
         recipesData[i].more_information,
+        images,
         recipesData[i].active,
         recipesData[i].recipe_categories_id,
         recipesData[i].webeditor_companies_id,
@@ -300,6 +341,30 @@ export class RecipeRepository implements IRecipeRepository {
         recipe.updatedAt,
       ]
     );
+    for (let i = 0; i < recipe.images?.length; i++) {
+      if (recipe.images[i].id) {
+        await this.db.queryAsync(
+          "update recipe_images set active=$4, updated_at=$5 where id = $1 and recipes_id=$2 and webeditor_companies_id = $3 and deleted_at is null",
+          [
+            recipe.images[i].id,
+            recipe.id,
+            recipe.companyId,
+            recipe.images[i].active,
+            recipe.images[i].updatedAt,
+          ]
+        );
+      } else {
+        await this.db.queryAsync(
+          "insert into recipe_images (url, recipes_id, webeditor_companies_id, active) values ($1, $2, $3, $4)",
+          [
+            recipe.images[i].url,
+            recipe.id,
+            recipe.companyId,
+            recipe.images[i].active,
+          ]
+        );
+      }
+    }
     return recipe;
   }
 

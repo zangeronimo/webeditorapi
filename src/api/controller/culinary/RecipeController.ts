@@ -11,6 +11,7 @@ import {
   RecipeUpdate,
   RecipeDelete,
 } from "@application/usecase/culinary/recipe";
+import { Image } from "@domain/entity/culinary";
 import { Request, Response, Router } from "express";
 import { container } from "tsyringe";
 
@@ -123,10 +124,22 @@ export class RecipeController {
         ingredients,
         preparation,
         moreInformation,
+        images,
         active,
         categoryId,
         imageUpload,
       } = req.body;
+      const recipeImages = images.map((img: any) =>
+        Image.restore(
+          img.id,
+          img.url,
+          img.recipeId,
+          img.active,
+          company,
+          img.createdAt,
+          img.updatedAt
+        )
+      );
       const recipeUpdateDataModel = new RecipeUpdateDataModel(
         id,
         slug,
@@ -136,7 +149,8 @@ export class RecipeController {
         moreInformation,
         active,
         categoryId,
-        imageUpload
+        imageUpload,
+        recipeImages
       );
       const recipe = await this.recipeUpdate.executeAsync(
         recipeUpdateDataModel,

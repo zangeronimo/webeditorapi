@@ -2,6 +2,7 @@ import { Recipe } from "@domain/entity/culinary";
 import { RatingDto } from "./RatingDto";
 import { CategoryDto } from "./CategoryDto";
 import { DtoBase } from "../DtoBase";
+import { ImageDto } from "./ImageDto";
 
 export class RecipeDto extends DtoBase {
   slug: string;
@@ -11,13 +12,13 @@ export class RecipeDto extends DtoBase {
   moreInformation: string;
   active: number;
   categoryId: string;
-  images: string[];
+  images: ImageDto[];
   ratings: RatingDto[];
   category?: CategoryDto;
 
   constructor(
     recipe: Recipe,
-    images: string[] = [],
+    images: ImageDto[] = [],
     ratings: RatingDto[] = [],
     category?: CategoryDto
   ) {

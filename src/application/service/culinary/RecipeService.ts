@@ -50,7 +50,7 @@ export class RecipeService implements IRecipeService {
     );
     const recipesDto = [];
     for (let i = 0; i < recipes.length; i++) {
-      const images = await this._recipeRepository.getAllImagesByRecipeId(
+      const images = await this._recipeRepository.getAllActiveImagesByRecipeId(
         recipes[i].id,
         recipes[i].companyId
       );
@@ -73,7 +73,7 @@ export class RecipeService implements IRecipeService {
       recipe.categoryId,
       recipe.companyId
     );
-    const images = await this._recipeRepository.getAllImagesByRecipeId(
+    const images = await this._recipeRepository.getAllActiveImagesByRecipeId(
       recipe.id,
       recipe.companyId
     );

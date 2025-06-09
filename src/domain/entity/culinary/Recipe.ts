@@ -5,6 +5,7 @@ import {
 import { ActiveEnum } from "@domain/enum";
 import { Slug } from "@domain/valueObject/Slug";
 import { EntityBase } from "../EntityBase";
+import { Image } from "./Image";
 
 export class Recipe extends EntityBase {
   private _slug: Slug;
@@ -12,6 +13,7 @@ export class Recipe extends EntityBase {
   private _ingredients: string;
   private _preparation: string;
   private _moreInformation: string;
+  private _images: Image[];
   private _active: ActiveEnum;
   private _categoryId: string;
 
@@ -30,6 +32,9 @@ export class Recipe extends EntityBase {
   get moreInformation() {
     return this._moreInformation;
   }
+  get images() {
+    return this._images;
+  }
   get active() {
     return this._active;
   }
@@ -43,6 +48,7 @@ export class Recipe extends EntityBase {
     ingredients: string,
     preparation: string,
     moreInformation: string,
+    images: Image[],
     active: ActiveEnum,
     categoryId: string,
     companyId: string,
@@ -56,6 +62,7 @@ export class Recipe extends EntityBase {
     this._ingredients = ingredients;
     this._preparation = preparation;
     this._moreInformation = moreInformation;
+    this._images = images;
     this._active = active;
     this._categoryId = categoryId;
   }
@@ -67,6 +74,7 @@ export class Recipe extends EntityBase {
     ingredients: string,
     preparation: string,
     moreInformation: string,
+    images: Image[],
     active: ActiveEnum,
     categoryId: string,
     companyId: string,
@@ -79,6 +87,7 @@ export class Recipe extends EntityBase {
       ingredients,
       preparation,
       moreInformation,
+      images,
       active,
       categoryId,
       companyId,
@@ -95,6 +104,7 @@ export class Recipe extends EntityBase {
       model.ingredients,
       model.preparation,
       model.moreInformation,
+      [],
       model.active,
       model.categoryId,
       companyId
@@ -109,6 +119,7 @@ export class Recipe extends EntityBase {
     this._ingredients = model.ingredients;
     this._preparation = model.preparation;
     this._moreInformation = model.moreInformation;
+    this._images = model.images;
     this._active = model.active;
     this._categoryId = model.categoryId;
   }

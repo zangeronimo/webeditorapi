@@ -224,6 +224,27 @@ export class RecipeRepository implements IRecipeRepository {
       : null;
   }
 
+  async getImageByIdAsync(id: string, company: string): Promise<Image | null> {
+    const [imageData] = await this.db.queryAsync(
+      `select
+        id, url, active, recipes_id, webeditor_companies_id, created_at, updated_at
+       from recipe_images
+       where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
+      [id, company]
+    );
+    return imageData
+      ? Image.restore(
+          imageData.id,
+          imageData.url,
+          imageData.recipes_id,
+          imageData.active,
+          imageData.webeditor_companies_id,
+          imageData.created_at,
+          imageData.updated_at
+        )
+      : null;
+  }
+
   async getBySlugAsync(slug: string, company: string): Promise<Recipe | null> {
     const [recipeData] = await this.db.queryAsync(
       "select id, slug, name, ingredients, preparation, more_information, active, recipe_categories_id, webeditor_companies_id, created_at, updated_at from recipes where slug = $1 and webeditor_companies_id = $2 and deleted_at is null",
@@ -323,6 +344,13 @@ export class RecipeRepository implements IRecipeRepository {
       [recipe.id, recipe.companyId, date]
     );
     return recipe;
+  }
+
+  async deleteImageAsync(image: Image, date: Date): Promise<void> {
+    await this.db.queryAsync(
+      "update recipe_images set deleted_at=$3, updated_at=$3 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      [image.id, image.companyId, date]
+    );
   }
 
   async updateAsync(recipe: Recipe): Promise<Recipe> {

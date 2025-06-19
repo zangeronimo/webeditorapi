@@ -1,7 +1,7 @@
 import { GetAllRecipeFilterModel } from "@application/model/culinary/recipe";
 import { GetAllRecipesFilterModel } from "@application/model/culinary/recipe/GetAllRecipesFilterModel";
 import { GetAllWithImageFilterModel } from "@application/model/culinary/recipe/GetAllWithImageFilterModel";
-import { Recipe } from "@domain/entity/culinary";
+import { Image, Recipe } from "@domain/entity/culinary";
 
 export interface IRecipeRepository {
   getByIdAsync(id: string, company: string): Promise<Recipe | null>;
@@ -13,6 +13,7 @@ export interface IRecipeRepository {
   updateAsync(recipe: Recipe): Promise<Recipe>;
   saveAsync(recipe: Recipe): Promise<Recipe>;
   deleteAsync(recipe: Recipe, date: Date): Promise<Recipe>;
+  deleteImageAsync(image: Image, date: Date): Promise<void>;
 
   getRecipesAsync(
     model: GetAllRecipesFilterModel,
@@ -27,4 +28,5 @@ export interface IRecipeRepository {
     company: string
   ): Promise<string[]>;
   getAllByCategory(categoryId: string, company: string): Promise<Recipe[]>;
+  getImageByIdAsync(id: string, company: string): Promise<Image | null>;
 }

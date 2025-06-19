@@ -11,6 +11,7 @@ import {
   RecipeUpdate,
   RecipeDelete,
 } from "@application/usecase/culinary/recipe";
+import { RecipeDeleteImage } from "@application/usecase/culinary/recipe/RecipeDeleteImage";
 import { Image } from "@domain/entity/culinary";
 import { Request, Response, Router } from "express";
 import { container } from "tsyringe";
@@ -22,6 +23,7 @@ export class RecipeController {
   recipeCreate = container.resolve(RecipeCreate);
   recipeUpdate = container.resolve(RecipeUpdate);
   recipeDelete = container.resolve(RecipeDelete);
+  recipeDeleteImage = container.resolve(RecipeDeleteImage);
   ensureAuthenticated = container.resolve(EnsureAuthenticated);
   ensureHasRole = container.resolve(EnsureHasRole);
 
@@ -55,6 +57,12 @@ export class RecipeController {
       this.ensureAuthenticated.execute,
       this.ensureHasRole.executeAsync("CULINARY_RECIPE_DELETE"),
       this.deleteAsync
+    );
+    this.router.patch(
+      "/delete-image/:id",
+      this.ensureAuthenticated.execute,
+      this.ensureHasRole.executeAsync("CULINARY_RECIPE_UPDATE"),
+      this.deleteImageAsync
     );
   }
 
@@ -168,6 +176,17 @@ export class RecipeController {
       const { id } = req.params;
       const recipe = await this.recipeDelete.executeAsync(id, company);
       res.json(recipe);
+    } catch (e: any) {
+      res.status(400).json(e.message);
+    }
+  };
+
+  private deleteImageAsync = async (req: Request, res: Response) => {
+    try {
+      const { company } = req.user;
+      const { id } = req.params;
+      await this.recipeDeleteImage.executeAsync(id, company);
+      res.json();
     } catch (e: any) {
       res.status(400).json(e.message);
     }

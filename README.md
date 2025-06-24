@@ -1,1 +1,1 @@
-# webeditorapi 2026
+# webeditorapi

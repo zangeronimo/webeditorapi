@@ -1,8 +1,0 @@
-doctype xml
-
-urlset(xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
-  each recipe in recipes
-    url
-      loc #{baseUrl}/receita/#{recipe.slug}
-      if (recipe.updatedAt)
-        lastmod #{recipe.updatedAt.toFormat('yyyy-MM-dd')}

@@ -1,9 +1,0 @@
-style
-  include styles.scss
-
-mixin Input({name, id = name, value, title, type, placeholder, error, required = false})
-    div.form_input_container
-        label(for=name)= title
-        input(type=type id=id name=name value=value placeholder=placeholder required=required)
-        if error
-            p.form_input_error #{error}

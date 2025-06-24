@@ -1,6 +1,0 @@
-style
-    include style.scss
-
-mixin ButtonDelete({ callback, name = '_delete_button', title = 'Remover registro', disabled = true })
-    button.form_button.form_button_delete(type='button' name=name onclick=callback title=title disabled=disabled)
-        i(class="fa fa-trash")

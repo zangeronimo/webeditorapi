@@ -1,38 +1,31 @@
-import { GetAllRecipeFilterModel } from "@application/model/culinary/recipe";
-import {
-  RecipeGetAll,
-  RecipeGetById,
-  RecipeCreate,
-  RecipeUpdate,
-  RecipeDelete,
-} from "@application/usecase/culinary/recipe";
-import { RecipeDeleteImage } from "@application/usecase/culinary/recipe/RecipeDeleteImage";
+import { IEnsureHasInternalSecret } from "@api/midleware/EnsureHasInternalSecret";
+import { IRecipeService } from "@application/interface/service/culinary/IRecipeService";
+import { GetAllWithImageFilterModel } from "@application/model/culinary/recipe/GetAllWithImageFilterModel";
 import { Request, Response, Router } from "express";
 import { container } from "tsyringe";
 
 export class RecipeController {
   router = Router();
-  recipeGetAll = container.resolve(RecipeGetAll);
-  recipeGetById = container.resolve(RecipeGetById);
-  recipeCreate = container.resolve(RecipeCreate);
-  recipeUpdate = container.resolve(RecipeUpdate);
-  recipeDelete = container.resolve(RecipeDelete);
-  recipeDeleteImage = container.resolve(RecipeDeleteImage);
+  ensureHasInternalSecret = container.resolve<IEnsureHasInternalSecret>(
+    "IEnsureHasInternalSecret"
+  );
+  recipeService = container.resolve<IRecipeService>("IRecipeService");
 
   constructor() {
-    this.router.get("/", this.getAllAsync);
+    this.router.get(
+      "/",
+      this.ensureHasInternalSecret.executeAsync(),
+      this.getAllWithImageAsync
+    );
   }
 
-  private getAllAsync = async (req: Request, res: Response) => {
+  private getAllWithImageAsync = async (req: Request, res: Response) => {
     try {
-      const data = [
-        { id: "1", name: "Receita 1" },
-        { id: "2", name: "Receita 2" },
-        { id: "3", name: "Receita 3" },
-        { id: "4", name: "Receita 4" },
-        { id: "5", name: "Receita 5" },
-        { id: "6", name: "Receita 6" },
-      ];
+      const { company } = req.user;
+      const model = new GetAllWithImageFilterModel();
+      model.random = true;
+
+      const data = await this.recipeService.getWithImageAsync(model, company);
       res.status(200).json(data);
     } catch (e: any) {
       res.status(400).json(e.message);

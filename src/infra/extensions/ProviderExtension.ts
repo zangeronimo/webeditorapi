@@ -4,6 +4,10 @@ import {
   IEnsureAuthenticated,
   IEnsureHasRole,
 } from "@api/midleware";
+import {
+  EnsureHasInternalSecret,
+  IEnsureHasInternalSecret,
+} from "@api/midleware/EnsureHasInternalSecret";
 import { IHashProvider, ITokenProvider } from "@application/interface/provider";
 import { IStorageProvider } from "@application/interface/provider/IStorageProvider";
 import {
@@ -31,6 +35,10 @@ export class ProviderExtesion {
     container.registerSingleton<IEnsureHasRole>(
       "IEnsureHasRole",
       EnsureHasRole
+    );
+    container.registerSingleton<IEnsureHasInternalSecret>(
+      "IEnsureHasInternalSecret",
+      EnsureHasInternalSecret
     );
     container.registerSingleton<IMakeLogin>("IMakeLogin", MakeLogin);
     container.registerSingleton<IRefreshToken>("IRefreshToken", RefreshToken);

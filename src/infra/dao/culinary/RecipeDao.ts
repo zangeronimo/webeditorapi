@@ -20,7 +20,7 @@ export class RecipeDao implements IRecipeDao {
       "r.webeditor_companies_id = $1 and r.deleted_at is null and r.active=$2";
     const recipesData: any[] = await this.db.queryAsync(
       `select
-        r.id, r.slug, r.name, r.ingredients, r.preparation, r.more_information
+        r.id, r.slug, r.name
       from recipes r
       inner join recipe_images ri on ri.recipes_id=r.id and ri.active=$2 and ri.deleted_at is null and ri.webeditor_companies_id = $1
       where ${where}

@@ -15,7 +15,7 @@ export class RecipeDao implements IRecipeDao {
     total: number,
     company: string
   ): Promise<RecipeWithImagesDto[]> {
-    const orderBy = " random()";
+    const orderBy = " r.updated_at desc";
     let where =
       "r.webeditor_companies_id = $1 and r.deleted_at is null and r.active=$2";
     const recipesData: any[] = await this.db.queryAsync(

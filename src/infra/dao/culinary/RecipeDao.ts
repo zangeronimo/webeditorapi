@@ -15,7 +15,8 @@ export class RecipeDao implements IRecipeDao {
     total: number,
     company: string
   ): Promise<RecipeWithImagesDto[]> {
-    const orderBy = " r.updated_at desc";
+    // const orderBy = " r.updated_at desc";
+    const orderBy = " random()";
     let where =
       "r.webeditor_companies_id = $1 and r.deleted_at is null and r.active=$2";
     const recipesData: any[] = await this.db.queryAsync(
@@ -35,10 +36,31 @@ export class RecipeDao implements IRecipeDao {
         recipesData[i].id,
         company
       );
-      const recipeDao = new RecipeWithImagesDto(recipesData[i], images);
-      recipes.push(recipeDao);
+      const rate = await this.getRatingByRecipeidAsync(
+        recipesData[i].id,
+        company
+      );
+      const recipeDto = new RecipeWithImagesDto(recipesData[i], images, rate);
+      recipes.push(recipeDto);
     }
     return recipes;
+  }
+
+  async getRatingByRecipeidAsync(
+    recipeId: string,
+    company: string
+  ): Promise<number> {
+    const ratingData: { rate: number }[] = await this.db.queryAsync(
+      `select
+        rate
+      from recipe_ratings
+      where webeditor_companies_id = $1 and deleted_at is null and active = $2 and recipes_id = $3 order by recipes_id`,
+      [company, ActiveEnum.ACTIVE, recipeId]
+    );
+    const total = ratingData
+      .map((rate) => rate.rate)
+      .reduce((rate: number, total: number) => rate + total, 0);
+    return total ? total / ratingData.length : 0;
   }
 
   async getAllActiveImagesByRecipeId(

@@ -1,3 +1,4 @@
+import { IRecipeDao } from "@application/interface/dao/culinary/IRecipeDao";
 import {
   ICategoryRepository,
   ILevelRepository,
@@ -66,6 +67,7 @@ import {
   RecipeGetById,
   RecipeUpdate,
 } from "@application/usecase/culinary/recipe";
+import { RecipeDao } from "@infra/dao/culinary/RecipeDao";
 import {
   CategoryRepository,
   LevelRepository,
@@ -93,6 +95,9 @@ export class CulinaryExtension {
       "IRatingRepository",
       RatingRepository
     );
+
+    // Registry DAO
+    container.registerSingleton<IRecipeDao>("IRecipeDao", RecipeDao);
 
     // Registry Services
     container.registerSingleton<IRecipeService>(

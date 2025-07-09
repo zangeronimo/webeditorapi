@@ -2,14 +2,14 @@ export class RecipeWithImagesDto {
   id: string;
   slug: string;
   name: string;
-  rate?: number;
-  images: string[];
+  short_description: string;
+  image_url: string;
 
-  constructor(recipe: any, images: string[] = [], rate?: number) {
+  constructor(recipe: any) {
     this.id = recipe?.id;
     this.slug = recipe?.slug!;
     this.name = recipe?.name;
-    this.rate = rate;
-    this.images = images;
+    this.short_description = recipe?.short_description;
+    this.image_url = recipe?.image_url;
   }
 }

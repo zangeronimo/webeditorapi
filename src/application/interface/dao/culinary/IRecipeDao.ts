@@ -1,8 +1,9 @@
+import { RecipeGetAllDao } from "@application/model/web/culinary/RecipeGetAllDao";
 import { RecipeWithImagesDto } from "@domain/dto/web/culinary/RecipeWithImagesDto";
 
 export interface IRecipeDao {
-  getWithImageAsync(
-    total: number,
+  getAllAsync(
+    model: RecipeGetAllDao,
     company: string
   ): Promise<RecipeWithImagesDto[]>;
 }

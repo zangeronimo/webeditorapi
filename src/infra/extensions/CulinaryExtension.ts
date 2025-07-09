@@ -6,6 +6,8 @@ import {
   IRatingRepository,
   IRecipeRepository,
 } from "@application/interface/repository/culinary";
+import { IRecipeRecipesRepository } from "@application/interface/repository/culinary/IRecipeRecipesRepository";
+import { IRecipesRatingRepository } from "@application/interface/repository/culinary/IRecipesRatingRepository";
 import { ICategoryService } from "@application/interface/service/culinary/ICategoryService";
 import { IRatingService } from "@application/interface/service/culinary/IRatingService";
 import { IRecipeService } from "@application/interface/service/culinary/IRecipeService";
@@ -37,6 +39,8 @@ import {
   IRecipeGetById,
   IRecipeUpdate,
 } from "@application/interface/usecase/culinary/recipe";
+import { IRecipeDeleteImage } from "@application/interface/usecase/culinary/recipe/IRecipeDeleteImage";
+import { IRecipeImport } from "@application/interface/usecase/culinary/recipe/IRecipeImport";
 import { CategoryService } from "@application/service/culinary/CategoryService";
 import { RatingService } from "@application/service/culinary/RatingService";
 import { RecipeService } from "@application/service/culinary/RecipeService";
@@ -68,6 +72,8 @@ import {
   RecipeGetById,
   RecipeUpdate,
 } from "@application/usecase/culinary/recipe";
+import { RecipeDeleteImage } from "@application/usecase/culinary/recipe/RecipeDeleteImage";
+import { RecipeImport } from "@application/usecase/culinary/recipe/RecipeImport";
 import { LevelDao } from "@infra/dao/culinary/LevelDao";
 import { RecipeDao } from "@infra/dao/culinary/RecipeDao";
 import {
@@ -76,6 +82,8 @@ import {
   RatingRepository,
   RecipeRepository,
 } from "@infra/repository/culinary";
+import { RecipeRecipesRepository } from "@infra/repository/culinary/RecipeRecipesRepository";
+import { RecipesRatingRepository } from "@infra/repository/culinary/RecipesRatingRepository";
 import { container } from "tsyringe";
 
 export class CulinaryExtension {
@@ -93,9 +101,17 @@ export class CulinaryExtension {
       "IRecipeRepository",
       RecipeRepository
     );
+    container.registerSingleton<IRecipeRecipesRepository>(
+      "IRecipeRecipesRepository",
+      RecipeRecipesRepository
+    );
     container.registerSingleton<IRatingRepository>(
       "IRatingRepository",
       RatingRepository
+    );
+    container.registerSingleton<IRecipesRatingRepository>(
+      "IRecipesRatingRepository",
+      RecipesRatingRepository
     );
 
     // Registry DAO
@@ -153,7 +169,12 @@ export class CulinaryExtension {
     );
     container.registerSingleton<IRecipeCreate>("IRecipeCreate", RecipeCreate);
     container.registerSingleton<IRecipeUpdate>("IRecipeUpdate", RecipeUpdate);
+    container.registerSingleton<IRecipeImport>("IRecipeImport", RecipeImport);
     container.registerSingleton<IRecipeDelete>("IRecipeDelete", RecipeDelete);
+    container.registerSingleton<IRecipeDeleteImage>(
+      "IRecipeDeleteImage",
+      RecipeDeleteImage
+    );
 
     // Registry Rating useCases
     container.registerSingleton<IRatingGetAll>("IRatingGetAll", RatingGetAll);

@@ -1,4 +1,5 @@
 import { IRecipeDao } from "@application/interface/dao/culinary/IRecipeDao";
+import { RecipeGetAllDao } from "@application/model/web/culinary/RecipeGetAllDao";
 import { RecipeWithImagesDto } from "@domain/dto/web/culinary/RecipeWithImagesDto";
 import { ActiveEnum } from "@domain/enum";
 import { DbContext } from "@infra/context";
@@ -11,36 +12,28 @@ export class RecipeDao implements IRecipeDao {
     readonly db: DbContext
   ) {}
 
-  async getWithImageAsync(
-    total: number,
+  async getAllAsync(
+    model: RecipeGetAllDao,
     company: string
   ): Promise<RecipeWithImagesDto[]> {
     // const orderBy = " r.updated_at desc";
     const orderBy = " random()";
     let where =
       "r.webeditor_companies_id = $1 and r.deleted_at is null and r.active=$2";
+    if (model.withImage) where += " and r.image_url is not null";
     const recipesData: any[] = await this.db.queryAsync(
       `select
-        r.id, r.slug, r.name
-      from recipes r
-      inner join recipe_images ri on ri.recipes_id=r.id and ri.active=$2 and ri.deleted_at is null and ri.webeditor_companies_id = $1
+        r.id, r.slug, r.name, r.short_description, r.image_url
+      from recipe_recipes r
       where ${where}
       group by r.id
       order by ${orderBy}
       limit $3`,
-      [company, ActiveEnum.ACTIVE, total]
+      [company, ActiveEnum.ACTIVE, model.total]
     );
     const recipes: RecipeWithImagesDto[] = [];
     for (let i = 0; i < recipesData.length; i++) {
-      const images = await this.getAllActiveImagesByRecipeId(
-        recipesData[i].id,
-        company
-      );
-      const rate = await this.getRatingByRecipeidAsync(
-        recipesData[i].id,
-        company
-      );
-      const recipeDto = new RecipeWithImagesDto(recipesData[i], images, rate);
+      const recipeDto = new RecipeWithImagesDto(recipesData[i]);
       recipes.push(recipeDto);
     }
     return recipes;

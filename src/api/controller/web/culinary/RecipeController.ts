@@ -1,5 +1,6 @@
 import { IEnsureHasInternalSecret } from "@api/midleware/EnsureHasInternalSecret";
 import { IRecipeDao } from "@application/interface/dao/culinary/IRecipeDao";
+import { RecipeGetAllDao } from "@application/model/web/culinary/RecipeGetAllDao";
 import { Request, Response, Router } from "express";
 import { container } from "tsyringe";
 
@@ -21,7 +22,8 @@ export class RecipeController {
   private getAllWithImageAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const data = await this.recipeDao.getWithImageAsync(10, company);
+      const model = new RecipeGetAllDao(10, true);
+      const data = await this.recipeDao.getAllAsync(model, company);
       res.status(200).json(data);
     } catch (e: any) {
       res.status(400).json(e.message);

@@ -7,23 +7,18 @@ import {
   IRecipeUpdate,
 } from "@application/interface/usecase/culinary/recipe";
 import { IRecipeDeleteImage } from "@application/interface/usecase/culinary/recipe/IRecipeDeleteImage";
-import { IRecipeImport } from "@application/interface/usecase/culinary/recipe/IRecipeImport";
-import {
-  GetAllRecipeFilterModel,
-  RecipeCreateDataModel,
-  RecipeUpdateDataModel,
-} from "@application/model/culinary/recipe";
-import { Image } from "@domain/entity/culinary";
+import { GetAllRecipeFilterModel } from "@application/model/culinary/recipe";
+import { RecipeRecipesCreateDataModel } from "@application/model/culinary/recipe/RecipeRecipesCreateModel";
+import { RecipeRecipesUpdateDataModel } from "@application/model/culinary/recipe/RecipeRecipesUpdateModel";
 import { Request, Response, Router } from "express";
 import { container } from "tsyringe";
 
-export class RecipeController {
+export class RecipeRecipesController {
   router = Router();
   recipeGetAll = container.resolve<IRecipeGetAll>("IRecipeGetAll");
   recipeGetById = container.resolve<IRecipeGetById>("IRecipeGetById");
   recipeCreate = container.resolve<IRecipeCreate>("IRecipeCreate");
   recipeUpdate = container.resolve<IRecipeUpdate>("IRecipeUpdate");
-  recipeImport = container.resolve<IRecipeImport>("IRecipeImport");
   recipeDelete = container.resolve<IRecipeDelete>("IRecipeDelete");
   recipeDeleteImage =
     container.resolve<IRecipeDeleteImage>("IRecipeDeleteImage");
@@ -51,12 +46,6 @@ export class RecipeController {
       this.ensureHasRole.executeAsync("CULINARY_RECIPE_UPDATE"),
       this.createAsync
     );
-    this.router.post(
-      "/import",
-      this.ensureAuthenticated.execute,
-      this.ensureHasRole.executeAsync("CULINARY_RECIPE_VIEW"),
-      this.importAsync
-    );
     this.router.put(
       "/:id",
       this.ensureAuthenticated.execute,
@@ -81,7 +70,7 @@ export class RecipeController {
     try {
       const { company } = req.user;
       const getAllRecipeFilterModel = new GetAllRecipeFilterModel(req.query);
-      const recipes = await this.recipeGetAll.executeAsync(
+      const recipes = await this.recipeGetAll.executeNewAsync(
         getAllRecipeFilterModel,
         company
       );
@@ -95,7 +84,7 @@ export class RecipeController {
     try {
       const { company } = req.user;
       const { id } = req.params;
-      const recipe = await this.recipeGetById.executeAsync(id, company);
+      const recipe = await this.recipeGetById.executeNewAsync(id, company);
       res.json(recipe);
     } catch (e: any) {
       res.status(400).json(e.message);
@@ -107,23 +96,47 @@ export class RecipeController {
       const { company } = req.user;
       const {
         name,
+        shortDescription,
+        fullDescription,
         ingredients,
         preparation,
-        moreInformation,
+        yieldTotal,
+        prepTime,
+        cookTime,
+        restTime,
+        difficulty,
+        tools,
+        notes,
+        metaTitle,
+        metaDescription,
+        keywords,
+        relatedRecipeIds,
         active,
         categoryId,
         imageUpload,
       } = req.body;
-      const recipeCreateDataModel = new RecipeCreateDataModel(
+      const recipeCreateDataModel = new RecipeRecipesCreateDataModel(
         name,
+        shortDescription,
+        fullDescription,
         ingredients,
         preparation,
-        moreInformation,
+        yieldTotal,
+        prepTime,
+        cookTime,
+        restTime,
+        difficulty,
+        tools,
+        notes,
+        metaTitle,
+        metaDescription,
+        keywords,
+        relatedRecipeIds,
         active,
         categoryId,
         imageUpload
       );
-      const recipe = await this.recipeCreate.executeAsync(
+      const recipe = await this.recipeCreate.executeNewAsync(
         recipeCreateDataModel,
         company
       );
@@ -140,38 +153,51 @@ export class RecipeController {
         id,
         slug,
         name,
+        shortDescription,
+        fullDescription,
         ingredients,
         preparation,
-        moreInformation,
-        images,
+        yieldTotal,
+        prepTime,
+        cookTime,
+        restTime,
+        difficulty,
+        tools,
+        notes,
+        metaTitle,
+        metaDescription,
+        keywords,
+        relatedRecipeIds,
+        imageUrl,
         active,
         categoryId,
         imageUpload,
       } = req.body;
-      const recipeImages = images.map((img: any) =>
-        Image.restore(
-          img.id,
-          img.url,
-          img.recipeId,
-          img.active,
-          company,
-          img.createdAt,
-          img.updatedAt
-        )
-      );
-      const recipeUpdateDataModel = new RecipeUpdateDataModel(
+      const recipeUpdateDataModel = new RecipeRecipesUpdateDataModel(
         id,
         slug,
         name,
+        shortDescription,
+        fullDescription,
         ingredients,
         preparation,
-        moreInformation,
+        yieldTotal,
+        prepTime,
+        cookTime,
+        restTime,
+        difficulty,
+        tools,
+        notes,
+        metaTitle,
+        metaDescription,
+        keywords,
+        relatedRecipeIds,
+        imageUrl,
         active,
         categoryId,
-        imageUpload,
-        recipeImages
+        imageUpload
       );
-      const recipe = await this.recipeUpdate.executeAsync(
+      const recipe = await this.recipeUpdate.executeNewAsync(
         recipeUpdateDataModel,
         company
       );
@@ -185,7 +211,7 @@ export class RecipeController {
     try {
       const { company } = req.user;
       const { id } = req.params;
-      const recipe = await this.recipeDelete.executeAsync(id, company);
+      const recipe = await this.recipeDelete.executeNewAsync(id, company);
       res.json(recipe);
     } catch (e: any) {
       res.status(400).json(e.message);
@@ -198,17 +224,6 @@ export class RecipeController {
       const { id } = req.params;
       await this.recipeDeleteImage.executeAsync(id, company);
       res.json();
-    } catch (e: any) {
-      res.status(400).json(e.message);
-    }
-  };
-
-  private importAsync = async (req: Request, res: Response) => {
-    try {
-      const { company } = req.user;
-      const { id } = req.body;
-      await this.recipeImport.executeAsync(id, company);
-      res.status(201).json();
     } catch (e: any) {
       res.status(400).json(e.message);
     }

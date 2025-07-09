@@ -6,4 +6,8 @@ export interface IRecipeGetAll {
     model: GetAllRecipeFilterModel,
     company: string
   ): Promise<PaginatorResultDto>;
+  executeNewAsync(
+    model: GetAllRecipeFilterModel,
+    company: string
+  ): Promise<PaginatorResultDto>;
 }

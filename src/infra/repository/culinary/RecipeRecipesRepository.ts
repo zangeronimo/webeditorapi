@@ -507,7 +507,8 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         active=$19,
         recipe_categories_id=$20,
         image_url=$21,
-        updated_at=$22
+        updated_at=$22,
+        schema_jsonld=$23
       where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [
         recipe.id,
@@ -532,6 +533,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         recipe.categoryId,
         recipe.imageUrl,
         recipe.updatedAt,
+        recipe.schemaJsonld,
       ]
     );
     for (let i = 0; i < recipe.images?.length; i++) {
@@ -583,9 +585,10 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
          keywords,
          active,
          recipe_categories_id,
-         webeditor_companies_id)
+         webeditor_companies_id,
+         schema_jsonld)
       values
-        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)`,
+        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21)`,
       [
         recipe.id,
         recipe.slug,
@@ -607,6 +610,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         recipe.active,
         recipe.categoryId,
         recipe.companyId,
+        recipe.schemaJsonld,
       ]
     );
     return recipe;

@@ -11,7 +11,10 @@ export class LevelDao implements ILevelDao {
     readonly db: DbContext
   ) {}
 
-  async getAllAsync(company: string): Promise<LevelWithCategoryDto[]> {
+  async getAllAsync(
+    withCategories: boolean,
+    company: string
+  ): Promise<LevelWithCategoryDto[]> {
     const orderBy = " l.name";
     let where =
       "l.webeditor_companies_id = $1 and l.deleted_at is null and l.active=$2";
@@ -25,10 +28,9 @@ export class LevelDao implements ILevelDao {
     );
     const levels: LevelWithCategoryDto[] = [];
     for (let i = 0; i < levelData.length; i++) {
-      const categories = await this.getAllCategoriesAsync(
-        levelData[i].id,
-        company
-      );
+      const categories = withCategories
+        ? await this.getAllCategoriesAsync(levelData[i].id, company)
+        : [];
       const levelDao = new LevelWithCategoryDto(levelData[i], categories);
       levels.push(levelDao);
     }

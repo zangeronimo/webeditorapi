@@ -262,6 +262,7 @@ export class RecipeRecipes extends EntityBase {
       model.categoryId,
       companyId
     );
+    recipe.gerarJsonLdReceita();
     return recipe;
   }
 
@@ -288,9 +289,46 @@ export class RecipeRecipes extends EntityBase {
     this._imageUrl = model.imageUrl;
     this._active = model.active;
     this._categoryId = model.categoryId;
+    this.gerarJsonLdReceita();
   }
 
   setImage(imageUrl: string) {
     this._imageUrl = imageUrl;
+  }
+
+  private gerarJsonLdReceita() {
+    const jsonLd = {
+      "@context": "https://schema.org",
+      "@type": "Recipe",
+      name: this._name,
+      author: {
+        "@type": "Organization",
+        name: "Mais Receitas",
+      },
+      description: this._fullDescription,
+      image: [`${process.env.API_BASE_URL}${this._imageUrl}`],
+      prepTime: this._prepTime ? `PT${this._prepTime}M` : "Não se aplica",
+      cookTime: this._cookTime ? `PT${this._cookTime}M` : "Não se aplica",
+      recipeYield: this._yieldTotal,
+      recipeCategory: "",
+      recipeCuisine: "",
+      keywords: this._keywords.join(", "),
+      shortDescription: this._shortDescription,
+      fullDescription: this._fullDescription,
+      difficulty: this._difficulty,
+      recipeIngredient: this.removeHtml(this._ingredients).split("\n"),
+      recipeInstructions: this.preparation.split("\n").map((step) => ({
+        "@type": "HowToStep",
+        text: this.removeHtml(step),
+      })),
+      recipeTools: this.removeHtml(this._tools).split("\n"),
+      recipeNotes: this.removeHtml(this._notes).split("\n"),
+      publishedAt: this._publishedAt,
+    };
+    this._schemaJsonld = JSON.stringify(jsonLd, null, 2).replace(/"@/g, '"__');
+  }
+
+  private removeHtml(str: string): string {
+    return str.replace(/<[^>]*>/g, "").trim();
   }
 }

@@ -1,7 +1,10 @@
 import { IRecipeDao } from "@application/interface/dao/culinary/IRecipeDao";
+import { RecipeGetBySearchDao } from "@application/model/web/culinary/RecipeBySearchDao";
 import { RecipeGetAllDao } from "@application/model/web/culinary/RecipeGetAllDao";
+import { RecipeDto } from "@domain/dto/web/culinary/RecipeDto";
 import { RecipeWithImagesDto } from "@domain/dto/web/culinary/RecipeWithImagesDto";
 import { ActiveEnum } from "@domain/enum";
+import { Slug } from "@domain/valueObject/Slug";
 import { DbContext } from "@infra/context";
 import { inject, injectable } from "tsyringe";
 
@@ -34,6 +37,105 @@ export class RecipeDao implements IRecipeDao {
     const recipes: RecipeWithImagesDto[] = [];
     for (let i = 0; i < recipesData.length; i++) {
       const recipeDto = new RecipeWithImagesDto(recipesData[i]);
+      recipes.push(recipeDto);
+    }
+    return recipes;
+  }
+
+  async getBySlugAsync(slug: Slug, company: string): Promise<RecipeDto | null> {
+    let where =
+      "r.webeditor_companies_id = $1 and r.deleted_at is null and r.active=$2 and r.slug=$3";
+    const [recipeData] = await this.db.queryAsync(
+      `select
+        r.id,
+        r.slug,
+        r.name,
+        r.short_description,
+        r.full_description,
+        r.ingredients,
+        r.preparation,
+        r.yield_total,
+        r.prep_time,
+        r.cook_time,
+        r.rest_time,
+        r.difficulty,
+        r.tools,
+        r.notes,
+        r.image_url,
+        r.meta_title,
+        r.meta_description,
+        r.keywords,
+        r.schema_jsonld,
+        r.views,
+        r.likes,
+        r.published_at
+      from recipe_recipes r
+      where ${where}
+      group by r.id`,
+      [company, ActiveEnum.ACTIVE, slug.value]
+    );
+    return recipeData ? new RecipeDto(recipeData) : null;
+  }
+
+  async getBySearchAsync(
+    model: RecipeGetBySearchDao,
+    company: string
+  ): Promise<RecipeDto[]> {
+    if (!model.validate()) return [];
+    const category = model.category ? ` and (c.recipe_levels_id = $4)` : "";
+    const time = model.time
+      ? ` and (r.prep_time + r.cook_time + r.rest_time <= $5)`
+      : "";
+    const difficulty = model.difficulty
+      ? ` and (LOWER(UNACCENT(r.difficulty)) = $6)`
+      : "";
+    let where = `r.webeditor_companies_id = $1 and
+       r.deleted_at is null and
+       r.active=$2 and
+       ((LOWER(UNACCENT(r.name)) like $3 or LOWER(UNACCENT(r.ingredients)) like $3) ${category} ${time} ${difficulty})`;
+
+    const recipesData = await this.db.queryAsync(
+      `select
+        r.id,
+        r.slug,
+        r.name,
+        r.short_description,
+        r.full_description,
+        r.ingredients,
+        r.preparation,
+        r.yield_total,
+        r.prep_time,
+        r.cook_time,
+        r.rest_time,
+        r.difficulty,
+        r.tools,
+        r.notes,
+        r.image_url,
+        r.meta_title,
+        r.meta_description,
+        r.keywords,
+        r.schema_jsonld,
+        r.views,
+        r.likes,
+        r.published_at
+      from recipe_recipes r
+      inner join recipe_categories c on c.id = r.recipe_categories_id
+      where ${where}
+      group by r.id
+      order by random()
+      limit 10`,
+      [
+        company,
+        ActiveEnum.ACTIVE,
+        `%${model.q?.toLowerCase().noAccents()}%`,
+        model.category,
+        +model.time,
+        `${model.difficulty?.toLowerCase().noAccents()}`,
+      ]
+    );
+    const recipes: RecipeDto[] = [];
+    for (let i = 0; i < recipesData.length; i++) {
+      const recipeDto = new RecipeDto(recipesData[i]);
       recipes.push(recipeDto);
     }
     return recipes;

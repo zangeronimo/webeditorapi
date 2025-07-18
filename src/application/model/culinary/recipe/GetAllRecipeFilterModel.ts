@@ -9,7 +9,7 @@ export class GetAllRecipeFilterModel implements IPagination, IOrdenation {
   public name: string;
   public slug: string;
   public active: number;
-  public categoryId: string;
+  public levelId: string;
 
   constructor(query: any) {
     this.page = query.page;
@@ -19,6 +19,6 @@ export class GetAllRecipeFilterModel implements IPagination, IOrdenation {
     this.name = query.name;
     this.slug = query.slug;
     this.active = query.active;
-    this.categoryId = query.categoryId;
+    this.levelId = query.levelId;
   }
 }

@@ -142,7 +142,7 @@ export default class CreateRecipeRecipes20250628000000
             isNullable: true,
           },
           {
-            name: "recipe_categories_id",
+            name: "recipe_levels_id",
             type: "uuid",
             isNullable: true,
           },
@@ -170,9 +170,9 @@ export default class CreateRecipeRecipes20250628000000
         ],
         foreignKeys: [
           {
-            name: "FK_RecipeCategory",
-            columnNames: ["recipe_categories_id"],
-            referencedTableName: "recipe_categories",
+            name: "FK_RecipeLevel",
+            columnNames: ["recipe_levels_id"],
+            referencedTableName: "recipe_levels",
             referencedColumnNames: ["id"],
             onDelete: "SET NULL",
             onUpdate: "CASCADE",

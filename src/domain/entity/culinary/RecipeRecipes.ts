@@ -28,7 +28,7 @@ export class RecipeRecipes extends EntityBase {
   private _views: number;
   private _likes: number;
   private _active: ActiveEnum;
-  private _categoryId: string;
+  private _levelId: string;
   private _images: Image[];
   private _publishedAt?: Date;
 
@@ -101,8 +101,8 @@ export class RecipeRecipes extends EntityBase {
   get publishedAt() {
     return this._publishedAt;
   }
-  get categoryId() {
-    return this._categoryId;
+  get levelId() {
+    return this._levelId;
   }
   get images() {
     return this._images;
@@ -132,7 +132,7 @@ export class RecipeRecipes extends EntityBase {
     likes: number,
     active: ActiveEnum,
     images: Image[],
-    categoryId: string,
+    levelId: string,
     companyId: string,
     id?: string,
     publishedAt?: Date,
@@ -163,7 +163,7 @@ export class RecipeRecipes extends EntityBase {
     this._likes = likes;
     this._active = active;
     this._images = images;
-    this._categoryId = categoryId;
+    this._levelId = levelId;
     this._publishedAt = publishedAt;
   }
 
@@ -193,7 +193,7 @@ export class RecipeRecipes extends EntityBase {
     active: ActiveEnum,
     publishedAt: Date,
     images: Image[],
-    categoryId: string,
+    levelId: string,
     companyId: string,
     createdAt: Date,
     updatedAt: Date
@@ -222,7 +222,7 @@ export class RecipeRecipes extends EntityBase {
       likes,
       active,
       images,
-      categoryId,
+      levelId,
       companyId,
       id,
       publishedAt,
@@ -259,7 +259,7 @@ export class RecipeRecipes extends EntityBase {
       0,
       model.active,
       [],
-      model.categoryId,
+      model.levelId,
       companyId
     );
     recipe.gerarJsonLdReceita();
@@ -283,12 +283,12 @@ export class RecipeRecipes extends EntityBase {
     this._notes = model.notes;
     this._metaTitle = model.metaTitle;
     this._metaDescription = model.metaDescription;
-    this._categoryId = model.metaDescription;
+    this._levelId = model.metaDescription;
     this._keywords = model.keywords;
     this._relatedRecipeIds = model.relatedRecipeIds;
     this._imageUrl = model.imageUrl;
     this._active = model.active;
-    this._categoryId = model.categoryId;
+    this._levelId = model.levelId;
     this.gerarJsonLdReceita();
   }
 

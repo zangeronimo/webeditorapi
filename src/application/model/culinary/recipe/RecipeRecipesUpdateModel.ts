@@ -20,7 +20,7 @@ export class RecipeRecipesUpdateDataModel {
     readonly relatedRecipeIds: string[],
     readonly imageUrl: string,
     readonly active: number,
-    readonly categoryId: string,
+    readonly levelId: string,
     readonly imageUpload?: string
   ) {}
 }

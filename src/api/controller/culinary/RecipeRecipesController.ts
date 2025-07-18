@@ -112,7 +112,7 @@ export class RecipeRecipesController {
         keywords,
         relatedRecipeIds,
         active,
-        categoryId,
+        levelId,
         imageUpload,
       } = req.body;
       const recipeCreateDataModel = new RecipeRecipesCreateDataModel(
@@ -133,7 +133,7 @@ export class RecipeRecipesController {
         keywords,
         relatedRecipeIds,
         active,
-        categoryId,
+        levelId,
         imageUpload
       );
       const recipe = await this.recipeCreate.executeNewAsync(
@@ -170,7 +170,7 @@ export class RecipeRecipesController {
         relatedRecipeIds,
         imageUrl,
         active,
-        categoryId,
+        levelId,
         imageUpload,
       } = req.body;
       const recipeUpdateDataModel = new RecipeRecipesUpdateDataModel(
@@ -194,7 +194,7 @@ export class RecipeRecipesController {
         relatedRecipeIds,
         imageUrl,
         active,
-        categoryId,
+        levelId,
         imageUpload
       );
       const recipe = await this.recipeUpdate.executeNewAsync(

@@ -1,5 +1,5 @@
 import { RatingDto } from "./RatingDto";
-import { CategoryDto } from "./CategoryDto";
+import { LevelDto } from "./LevelDto";
 import { DtoBase } from "../DtoBase";
 import { ImageDto } from "./ImageDto";
 import { RecipeRecipes } from "@domain/entity/culinary/RecipeRecipes";
@@ -28,16 +28,16 @@ export class RecipeRecipesDto extends DtoBase {
   likes: number;
   active: number;
   publishedAt?: Date;
-  categoryId: string;
+  levelId: string;
   images: ImageDto[];
   ratings: RatingDto[];
-  category?: CategoryDto;
+  level?: LevelDto;
 
   constructor(
     recipe: RecipeRecipes,
     images: ImageDto[] = [],
     ratings: RatingDto[] = [],
-    category?: CategoryDto
+    level?: LevelDto
   ) {
     super(recipe?.id, recipe?.createdAt, recipe?.updatedAt);
     this.slug = recipe?.slug!;
@@ -63,9 +63,9 @@ export class RecipeRecipesDto extends DtoBase {
     this.likes = recipe?.likes;
     this.active = recipe?.active.valueOf();
     this.publishedAt = recipe?.publishedAt;
-    this.categoryId = recipe?.categoryId;
+    this.levelId = recipe?.levelId;
     this.images = images;
     this.ratings = ratings;
-    this.category = category;
+    this.level = level;
   }
 }

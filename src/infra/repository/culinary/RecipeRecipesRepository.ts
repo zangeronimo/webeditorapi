@@ -16,16 +16,16 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
   ) {}
 
   async getAllByCategory(
-    categoryId: string,
+    levelId: string,
     company: string
   ): Promise<RecipeRecipes[]> {
     const recipesData: any[] = await this.db.queryAsync(
       `select
-        id, slug, name, ingredients, preparation, active, recipe_categories_id, webeditor_companies_id, created_at, updated_at
+        id, slug, name, ingredients, preparation, active, recipe_levels_id, webeditor_companies_id, created_at, updated_at
       from recipes
-      where webeditor_companies_id = $1 and deleted_at is null and active = $2 and recipe_categories_id = $3
+      where webeditor_companies_id = $1 and deleted_at is null and active = $2 and recipe_levels_id = $3
       order by name`,
-      [company, ActiveEnum.ACTIVE, categoryId]
+      [company, ActiveEnum.ACTIVE, levelId]
     );
     const recipes: RecipeRecipes[] = [];
     for (let i = 0; i < recipesData.length; i++) {
@@ -56,7 +56,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         recipesData[i].active,
         recipesData[i].published_at,
         images,
-        recipesData[i].recipe_categories_id,
+        recipesData[i].recipe_levels_id,
         recipesData[i].webeditor_companies_id,
         recipesData[i].created_at,
         recipesData[i].updated_at
@@ -72,15 +72,15 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
   ): Promise<RecipeRecipes[]> {
     let where =
       "webeditor_companies_id = $1 and deleted_at is null and active = $2";
-    if (model.categoryId) {
-      where += " and recipe_categories_id = $3";
+    if (model.levelId) {
+      where += " and recipe_levels_id = $3";
     }
     if (model.search) {
       where += ` and (LOWER(UNACCENT(name)) like $4 or LOWER(UNACCENT(ingredients)) like $4 or LOWER(UNACCENT(preparation)) like $4)`;
     }
     const recipesData: any[] = await this.db.queryAsync(
       `select
-        id, slug, name, ingredients, preparation, active, recipe_categories_id, webeditor_companies_id, created_at, updated_at
+        id, slug, name, ingredients, preparation, active, recipe_levels_id, webeditor_companies_id, created_at, updated_at
       from recipe_recipes
       where ${where}
       order by ${model.orderBy}
@@ -88,7 +88,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
       [
         company,
         ActiveEnum.ACTIVE,
-        model.categoryId,
+        model.levelId,
         `%${model.search?.toLowerCase().noAccents()}%`,
         model.total,
       ]
@@ -122,7 +122,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         recipesData[i].active,
         recipesData[i].published_at,
         images,
-        recipesData[i].recipe_categories_id,
+        recipesData[i].recipe_levels_id,
         recipesData[i].webeditor_companies_id,
         recipesData[i].created_at,
         recipesData[i].updated_at
@@ -139,15 +139,15 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
     const orderBy = model.random ? " random()" : " r.created_at desc";
     let where =
       "r.webeditor_companies_id = $1 and r.deleted_at is null and r.active = $2";
-    if (model.categoryId) {
-      where += " and recipe_categories_id = $3";
+    if (model.levelId) {
+      where += " and recipe_levels_id = $3";
     }
     if (model.search) {
       where += ` and (LOWER(UNACCENT(r.name)) like $4 or LOWER(UNACCENT(r.ingredients)) like $4 or LOWER(UNACCENT(r.preparation)) like $4)`;
     }
     const recipesData: any[] = await this.db.queryAsync(
       `select
-        r.id, r.slug, r.name, r.ingredients, r.preparation, r.active, r.recipe_categories_id, r.webeditor_companies_id, r.created_at, r.updated_at
+        r.id, r.slug, r.name, r.ingredients, r.preparation, r.active, r.recipe_levels_id, r.webeditor_companies_id, r.created_at, r.updated_at
       from recipe_recipes r
       inner join recipe_images ri on ri.recipes_id=r.id and ri.active=$2 and ri.deleted_at is null and ri.webeditor_companies_id = $1
       where ${where}
@@ -157,7 +157,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
       [
         company,
         ActiveEnum.ACTIVE,
-        model.categoryId,
+        model.levelId,
         `%${model.search?.toLowerCase().noAccents()}%`,
         model.total,
       ]
@@ -191,7 +191,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         recipesData[i].active,
         recipesData[i].published_at,
         images,
-        recipesData[i].recipe_categories_id,
+        recipesData[i].recipe_levels_id,
         recipesData[i].webeditor_companies_id,
         recipesData[i].created_at,
         recipesData[i].updated_at
@@ -273,7 +273,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         keywords,
         image_url,
         active,
-        recipe_categories_id,
+        recipe_levels_id,
         webeditor_companies_id,
         created_at,
         updated_at
@@ -309,7 +309,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
           recipeData.active,
           recipeData.published_at,
           images,
-          recipeData.recipe_categories_id,
+          recipeData.recipe_levels_id,
           recipeData.webeditor_companies_id,
           recipeData.created_at,
           recipeData.updated_at
@@ -343,7 +343,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
     company: string
   ): Promise<RecipeRecipes | null> {
     const [recipeData] = await this.db.queryAsync(
-      "select id, slug, name, ingredients, preparation, active, recipe_categories_id, webeditor_companies_id, created_at, updated_at from recipe_recipes where slug = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      "select id, slug, name, ingredients, preparation, active, recipe_levels_id, webeditor_companies_id, created_at, updated_at from recipe_recipes where slug = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [slug, company]
     );
     const images = await this.getAllImages(recipeData?.id, company);
@@ -374,7 +374,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
           recipeData.active,
           recipeData.published_at,
           images,
-          recipeData.recipe_categories_id,
+          recipeData.recipe_levels_id,
           recipeData.webeditor_companies_id,
           recipeData.created_at,
           recipeData.updated_at
@@ -396,8 +396,8 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
     if (!!model.active) {
       where += ` and active = $4`;
     }
-    if (!!model.categoryId) {
-      where += ` and recipe_categories_id = $5`;
+    if (!!model.levelId) {
+      where += ` and recipe_levels_id = $5`;
     }
     const ordenation = `${model.orderBy} ${!!model.desc ? "desc" : "asc"}`;
     const offset = model.pageSize * (model.page - 1);
@@ -408,12 +408,12 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         `%${model.name?.toLowerCase().noAccents()}%`,
         model.slug?.toLowerCase(),
         model.active,
-        model.categoryId,
+        model.levelId,
       ]
     );
     const recipesData: any[] = await this.db.queryAsync(
       `select
-        id, slug, name, ingredients, preparation, active, recipe_categories_id, webeditor_companies_id, created_at, updated_at
+        id, slug, name, ingredients, preparation, active, recipe_levels_id, webeditor_companies_id, created_at, updated_at
       from recipe_recipes
       where ${where}
       order by ${ordenation}
@@ -424,7 +424,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         `%${model.name?.toLowerCase().noAccents()}%`,
         model.slug?.toLowerCase(),
         model.active,
-        model.categoryId,
+        model.levelId,
         model.pageSize,
         offset,
       ]
@@ -458,7 +458,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         recipesData[i].active,
         recipesData[i].published_at,
         images,
-        recipesData[i].recipe_categories_id,
+        recipesData[i].recipe_levels_id,
         recipesData[i].webeditor_companies_id,
         recipesData[i].created_at,
         recipesData[i].updated_at
@@ -505,7 +505,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         meta_description=$17,
         keywords=$18,
         active=$19,
-        recipe_categories_id=$20,
+        recipe_levels_id=$20,
         image_url=$21,
         updated_at=$22,
         schema_jsonld=$23
@@ -530,7 +530,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         recipe.metaDescription,
         recipe.keywords,
         recipe.active,
-        recipe.categoryId,
+        recipe.levelId,
         recipe.imageUrl,
         recipe.updatedAt,
         recipe.schemaJsonld,
@@ -584,7 +584,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
          meta_description,
          keywords,
          active,
-         recipe_categories_id,
+         recipe_levels_id,
          webeditor_companies_id,
          schema_jsonld)
       values
@@ -608,7 +608,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         recipe.metaDescription,
         recipe.keywords,
         recipe.active,
-        recipe.categoryId,
+        recipe.levelId,
         recipe.companyId,
         recipe.schemaJsonld,
       ]

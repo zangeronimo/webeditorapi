@@ -3,12 +3,12 @@ import { RecipeDto } from "@domain/dto/culinary";
 export class RecipeGetBySearchDao {
   constructor(
     readonly q: string,
-    readonly category: string,
+    readonly level: string,
     readonly time: string,
     readonly difficulty: string
   ) {}
 
   validate = () => {
-    return this.q || this.category || this.time || this.difficulty;
+    return this.q || this.level || this.time || this.difficulty;
   };
 }

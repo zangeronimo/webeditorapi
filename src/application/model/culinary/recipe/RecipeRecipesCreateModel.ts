@@ -17,7 +17,7 @@ export class RecipeRecipesCreateDataModel {
     readonly keywords: string[],
     readonly relatedRecipeIds: string[],
     readonly active: number,
-    readonly categoryId: string,
+    readonly levelId: string,
     readonly imageUpload?: string
   ) {}
 }

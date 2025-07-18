@@ -1,4 +1,5 @@
 import {
+  ICategoryRepository,
   IRatingRepository,
   IRecipeRepository,
 } from "@application/interface/repository/culinary";
@@ -23,7 +24,9 @@ export class RecipeImport implements IRecipeImport {
     @inject("IRatingRepository")
     readonly _ratingRepository: IRatingRepository,
     @inject("IRecipesRatingRepository")
-    readonly _recipesRatingRepository: IRecipesRatingRepository
+    readonly _recipesRatingRepository: IRecipesRatingRepository,
+    @inject("ICategoryRepository")
+    readonly _categoryRepository: ICategoryRepository
   ) {}
 
   async executeAsync(id: string, company: string) {
@@ -31,6 +34,10 @@ export class RecipeImport implements IRecipeImport {
     if (recipe === null) {
       throw new Error(Messages.notFound("Recipe"));
     }
+    const category = await this._categoryRepository.getByIdAsync(
+      recipe.categoryId,
+      company
+    );
     const model = new RecipeRecipesCreateDataModel(
       recipe.name,
       recipe.name,
@@ -49,7 +56,7 @@ export class RecipeImport implements IRecipeImport {
       recipe.name.split(" "),
       [],
       ActiveEnum.INACTIVE,
-      recipe.categoryId
+      category?.levelId!
     );
     const newRecipe = RecipeRecipes.create(model, company);
     const { id: recipeNewId } = await this._recipeNewRepository.saveAsync(

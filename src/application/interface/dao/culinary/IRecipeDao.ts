@@ -10,8 +10,12 @@ export interface IRecipeDao {
     company: string
   ): Promise<RecipeWithImagesDto[]>;
   getBySlugAsync(slug: Slug, company: string): Promise<RecipeDto | null>;
+  getByIdAsync(id: string, company: string): Promise<RecipeDto | null>;
+  updateAsync(id: string, views: number, company: string): Promise<void>;
+  getByLevelSlugAsync(level: Slug, company: string): Promise<RecipeDto[]>;
   getBySearchAsync(
     model: RecipeGetBySearchDao,
     company: string
   ): Promise<RecipeDto[]>;
+  getMostAccessedAsync(company: string): Promise<RecipeDto[]>;
 }

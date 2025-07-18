@@ -3,6 +3,7 @@ import { RecipeGetBySearchDao } from "@application/model/web/culinary/RecipeBySe
 import { RecipeGetAllDao } from "@application/model/web/culinary/RecipeGetAllDao";
 import { RecipeDto } from "@domain/dto/web/culinary/RecipeDto";
 import { RecipeWithImagesDto } from "@domain/dto/web/culinary/RecipeWithImagesDto";
+import { SitemapDto } from "@domain/dto/web/culinary/SitemapDto";
 import { ActiveEnum } from "@domain/enum";
 import { Slug } from "@domain/valueObject/Slug";
 import { DbContext } from "@infra/context";
@@ -259,6 +260,28 @@ export class RecipeDao implements IRecipeDao {
     const recipes: RecipeDto[] = [];
     for (let i = 0; i < recipesData.length; i++) {
       const recipeDto = new RecipeDto(recipesData[i]);
+      recipes.push(recipeDto);
+    }
+    return recipes;
+  }
+
+  async getSitemapAsync(company: string): Promise<SitemapDto[]> {
+    let where = `r.webeditor_companies_id = $1 and
+       r.deleted_at is null and
+       r.active=$2`;
+
+    const recipesData = await this.db.queryAsync(
+      `select
+        r.slug,
+        r.updated_at
+      from recipe_recipes r
+      where ${where}
+      order by r.name`,
+      [company, ActiveEnum.ACTIVE]
+    );
+    const recipes: SitemapDto[] = [];
+    for (let i = 0; i < recipesData.length; i++) {
+      const recipeDto = new SitemapDto(recipesData[i]);
       recipes.push(recipeDto);
     }
     return recipes;

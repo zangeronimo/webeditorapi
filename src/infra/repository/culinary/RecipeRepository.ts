@@ -273,7 +273,8 @@ export class RecipeRepository implements IRecipeRepository {
     model: GetAllRecipeFilterModel,
     company: string
   ): Promise<{ itens: Recipe[]; total: number }> {
-    let where = "webeditor_companies_id = $1 and deleted_at is null";
+    let where =
+      "webeditor_companies_id = $1 and deleted_at is null and imported=0";
     if (!!model.name) {
       where += ` and LOWER(UNACCENT(name)) like $2`;
     }
@@ -355,7 +356,7 @@ export class RecipeRepository implements IRecipeRepository {
 
   async updateAsync(recipe: Recipe): Promise<Recipe> {
     await this.db.queryAsync(
-      "update recipes set slug=$3, name=$4, ingredients=$5, preparation=$6, more_information=$7, active=$8, recipe_categories_id=$9, updated_at=$10 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      "update recipes set slug=$3, name=$4, ingredients=$5, preparation=$6, more_information=$7, active=$8, recipe_categories_id=$9, updated_at=$10, imported=$11 where id = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [
         recipe.id,
         recipe.companyId,
@@ -367,6 +368,7 @@ export class RecipeRepository implements IRecipeRepository {
         recipe.active,
         recipe.categoryId,
         recipe.updatedAt,
+        recipe.imported,
       ]
     );
     for (let i = 0; i < recipe.images?.length; i++) {

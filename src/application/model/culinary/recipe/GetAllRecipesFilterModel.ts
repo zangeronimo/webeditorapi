@@ -2,5 +2,6 @@ export class GetAllRecipesFilterModel {
   public total = 10;
   public orderBy = "created_at desc";
   public levelId?: string;
+  public categoryId?: string;
   public search?: string;
 }

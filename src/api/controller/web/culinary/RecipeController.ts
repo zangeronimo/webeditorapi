@@ -31,6 +31,11 @@ export class RecipeController {
       this.getMostAccessedAsync
     );
     this.router.get(
+      "/sitemap",
+      this.ensureHasInternalSecret.executeAsync(),
+      this.getSitemapAsync
+    );
+    this.router.get(
       "/byLevel/:level",
       this.ensureHasInternalSecret.executeAsync(),
       this.getByLevelAsync
@@ -105,6 +110,16 @@ export class RecipeController {
     try {
       const { company } = req.user;
       const data = await this.recipeDao.getMostAccessedAsync(company);
+      res.status(200).json(data);
+    } catch (e: any) {
+      res.status(400).json(e.message);
+    }
+  };
+
+  private getSitemapAsync = async (req: Request, res: Response) => {
+    try {
+      const { company } = req.user;
+      const data = await this.recipeDao.getSitemapAsync(company);
       res.status(200).json(data);
     } catch (e: any) {
       res.status(400).json(e.message);

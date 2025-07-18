@@ -63,6 +63,9 @@ export class RecipeImport implements IRecipeImport {
       newRecipe
     );
 
+    recipe.setImported();
+    await this._recipeRepository.updateAsync(recipe);
+
     const ratings = await this._ratingRepository.getAllByRecipeAsync(
       recipe.id,
       company

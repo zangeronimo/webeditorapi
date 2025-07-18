@@ -16,6 +16,7 @@ export class Recipe extends EntityBase {
   private _images: Image[];
   private _active: ActiveEnum;
   private _categoryId: string;
+  private _imported: number;
 
   get slug() {
     return this._slug.value;
@@ -41,6 +42,9 @@ export class Recipe extends EntityBase {
   get categoryId() {
     return this._categoryId;
   }
+  get imported() {
+    return this._imported;
+  }
 
   private constructor(
     slug: Slug,
@@ -65,6 +69,7 @@ export class Recipe extends EntityBase {
     this._images = images;
     this._active = active;
     this._categoryId = categoryId;
+    this._imported = 0;
   }
 
   static restore(
@@ -119,8 +124,12 @@ export class Recipe extends EntityBase {
     this._ingredients = model.ingredients;
     this._preparation = model.preparation;
     this._moreInformation = model.moreInformation;
-    this._images = model.images;
+    this._images = model.images ?? [];
     this._active = model.active;
     this._categoryId = model.categoryId;
+  }
+
+  setImported() {
+    this._imported = 1;
   }
 }

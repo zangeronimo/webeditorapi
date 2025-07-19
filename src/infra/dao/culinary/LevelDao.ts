@@ -14,12 +14,12 @@ export class LevelDao implements ILevelDao {
   async getAllAsync(company: string): Promise<LevelWithCategoryDto[]> {
     const orderBy = " l.name";
     let where =
-      "l.webeditor_companies_id = $1 and l.deleted_at is null and l.active=$2";
+      "l.webeditor_companies_id=$1 and l.deleted_at is null and l.active=$2";
     const levelData: any[] = await this.db.queryAsync(
       `select
         l.id, l.slug, l.name
       from recipe_levels l
-      inner join recipe_recipes r on r.recipe_levels_id = l.id
+      inner join recipe_recipes r on r.recipe_levels_id = l.id and r.active=$2 and r.deleted_at is null and r.webeditor_companies_id=$1
       where ${where}
       order by ${orderBy}`,
       [company, ActiveEnum.ACTIVE]

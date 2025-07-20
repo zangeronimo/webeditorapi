@@ -6,9 +6,10 @@ import {
   IRatingRepository,
   IRecipeRepository,
 } from "@application/interface/repository/culinary";
+import { IRatingRecipesRepository } from "@application/interface/repository/culinary/IRatingRecipesRepository";
 import { IRecipeRecipesRepository } from "@application/interface/repository/culinary/IRecipeRecipesRepository";
-import { IRecipesRatingRepository } from "@application/interface/repository/culinary/IRecipesRatingRepository";
 import { ICategoryService } from "@application/interface/service/culinary/ICategoryService";
+import { IRatingRecipesService } from "@application/interface/service/culinary/IRatingRecipesService";
 import { IRatingService } from "@application/interface/service/culinary/IRatingService";
 import { IRecipeService } from "@application/interface/service/culinary/IRecipeService";
 import {
@@ -33,6 +34,13 @@ import {
   IRatingUpdate,
 } from "@application/interface/usecase/culinary/rating";
 import {
+  IRatingCreate as IRatingRecipesCreate,
+  IRatingDelete as IRatingRecipesDelete,
+  IRatingGetAll as IRatingRecipesGetAll,
+  IRatingGetById as IRatingRecipesGetById,
+  IRatingUpdate as IRatingRecipesUpdate,
+} from "@application/interface/usecase/culinary/ratingRecipes";
+import {
   IRecipeCreate,
   IRecipeDelete,
   IRecipeGetAll,
@@ -42,6 +50,7 @@ import {
 import { IRecipeDeleteImage } from "@application/interface/usecase/culinary/recipe/IRecipeDeleteImage";
 import { IRecipeImport } from "@application/interface/usecase/culinary/recipe/IRecipeImport";
 import { CategoryService } from "@application/service/culinary/CategoryService";
+import { RatingRecipesService } from "@application/service/culinary/RatingRecipesService";
 import { RatingService } from "@application/service/culinary/RatingService";
 import { RecipeService } from "@application/service/culinary/RecipeService";
 import {
@@ -66,6 +75,13 @@ import {
   RatingUpdate,
 } from "@application/usecase/culinary/rating";
 import {
+  RatingCreate as RatingRecipesCreate,
+  RatingDelete as RatingRecipesDelete,
+  RatingGetAll as RatingRecipesGetAll,
+  RatingGetById as RatingRecipesGetById,
+  RatingUpdate as RatingRecipesUpdate,
+} from "@application/usecase/culinary/ratingRecipes";
+import {
   RecipeCreate,
   RecipeDelete,
   RecipeGetAll,
@@ -82,8 +98,8 @@ import {
   RatingRepository,
   RecipeRepository,
 } from "@infra/repository/culinary";
+import { RatingRecipesRepository } from "@infra/repository/culinary/RatingRecipesRepository";
 import { RecipeRecipesRepository } from "@infra/repository/culinary/RecipeRecipesRepository";
-import { RecipesRatingRepository } from "@infra/repository/culinary/RecipesRatingRepository";
 import { container } from "tsyringe";
 
 export class CulinaryExtension {
@@ -109,9 +125,9 @@ export class CulinaryExtension {
       "IRatingRepository",
       RatingRepository
     );
-    container.registerSingleton<IRecipesRatingRepository>(
-      "IRecipesRatingRepository",
-      RecipesRatingRepository
+    container.registerSingleton<IRatingRecipesRepository>(
+      "IRatingRecipesRepository",
+      RatingRecipesRepository
     );
 
     // Registry DAO
@@ -130,6 +146,10 @@ export class CulinaryExtension {
     container.registerSingleton<IRatingService>(
       "IRatingService",
       RatingService
+    );
+    container.registerSingleton<IRatingRecipesService>(
+      "IRatingRecipesService",
+      RatingRecipesService
     );
 
     // Registry Level useCases
@@ -185,5 +205,27 @@ export class CulinaryExtension {
     container.registerSingleton<IRatingCreate>("IRatingCreate", RatingCreate);
     container.registerSingleton<IRatingUpdate>("IRatingUpdate", RatingUpdate);
     container.registerSingleton<IRatingDelete>("IRatingDelete", RatingDelete);
+
+    // Registry Rating Recipes useCases
+    container.registerSingleton<IRatingRecipesGetAll>(
+      "IRatingRecipesGetAll",
+      RatingRecipesGetAll
+    );
+    container.registerSingleton<IRatingRecipesGetById>(
+      "IRatingRecipesGetById",
+      RatingRecipesGetById
+    );
+    container.registerSingleton<IRatingRecipesCreate>(
+      "IRatingRecipesCreate",
+      RatingRecipesCreate
+    );
+    container.registerSingleton<IRatingRecipesUpdate>(
+      "IRatingRecipesUpdate",
+      RatingRecipesUpdate
+    );
+    container.registerSingleton<IRatingRecipesDelete>(
+      "IRatingRecipesDelete",
+      RatingRecipesDelete
+    );
   }
 }

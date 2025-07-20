@@ -1,5 +1,4 @@
-import { IRatingRepository } from "@application/interface/repository/culinary";
-import { IRecipesRatingRepository } from "@application/interface/repository/culinary/IRecipesRatingRepository";
+import { IRatingRecipesRepository } from "@application/interface/repository/culinary/IRatingRecipesRepository";
 import { GetAllRatingFilterModel } from "@application/model/culinary/rating";
 import { Rating } from "@domain/entity/culinary";
 import { ActiveEnum } from "@domain/enum";
@@ -7,7 +6,7 @@ import { DbContext } from "@infra/context";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class RecipesRatingRepository implements IRecipesRatingRepository {
+export class RatingRecipesRepository implements IRatingRecipesRepository {
   constructor(
     @inject("DbContext")
     readonly db: DbContext

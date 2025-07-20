@@ -3,8 +3,8 @@ import {
   IRatingRepository,
   IRecipeRepository,
 } from "@application/interface/repository/culinary";
+import { IRatingRecipesRepository } from "@application/interface/repository/culinary/IRatingRecipesRepository";
 import { IRecipeRecipesRepository } from "@application/interface/repository/culinary/IRecipeRecipesRepository";
-import { IRecipesRatingRepository } from "@application/interface/repository/culinary/IRecipesRatingRepository";
 import { IRecipeImport } from "@application/interface/usecase/culinary/recipe/IRecipeImport";
 import { Messages } from "@application/messages/Messages";
 import { RatingCreateDataModel } from "@application/model/culinary/rating";
@@ -23,8 +23,8 @@ export class RecipeImport implements IRecipeImport {
     readonly _recipeNewRepository: IRecipeRecipesRepository,
     @inject("IRatingRepository")
     readonly _ratingRepository: IRatingRepository,
-    @inject("IRecipesRatingRepository")
-    readonly _recipesRatingRepository: IRecipesRatingRepository,
+    @inject("IRatingRecipesRepository")
+    readonly _ratingRecipesRepository: IRatingRecipesRepository,
     @inject("ICategoryRepository")
     readonly _categoryRepository: ICategoryRepository
   ) {}
@@ -80,7 +80,7 @@ export class RecipeImport implements IRecipeImport {
           ratings[i].name
         );
         const rate = Rating.create(rateModel, company);
-        await this._recipesRatingRepository.saveAsync(rate);
+        if (!!rate.comment) await this._ratingRecipesRepository.saveAsync(rate);
       }
     }
   }

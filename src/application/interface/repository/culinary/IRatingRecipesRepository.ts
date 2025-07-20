@@ -1,7 +1,7 @@
 import { GetAllRatingFilterModel } from "@application/model/culinary/rating";
 import { Rating } from "@domain/entity/culinary";
 
-export interface IRecipesRatingRepository {
+export interface IRatingRecipesRepository {
   getByIdAsync(id: string, company: string): Promise<Rating | null>;
   getAllAsync(
     model: GetAllRatingFilterModel,

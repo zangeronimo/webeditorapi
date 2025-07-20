@@ -41,9 +41,19 @@ export class RecipeController {
       this.getByLevelAsync
     );
     this.router.get(
+      "/like/:id",
+      this.ensureHasInternalSecret.executeAsync(),
+      this.likeRecipeAsync
+    );
+    this.router.get(
       "/:slug",
       this.ensureHasInternalSecret.executeAsync(),
       this.getBySlugAsync
+    );
+    this.router.post(
+      "/comment",
+      this.ensureHasInternalSecret.executeAsync(),
+      this.commentRecipeAsync
     );
   }
 
@@ -66,9 +76,9 @@ export class RecipeController {
         Slug.create(slug),
         company
       );
-      if (recipe) {
-        await this.recipeDao.updateAsync(recipe.id, recipe.views + 1, company);
-      }
+      if (recipe === null) throw new Error("Recipe not found");
+      recipe.setView();
+      await this.recipeDao.updateAsync(recipe, company);
       res.status(200).json(recipe);
     } catch (e: any) {
       res.status(400).json(e.message);
@@ -78,12 +88,26 @@ export class RecipeController {
   private getByLevelAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      let { level, category } = req.params;
+      let { level } = req.params;
       const data = await this.recipeDao.getByLevelSlugAsync(
         Slug.restore(level),
         company
       );
       res.status(200).json(data);
+    } catch (e: any) {
+      res.status(400).json(e.message);
+    }
+  };
+
+  private likeRecipeAsync = async (req: Request, res: Response) => {
+    try {
+      const { company } = req.user;
+      let { id } = req.params;
+      const recipe = await this.recipeDao.getByIdAsync(id, company);
+      if (recipe === null) throw new Error("Recipe not found");
+      recipe.setLike();
+      await this.recipeDao.updateAsync(recipe, company);
+      res.status(200).json(recipe);
     } catch (e: any) {
       res.status(400).json(e.message);
     }
@@ -121,6 +145,25 @@ export class RecipeController {
       const { company } = req.user;
       const data = await this.recipeDao.getSitemapAsync(company);
       res.status(200).json(data);
+    } catch (e: any) {
+      res.status(400).json(e.message);
+    }
+  };
+
+  private commentRecipeAsync = async (req: Request, res: Response) => {
+    try {
+      const { company } = req.user;
+      const { name, comment, rate, recipeId } = req.body;
+      if (!name || !comment || !rate || !recipeId)
+        throw new Error("Check your data and try again");
+      const data = await this.recipeDao.commentRecipeAsync(
+        recipeId,
+        name,
+        comment,
+        rate,
+        company
+      );
+      res.status(201).json(data);
     } catch (e: any) {
       res.status(400).json(e.message);
     }

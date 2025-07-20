@@ -1,3 +1,5 @@
+import { RatingDto } from "./RatingDto";
+
 export class RecipeDto {
   id: string;
   slug: string;
@@ -22,8 +24,9 @@ export class RecipeDto {
   views: number;
   likes: number;
   publishedAt: string;
+  ratings: RatingDto[];
 
-  constructor(recipe: any) {
+  constructor(recipe: any, ratings: RatingDto[] = []) {
     this.id = recipe?.id;
     this.slug = recipe?.slug!;
     this.name = recipe?.name;
@@ -51,5 +54,14 @@ export class RecipeDto {
     this.publishedAt = new Date(recipe?.published_at).toLocaleDateString(
       "pt-BR"
     );
+    this.ratings = ratings;
+  }
+
+  setLike() {
+    this.likes += 1;
+  }
+
+  setView() {
+    this.views += 1;
   }
 }

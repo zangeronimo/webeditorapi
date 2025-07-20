@@ -1,5 +1,6 @@
 import { RecipeGetBySearchDao } from "@application/model/web/culinary/RecipeBySearchDao";
 import { RecipeGetAllDao } from "@application/model/web/culinary/RecipeGetAllDao";
+import { RatingDto } from "@domain/dto/web/culinary/RatingDto";
 import { RecipeDto } from "@domain/dto/web/culinary/RecipeDto";
 import { RecipeWithImagesDto } from "@domain/dto/web/culinary/RecipeWithImagesDto";
 import { SitemapDto } from "@domain/dto/web/culinary/SitemapDto";
@@ -12,7 +13,7 @@ export interface IRecipeDao {
   ): Promise<RecipeWithImagesDto[]>;
   getBySlugAsync(slug: Slug, company: string): Promise<RecipeDto | null>;
   getByIdAsync(id: string, company: string): Promise<RecipeDto | null>;
-  updateAsync(id: string, views: number, company: string): Promise<void>;
+  updateAsync(recipe: RecipeDto, company: string): Promise<void>;
   getByLevelSlugAsync(level: Slug, company: string): Promise<RecipeDto[]>;
   getBySearchAsync(
     model: RecipeGetBySearchDao,
@@ -20,4 +21,11 @@ export interface IRecipeDao {
   ): Promise<RecipeDto[]>;
   getMostAccessedAsync(company: string): Promise<RecipeDto[]>;
   getSitemapAsync(company: string): Promise<SitemapDto[]>;
+  commentRecipeAsync(
+    recipeId: string,
+    name: string,
+    comment: string,
+    rate: number,
+    company: string
+  ): Promise<RatingDto>;
 }

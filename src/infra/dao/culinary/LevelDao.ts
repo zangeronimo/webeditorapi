@@ -21,6 +21,7 @@ export class LevelDao implements ILevelDao {
       from recipe_levels l
       inner join recipe_recipes r on r.recipe_levels_id = l.id and r.active=$2 and r.deleted_at is null and r.webeditor_companies_id=$1
       where ${where}
+      group by l.id
       order by ${orderBy}`,
       [company, ActiveEnum.ACTIVE]
     );

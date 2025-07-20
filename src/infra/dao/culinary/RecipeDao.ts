@@ -1,6 +1,7 @@
 import { IRecipeDao } from "@application/interface/dao/culinary/IRecipeDao";
 import { RecipeGetBySearchDao } from "@application/model/web/culinary/RecipeBySearchDao";
 import { RecipeGetAllDao } from "@application/model/web/culinary/RecipeGetAllDao";
+import { RatingDto } from "@domain/dto/web/culinary/RatingDto";
 import { RecipeDto } from "@domain/dto/web/culinary/RecipeDto";
 import { RecipeWithImagesDto } from "@domain/dto/web/culinary/RecipeWithImagesDto";
 import { SitemapDto } from "@domain/dto/web/culinary/SitemapDto";
@@ -75,7 +76,38 @@ export class RecipeDao implements IRecipeDao {
       group by r.id`,
       [company, ActiveEnum.ACTIVE, slug.value]
     );
-    return recipeData ? new RecipeDto(recipeData) : null;
+    if (recipeData === null) return null;
+    const ratings: RatingDto[] = await this.getAllRatingsByRecipeAsync(
+      recipeData.id,
+      company
+    );
+    return new RecipeDto(recipeData, ratings);
+  }
+
+  private async getAllRatingsByRecipeAsync(
+    recipeId: string,
+    company: string
+  ): Promise<RatingDto[]> {
+    let where =
+      "r.webeditor_companies_id = $1 and r.deleted_at is null and r.active=$2 and r.recipe_recipes_id=$3";
+    const ratingsData = await this.db.queryAsync(
+      `select
+        r.id,
+        r.rate,
+        r.name,
+        r.comment
+      from recipe_recipes_ratings r
+      where ${where}
+      group by r.id
+      order by r.updated_at desc`,
+      [company, ActiveEnum.ACTIVE, recipeId]
+    );
+    const ratings: RatingDto[] = [];
+    for (let i = 0; i < ratingsData.length; i++) {
+      const ratingDto = new RatingDto(ratingsData[i]);
+      ratings.push(ratingDto);
+    }
+    return ratings;
   }
 
   async getByIdAsync(id: string, company: string): Promise<RecipeDto | null> {
@@ -323,14 +355,30 @@ export class RecipeDao implements IRecipeDao {
     return images;
   }
 
-  async updateAsync(
-    id: string,
-    views: number,
-    companyId: string
-  ): Promise<void> {
+  async updateAsync(recipe: RecipeDto, companyId: string): Promise<void> {
     await this.db.queryAsync(
-      "update recipe_recipes set views=$2 where id=$1 and webeditor_companies_id=$3 and deleted_at is null",
-      [id, views, companyId]
+      "update recipe_recipes set views=$2, likes=$3 where id=$1 and webeditor_companies_id=$4 and deleted_at is null",
+      [recipe.id, recipe.views, recipe.likes, companyId]
     );
+  }
+
+  async commentRecipeAsync(
+    recipeId: string,
+    name: string,
+    comment: string,
+    rate: number,
+    company: string
+  ): Promise<RatingDto> {
+    await this.db.queryAsync(
+      "insert into recipe_recipes_ratings (rate, comment, name, active, recipe_recipes_id, webeditor_companies_id) values ($1, $2, $3, $4, $5, $6)",
+      [rate, comment, name, ActiveEnum.INACTIVE, recipeId, company]
+    );
+    return new RatingDto({
+      recipeId,
+      name,
+      comment,
+      rate,
+      active: ActiveEnum.INACTIVE,
+    });
   }
 }

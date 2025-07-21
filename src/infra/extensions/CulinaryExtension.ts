@@ -8,10 +8,6 @@ import {
 } from "@application/interface/repository/culinary";
 import { IRatingRecipesRepository } from "@application/interface/repository/culinary/IRatingRecipesRepository";
 import { IRecipeRecipesRepository } from "@application/interface/repository/culinary/IRecipeRecipesRepository";
-import { ICategoryService } from "@application/interface/service/culinary/ICategoryService";
-import { IRatingRecipesService } from "@application/interface/service/culinary/IRatingRecipesService";
-import { IRatingService } from "@application/interface/service/culinary/IRatingService";
-import { IRecipeService } from "@application/interface/service/culinary/IRecipeService";
 import {
   ICategoryCreate,
   ICategoryDelete,
@@ -49,10 +45,6 @@ import {
 } from "@application/interface/usecase/culinary/recipe";
 import { IRecipeDeleteImage } from "@application/interface/usecase/culinary/recipe/IRecipeDeleteImage";
 import { IRecipeImport } from "@application/interface/usecase/culinary/recipe/IRecipeImport";
-import { CategoryService } from "@application/service/culinary/CategoryService";
-import { RatingRecipesService } from "@application/service/culinary/RatingRecipesService";
-import { RatingService } from "@application/service/culinary/RatingService";
-import { RecipeService } from "@application/service/culinary/RecipeService";
 import {
   CategoryCreate,
   CategoryDelete,
@@ -133,24 +125,6 @@ export class CulinaryExtension {
     // Registry DAO
     container.registerSingleton<IRecipeDao>("IRecipeDao", RecipeDao);
     container.registerSingleton<ILevelDao>("ILevelDao", LevelDao);
-
-    // Registry Services
-    container.registerSingleton<IRecipeService>(
-      "IRecipeService",
-      RecipeService
-    );
-    container.registerSingleton<ICategoryService>(
-      "ICategoryService",
-      CategoryService
-    );
-    container.registerSingleton<IRatingService>(
-      "IRatingService",
-      RatingService
-    );
-    container.registerSingleton<IRatingRecipesService>(
-      "IRatingRecipesService",
-      RatingRecipesService
-    );
 
     // Registry Level useCases
     container.registerSingleton<ILevelGetAll>("ILevelGetAll", LevelGetAll);

@@ -2,7 +2,6 @@ import {
   IBannerCategoryRepository,
   IBannerRepository,
 } from "@application/interface/repository/publicity";
-import { IBannerService } from "@application/interface/service/publicity/IBannerService";
 import {
   IBannerCreate,
   IBannerDelete,
@@ -17,7 +16,6 @@ import {
   IBannerCategoryUpdate,
   IBannersCategoriesGetAll,
 } from "@application/interface/usecase/publicity/bannerCategory";
-import { BannerService } from "@application/service/publicity/BannerService";
 import {
   BannerCreate,
   BannerDelete,
@@ -48,12 +46,6 @@ export class PublicityExtension {
     container.registerSingleton<IBannerRepository>(
       "IBannerRepository",
       BannerRepository
-    );
-
-    // Registry Services
-    container.registerSingleton<IBannerService>(
-      "IBannerService",
-      BannerService
     );
 
     // Registry Level useCases

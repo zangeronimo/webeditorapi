@@ -318,7 +318,6 @@ export class RecipeRecipes extends EntityBase {
         : "Não se aplica",
       recipeYield: this._yieldTotal,
       recipeCategory: "",
-      recipeCuisine: "",
       keywords: this._keywords.join(", "),
       shortDescription: this._shortDescription,
       fullDescription: this._fullDescription,

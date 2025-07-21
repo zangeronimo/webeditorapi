@@ -73,7 +73,7 @@ export class RecipeImport implements IRecipeImport {
     if (ratings.length) {
       for (let i = 0; i < ratings.length; i++) {
         const rateModel = new RatingCreateDataModel(
-          ratings[i].rate,
+          ratings[i].rate / 2,
           ratings[i].comment,
           ratings[i].active,
           recipeNewId,

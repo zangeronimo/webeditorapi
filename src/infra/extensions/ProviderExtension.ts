@@ -1,15 +1,16 @@
 import {
   EnsureAuthenticated,
   EnsureHasRole,
+  EnsureHasInternalSecret,
+  IEnsureHasInternalSecret,
   IEnsureAuthenticated,
   IEnsureHasRole,
 } from "@api/midleware";
 import {
-  EnsureHasInternalSecret,
-  IEnsureHasInternalSecret,
-} from "@api/midleware/EnsureHasInternalSecret";
-import { IHashProvider, ITokenProvider } from "@application/interface/provider";
-import { IStorageProvider } from "@application/interface/provider/IStorageProvider";
+  IHashProvider,
+  IStorageProvider,
+  ITokenProvider,
+} from "@application/interface/provider";
 import {
   IHasRole,
   IMakeLogin,
@@ -21,8 +22,11 @@ import {
   RefreshToken,
 } from "@application/usecase/webeditor";
 import { DbContext, PgPromiseContext } from "@infra/context";
-import { BPKDF2Provider, JwtWebTokenProvider } from "@infra/provider";
-import { DiskStorageProvider } from "@infra/provider/DiskStorageProvider";
+import {
+  BPKDF2Provider,
+  DiskStorageProvider,
+  JwtWebTokenProvider,
+} from "@infra/provider";
 import { container } from "tsyringe";
 
 export class ProviderExtesion {

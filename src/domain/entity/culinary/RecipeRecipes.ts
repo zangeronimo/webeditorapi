@@ -307,8 +307,15 @@ export class RecipeRecipes extends EntityBase {
       },
       description: this._fullDescription,
       image: [`${process.env.API_BASE_URL}${this._imageUrl}`],
-      prepTime: this._prepTime ? `PT${this._prepTime}M` : "Não se aplica",
-      cookTime: this._cookTime ? `PT${this._cookTime}M` : "Não se aplica",
+      totalTime: this.toISO8601Duration(
+        this._prepTime + this._cookTime + this._restTime
+      ),
+      prepTime: this._prepTime
+        ? this.toISO8601Duration(this._prepTime)
+        : "Não se aplica",
+      cookTime: this._cookTime
+        ? this.toISO8601Duration(this.cookTime)
+        : "Não se aplica",
       recipeYield: this._yieldTotal,
       recipeCategory: "",
       recipeCuisine: "",
@@ -326,6 +333,31 @@ export class RecipeRecipes extends EntityBase {
       publishedAt: this._publishedAt,
     };
     this._schemaJsonld = JSON.stringify(jsonLd, null, 2).replace(/"@/g, '"__');
+  }
+
+  private toISO8601Duration(minutes: number): string {
+    if (!Number.isFinite(minutes) || minutes <= 0) return "";
+
+    const totalMinutes = Math.floor(minutes);
+
+    const days = Math.floor(totalMinutes / 1440); // 1440 min = 1 day
+    const hours = Math.floor((totalMinutes % 1440) / 60);
+    const mins = totalMinutes % 60;
+
+    let duration = "P";
+
+    if (days > 0) {
+      duration += `${days}D`;
+    }
+
+    if (hours > 0 || mins > 0) {
+      duration += "T";
+      if (hours > 0) duration += `${hours}H`;
+      if (mins > 0) duration += `${mins}M`;
+    }
+
+    // Ex: P15DT5M, PT45M, P2DT3H30M, etc.
+    return duration;
   }
 
   private removeHtml(str: string): string {

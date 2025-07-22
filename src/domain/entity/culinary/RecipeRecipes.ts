@@ -4,6 +4,7 @@ import { EntityBase } from "../EntityBase";
 import { Image } from "./Image";
 import { RecipeRecipesCreateDataModel } from "@application/model/culinary/recipe/RecipeRecipesCreateModel";
 import { RecipeRecipesUpdateDataModel } from "@application/model/culinary/recipe/RecipeRecipesUpdateModel";
+import { Level } from "./Level";
 
 export class RecipeRecipes extends EntityBase {
   private _slug: Slug;
@@ -17,6 +18,7 @@ export class RecipeRecipes extends EntityBase {
   private _cookTime: number;
   private _restTime: number;
   private _difficulty: string;
+  private _cuisine: string;
   private _tools: string;
   private _notes: string;
   private _imageUrl: string;
@@ -31,6 +33,7 @@ export class RecipeRecipes extends EntityBase {
   private _levelId: string;
   private _images: Image[];
   private _publishedAt?: Date;
+  private _level?: Level;
 
   get slug() {
     return this._slug.value;
@@ -64,6 +67,9 @@ export class RecipeRecipes extends EntityBase {
   }
   get difficulty() {
     return this._difficulty;
+  }
+  get cuisine() {
+    return this._cuisine;
   }
   get tools() {
     return this._tools;
@@ -107,6 +113,9 @@ export class RecipeRecipes extends EntityBase {
   get images() {
     return this._images;
   }
+  get level() {
+    return this._level;
+  }
 
   private constructor(
     slug: Slug,
@@ -120,6 +129,7 @@ export class RecipeRecipes extends EntityBase {
     cookTime: number,
     restTime: number,
     difficulty: string,
+    cuisine: string,
     tools: string,
     notes: string,
     imageUrl: string,
@@ -151,6 +161,7 @@ export class RecipeRecipes extends EntityBase {
     this._cookTime = cookTime;
     this._restTime = restTime;
     this._difficulty = difficulty;
+    this._cuisine = cuisine;
     this._tools = tools;
     this._notes = notes;
     this._imageUrl = imageUrl;
@@ -180,6 +191,7 @@ export class RecipeRecipes extends EntityBase {
     cookTime: number,
     restTime: number,
     difficulty: string,
+    cuisine: string,
     tools: string,
     notes: string,
     imageUrl: string,
@@ -210,6 +222,7 @@ export class RecipeRecipes extends EntityBase {
       cookTime,
       restTime,
       difficulty,
+      cuisine,
       tools,
       notes,
       imageUrl,
@@ -247,6 +260,7 @@ export class RecipeRecipes extends EntityBase {
       model.cookTime,
       model.restTime,
       model.difficulty,
+      model.cuisine,
       model.tools,
       model.notes,
       "",
@@ -279,6 +293,7 @@ export class RecipeRecipes extends EntityBase {
     this._cookTime = model.cookTime;
     this._restTime = model.restTime;
     this._difficulty = model.difficulty;
+    this._cuisine = model.cuisine;
     this._tools = model.tools;
     this._notes = model.notes;
     this._metaTitle = model.metaTitle;
@@ -294,6 +309,10 @@ export class RecipeRecipes extends EntityBase {
 
   setImage(imageUrl: string) {
     this._imageUrl = imageUrl;
+  }
+
+  setLevel(level: Level) {
+    this._level = level;
   }
 
   private gerarJsonLdReceita() {
@@ -317,7 +336,8 @@ export class RecipeRecipes extends EntityBase {
         ? this.toISO8601Duration(this.cookTime)
         : "Não se aplica",
       recipeYield: this._yieldTotal,
-      recipeCategory: "",
+      recipeCategory: this.level?.name,
+      recipeCuisine: this.cuisine,
       keywords: this._keywords.join(", "),
       shortDescription: this._shortDescription,
       fullDescription: this._fullDescription,

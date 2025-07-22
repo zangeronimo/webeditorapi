@@ -10,6 +10,7 @@ export class RecipeRecipesCreateDataModel {
     readonly cookTime: number,
     readonly restTime: number,
     readonly difficulty: string,
+    readonly cuisine: string,
     readonly tools: string,
     readonly notes: string,
     readonly metaTitle: string,

@@ -20,14 +20,6 @@ export interface IRecipeRecipesRepository {
     model: GetAllRecipesFilterModel,
     company: string
   ): Promise<RecipeRecipes[]>;
-  getWithImageAsync(
-    model: GetAllWithImageFilterModel,
-    company: string
-  ): Promise<RecipeRecipes[]>;
-  getAllActiveImagesByRecipeId(
-    recipeId: string,
-    company: string
-  ): Promise<string[]>;
   getAllByCategory(
     categoryId: string,
     company: string

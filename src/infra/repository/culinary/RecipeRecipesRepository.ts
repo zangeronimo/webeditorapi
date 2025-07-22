@@ -1,7 +1,7 @@
+import { ILevelRepository } from "@application/interface/repository/culinary";
 import { IRecipeRecipesRepository } from "@application/interface/repository/culinary/IRecipeRecipesRepository";
 import { GetAllRecipeFilterModel } from "@application/model/culinary/recipe";
 import { GetAllRecipesFilterModel } from "@application/model/culinary/recipe/GetAllRecipesFilterModel";
-import { GetAllWithImageFilterModel } from "@application/model/culinary/recipe/GetAllWithImageFilterModel";
 import { Image } from "@domain/entity/culinary/Image";
 import { RecipeRecipes } from "@domain/entity/culinary/RecipeRecipes";
 import { ActiveEnum } from "@domain/enum";
@@ -12,7 +12,9 @@ import { inject, injectable } from "tsyringe";
 export class RecipeRecipesRepository implements IRecipeRecipesRepository {
   constructor(
     @inject("DbContext")
-    readonly db: DbContext
+    readonly db: DbContext,
+    @inject("ILevelRepository")
+    readonly levelRepository: ILevelRepository
   ) {}
 
   async getAllByCategory(
@@ -21,7 +23,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
   ): Promise<RecipeRecipes[]> {
     const recipesData: any[] = await this.db.queryAsync(
       `select
-        id, slug, name, ingredients, preparation, active, recipe_levels_id, webeditor_companies_id, created_at, updated_at
+        id, slug, name, cuisine, ingredients, preparation, active, recipe_levels_id, webeditor_companies_id, created_at, updated_at
       from recipes
       where webeditor_companies_id = $1 and deleted_at is null and active = $2 and recipe_levels_id = $3
       order by name`,
@@ -43,6 +45,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         recipesData[i].cook_time,
         recipesData[i].rest_time,
         recipesData[i].difficulty,
+        recipesData[i].cuisine,
         recipesData[i].tools,
         recipesData[i].notes,
         recipesData[i].image_url,
@@ -109,75 +112,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         recipesData[i].cook_time,
         recipesData[i].rest_time,
         recipesData[i].difficulty,
-        recipesData[i].tools,
-        recipesData[i].notes,
-        recipesData[i].image_url,
-        recipesData[i].meta_title,
-        recipesData[i].meta_description,
-        recipesData[i].keywords,
-        recipesData[i].schema_jsonld,
-        recipesData[i].related_recipe_ids,
-        recipesData[i].views,
-        recipesData[i].likes,
-        recipesData[i].active,
-        recipesData[i].published_at,
-        images,
-        recipesData[i].recipe_levels_id,
-        recipesData[i].webeditor_companies_id,
-        recipesData[i].created_at,
-        recipesData[i].updated_at
-      );
-      recipes.push(recipe);
-    }
-    return recipes;
-  }
-
-  async getWithImageAsync(
-    model: GetAllWithImageFilterModel,
-    company: string
-  ): Promise<RecipeRecipes[]> {
-    const orderBy = model.random ? " random()" : " r.created_at desc";
-    let where =
-      "r.webeditor_companies_id = $1 and r.deleted_at is null and r.active = $2";
-    if (model.levelId) {
-      where += " and recipe_levels_id = $3";
-    }
-    if (model.search) {
-      where += ` and (LOWER(UNACCENT(r.name)) like $4 or LOWER(UNACCENT(r.ingredients)) like $4 or LOWER(UNACCENT(r.preparation)) like $4)`;
-    }
-    const recipesData: any[] = await this.db.queryAsync(
-      `select
-        r.id, r.slug, r.name, r.ingredients, r.preparation, r.active, r.recipe_levels_id, r.webeditor_companies_id, r.created_at, r.updated_at
-      from recipe_recipes r
-      inner join recipe_images ri on ri.recipes_id=r.id and ri.active=$2 and ri.deleted_at is null and ri.webeditor_companies_id = $1
-      where ${where}
-      group by r.id
-      order by ${orderBy}
-      limit $5`,
-      [
-        company,
-        ActiveEnum.ACTIVE,
-        model.levelId,
-        `%${model.search?.toLowerCase().noAccents()}%`,
-        model.total,
-      ]
-    );
-    const recipes: RecipeRecipes[] = [];
-    for (let i = 0; i < recipesData.length; i++) {
-      const images = await this.getAllImages(recipesData[i].id, company);
-      const recipe = RecipeRecipes.restore(
-        recipesData[i].id,
-        recipesData[i].slug,
-        recipesData[i].name,
-        recipesData[i].short_description,
-        recipesData[i].full_description,
-        recipesData[i].ingredients,
-        recipesData[i].preparation,
-        recipesData[i].yield_total,
-        recipesData[i].prep_time,
-        recipesData[i].cook_time,
-        recipesData[i].rest_time,
-        recipesData[i].difficulty,
+        recipesData[i].cuisine,
         recipesData[i].tools,
         recipesData[i].notes,
         recipesData[i].image_url,
@@ -229,25 +164,6 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
     return images;
   }
 
-  async getAllActiveImagesByRecipeId(
-    recipeId: string,
-    company: string
-  ): Promise<string[]> {
-    const imagesData: any[] = await this.db.queryAsync(
-      `select
-        url
-      from recipe_images
-      where webeditor_companies_id = $1 and deleted_at is null and active = $2 and recipes_id = $3
-      order by created_at desc`,
-      [company, ActiveEnum.ACTIVE, recipeId]
-    );
-    const images: string[] = [];
-    for (let i = 0; i < imagesData.length; i++) {
-      images.push(imagesData[i].url);
-    }
-    return images;
-  }
-
   async getByIdAsync(
     id: string,
     company: string
@@ -268,6 +184,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         cook_time,
         rest_time,
         difficulty,
+        cuisine,
         meta_title,
         meta_description,
         keywords,
@@ -282,7 +199,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
       [id, company]
     );
     const images = await this.getAllImages(id, company);
-    return recipeData
+    const recipe = recipeData
       ? RecipeRecipes.restore(
           recipeData.id,
           recipeData.slug,
@@ -296,6 +213,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
           recipeData.cook_time,
           recipeData.rest_time,
           recipeData.difficulty,
+          recipeData.cuisine,
           recipeData.tools,
           recipeData.notes,
           recipeData.image_url,
@@ -315,6 +233,12 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
           recipeData.updated_at
         )
       : null;
+    const level = await this.levelRepository.getByIdAsync(
+      recipeData.recipe_levels_id,
+      company
+    );
+    recipe?.setLevel(level!);
+    return recipe;
   }
 
   async getImageByIdAsync(id: string, company: string): Promise<Image | null> {
@@ -343,7 +267,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
     company: string
   ): Promise<RecipeRecipes | null> {
     const [recipeData] = await this.db.queryAsync(
-      "select id, slug, name, ingredients, preparation, active, recipe_levels_id, webeditor_companies_id, created_at, updated_at from recipe_recipes where slug = $1 and webeditor_companies_id = $2 and deleted_at is null",
+      "select id, slug, name, cuisine, ingredients, preparation, active, recipe_levels_id, webeditor_companies_id, created_at, updated_at from recipe_recipes where slug = $1 and webeditor_companies_id = $2 and deleted_at is null",
       [slug, company]
     );
     const images = await this.getAllImages(recipeData?.id, company);
@@ -361,6 +285,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
           recipeData.cook_time,
           recipeData.rest_time,
           recipeData.difficulty,
+          recipeData.cuisine,
           recipeData.tools,
           recipeData.notes,
           recipeData.image_url,
@@ -413,7 +338,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
     );
     const recipesData: any[] = await this.db.queryAsync(
       `select
-        id, slug, name, ingredients, preparation, active, views, recipe_levels_id, webeditor_companies_id, created_at, updated_at
+        id, slug, name, cuisine, ingredients, preparation, active, views, recipe_levels_id, webeditor_companies_id, created_at, updated_at
       from recipe_recipes
       where ${where}
       order by ${ordenation}
@@ -445,6 +370,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         recipesData[i].cook_time,
         recipesData[i].rest_time,
         recipesData[i].difficulty,
+        recipesData[i].cuisine,
         recipesData[i].tools,
         recipesData[i].notes,
         recipesData[i].image_url,
@@ -501,14 +427,15 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         cook_time=$13,
         rest_time=$14,
         difficulty=$15,
-        meta_title=$16,
-        meta_description=$17,
-        keywords=$18,
-        active=$19,
-        recipe_levels_id=$20,
-        image_url=$21,
-        updated_at=$22,
-        schema_jsonld=$23
+        cuisine=$16,
+        meta_title=$17,
+        meta_description=$18,
+        keywords=$19,
+        active=$20,
+        recipe_levels_id=$21,
+        image_url=$22,
+        updated_at=$23,
+        schema_jsonld=$24
       where id = $1 and webeditor_companies_id = $2 and deleted_at is null`,
       [
         recipe.id,
@@ -526,6 +453,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         recipe.cookTime,
         recipe.restTime,
         recipe.difficulty,
+        recipe.cuisine,
         recipe.metaTitle,
         recipe.metaDescription,
         recipe.keywords,
@@ -580,6 +508,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
          cook_time,
          rest_time,
          difficulty,
+         cuisine,
          meta_title,
          meta_description,
          keywords,
@@ -588,7 +517,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
          webeditor_companies_id,
          schema_jsonld)
       values
-        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21)`,
+        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22)`,
       [
         recipe.id,
         recipe.slug,
@@ -604,6 +533,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
         recipe.cookTime,
         recipe.restTime,
         recipe.difficulty,
+        recipe.cuisine,
         recipe.metaTitle,
         recipe.metaDescription,
         recipe.keywords,

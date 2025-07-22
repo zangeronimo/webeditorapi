@@ -70,10 +70,12 @@ export class RecipeDao implements IRecipeDao {
         r.schema_jsonld,
         r.views,
         r.likes,
-        r.published_at
+        r.published_at,
+        l.name as level_name
       from recipe_recipes r
+      inner join recipe_levels l on l.id = r.recipe_levels_id and l.active=$2 and l.deleted_at is null
       where ${where}
-      group by r.id`,
+      group by r.id, l.id`,
       [company, ActiveEnum.ACTIVE, slug.value]
     );
     if (recipeData === null) return null;

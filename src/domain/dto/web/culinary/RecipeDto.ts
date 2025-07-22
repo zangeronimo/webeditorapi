@@ -25,6 +25,7 @@ export class RecipeDto {
   likes: number;
   publishedAt: string;
   ratings: RatingDto[];
+  levelName?: string;
 
   constructor(recipe: any, ratings: RatingDto[] = []) {
     this.id = recipe?.id;
@@ -54,6 +55,7 @@ export class RecipeDto {
     this.publishedAt = new Date(recipe?.published_at).toLocaleDateString(
       "pt-BR"
     );
+    this.levelName = recipe?.level_name;
     this.ratings = ratings;
   }
 

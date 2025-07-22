@@ -16,6 +16,7 @@ export class RecipeRecipesDto extends DtoBase {
   cookTime: number;
   restTime: number;
   difficulty: string;
+  cuisine: string;
   tools: string;
   notes: string;
   imageUrl: string;
@@ -51,6 +52,7 @@ export class RecipeRecipesDto extends DtoBase {
     this.cookTime = recipe?.cookTime;
     this.restTime = recipe?.restTime;
     this.difficulty = recipe?.difficulty;
+    this.cuisine = recipe?.cuisine;
     this.tools = recipe?.tools;
     this.notes = recipe?.notes;
     this.imageUrl = recipe?.imageUrl;

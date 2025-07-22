@@ -1,5 +1,5 @@
 import { ILevelDao } from "@application/interface/dao/culinary/ILevelDao";
-import { LevelWithCategoryDto } from "@domain/dto/web/culinary/LevelWithCategory";
+import { LevelDto } from "@domain/dto/web/culinary/LevelDto";
 import { ActiveEnum } from "@domain/enum";
 import { DbContext } from "@infra/context";
 import { inject, injectable } from "tsyringe";
@@ -11,13 +11,13 @@ export class LevelDao implements ILevelDao {
     readonly db: DbContext
   ) {}
 
-  async getAllAsync(company: string): Promise<LevelWithCategoryDto[]> {
+  async getAllAsync(company: string): Promise<LevelDto[]> {
     const orderBy = " l.name";
     let where =
       "l.webeditor_companies_id=$1 and l.deleted_at is null and l.active=$2";
     const levelData: any[] = await this.db.queryAsync(
       `select
-        l.id, l.slug, l.name
+        l.id, l.slug, l.name, l.updated_at
       from recipe_levels l
       inner join recipe_recipes r on r.recipe_levels_id = l.id and r.active=$2 and r.deleted_at is null and r.webeditor_companies_id=$1
       where ${where}
@@ -25,9 +25,9 @@ export class LevelDao implements ILevelDao {
       order by ${orderBy}`,
       [company, ActiveEnum.ACTIVE]
     );
-    const levels: LevelWithCategoryDto[] = [];
+    const levels: LevelDto[] = [];
     for (let i = 0; i < levelData.length; i++) {
-      const levelDao = new LevelWithCategoryDto(levelData[i]);
+      const levelDao = new LevelDto(levelData[i]);
       levels.push(levelDao);
     }
     return levels;

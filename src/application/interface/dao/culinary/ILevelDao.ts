@@ -1,5 +1,5 @@
-import { LevelWithCategoryDto } from "@domain/dto/web/culinary/LevelWithCategory";
+import { LevelDto } from "@domain/dto/web/culinary/LevelDto";
 
 export interface ILevelDao {
-  getAllAsync(company: string): Promise<LevelWithCategoryDto[]>;
+  getAllAsync(company: string): Promise<LevelDto[]>;
 }

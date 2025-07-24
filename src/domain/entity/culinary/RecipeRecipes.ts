@@ -380,6 +380,6 @@ export class RecipeRecipes extends EntityBase {
   }
 
   private removeHtml(str: string): string {
-    return str?.replace(/<[^>]*>/g, "").trim();
+    return str ? str.replace(/<[^>]*>/g, "").trim() : "";
   }
 }

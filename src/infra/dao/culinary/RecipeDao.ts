@@ -1,6 +1,7 @@
 import { IRecipeDao } from "@application/interface/dao/culinary/IRecipeDao";
-import { RecipeGetBySearchDao } from "@application/model/web/culinary/RecipeBySearchDao";
-import { RecipeGetAllDao } from "@application/model/web/culinary/RecipeGetAllDao";
+import { RecipeGetBySearchModel } from "@application/model/web/culinary/RecipeBySearchModel";
+import { RecipeGetAllModel } from "@application/model/web/culinary/RecipeGetAllModel";
+import { RecipeMostAccessedModel } from "@application/model/web/culinary/RecipeMostAccessedModel";
 import { RatingDto } from "@domain/dto/web/culinary/RatingDto";
 import { RecipeDto } from "@domain/dto/web/culinary/RecipeDto";
 import { RecipeWithImagesDto } from "@domain/dto/web/culinary/RecipeWithImagesDto";
@@ -18,7 +19,7 @@ export class RecipeDao implements IRecipeDao {
   ) {}
 
   async getAllAsync(
-    model: RecipeGetAllDao,
+    model: RecipeGetAllModel,
     company: string
   ): Promise<RecipeWithImagesDto[]> {
     // const orderBy = " r.updated_at desc";
@@ -193,7 +194,7 @@ export class RecipeDao implements IRecipeDao {
   }
 
   async getBySearchAsync(
-    model: RecipeGetBySearchDao,
+    model: RecipeGetBySearchModel,
     company: string
   ): Promise<RecipeDto[]> {
     if (!model.validate()) return [];
@@ -255,11 +256,18 @@ export class RecipeDao implements IRecipeDao {
     return recipes;
   }
 
-  async getMostAccessedAsync(company: string): Promise<RecipeDto[]> {
+  async getMostAccessedAsync(
+    model: RecipeMostAccessedModel,
+    company: string
+  ): Promise<{ itens: RecipeDto[]; total: number }> {
     let where = `r.webeditor_companies_id = $1 and
        r.deleted_at is null and
        r.active=$2`;
-
+    const offset = model.pageSize * (model.page - 1);
+    const [total] = await this.db.queryAsync(
+      `select count(*) from recipe_recipes r where ${where}`,
+      [company, ActiveEnum.ACTIVE]
+    );
     const recipesData = await this.db.queryAsync(
       `select
         r.id,
@@ -288,15 +296,16 @@ export class RecipeDao implements IRecipeDao {
       where ${where}
       group by r.id
       order by r.views DESC
-      limit 10`,
-      [company, ActiveEnum.ACTIVE]
+      limit $3
+      offset $4`,
+      [company, ActiveEnum.ACTIVE, model.pageSize, offset]
     );
     const recipes: RecipeDto[] = [];
     for (let i = 0; i < recipesData.length; i++) {
       const recipeDto = new RecipeDto(recipesData[i]);
       recipes.push(recipeDto);
     }
-    return recipes;
+    return { itens: recipes, total: total.count };
   }
 
   async getSitemapAsync(company: string): Promise<SitemapDto[]> {

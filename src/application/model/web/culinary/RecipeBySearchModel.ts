@@ -1,6 +1,4 @@
-import { RecipeDto } from "@domain/dto/culinary";
-
-export class RecipeGetBySearchDao {
+export class RecipeGetBySearchModel {
   constructor(
     readonly q: string,
     readonly level: string,

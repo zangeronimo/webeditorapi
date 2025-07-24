@@ -1,7 +1,8 @@
 import { IEnsureHasInternalSecret } from "@api/midleware/EnsureHasInternalSecret";
 import { IRecipeDao } from "@application/interface/dao/culinary/IRecipeDao";
-import { RecipeGetBySearchDao } from "@application/model/web/culinary/RecipeBySearchDao";
-import { RecipeGetAllDao } from "@application/model/web/culinary/RecipeGetAllDao";
+import { RecipeGetBySearchModel } from "@application/model/web/culinary/RecipeBySearchModel";
+import { RecipeGetAllModel } from "@application/model/web/culinary/RecipeGetAllModel";
+import { RecipeMostAccessedModel } from "@application/model/web/culinary/RecipeMostAccessedModel";
 import { RecipeDto } from "@domain/dto/web/culinary/RecipeDto";
 import { Slug } from "@domain/valueObject/Slug";
 import { Request, Response, Router } from "express";
@@ -60,7 +61,7 @@ export class RecipeController {
   private getAllWithImageAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const model = new RecipeGetAllDao(10, true);
+      const model = new RecipeGetAllModel(10, true);
       const data = await this.recipeDao.getAllAsync(model, company);
       res.status(200).json(data);
     } catch (e: any) {
@@ -117,7 +118,7 @@ export class RecipeController {
     try {
       const { company } = req.user;
       const { q, levelId, time, difficulty } = req.query;
-      const model = new RecipeGetBySearchDao(
+      const model = new RecipeGetBySearchModel(
         q as string,
         levelId as string,
         time as string,
@@ -133,7 +134,8 @@ export class RecipeController {
   private getMostAccessedAsync = async (req: Request, res: Response) => {
     try {
       const { company } = req.user;
-      const data = await this.recipeDao.getMostAccessedAsync(company);
+      const model = new RecipeMostAccessedModel(req.query);
+      const data = await this.recipeDao.getMostAccessedAsync(model, company);
       res.status(200).json(data);
     } catch (e: any) {
       res.status(400).json(e.message);

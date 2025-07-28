@@ -6,7 +6,7 @@ export class Slug {
   }
 
   static create = (name: string) => {
-    const slug = name.noAccents().toLowerCase().replaceAll(" ", "_");
+    const slug = name.noAccents().toLowerCase().replaceAll(" ", "-");
     return new Slug(slug);
   };
 

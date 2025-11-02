@@ -14,6 +14,11 @@ export class CreateArticleComments1762078042220 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
+            name: "name",
+            type: "varchar(150)",
+            isNullable: true,
+          },
+          {
             name: "comment",
             type: "varchar",
             isNullable: false,

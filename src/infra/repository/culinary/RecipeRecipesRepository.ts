@@ -338,7 +338,7 @@ export class RecipeRecipesRepository implements IRecipeRecipesRepository {
     );
     const recipesData: any[] = await this.db.queryAsync(
       `select
-        id, slug, name, cuisine, ingredients, preparation, active, views, recipe_levels_id, webeditor_companies_id, created_at, updated_at
+        id, slug, name, cuisine, ingredients, preparation, active, views, image_url, recipe_levels_id, webeditor_companies_id, created_at, updated_at
       from recipe_recipes
       where ${where}
       order by ${ordenation}

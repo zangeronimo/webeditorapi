@@ -26,7 +26,7 @@ export class RecipeDao implements IRecipeDao {
     const orderBy = " random()";
     let where =
       "r.webeditor_companies_id = $1 and r.deleted_at is null and r.active=$2";
-    if (model.withImage) where += " and r.image_url is not null";
+    if (model.withImage) where += " and r.image_url != ''";
     const recipesData: any[] = await this.db.queryAsync(
       `select
         r.id, r.slug, r.name, r.prep_time, r.cook_time, r.rest_time, r.difficulty, r.short_description, r.image_url
@@ -47,7 +47,7 @@ export class RecipeDao implements IRecipeDao {
 
   async getBySlugAsync(slug: Slug, company: string): Promise<RecipeDto | null> {
     let where =
-      "r.webeditor_companies_id = $1 and r.deleted_at is null and r.active=$2 and r.slug=$3";
+      "r.webeditor_companies_id = $1 and r.deleted_at is null and r.image_url != '' and r.active=$2 and r.slug=$3";
     const [recipeData] = await this.db.queryAsync(
       `select
         r.id,
@@ -153,7 +153,7 @@ export class RecipeDao implements IRecipeDao {
     company: string
   ): Promise<RecipeDto[]> {
     let where =
-      "r.webeditor_companies_id = $1 and r.deleted_at is null and r.active=$2";
+      "r.webeditor_companies_id = $1 and r.deleted_at is null and r.image_url != '' and r.active=$2";
     if (level.value) where += " and l.slug=$3";
     const recipesData = await this.db.queryAsync(
       `select
@@ -207,6 +207,7 @@ export class RecipeDao implements IRecipeDao {
       : "";
     let where = `r.webeditor_companies_id = $1 and
        r.deleted_at is null and
+       r.image_url != '' and
        r.active=$2 and
        ((LOWER(UNACCENT(r.name)) like $3 or LOWER(UNACCENT(r.ingredients)) like $3) ${levelId} ${time} ${difficulty})`;
     const recipesData = await this.db.queryAsync(
@@ -253,6 +254,7 @@ export class RecipeDao implements IRecipeDao {
       const recipeDto = new RecipeDto(recipesData[i]);
       recipes.push(recipeDto);
     }
+    console.log(recipes)
     return recipes;
   }
 
@@ -262,6 +264,7 @@ export class RecipeDao implements IRecipeDao {
   ): Promise<{ itens: RecipeDto[]; total: number }> {
     let where = `r.webeditor_companies_id = $1 and
        r.deleted_at is null and
+       r.image_url != '' and
        r.active=$2`;
     const offset = model.pageSize * (model.page - 1);
     const [total] = await this.db.queryAsync(
@@ -310,6 +313,7 @@ export class RecipeDao implements IRecipeDao {
 
   async getSitemapAsync(company: string): Promise<SitemapDto[]> {
     let where = `r.webeditor_companies_id = $1 and
+       r.image_url != '' and
        r.deleted_at is null and
        r.active=$2`;
 
